@@ -1,6 +1,7 @@
 ---
 title: "BES-manuscript"
 format: gfm
+bibliography: macrosystems-tm.bib
 ---
 
 # Materials and Methods
