@@ -1,8 +1,44 @@
 ---
 title: "BES-manuscript"
 format: gfm
-bibliography: macrosystems-tm.bib
+bibliography: macrosystems.bib
 ---
+
+# Introduction
+Current estimates of the terrestrial carbon cycle indicate a net terrestrial carbon sink [@friedlingsteinGlobalCarbonBudget2023]. Accumulation of soil organic matter can be influenced by biotic factors from aboveground plant inputs [@jacksonEcologySoilCarbon2017], which in turn are influenced through environmental factors such as growing season length, temperature, and moisture [@desaiDriversDecadalCarbon2022].
+
+
+Soil respiration is the aggregate process of transfer of soil CO$_{2}$ to the atmosphere from physical and biological processes to the soil. 
+The movement of soil  multiple and environmental biotic factors such as growing season length, moisture, temperature, as well as abiotic factors The rate of change of this transfer from the aboveground to belowground varies interannually and from ecosystem type. 
+
+@nissanGlobalWarmingAccelerates2023 warming of the earths atmosphere
+
+Soil carbon models can span a range from empirical models [@koster_carbon_2017], highly structured models of interacting soil microbes [@allison_trait-based_2012], or genomic-based metabolic models [@zomorrodiSyntheticEcologyMicrobes2016]. For many models soil respiration is modeled from an common exponential $Q_{10}$ paradigm [@davidson_variability_2006], typically assumed to be static across the soil biome [@bond-lamberty_contribution_2004-1; @chen_does_2005; @hamdi_synthesis_2013]. Alternative soil carbon models may include parameterization and differentiation of soil microbial communities coupled to above ground biogeochemical processes [@allison_trait-based_2012; @bosatta_quality_2002; @fang_dependence_2001; @sihi_comparing_2016; @todd-brown_framework_2012; @zobitz_integration_2008; @zobitz_comparing_2021; @wutzlerPrimingSubstrateQuality2013]. Modeling is one way to validate observations made during field or laboratory incubation studies across a fire chronosequence [@bond-lamberty_contribution_2004-1; @koster_recovery_2014; @saizStandAgerelatedEffects2006; @zhuang_modeling_2002]. 
+
+
+
+
+Soils contain the largest reservoir of terrestrial carbon, although there is much uncertianty about the rates, processes and exchanges from the soil to the atmosphere.  Quantifying the amount of soil carbon fluxes tends to be quite dynamic, as it can vary with changes in temperature, source material, moisture, and other processes.
+
+The transfer of carbon to the soil is a physical process driven by difufusion at it moves through pore spaces into the atmosphere. Production of carbon is regulated through autotrophic respiration, stimulation of microbes through exudates, and also transformation of parent material across different soil depths.
+
+Currently we have the means to measure athe processes that regulate this tranformation from the soil - through systemative measurements of soil carbon content, soil CO2 at different depths, temperature, and soil moituere,, we can appl Fick's law to describe the surface soil flux through the flux gradient method.  Other measuremens exist such as measurement of soil fluxes directluy through the atmosphere using automated chamgers or smapling of soil flux measurement.
+
+Although we have made progress in the htheoretical undertanding of soil fluxes, we have lgoiticalchalenges. any measuremrnt at depth requires distrubance of the soil, alhtogh passive nevironemtnal sensores repregents the nost cost effective way to do this.  The logistical challgnes oto automate and maintain these measurements also makes it difficult to work with.  The natioanl Ecolgoial Obsevantory Entowkr is a continental scale network wacross the United state st that currently provdies across 47 sites the challenges and meansurements needed to compute soil flux using hte flux graintent method. This produ was descoped at the time and currently is not computed.  Here we make use of this work to model soil carbon fluxes and to validate the measurements through an intensive field sampling campaign.
+
+Key objectives of this study are to:
+apply the flux-gradeint method to measuremtna dn maintain model fluxes
+Benchmark produced soil carbon fluxes to other ancillary measusrements (SRDB, measurements of soil respiration)
+Identify sources of error for future work.
+
+MCA WORK------------
+The National Ecological Observatory Network (NEON) presents a significant leap forward in the measurement of biogeochemical processes at the continental scale. Of particular importance is the nearly continuous measurement of belowground soil carbon processes, which is the largest aggregate reservoir of terrestrial carbon (Jobbágy & Jackson, 2000). The flux of carbon from the soil to the atmosphere (i.e. soil efflux or respiration) represents the complex interplay between aboveground feedbacks (e.g., gross primary productivity and its response to incoming radiation, temperature, and moisture) and belowground processes (feedback between soil microbial populations and physical transformations such as dissolution and chemical properties). Techniques such as eddy covariance represent the cumulative sum of all ecosystem carbon fluxes in an airshed. At the same time, the data provided by NEON is on the same timescale as eddy covariance measurements from FLUXNET, thus broadening the ability of researchers to quantify ecosystem fluxes in ever more diverse systems. Typically quantification of soil effluxes can also help constrain the magnitude of the other aboveground CO2 fluxes (Luo et al., 2011; Shao et al., 2013; Sihi et al., 2016; Todd-Brown et al., 2012). The “fusing” of eddy covariance data (from FLUXNET) with NEON data and models is one way to advance scientific understanding of carbon-cycle research and modeling in order to resolve the long-standing equifinality problem (Williams et al., 2009). 
+
+
+The flux-gradient approach derives from the conservation of matter in one dimension (the depth from the surface z) see Maier & Schack-Kirchner (2014) for a review of this method. When in steady-state for a given depth, the gradient of the flux F equals the production from the soil. Fluxes are assumed to follow Fick’s law of diffusion (see the equation to the right), which is a product of the diffusion coefficient Ds and the concentration gradient (dC/dz). The gradient (dC/dz) is estimated from finite differences taken at different depths. The diffusion coefficient Ds is a function of soil physical properties, but can also vary temporally with changes in temperature, air pressure, and soil moisture. Across the soil depth, the diffusivity profile is a function of soil temperature, soil volumetric water content, atmospheric air pressure, and soil bulk density (Millington & Shearer, 1971; Moldrup et al., 1999). All of these measurements are measured and available by NEON at the core terrestrial sites (see Figure 1).
+
+----------
+
 
 # Materials and Methods
 To compute a soil flux measurement, we acquired environmental observations and associated uncertainties from NEON servers using the `NEONUtilities` R package. Specific data products included half hourly soil water content, half-hourly soil CO$_{2}$, half-hourly atmospheric pressure, half-hourly soil temperature, and soil properties (e.g. bulk density). These static soil properties are periodically collected and assumed to be constant.
@@ -63,3 +99,24 @@ To compute the monthly mean we used a bootstrapped sample of measurements from t
 Assume there is a vector of means x, standard deviation, and 95% confidence interval of the uncertainty. The bias in a measurement is given by the difference between the 95% confidence interval and the standard deviation in quadrature standard deviation and For a specified number of bootstrap samples.
 Data processing & validation
 For a given month, the user than can return the computed diffusivity, flux at each sampling location at a NEON site.  The user can assess the final quality flag assesed for each of the 4 environmental measurements (CO2, temperature, and 
+
+
+# Results
+Diagram of soil fluxes at each of the six sites across the year that we are sampling, with the highlighted time period measured.
+
+Comparison of soil carbon fluxes and time measurements
+
+Comparison of soil fluxes from SRDB and NEON, aggregated at the annual scale?  (As a ratio?)
+
+Diffusivity measurement
+
+
+# Discussion
+
+# Conclusions
+
+# Acknowledgments
+
+# Conflict of Interest Statements
+
+# Author Contributions
