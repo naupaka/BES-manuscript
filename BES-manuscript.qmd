@@ -44,7 +44,7 @@ The flux-gradient approach derives from the conservation of matter in one dimens
 To compute a soil flux measurement, we acquired environmental observations and associated uncertainties from NEON servers using the `NEONUtilities` R package. Specific data products included half hourly soil water content, half-hourly soil CO$_{2}$, half-hourly atmospheric pressure, half-hourly soil temperature, and soil properties (e.g. bulk density). These static soil properties are periodically collected and assumed to be constant.
 
 Each NEON site samples from three to five different spatial positions at three to five different soil depths. 
-The `NEONSoils` R package acquires the data for a given site and month and stacks observations into one nested list column for ease of computation or export measurements into a csv file.  Quality flags with an observation are reported as an indicator variable. If a given observation did not pass are reported we applied a gap filling method (described below) the measurements monthly mean was used.
+The `NEONSoils` R package acquires the data for a given site and month and stacks observations into one nested list column for ease of computation, or alternatively, export measurements into a comma separate value file.  Quality flags are reported A measurement is Quality flags with an observation are reported as an indicator variable. If a given observation did is reported as not passing a quality assurance check we applied a gap filling method to replace that measurement with its monthly mean.
 
 Following this initial data processing, temperature, soil water content were interpolated using splines to the same depth at CO$_{2}$ concentration measurements. CO$_{2}$ was converted to molar concentration ($\mu$mol m$^{-3}$).
 
@@ -55,7 +55,7 @@ For a given half hour, we applied Fick's law (Equation \ref{eq:ficks}) to estima
 F_{s} = -D_{a} \frac{dC}{dz},\label{eq:ficks}
 \end{equation}
 
-where $D_{a}$ is the diffusion coefficient (m$^{2}$ s$^{-1}$). Computation of $D_{a}$ equals:
+where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$). Computation of $D_{a}$ equals:
 
 \begin{equation}
 \xi D_{a,0}
@@ -79,10 +79,27 @@ WHY ARE THESE PROPORTIONALLY MULTIPLED??
   porosSub2mm <- 1 - mgp$bulkDensExclCoarseFrag/2.65
  Porosity =  (1 - mgp$bulkDensExclCoarseFrag/2.65)* (1 - rockVol).  This includes the different fractions from 0 to 20 mm of the rocks - the fraction that are below 2mm and then 2-20mm rock volume.  The soil particle density is assumed to be 2.65 g cm^-3
 CO2 in molar density computed. 
-We inferred the surface gradient of soil CO2 molar concentration from the three closest measurement depths to the surface. To estimate the surface gradient of soil CO2 molar concentration (dC/dz), For ease of use, we say the triplet (zi, Ci, Di) is the depth, co2 molar concentration and diffusivity at a measured depth i. Four different approaches were used in the flux gradient method, based on a review from Maier Schack Kirchner.
+
+## Soil surface fluxes.
+We computed the soil surface flux (Equation~\ref{eq:ficks}) with four different approaches [@maierUsingGradientMethod2014], outlined below. Surface fluxes were computed from the three CO$_{2}$ concentration measurement levels closest to the soil surface. Spline fits were used to infer soil temperature and soil moisture at the same measurement levels as CO$_{2}$ concentration and used to compute diffusivity at these depths. We applied quadrature to compute uncertainty at each calculation in computing diffusivity $D_{a}$ or the surface gradient $\displaystyle \frac{dC}{dz}$.
+
+Methodological differences are in the estimation of either the surface gradient $\displaystyle \frac{dC}{dz}These approaches differ in terms of how the Four different approaches were used in the flux gradient method, based on a review from Maier Schack Kirchner.
 De Jong and Schappert (1972) computes a linear regression of CO2 molar concentration at depth. Once that is computed, the surface gradient is then approximated by F = -D1 * (C0 - C1)/(0-z1), where (z1,C1) is the measurement depth closest to the surface. The The flux is estimated by does a linear regression for the C(z) and then uses C0 
 Hirano et al (2005) also takes the linear regression to create a new vector and the center between each measurement depth C = (C0, Ci) and z = (0, zi) and then estimates the gradient at each depth. (dC/dz)_i.  A flux at each depth is computed to then extrapolate the surface concentration. [[ FILL IN MORE HERE ]]
-Tang et al 2003 assumes the co2 molar density and diffusivity increases linearly through the soil profile, so the computed surface flux is the extrapolated diffusivity times the slope of the linear regression of CO2 vs z.
+
+We partition the soil into three distinct layers. Assuming that the soil profile is non-uniform, we use In computing the diffusivity to account for variation across layers (i.e. ), we use the weighted harmonic mean [@turcuContinuousSoilCarbon2005]:
+
+\begin{equation}
+D_{a;i,i+1}=\frac{z_{i+1}-z_{i}}{\frac{}}
+
+
+
+- @tangAssessingSoilCO22003 assumes that both CO$_{2}$ molar density and diffusivity increases linearly through the soil profile ($C(z)$ and $D(z)$ respectively). In Equation~\ref{eq:ficks}, $D_{a} = D(0)$ and $\displaystyle \frac{dC}{dz}$ is the linear regression slope.
+
+- @tangContinuousMeasurementsSoil2005
+
+
+This method assumes  The advantage to this methodlinear regression assumes the co2 molar density and diffusivity increases linearly through the soil profile, so the computed surface flux is the extrapolated diffusivity times the slope of the linear regression of CO2 vs z.
 Tang et al 2005 computed the mean diffusivity between two different layers and then computed the gradient at each layer for a diffusive flux.  This was then extrapolated to the surface concentration.
 These four methods were then implemented along with any uncertainty analysis (found via quadrature).
 
