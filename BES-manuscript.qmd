@@ -114,6 +114,26 @@ Figure XXX shows representative plots for the SJER site across the timeperiod st
 Gap filling module
 To compute the monthly mean we used a bootstrapped sample of measurements from the reported measurements which passed the QC and the uncertainty by bootstrapping. We assume that the measurement comes from a normally distributed distribution with mean and standard deviation. A given number of bootstrap samples are specified so that new replicate samples are created, then the mean is taken.  a measurement a specified number of times [LINK] with x + epsilon 
 Assume there is a vector of means x, standard deviation, and 95% confidence interval of the uncertainty. The bias in a measurement is given by the difference between the 95% confidence interval and the standard deviation in quadrature standard deviation and For a specified number of bootstrap samples.
+
+The monthly mean value $\mu$ and standard deviation $\sigma$ is computed through bootstrapping from the available measurements that We apply a bootstrap sample for the distribution of the monthly mean measurements, and generate a sampling distribution of both the monthly mean ($\overline{\mathbf{x}}$) and standard deviation ($\mathbf{s}$) the following ways.
+
+
+
+repeatedly sample from this bootstrap 
+
+We compute a monthly mean at a location's spatial depth $z$ with at least 15 measurements without any quality control issues. These measurements are represented by the vector $\mathbf{m}$, standard errors $\boldsymbol\sigma$, and the 95% confidence interval (the so-called expanded uncertainty, @farranceUncertaintyMeasurementReview2012) $\boldsymbol\epsilon$. All of these vectors have length $M$. We have that $\vec{\sigma}_{i}\leq\vec{\epsilon}_{i}$.  We define the bias as $\mathbf{b}=\sqrt{\boldsymbol\epsilon^{2}-\boldsymbol\sigma^{2}}$.
+
+
+We generate a vector of bootstrap samples of the distribution  of the monthly mean $\overline{\boldsymbol{m}}$ and monthly standard error $\overline{\boldsymbol\sigma}$ the following ways. Here we set the number of bootstrap samples $B$ to be 5000. Entries for both are determined by the following:
+
+1. Randomly sample from the uncertainty and bias independently: $\boldsymbol\sigma_{j}$ and the bias $\mathbf{b}_{k}$ (not necessarily the same sample)
+2. Generate a vector $\mathbf{n}$ of length $N$, where $\mathbf{n}_{i}$ is a random sample from a normal distribution with mean $\boldsymbol{m}_{i}$ and standard deviation $\boldsymbol\sigma_{j}$. Since $M<N$, values from $\mathbf{m}$ will be reused.
+3. With these $N$ random samples, $\overline{y}_{i}=\overline{\vec{x}}+\vec{b}_{k}$ and $s_{i}$ is the sample standard deviation of $\vec{x}$. We expect that $s_{i} \approx \vec{\sigma}_{j}$.
+
+Once that is complete, the reported monthly mean and standard deviation is $\overline{\overline{y}}$ and $\overline{s}$.
+
+
+
 Data processing & validation
 For a given month, the user than can return the computed diffusivity, flux at each sampling location at a NEON site.  The user can assess the final quality flag assesed for each of the 4 environmental measurements (CO2, temperature, and 
 
