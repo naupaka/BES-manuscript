@@ -5,6 +5,14 @@ bibliography: macrosystems.bib
 ---
 
 # Introduction
+
+Points to hit on in introduction:
+- computing soil fluxes is challenging because of the heterogeniety in the soil, and need to compute as close as possible to surface.
+- one surefire way is continuous automated chambers, hard to deploy and scale by cost.
+- automated measurements with continuous measurement provides one way, and in the absence of soil but need to have 
+
+
+
 Current estimates of the terrestrial carbon cycle indicate a net terrestrial carbon sink [@friedlingsteinGlobalCarbonBudget2023]. Accumulation of soil organic matter can be influenced by biotic factors from aboveground plant inputs [@jacksonEcologySoilCarbon2017], which in turn are influenced through environmental factors such as growing season length, temperature, and moisture [@desaiDriversDecadalCarbon2022].
 
 
@@ -81,6 +89,23 @@ WHY ARE THESE PROPORTIONALLY MULTIPLED??
 CO2 in molar density computed. 
 
 ## Soil surface fluxes.
+
+NEW WRITING
+Using the three NEON measurements harmonized at a given depth along with an interpolated measurement of surface CO2 (through linear regression) soil fluxes were computed across each layer, according to the following convention:
+
+We assume that the surface CO$_{2}$ flux density is a linear extrapolation of the remaining three layers [VERIFY THIS IS THE CASE].  Once this is computed we then are ready to compute the surface flux.
+
+A soil flux measurement is reported as $F_{ijk}$, with i, j, k being 0 or 1.  The flux across a surface $F_{100}$, $F_{010}$, $F_{001}$ refer to a single soil flux across a layer.
+
+A computation of a surface flux is linear extrapolation of the flux measurements indexed, so then $F_{101}$ is a linear extrapolation of $F_{100}$ and $F_{001}$. Any uncertainties are reported through with quadrature.  The computation of the surface flux using this method allows for the selection and investigation of different assumptions of how fluxes are computed (cite references) with a unified framework. 
+
+Soil fluxes were computed across three different layers in the soil according to NEON measurements (see conceptual diagram)
+
+
+
+END NEW WRITING
+
+
 We computed the soil surface flux (Equation~\ref{eq:ficks}) with four different approaches [@maierUsingGradientMethod2014], outlined below. Surface fluxes were computed from the three CO$_{2}$ concentration measurement levels closest to the soil surface. Spline fits were used to infer soil temperature and soil moisture at the same measurement levels as CO$_{2}$ concentration and used to compute diffusivity at these depths. We applied quadrature to compute uncertainty at each calculation in computing diffusivity $D_{a}$ or the surface gradient $\displaystyle \frac{dC}{dz}$.
 
 Methodological differences are in the estimation of either the surface gradient $\displaystyle \frac{dC}{dz}These approaches differ in terms of how the Four different approaches were used in the flux gradient method, based on a review from Maier Schack Kirchner.
@@ -91,7 +116,7 @@ We partition the soil into three distinct layers. Assuming that the soil profile
 
 \begin{equation}
 D_{a;i,i+1}=\frac{z_{i+1}-z_{i}}{\frac{}}
-
+\end{equation}
 
 
 - @tangAssessingSoilCO22003 assumes that both CO$_{2}$ molar density and diffusivity increases linearly through the soil profile ($C(z)$ and $D(z)$ respectively). In Equation~\ref{eq:ficks}, $D_{a} = D(0)$ and $\displaystyle \frac{dC}{dz}$ is the linear regression slope.
