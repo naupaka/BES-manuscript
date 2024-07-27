@@ -172,6 +172,13 @@ Comparison of soil fluxes from SRDB and NEON, aggregated at the annual scale?  (
 
 Diffusivity measurement
 
+::: {#fig-model-diagram}
+
+![](figures/model-diagram.pdf){fig-alt="Diagram of model workflow"}
+Model diagram for data workflow for the neonSoilFlux R package.  a) Acquire: Data are obtained from given NEON location and horizontal sensor location, which includes soil water content, soil temperature, CO$_{2}$ concentration, and atmospheric pressure. All data are screened for quality assurance, with gap-filling of missing data reported. b)  Any belowground data are then harmonized to the same depth as CO$_{2}$ concentrations using linear regression. c) The flux across a given depth is computed via Fick's law, denoted with $F_{ijk}$, where $i$, $j$, or $k$ are either 0 or 1 denoting the layer the flux is computed across ($i$ = closest to surface, $k$ = deepest).  The surface flux is all possible combinations of $F_{ijk}$ extrapolating the flux measurements to the surface, so $F_{110}$ is the surface flux intercept linearly extrapolating the measurements $F_{010}$ and $F_{100}$.
+:::
+
+
 
 # Discussion
 
