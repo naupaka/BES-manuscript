@@ -49,10 +49,10 @@ The flux-gradient approach derives from the conservation of matter in one dimens
 
 
 # Materials and Methods
-To compute a soil flux measurement, we acquired environmental observations and associated uncertainties from NEON servers using the `NEONUtilities` R package. Specific data products included half hourly soil water content, half-hourly soil CO$_{2}$, half-hourly atmospheric pressure, half-hourly soil temperature, and soil properties (e.g. bulk density). These static soil properties are periodically collected and assumed to be constant.
+To compute a soil flux measurement, we acquired environmental observations and associated uncertainties from NEON servers using the `NEONUtilities` R package. Specific data products included half hourly soil water content, half-hourly soil CO$_{2}$, half-hourly atmospheric pressure, half-hourly soil temperature, and soil properties (e.g. bulk density). These static soil properties are periodically collected and assumed to be constant for the montly observation period. Each NEON observation site collects samples from three to five different spatial positions, with each position sampling at three to five different soil depths. 
 
-Each NEON site samples from three to five different spatial positions at three to five different soil depths. 
-The `NEONSoils` R package acquires the data for a given site and month and stacks observations into one nested list column for ease of computation, or alternatively, export measurements into a comma separate value file.  Quality flags are reported A measurement is Quality flags with an observation are reported as an indicator variable. If a given observation did is reported as not passing a quality assurance check we applied a gap filling method to replace that measurement with its monthly mean.
+
+The `neonSoilFlux` R package acquires the data for a given site and month and stacks observations into one nested list column for ease of computation, or alternatively, export measurements into a comma separate value file.  Quality flags are reported A measurement is Quality flags with an observation are reported as an indicator variable. If a given observation did is reported as not passing a quality assurance check we applied a gap filling method to replace that measurement with its monthly mean.
 
 Following this initial data processing, temperature, soil water content were interpolated using splines to the same depth at CO$_{2}$ concentration measurements. CO$_{2}$ was converted to molar concentration ($\mu$mol m$^{-3}$).
 
