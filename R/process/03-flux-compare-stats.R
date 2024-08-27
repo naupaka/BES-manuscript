@@ -1,6 +1,6 @@
 ### Derive RMSE and R2 values for the different model results compared to measured values
 ### Work in progress
-
+# TO DO: Compare lagged from the measurements (+/half hour?)
 library(tidyverse)
 library(lubridate)
 library(broom)
@@ -95,6 +95,9 @@ field_stats_data <- field_data_joined |>
   unnest(cols=c(comparison_stats))
 
 # Plot!
+
+
+field_stats_data |> glimpse()
 
 field_stats_data |>
   pivot_longer(cols=c("nrmse","r.squared","slope")) |>
