@@ -1,7 +1,7 @@
 ---
 title: "BES-manuscript"
 format: gfm
-bibliography: macrosystems.bib
+bibliography: bes-bibliography.bib
 ---
 
 # Introduction
@@ -36,14 +36,38 @@ All of these measurements are measured and available by NEON at the core terrest
 
 
 # Materials and Methods
+
+## Study sites (NEEDS REVISING)
+We selected six terrestrial NEON sites for analysis. These sites span a range of environmental gradients and terrestrial domains for analysis (Table @tbl-neon_sites). Over the course of two field campaigns in 2022 and 2024 we conducted weekly visits at each site through selecting a specific in the soil sampling array, installing a temporary soil collar, and doing direct flux measurements. These data were then compared for analysis later.
+
+| Site | Location | Ecosystem type | Mean annual temperature (sampling) | Mean annual precipitation (sampling)
+|------|------|------|------|------|
+| Santa Rita Experimental Range    | 31.91068, -110.83549    | Shrubland |  19.3°C    | 346.2 mm
+| San Joaquin Experimental Range    | 37.10878, -119.73228    | Oak woodland | 16.4°C    | 539.62 mm
+| Wind River Experimental Forest    | 45.82049, -121.95191    | Evergreen forest    | 9.2°C | 2225 mm
+| Chase Lake National Wildlife Refuge    | 47.1282, -99.241334    | Restored prairie grassland  | 4.9°C | 495 mm
+| Konza Prairie Biological Station    | 39.100774, -96.563075    | Tallgrass Prairie    | 12.4°C | 870 mm
+| University of Notre Dame Environmental Research Center    | 46.23391, -89.537254    | Deciduous forest   | 4.3°C  | 802 mm
+
+: Listing of NEON sites studied for field work and analysis {#tbl-neon_sites}
+
+IDEA: Could have a sparkline plot of temperature / precip over the course of the time spent at each site, although admittedly we didn't see THAT much variation when sampling.
+
+## Computation of soil fluxes
+We developed an R package `neonSoilFlux` https://CRAN.R-project.org/package=neonSoilFlux to compute a half-hourly soil carbon flux with provided NEON data. This package represents a unified workflow for observation and analysis
 To compute a soil flux measurement, we acquired environmental observations and associated uncertainties from NEON servers using the `NEONUtilities` R package. Specific data products included half hourly soil water content, half-hourly soil CO$_{2}$, half-hourly atmospheric pressure, half-hourly soil temperature, and soil properties (e.g. bulk density). These static soil properties are periodically collected and assumed to be constant for the montly observation period. Each NEON observation site collects samples from three to five different spatial positions, with each position sampling at three to five different soil depths. 
 
 
-The `neonSoilFlux` R package acquires the data for a given site and month and stacks observations into one nested list column for ease of computation, or alternatively, export measurements into a comma separate value file.  Quality flags are reported A measurement is Quality flags with an observation are reported as an indicator variable. If a given observation did is reported as not passing a quality assurance check we applied a gap filling method to replace that measurement with its monthly mean.
+The `neonSoilFlux` R package acquires the data for a given site and month and stacks observations at a soil plot into one nested list column for ease of computation, or alternatively, export measurements into a comma separate value file.  Quality flags are reported A measurement is Quality flags with an observation are reported as an indicator variable. If a given observation did is reported as not passing a quality assurance check we applied a gap filling method to replace that measurement with its monthly mean.
 
 Following this initial data processing, temperature, soil water content were interpolated using splines to the same depth at CO$_{2}$ concentration measurements. CO$_{2}$ was converted to molar concentration ($\mu$mol m$^{-3}$).
 
-## Computation of soil fluxes
+
+![Model diagram]('figures/model-diagram.pdf'){#fig-model_diagram}
+
+This is illustrated well by @fig-model_diagram.
+
+
 For a given half hour, we applied Fick's law (Equation \ref{eq:ficks}) to estimate the soil flux $F_{s}$, units $\mu$mol m$^{-2}$ s$^{-1}$:
 
 \begin{equation}
