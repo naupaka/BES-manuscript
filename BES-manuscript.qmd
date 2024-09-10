@@ -46,6 +46,8 @@ We selected six terrestrial NEON sites for analysis. These sites span a range of
 
 IDEA: Could have a sparkline plot of temperature / precip over the course of the time spent at each site, although admittedly we didn't see THAT much variation when sampling.
 
+## Field methods
+
 ## Computation of soil fluxes
 We developed an R package `neonSoilFlux` https://CRAN.R-project.org/package=neonSoilFlux to compute a half-hourly soil carbon flux with provided NEON data. This package represents a unified workflow for observation and analysis
 To compute a soil flux measurement, we acquired environmental observations and associated uncertainties from NEON servers using the `NEONUtilities` R package. Specific data products included half hourly soil water content, half-hourly soil CO$_{2}$, half-hourly atmospheric pressure, half-hourly soil temperature, and soil properties (e.g. bulk density). These static soil properties are periodically collected and assumed to be constant for the montly observation period. Each NEON observation site collects samples from three to five different spatial positions, with each position sampling at three to five different soil depths. 
@@ -171,6 +173,9 @@ For a given month, the user than can return the computed diffusivity, flux at ea
 
 
 # Results
+
+## Field Data Measurements
+
 Diagram of soil fluxes at each of the six sites across the year that we are sampling, with the highlighted time period measured.
 
 Comparison of soil carbon fluxes and time measurements
