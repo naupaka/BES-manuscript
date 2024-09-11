@@ -99,18 +99,15 @@ CO2 in molar density computed.
 
 ## Soil surface fluxes.
 
-NEW WRITING
-Using the three NEON measurements harmonized at a given depth along with an interpolated measurement of surface CO2 (through linear regression) soil fluxes were computed across each layer, according to the following convention:
+A surface flux estimate is derived from Fick's Law (Equation~\ref{eq:ficks}), which is the product of a diffusivity and a CO$_{2}$ concentration gradient [@maierUsingGradientMethod2014]. The `neonSoilFlux` package provides eight different surface flux estimates, which represent different considerations of how Fick's Law is applied.  First, we apply simple linear regression to both CO$_{2}$ and $D_{a}$ at the three different measurement depths. Next, the slope and intercept (and uncertainty by quadrature) from these regressions are used to compute a suite of eight different surface flux estimates(denoted by $F_{ijk}$):
 
-We assume that the surface CO$_{2}$ flux density is a linear extrapolation of the remaining three layers [VERIFY THIS IS THE CASE].  Once this is computed we then are ready to compute the surface flux.
+  - $F_{000}$ is a surface flux estimate using the intercept of the linear regression of $D_{a}$ and the slope from linear regression of CO$_{2}$ (which represents $\frac{dC}{dz}$ in Fick's Law). @tangAssessingSoilCO22003 used this approach to compute fluxes in XXX
+- $F_{010}$, $F_{001}$ are fluxes across the two most shallow layers and two deepest layers respectively. The diffusivity used in Fick's Law is always at the deeper measurement layer. When used as a surface flux estimate we assume CO$_{2}$ remains constant above this flux depth.
+- $F_{100}$ is a flux estimate where the gradient $\frac{dC}{dz}$ is estimated using the intercept from linear regression of CO$_{2}$ and the top measurement depth for CO$_{2}$. The diffusivity used in Fick's Law is always at the first measurement layer. @dejongCalculationSoilRespiration1972 applied this approach.
+- $F_{110}$, $F_{101}$, $F_{011}$ are a surface flux estimates using linear extrapolation between $F_{100}$ and $F_{010}$; $F_{100}$ and $F_{001}$; or $F_{010} and $F_{001}$ respectively. 
+- $F_{111}$ is a surface flux estimate using linear extrapolation between $F_{100}$, $F_{010}$, and $F_{001}$.
 
-A soil flux measurement is reported as $F_{ijk}$, with i, j, k being 0 or 1.  The flux across a surface $F_{100}$, $F_{010}$, $F_{001}$ refer to a single soil flux across a layer.
-
-A computation of a surface flux is linear extrapolation of the flux measurements indexed, so then $F_{101}$ is a linear extrapolation of $F_{100}$ and $F_{001}$. Any uncertainties are reported through with quadrature.  The computation of the surface flux using this method allows for the selection and investigation of different assumptions of how fluxes are computed (cite references) with a unified framework. 
-
-Soil fluxes were computed across three different layers in the soil according to NEON measurements (see conceptual diagram)
-
-
+Uncertainty in $F_{ijk}$ is computed through quadrature.
 
 END NEW WRITING
 
