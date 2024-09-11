@@ -173,6 +173,12 @@ For a given month, the user than can return the computed diffusivity, flux at ea
 
 ## Field Data Measurements
 
+### LICOR 6800 results
+
+### LICOR 8250 results
+
+## Model Results
+
 Diagram of soil fluxes at each of the six sites across the year that we are sampling, with the highlighted time period measured.
 
 Comparison of soil carbon fluxes and time measurements
