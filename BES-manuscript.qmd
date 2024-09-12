@@ -24,7 +24,7 @@ This study describes efforts to derive a standardized estimate of $F_{S}$ at all
 
 # Materials and Methods
 
-## Study sites (NEEDS REVISING)
+## Study sites
 
 We selected six terrestrial NEON sites for analysis. These sites span a range of environmental gradients and terrestrial domains for analysis (Table @tbl-neon_sites). Over the course of two field campaigns in 2022 and 2024 we conducted weekly visits at each site through selecting a specific in the soil sampling array, installing a temporary soil collar, and doing direct flux measurements. These data were then compared for analysis later.
 
@@ -43,10 +43,15 @@ IDEA: Could have a sparkline plot of temperature / precip over the course of the
 
 ## Field methods
 
-## Computation of soil fluxes
-John's change
-We developed an R package `neonSoilFlux` https://CRAN.R-project.org/package=neonSoilFlux to compute a half-hourly soil carbon flux with provided NEON data. This package represents a unified workflow for observation and analysis To compute a soil flux measurement, we acquired environmental observations and associated uncertainties from NEON servers using the `NEONUtilities` R package. Specific data products included half hourly soil water content, half-hourly soil CO$_{2}$, half-hourly atmospheric pressure, half-hourly soil temperature, and soil properties (e.g. bulk density). These static soil properties are periodically collected and assumed to be constant for the montly observation period. Each NEON observation site collects samples from three to five different spatial positions, with each position sampling at three to five different soil depths.
+## neonSoilFlux R package
+We developed an R package (`neonSoilFlux`; https://CRAN.R-project.org/package=neonSoilFlux) that computes half-hourly soil carbon fluxes and uncertainties from NEON data. The objective of the `neonSoilFlux` package is a unified workflow soil data acquisition and analysis that supplements existing data acquisition software through the `neonUtilities` R package ([https://CRAN.R-project.org/package=neonUtilities](https://CRAN.R-project.org/package=neonUtilities)).
 
+ At a given NEON observation there are five different replicate soil sensor arrays, with each sampling at five different soil depths. The `neonSoilFlux` package acquires measured soil water content [@neonSoilWater], soil CO$_{2}$ concentration [@neonSoilCO2], barometric pressure [@neonBarometricPressure], soil temperature [@neonSoilTemp], and soil properties (e.g. bulk density) [@neonSoilProperties]. The static soil properties are periodically collected and assumed to be constant for the montly observation period.
+
+There are two primary functions to the `neonSoilPackage`. The first function `acquire_neon_data` .... 
+
+
+### Data processing and gap-filling
 The `neonSoilFlux` R package acquires the data for a given site and month and stacks observations at a soil plot into one nested list column for ease of computation, or alternatively, export measurements into a comma separate value file. Quality flags are reported A measurement is Quality flags with an observation are reported as an indicator variable. If a given observation did is reported as not passing a quality assurance check we applied a gap filling method to replace that measurement with its monthly mean.
 
 Following this initial data processing, temperature, soil water content were interpolated using splines to the same depth at CO$_{2}$ concentration measurements. CO$_{2}$ was converted to molar concentration ($\mu$mol m$^{-3}$).
@@ -55,6 +60,7 @@ Following this initial data processing, temperature, soil water content were int
 
 This is illustrated well by @fig-model_diagram.
 
+### Soil flux computation
 For a given half hour, we applied Fick's law (Equation \ref{eq:ficks}) to estimate the soil flux $F_{s}$, units $\mu$mol m$^{-2}$ s$^{-1}$:
 
 ```{=tex}
@@ -82,7 +88,7 @@ WHY ARE THESE PROPORTIONALLY MULTIPLED??
 
 porosSub2mm \<- 1 - mgp$bulkDensExclCoarseFrag/2.65  Porosity = (1 - mgp$bulkDensExclCoarseFrag/2.65)\* (1 - rockVol). This includes the different fractions from 0 to 20 mm of the rocks - the fraction that are below 2mm and then 2-20mm rock volume. The soil particle density is assumed to be 2.65 g cm\^-3 CO2 in molar density computed.
 
-## Soil surface fluxes.
+### Reporting of surface fluxes
 
 A surface flux estimate is derived from Fick's Law (Equation\~\ref{eq:ficks}), which is the product of a diffusivity and a CO$_{2}$ concentration gradient [@maierUsingGradientMethod2014]. The `neonSoilFlux` package provides eight different surface flux estimates, which represent different considerations of how Fick's Law is applied. First, we apply simple linear regression to both CO$_{2}$ and $D_{a}$ at the three different measurement depths. Next, the slope and intercept (and uncertainty by quadrature) from these regressions are used to compute a suite of eight different surface flux estimates(denoted by $F_{ijk}$):
 
