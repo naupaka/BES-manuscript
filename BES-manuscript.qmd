@@ -43,6 +43,24 @@ IDEA: Could have a sparkline plot of temperature / precip over the course of the
 
 ## Field methods
 
+In order to acquire field data to validate model predictions of flux, we conducted field measurement campaigns at the siz core terrestrial NEON sites listed above. SJER, SRER, and WREF were visited during May and June of 2022, and WOOD, KONZ, and UNDE during May and June of 2024. We spent a week at each site, taking daily measurements of flux on an hourly or half-hourly interval after letting soil collar(s) equilibrate for approximately 24 hours.
+
+### Soil collar placement
+
+Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC soil collars (FIXME: diameter) were installed in close proximity to the permanent NEON soil sensors at each site. The soil plot where measurements was taken was chosen at each site in consultation with NEON staff to maximize likelihood of quality soil sensor measurements during the duration of the IRGA measurements at each site.
+
+IDEA: Add graphic of soil plot layout and placement of soil collar(s) -- could make diagram in OmniGraffle?
+
+### Infrared gas analyzer measurements of soil CO_2 flux
+
+During the summer 2022 field campaign, a LI-COR 6800 with soil flux chamber attachment was used to measure soil fluxes for 8 hours each day on an hourly interval. During the summer 2024 field campaign, the LI-6800 measurements were taken on a half-hourly interval and were paired with an automated soil flux chamber setup (FIXME multiplexer, IRGA, chamber model numbers) that made automated measurements on a half-hourly interval 24 hours a day while we were on site. Each instrument was paired with a soil temperature and moisture probe (FIXME: Stevens model #) that was used to make soil temperature and moisture measurements concurrent with the CO_2 flux measurements.
+
+Dead bands, measurement duration, instrument self-testing.
+
+### Post-collection processing of data
+
+LI-COR SoilFluxPro software to assess dead band and measurement duration. 
+
 ## Computation of soil fluxes
 
 We developed an R package `neonSoilFlux` https://CRAN.R-project.org/package=neonSoilFlux to compute a half-hourly soil carbon flux with provided NEON data. This package represents a unified workflow for observation and analysis To compute a soil flux measurement, we acquired environmental observations and associated uncertainties from NEON servers using the `NEONUtilities` R package. Specific data products included half hourly soil water content, half-hourly soil CO$_{2}$, half-hourly atmospheric pressure, half-hourly soil temperature, and soil properties (e.g. bulk density). These static soil properties are periodically collected and assumed to be constant for the montly observation period. Each NEON observation site collects samples from three to five different spatial positions, with each position sampling at three to five different soil depths.
