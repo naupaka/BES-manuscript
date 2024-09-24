@@ -51,9 +51,9 @@ Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC soil col
 
 IDEA: Add graphic of soil plot layout and placement of soil collar(s) -- could make diagram in OmniGraffle?
 
-### Infrared gas analyzer measurements of soil CO_2 flux
+### Infrared gas analyzer measurements of soil CO$_{2}$ flux
 
-During the summer 2022 field campaign, a LI-COR 6800 with soil flux chamber attachment was used to measure soil fluxes for 8 hours each day on an hourly interval. During the summer 2024 field campaign, the LI-6800 measurements were taken on a half-hourly interval and were paired with an automated soil flux chamber setup (FIXME multiplexer, IRGA, chamber model numbers) that made automated measurements on a half-hourly interval 24 hours a day while we were on site. Each instrument was paired with a soil temperature and moisture probe (FIXME: Stevens model #) that was used to make soil temperature and moisture measurements concurrent with the CO_2 flux measurements.
+During the summer 2022 field campaign, a LI-COR 6800 with soil flux chamber attachment was used to measure soil fluxes for 8 hours each day on an hourly interval. During the summer 2024 field campaign, the LI-6800 measurements were taken on a half-hourly interval and were paired with an automated soil flux chamber setup (FIXME multiplexer, IRGA, chamber model numbers) that made automated measurements on a half-hourly interval 24 hours a day while we were on site. Each instrument was paired with a soil temperature and moisture probe (FIXME: Stevens model #) that was used to make soil temperature and moisture measurements concurrent with the CO$_{2}$ flux measurements.
 
 Dead bands, measurement duration, instrument self-testing.
 
