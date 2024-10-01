@@ -1,6 +1,7 @@
 ### Derive RMSE and R2 values for the different model results compared to measured values
 ### Work in progress
 # TO DO: Compare lagged from the measurements (+/half hour?)
+# Don't add lines
 library(tidyverse)
 library(lubridate)
 library(broom)
@@ -78,18 +79,23 @@ extract_stats <- function(harmonized_data) {
             coeff = map(lm,broom::tidy),
             vals = map(lm,broom::glance),
             r.squared = map_dbl(.x=vals,.f=~pull(.x,r.squared)),
-            slope = map_dbl(.x=coeff,.f=~pull(.x,estimate)[[2]])) |>
-    select(method,nrmse,r.squared,slope) |>
+            slope = map_dbl(.x=coeff,.f=~pull(.x,estimate)[[2]]),
+            p.value = map_dbl(.x=coeff,.f=~pull(.x,p.value)[[2]]),) |>
+    select(method,nrmse,r.squared,slope,p.value) |>
     ungroup()
 
 
 }
 
+yoop <- field_stats_data_0$harmonized_data[[1]] |> glimpse()
 
+yee <- yoop |> group_by(method) |> nest()
+
+yee$data[[4]]
 ### OK, let's get cooking!
 
 field_stats_data_0 <- field_data_joined |>
-  mutate(harmonized_data = map2(.x=model_data,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 0)),
+  mutate(harmonized_data = map2(.x=model_data,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 0)) ,
          comparison_stats = map(harmonized_data,extract_stats)) |>
   select(site,comparison_stats) |>
   unnest(cols=c(comparison_stats)) |>
@@ -127,21 +133,25 @@ summary_env_data <- field_data_joined |>
   )
 
 # Now plot the stats.  Do some relabeling and factor ordering for the plot.
+## Add in the F111 and F000 separately, or just plot it at the end.  A second factor plot?
 
-p_stats <- all_stats |>
+
+#p_stats <-
+  all_stats |>
   filter(method %in% c("000","111","010","100","001")) |>
   inner_join(summary_env_data,by="site") |>
   pivot_longer(cols=c("nrmse","r.squared","slope")) |>
+    filter(name == "r.squared") |>
   mutate( #
     name = case_match(name, "nrmse" ~ "Normalized~RMSE", "r.squared" ~ "R^{2}", "slope" ~ "m"),
          method = case_match(method,"000" ~ "F['000']","001" ~"F['001']","010" ~"F['010']","100" ~"F['100']","111"~"F['111']"),
     name = factor(name,levels=c('m',"R^{2}","Normalized~RMSE")),
-    method = factor(method,levels=c("F['001']","F['010']","F['100']","F['111']","F['000']")),
+    method = factor(method,levels=c("F['111']","F['000']","F['100']","F['010']","F['001']")),
         )|>
-  ggplot(aes(x=fct_reorder(site, temp_data),y=value,color=lag,group=lag)) +
-    geom_point() + geom_line() +
-  facet_grid(name~method,scales="free",labeller = label_parsed) +
-  labs(x = "Site", y = "Value", color = "Lag") +
+  ggplot(aes(x=fct_reorder(site, temp_data),y=value,fill=lag)) +
+    geom_col(position="dodge") + #geom_line() +
+  facet_grid(method~name,labeller = label_parsed) +
+  labs(x = "Site", y = "Value", fill = "Lag") +
   theme(axis.text.x=element_text(angle=-90)) +
   # scale_y_continuous(limits=input_limits) +
   theme_bw() +

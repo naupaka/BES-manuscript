@@ -79,8 +79,10 @@ The `neonSoilFlux` R package acquires the data for a given site and month and st
 Diagram of `neonSoilFlux` R package. For a given month and NEON site, the package acquires all relevant data to compute $F_{S}$ using the `neonUtilities` R package. Data are gap-filled according to reported QA flags and interpolated to the same measurement depth before computing the soil flux, uncertainties, and final QA flags.
 :::
 
-Alternatively, 
-![Model diagram]('figures/model-diagram.pdf'){#fig-model_diagram}
+
+::: {#fig-model-diagram}
+![](figures/model-diagram.pdf){fig-alt="Diagram of model workflow"} Model diagram for data workflow for the neonSoilFlux R package. a) Acquire: Data are obtained from given NEON location and horizontal sensor location, which includes soil water content, soil temperature, CO$_{2}$ concentration, and atmospheric pressure. All data are screened for quality assurance, with gap-filling of missing data reported. b) Any belowground data are then harmonized to the same depth as CO$_{2}$ concentrations using linear regression. c) The flux across a given depth is computed via Fick's law, denoted with $F_{ijk}$, where $i$, $j$, or $k$ are either 0 or 1 denoting the layer the flux is computed across ($i$ = closest to surface, $k$ = deepest). The surface flux is all possible combinations of $F_{ijk}$ extrapolating the flux measurements to the surface, so $F_{110}$ is the surface flux intercept linearly extrapolating the measurements $F_{010}$ and $F_{100}$.
+:::
 
 This is illustrated well by @fig-model_diagram.
 
@@ -218,17 +220,25 @@ Stats at the different levels (with the lags)
 
 ## Model Results
 
-Diagram of soil fluxes at each of the six sites across the year that we are sampling, with the highlighted time period measured.
+Results for the different flux computations @flux_results
 
-Comparison of soil carbon fluxes and time measurements
+::: {#fig-flux_results}
+![]('figures/flux-results.png')
 
-Comparison of soil fluxes from SRDB and NEON, aggregated at the annual scale? (As a ratio?)
-
-Diffusivity measurement
-
-::: {#fig-model-diagram}
-![](figures/model-diagram.pdf){fig-alt="Diagram of model workflow"} Model diagram for data workflow for the neonSoilFlux R package. a) Acquire: Data are obtained from given NEON location and horizontal sensor location, which includes soil water content, soil temperature, CO$_{2}$ concentration, and atmospheric pressure. All data are screened for quality assurance, with gap-filling of missing data reported. b) Any belowground data are then harmonized to the same depth as CO$_{2}$ concentrations using linear regression. c) The flux across a given depth is computed via Fick's law, denoted with $F_{ijk}$, where $i$, $j$, or $k$ are either 0 or 1 denoting the layer the flux is computed across ($i$ = closest to surface, $k$ = deepest). The surface flux is all possible combinations of $F_{ijk}$ extrapolating the flux measurements to the surface, so $F_{110}$ is the surface flux intercept linearly extrapolating the measurements $F_{010}$ and $F_{100}$.
+Results for different flux computations, organized by site (in increasing temperature show at each site) across different measurement levels.  $F_{000}$ comes from the diffusivity extrapolation and $F_{111}$ extrapolation across the surface.  Field measurements are shown at the top of each plot.  The computed flux values are shown with reported uncertainty as well.
 :::
+
+We evaluate the efficacy of results from the flux-gradient method in two ways.  First, we calculated the signal to noise ratio (SNR), defined as the ratio of the reported flux to its uncertainty ($F_{ijk}/\sigma_{ijk}$).
+
+We evaluated if the measured field fluxes were within the calculated uncertainty from the flux-gradient method using the various approaches outlined above. We observed that the calculated quadrature uncertainty in many cases can be much larger than the reported measurement (as shown through the signal to noise ratio, SNR = $F_{ijk}/\sigma_{ijk}$. We evaluated $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$, where $F_{S}$ is a measured field soil flux (LICOR 6800 or LICOR 8250) and $F_{ijk}$ is a computed flux method from the flux-gradient, and $\sigma_{ijk}$ is the reported uncertainty for the flux method.  The parameter $\epsilon$ was an uncertainty reduction factor to evaluate how sensitive the results were given, measured by the proportion of field measurements contained in that range.  These results are reported in Figure @uncertainty_stats.  
+::: {#fig-uncertainty_stats}
+![]('figures/uncertainty-stats.png')
+
+Top panel: distribution of SNR values across each of the different sites for the $F_{000}$ and $F_{111}$ flux gradient calculations.  Bottom panel: Computation of uncertainty reduction to evaluate.  As $\epsilon$ increases this indicates that the uncertainty estimate reduces, making it harder to be within the range. BLAH
+:::
+
+
+
 
 # Discussion
 
