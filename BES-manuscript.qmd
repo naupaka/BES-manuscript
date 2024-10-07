@@ -96,54 +96,41 @@ We generate a vector of bootstrap samples of the distribution of the monthly mea
 4. The reported monthly mean and standard deviation are then computed $\overline{\overline{y}}$ and $\overline{s}$. Measurements and uncertainties that did not pass the QA check are then substituted with $\overline{\overline{y}}$ and $\overline{s}$.
 
 ### Diffusivity computation {#sec-compute_diffusivity}
-Soil diffusivity $D_{a}$ at a given measurement depth is the product of the diffusivity in free air $D_{a,0}$ (m$^{2}$ s$^{-1}$) and the tortuosity $\xi$ (no units) [@millingtonDiffusionAggregatedPorous1971].  We compute $D_{a,0}$ with Equation~\ref{eq:da0}:
+Soil diffusivity $D_{a}$ at a given measurement depth is the product of the diffusivity in free air $D_{a,0}$ (m$^{2}$ s$^{-1}$) and the tortuosity $\xi$ (no units) [@millingtonDiffusionAggregatedPorous1971]. Surface barometric pressure (kPa) [@neonBarometricPressure], soil temperature at depth [@neonSoilTemp], soil water content [@neonSoilWater], and soil physical properties [@neonSoilProperties]. Soil physical properties are surveyed once at each site, whereas the other measurements are provided on a half-hourly basis.
+
+We compute $D_{a,0}$ with Equation~\ref{eq:da0}:
 
 ```{=tex}
 \begin{equation}
-  D_{a,0} = 0.0000147 \cdot \left( \frac{T + 273.15}{293.15} \right)^{1.75} \cdot \left( \frac{P}{101.3} \right),\label{eq:da0}
+  D_{a,0} = 0.0000147 \cdot \left( \frac{T_{i} + 273.15}{293.15} \right)^{1.75} \cdot \left( \frac{P}{101.3} \right),\label{eq:da0}
 ```
 
-where $T$ is soil temperature ($^\circ}$C) [@neonSoilTemp] and $P$ barometric pressure (kPa) [@neonBarometricPressure].
-
-The tortuosity $\xi$ is a function of soil physical properties [@neonSoilProperties] and soil water content [@neonSoilWater].
-
-barometric pressure , soil temperature 
-tortuosity 
-of Depending on which measurement  measurement depths  combination of o a measurement depth on the soil surface and below the surface provides aThe soil surface flux is  The diffusivity is the product of the diffusion coefficient in free air (0.0000147 m$^{2}$ s$^{-1}$) and the tortuosity $\xi$ (Equation ) to Computation of $D_{a}$ equals:
+where $T_{i}$ is soil temperature ($^\circ}$C) at depth $i$ [@neonSoilTemp] and $P$ surface barometric pressure (kPa) [@neonBarometricPressure]. At that soil depth, the tortuosity $\xi$ is defined by Equation~\ref{eq:tortuosity} [@millingtonDiffusionAggregatedPorous1971]:
 
 ```{=tex}
 \begin{equation}
-\xi = (porosity - swc)\^(10/3) / porosity\^2.\label{eq:tortuosity}
-
+\xi = \frac{(\phi - SWC_{i})^{10/3}}{\phi^{2}} \label{eq:tortuosity}
 \end{equation}
 ```
-The diffusion
 
-Diagram of soil flux package flow in R Mathematical description of soil flux calculation We use Ficks law to compute the flux: Fc - Da*dC/dz. The diffusion coefficient is computed by Da = tortuosity*diffusion coefficient in free air diffusion coefficient in free air = 0.0000147 \* ((temperature - absZero) / (20 - absZero))\^1.75 \* (pressure / 101.3) Tortosity = (porosity - swc)\^(10/3) / porosity\^2 [@millingtonDiffusionAggregatedPorous1971] \# Calculate 2-20 mm rock volume (cm3 cm-3). Assume 2.65 g cm-3 density.
+In Equation~\ref{eq:tortuosity}, $SWC$ is the soil water content at depth $i$ [@neonSoilWater] and $\phi$ is the porosity (Equation~\ref{eq:porosity}), which in turn is a function of soil physical properties [@neonSoilProperties].
 
-We compute a site specific soil volume fraction ($f_{V}$, cm${^3}$ cm$^{-3}$) with particle densities of different size classes (less than 2 mm, 2-5 mm, and 5-20 mm). We assume the particle density of mineral soil ($\rho_{m}$) equals 2.65 g cm$^{-3}$.
-
-$f_{rock} = \left(1- \frac{\rho_{Coarse}}{\rho_{m}} \right)\left(1-\frac{\rho_{2-5}}{\rho_{m}}+\frac{\rho_{5-20}}{\rho_{m}}\right)$
-
-WHY ARE THESE PROPORTIONALLY MULTIPLED??
-
-porosSub2mm \<- 1 - mgp$bulkDensExclCoarseFrag/2.65  Porosity = (1 - mgp$bulkDensExclCoarseFrag/2.65)\* (1 - rockVol). This includes the different fractions from 0 to 20 mm of the rocks - the fraction that are below 2mm and then 2-20mm rock volume. The soil particle density is assumed to be 2.65 g cm\^-3 CO2 in molar density computed.
-
-We partition the soil into three distinct layers. Assuming that the soil profile is non-uniform, we use In computing the diffusivity to account for variation across layers (i.e. ), we use the weighted harmonic mean [@turcuContinuousSoilCarbon2005]:
+The tortuosity $\xi$ is computed from soil porosity $\phi$.  : 
 
 ```{=tex}
 \begin{equation}
-D_{a;i,i+1}=\frac{z_{i+1}-z_{i}}{\frac{}}
-\end{equation}
+  \phi = \left(1- \frac{\rho_{s}}{\rho_{m}} \right) \left(1-f_{V}),\label{eq:porosity}
 ```
+
+In Equation~\ref{eq:porosity}, $\rho_{m}$ is the particle density of mineral soil (2.65 g cm$^{-3}$), $\rho_{s}$ the soil bulk density (g cm$^{-3}$) excluding coarse fragments greater than 2 mm [@neonSoilProperties]. The term $f_{V}$ is a site-specific value that accounts for the proportion of soil fragments between 2-20 mm. Soil fragments greater than 20 mm were not estimated due to limitations in the amount of soil that can be analyzed [@neonSoilProperties]. We assume there are no pores within rocks. Values of $\rho_{s}$, $\rho_{m}$ are assumed to be constant across the soil profile and the same at each site sampling location.
 
 
 ### Soil flux computation {#sec-compute_soil_flux}
-We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux $F_{s}$ ($\mu$mol m$^{-2}$ s$^{-1}$) across two soil depths:
+We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux $F_{ij}$ ($\mu$mol m$^{-2}$ s$^{-1}$) across two adjacent soil depths $i$ and $j$:
 
 ```{=tex}
 \begin{equation}
-F_{s} = -D_{a} \frac{dC}{dz},\label{eq:ficks}
+F_{ij} = -D_{a} \frac{dC}{dz},\label{eq:ficks}
 \end{equation}
 ```
 where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$) and $\frac{dC}{dz}$ is the gradient of CO$_{2}$ molar concentration ($\mu$mol m$^{-3}$, so the gradient has units of $\mu$mol m$^{-3}$ m$^{-1}$). The diffusivity (described below) is a function of soil temperature, soil water content, and soil physical properties. The soil surface flux is theoretically defined by applying Equation~\ref{eq:ficks} to measurements collected at the soil surface and directly below the surface. Measurements of soil temperature, soil water content, and soil CO$_{2}$ molar concentration across the soil profile allow for application of Equation~\ref{eq:flux} across different soil depths. The flux gradient method approximates the soil surface flux either by (1) extrapolation of Equation~\ref{eq:ficks} across sub-surface measurement depths to the surface, typically assuming soil flux is a linear function of depth [@maierUsingGradientMethod2014] or (2) linear extrapolation of $D_{a}$ to the surface and from direct calculation of $\frac{dC}{dz}$ from the CO$_{2}$ profile. All these approaches are pThe `neonSoilFlux` package provides several different methods to compute $F_{s}$ for the end-user to compare.
@@ -162,33 +149,9 @@ A surface flux estimate is derived from Fick's Law (Equation\~\ref{eq:ficks}), w
 Uncertainty in all $F_{ijk}$ is computed through quadrature.
 
 
--   @tangAssessingSoilCO22003 assumes that both CO$_{2}$ molar density and diffusivity increases linearly through the soil profile ($C(z)$ and $D(z)$ respectively). In Equation\~\ref{eq:ficks}, $D_{a} = D(0)$ and $\displaystyle \frac{dC}{dz}$ is the linear regression slope.
-
--   @tangAssessingSoilCO22003 assumes that both CO$_{2}$ molar density and diffusivity increases linearly through the soil profile ($C(z)$ and $D(z)$ respectively). In Equation\~\ref{eq:ficks}, $D_{a} = D(0)$ and $\displaystyle \frac{dC}{dz}$ is the linear regression slope.
-
 -   @tangContinuousMeasurementsSoil2005
 
-This method assumes The advantage to this methodlinear regression assumes the co2 molar density and diffusivity increases linearly through the soil profile, so the computed surface flux is the extrapolated diffusivity times the slope of the linear regression of CO2 vs z. Tang et al 2005 computed the mean diffusivity between two different layers and then computed the gradient at each layer for a diffusive flux. This was then extrapolated to the surface concentration. These four methods were then implemented along with any uncertainty analysis (found via quadrature).
 
-Error handling We use the fact that reported error measurements occur at a given sampling location i and depth j. NEON reports QF flags as a binary value. Since we want the QF for a given flux measurement to represent 0 if no measurements across depths were fine, and 1 if either a smoothed mean was used for a given depth. We assign an aggregate QF value for a given time. Figure XXX shows representative plots for the SJER site across the timeperiod studied
-
-Gap filling module To compute the monthly mean we used a bootstrapped sample of measurements from the reported measurements which passed the QC and the uncertainty by bootstrapping. We assume that the measurement comes from a normally distributed distribution with mean and standard deviation. A given number of bootstrap samples are specified so that new replicate samples are created, then the mean is taken. a measurement a specified number of times \[LINK\] with x + epsilon Assume there is a vector of means x, standard deviation, and 95% confidence interval of the uncertainty. The bias in a measurement is given by the difference between the 95% confidence interval and the standard deviation in quadrature standard deviation and For a specified number of bootstrap samples.
-
-The monthly mean value $\mu$ and standard deviation $\sigma$ is computed through bootstrapping from the available measurements that We apply a bootstrap sample for the distribution of the monthly mean measurements, and generate a sampling distribution of both the monthly mean ($\overline{\mathbf{x}}$) and standard deviation ($\mathbf{s}$) the following ways.
-
-repeatedly sample from this bootstrap
-
-We compute a monthly mean at a location's spatial depth $z$ with at least 15 measurements without any quality control issues. These measurements are represented by the vector $\mathbf{m}$, standard errors $\boldsymbol\sigma$, and the 95% confidence interval (the so-called expanded uncertainty, @farranceUncertaintyMeasurementReview2012) $\boldsymbol\epsilon$. All of these vectors have length $M$. We have that $\vec{\sigma}_{i}\leq\vec{\epsilon}_{i}$. We define the bias as $\mathbf{b}=\sqrt{\boldsymbol\epsilon^{2}-\boldsymbol\sigma^{2}}$.
-
-We generate a vector of bootstrap samples of the distribution of the monthly mean $\overline{\boldsymbol{m}}$ and monthly standard error $\overline{\boldsymbol\sigma}$ the following ways. Here we set the number of bootstrap samples $B$ to be 5000. Entries for both are determined by the following:
-
-1.  Randomly sample from the uncertainty and bias independently: $\boldsymbol\sigma_{j}$ and the bias $\mathbf{b}_{k}$ (not necessarily the same sample)
-2.  Generate a vector $\mathbf{n}$ of length $N$, where $\mathbf{n}_{i}$ is a random sample from a normal distribution with mean $\boldsymbol{m}_{i}$ and standard deviation $\boldsymbol\sigma_{j}$. Since $M<N$, values from $\mathbf{m}$ will be reused.
-3.  With these $N$ random samples, $\overline{y}_{i}=\overline{\vec{x}}+\vec{b}_{k}$ and $s_{i}$ is the sample standard deviation of $\vec{x}$. We expect that $s_{i} \approx \vec{\sigma}_{j}$.
-
-Once that is complete, the reported monthly mean and standard deviation is $\overline{\overline{y}}$ and $\overline{s}$.
-
-Data processing & validation For a given month, the user than can return the computed diffusivity, flux at each sampling location at a NEON site. The user can assess the final quality flag assesed for each of the 4 environmental measurements (CO2, temperature, and
 
 # Results
 
