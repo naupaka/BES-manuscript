@@ -140,17 +140,13 @@ where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$) and $\frac{dC}{dz}$ is the g
 
 A surface flux estimate is derived from Fick's Law (Equation\~\ref{eq:ficks}), which is the product of a diffusivity and a CO$_{2}$ concentration gradient [@maierUsingGradientMethod2014]. The `neonSoilFlux` package provides eight different surface flux estimates, which represent different considerations of how Fick's Law is applied. First, we apply simple linear regression to both CO$_{2}$ and $D_{a}$ at the three different measurement depths. Next, the slope and intercept (and uncertainty by quadrature) from these regressions are used to compute a suite of eight different surface flux estimates (denoted by $F_{ijk}$):
 
--   $F_{000}$ is a surface flux estimate using the intercept of the linear regression of $D_{a}$ and the slope from linear regression of CO$_{2}$ (which represents $\frac{dC}{dz}$ in Fick's Law). @tangAssessingSoilCO22003 used this approach to compute fluxes in XXX
+-   $F_{000}$ is a surface flux estimate using the intercept of the linear regression of $D_{a}$ and the slope from linear regression of CO$_{2}$ (which represents $\frac{dC}{dz}$ in Fick's Law). @tangAssessingSoilCO22003 used this approach to compute fluxes in an oak-grass savannah.
 -   $F_{010}$, $F_{001}$ are fluxes across the two most shallow layers and two deepest layers respectively. The diffusivity used in Fick's Law is always at the deeper measurement layer. When used as a surface flux estimate we assume CO$_{2}$ remains constant above this flux depth.
--   $F_{100}$ is a flux estimate where the gradient $\frac{dC}{dz}$ is estimated using the intercept from linear regression of CO$_{2}$ and the top measurement depth for CO$_{2}$. The diffusivity used in Fick's Law is always at the first measurement layer. @dejongCalculationSoilRespiration1972 applied this approach.
--   $F_{110}$, $F_{101}$, $F_{011}$ are a surface flux estimates using linear extrapolation between $F_{100}$ and $F_{010}$; $F_{100}$ and $F_{001}$; or \$F\_{010} and $F_{001}$ respectively.
+-   $F_{100}$ is a flux estimate where the gradient $\frac{dC}{dz}$ is estimated using the intercept from linear regression of CO$_{2}$ and the top measurement depth for CO$_{2}$. The diffusivity used in Fick's Law is always at the first measurement layer. @dejongCalculationSoilRespiration1972 applied this approach in a Canadian prairie.
+-   $F_{110}$, $F_{101}$, $F_{011}$ are a surface flux estimates using linear extrapolation between $F_{100}$ and $F_{010}$; $F_{100}$ and $F_{001}$; or \$F\_{010} and $F_{001}$ respectively. @hirano_long-term_2003 and @tangContinuousMeasurementsSoil2005 used an approach similar to $F_{101}$ in a temperate deciduous broadleaf forest and ponderosa pine forest respectively.
 -   $F_{111}$ is a surface flux estimate using linear extrapolation between $F_{100}$, $F_{010}$, and $F_{001}$.
 
 Uncertainty in all $F_{ijk}$ is computed through quadrature.
-
-
--   @tangContinuousMeasurementsSoil2005
-
 
 
 # Results
@@ -194,7 +190,12 @@ Top panel: distribution of SNR values across each of the different sites for the
 
 # Discussion
 
-## Literature comparison to different studies
+
+
+- CO2 concentration and flux
+- Temperature and moisture controls on respiration
+- Evaluation of methods to estimate soil respiration
+- Uncertainty reduction and what is the "correct" answer
 
 # Conclusions
 
