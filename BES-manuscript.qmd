@@ -1,6 +1,7 @@
 ---
 title: "BES-manuscript"
-format: gfm
+format: pdf
+number-sections: true
 bibliography: bes-bibliography.bib
 ---
 
@@ -8,7 +9,7 @@ bibliography: bes-bibliography.bib
 
 Soils contain the largest reservoir of terrestrial carbon [@jobbagyVerticalDistributionSoil2000]. Accumulation of soil organic matter can be influenced by biotic factors from aboveground plant inputs [@jacksonEcologySoilCarbon2017], which in turn are influenced through environmental factors such as growing season length, temperature, and moisture [@desaiDriversDecadalCarbon2022]. These biotic factors provide natural climate-based solutions to offsetting any net increases of the terrestrial carbon cycle from greenhouse gas emissions [@friedlingsteinGlobalCarbonBudget2023].
 
-Ecological networks such as the National Ecological Observatory Network (NEON, ) and others (e.g.FLUXNET or the Integrated Carbon Observation System) present a significant advancement in the nearly continuous observation of biogeochemical processes at the continental scale. Notably, at 47 core terrestrial sites across the continental United States NEON provides half-hourly measurements of soil carbon content, soil CO$_{2}$ concentration, temperature, and moisture at different vertical depths. In turn, FLUXNET provides measurements of the cumulative sum of all ecosystem carbon fluxes in an airshed using the eddy covariance technique [@baldocchiMeasuringFluxesTrace2014]. Soil observations from NEON data provided by NEON is on the same timescale and standardized with eddy covariance measurements from FLUXNET. When combined together NEON and FLUXNET data reconciling differences between model-derived or data-estimated components [@luoEcologicalForecastingData2011; @phillipsValueSoilRespiration2017; @shaoBioticClimaticControls2015; @shaoSoilMicrobialRespiration2013; @sihiComparingModelsMicrobial2016; @jianHistoricallyInconsistentProductivity2022].
+Ecological networks such as the National Ecological Observatory Network (NEON) and others (e.g. FLUXNET or the Integrated Carbon Observation System) present a significant advancement in the nearly continuous observation of biogeochemical processes at the continental scale. Notably, at 47 core terrestrial sites across the continental United States NEON provides half-hourly measurements of soil carbon content, soil CO$_{2}$ concentration, temperature, and moisture at different vertical depths. In turn, FLUXNET provides measurements of the cumulative sum of all ecosystem carbon fluxes in an airshed using the eddy covariance technique [@baldocchiMeasuringFluxesTrace2014]. Soil observations from NEON data provided by NEON is on the same timescale and standardized with eddy covariance measurements from FLUXNET. When combined together NEON and FLUXNET data reconciling differences between model-derived or data-estimated components [@luoEcologicalForecastingData2011; @phillipsValueSoilRespiration2017; @shaoBioticClimaticControls2015; @shaoSoilMicrobialRespiration2013; @sihiComparingModelsMicrobial2016; @jianHistoricallyInconsistentProductivity2022].
 
 Beyond observations of soil CO$_{2}$ concentrations or other environmental variables such as moisture or temperature, a key quantity is soil carbon fluxes [@bond-lambertyTwentyYearsProgress2024]. A soil carbon flux to the atmosphere ($F_{S}$, units $\mu$mol m$^{-2}$ s$^{-1}$) represents the aggregate process of transfer of soil CO$_{2}$ to the atmosphere from physical and biological processes (e.g. diffusion and microbial and autotrophic respiration). Soil carbon fluxes can be coupled with empirical or process models of soil carbon. Soil carbon fluxes can be assumed to represent soil carbon respiration from autotrophic or heterotrophic sources [@davidson_variability_2006], typically assumed to be static across the soil biome and modeled with a exponential $Q_{10}$ paradigm [@bond-lamberty_contribution_2004-1; @chen_does_2005; @hamdi_synthesis_2013].
 
@@ -26,7 +27,9 @@ This study describes efforts to derive a standardized estimate of $F_{S}$ at all
 
 ## Study sites
 
-We selected six terrestrial NEON sites for analysis. These sites span a range of environmental gradients and terrestrial domains for analysis (Table @tbl-neon_sites). Over the course of two field campaigns in 2022 and 2024 we conducted weekly visits at each site through selecting a specific in the soil sampling array, installing a temporary soil collar, and doing direct flux measurements. These data were then compared for analysis later.
+We selected six terrestrial NEON sites for analysis. These sites span a range of environmental gradients and terrestrial domains for analysis (@tbl-neon-sites). Over the course of two field campaigns in 2022 and 2024 we conducted weekly visits at each site through selecting a specific in the soil sampling array, installing a temporary soil collar, and doing direct flux measurements. These data were then compared for analysis later.
+
+::: {#tbl-neon-sites}
 
 | Site                                                   | Location              | Ecosystem type             | Mean annual temperature (sampling) | Mean annual precipitation (sampling) |
 |---------------|---------------|---------------|---------------|---------------|
@@ -37,7 +40,9 @@ We selected six terrestrial NEON sites for analysis. These sites span a range of
 | Konza Prairie Biological Station                       | 39.100774, -96.563075 | Tallgrass Prairie          | 12.4°C                             | 870 mm                               |
 | University of Notre Dame Environmental Research Center | 46.23391, -89.537254  | Deciduous forest           | 4.3°C                              | 802 mm                               |
 
-: Listing of NEON sites studied for field work and analysis {#tbl-neon_sites}
+Listing of NEON sites studied for field work and analysis
+
+:::
 
 IDEA: Could have a sparkline plot of temperature / precip over the course of the time spent at each site, although admittedly we didn't see THAT much variation when sampling.
 
@@ -62,31 +67,32 @@ Dead bands, measurement duration, instrument self-testing.
 LI-COR SoilFluxPro software to assess dead band and measurement duration. 
 
 ## neonSoilFlux R package
-We developed an R package (`neonSoilFlux`; https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly soil carbon fluxes and uncertainties from NEON data. The objective of the `neonSoilFlux` package is a unified workflow soil data acquisition and analysis that supplements existing data acquisition software through the `neonUtilities` R package ([https://CRAN.R-project.org/package=neonUtilities](https://CRAN.R-project.org/package=neonUtilities)). Figure @fig-package_diagram outlines the basic workflow of the package. 
 
-::: {#fig-package_diagram}
+We developed an R package (`neonSoilFlux`; https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly soil carbon fluxes and uncertainties from NEON data. The objective of the `neonSoilFlux` package is a unified workflow soil data acquisition and analysis that supplements existing data acquisition software through the `neonUtilities` R package ([https://CRAN.R-project.org/package=neonUtilities](https://CRAN.R-project.org/package=neonUtilities)). @fig-package-diagram outlines the basic workflow of the package. 
 
-![]('figures/neonSoilFluxOutline.png')
+::: {#fig-package-diagram}
+![](figures/neonSoilFluxOutline.png)
 
 Diagram of `neonSoilFlux` R package. For a given month and NEON site, the package acquires all relevant data to compute $F_{S}$ using the `neonUtilities` R package. Data are gap-filled according to reported QA flags and interpolated to the same measurement depth before computing the soil flux, uncertainties, and final QA flags.
 :::
 
- At a given NEON observation there are five different replicate soil sensor arrays, with each sampling at five different soil depths (Figure @fig-model_diagram). The `neonSoilFlux` package acquires measured soil water content [@neonSoilWater], soil CO$_{2}$ concentration [@neonSoilCO2], barometric pressure [@neonBarometricPressure], soil temperature [@neonSoilTemp], and soil properties (e.g. bulk density) [@neonSoilProperties]. The static soil properties are periodically collected and assumed to be constant for the montly observation period.  
+At a given NEON observation there are five different replicate soil sensor arrays, with each sampling at five different soil depths (@fig-model-diagram). The `neonSoilFlux` package acquires measured soil water content [@neonSoilWater], soil CO$_{2}$ concentration [@neonSoilCO2], barometric pressure [@neonBarometricPressure], soil temperature [@neonSoilTemp], and soil properties (e.g. bulk density) [@neonSoilProperties]. The static soil properties are periodically collected and assumed to be constant for the monthly observation period.  
 
-::: {#fig-model_diagram}
-![](figures/model-diagram.pdf){fig-alt="Diagram of model workflow"} Model diagram for data workflow for the neonSoilFlux R package. a) Acquire: Data are obtained from given NEON location and horizontal sensor location, which includes soil water content, soil temperature, CO$_{2}$ concentration, and atmospheric pressure. All data are screened for quality assurance, with gap-filling of missing data reported. b) Any belowground data are then harmonized to the same depth as CO$_{2}$ concentrations using linear regression. c) The flux across a given depth is computed via Fick's law, denoted with $F_{ijk}$, where $i$, $j$, or $k$ are either 0 or 1 denoting the layer the flux is computed across ($i$ = closest to surface, $k$ = deepest). The surface flux is all possible combinations of $F_{ijk}$ extrapolating the flux measurements to the surface, so $F_{110}$ is the surface flux intercept linearly extrapolating the measurements $F_{010}$ and $F_{100}$.
+::: {#fig-model-diagram}
+![](figures/model-diagram.pdf){fig-alt="Diagram of model workflow"}
+
+Model diagram for data workflow for the neonSoilFlux R package. a) Acquire: Data are obtained from given NEON location and horizontal sensor location, which includes soil water content, soil temperature, CO$_{2}$ concentration, and atmospheric pressure. All data are screened for quality assurance, with gap-filling of missing data reported. b) Any belowground data are then harmonized to the same depth as CO$_{2}$ concentrations using linear regression. c) The flux across a given depth is computed via Fick's law, denoted with $F_{ijk}$, where $i$, $j$, or $k$ are either 0 or 1 denoting the layer the flux is computed across ($i$ = closest to surface, $k$ = deepest). The surface flux is all possible combinations of $F_{ijk}$ extrapolating the flux measurements to the surface, so $F_{110}$ is the surface flux intercept linearly extrapolating the measurements $F_{010}$ and $F_{100}$.
 :::
 
-The workflow to computing a value of $F_{S}$ with the `neonSoilFlux` consists of three primary steps. First, NEON data are acquired for a given site and month via the `neonUtilities` R package (yellow parallelogram and green rectangle in Figure @fig-package_diagram and Panel a) in Figure @fig-model_diagram). Acquired environmental data can be exported to a comma separated value file for additional analysis. Quality assurance (QA) flags with an observation are reported as an indicator variable.
+The workflow to computing a value of $F_{S}$ with the `neonSoilFlux` consists of three primary steps. First, NEON data are acquired for a given site and month via the `neonUtilities` R package (yellow parallelogram and green rectangle in @fig-package-diagram and Panel a in @fig-model-diagram). Acquired environmental data can be exported to a comma separated value file for additional analysis. Quality assurance (QA) flags with an observation are reported as an indicator variable.
 
-The next step is harmonizing the data to compute soil fluxes across soil layers. This step consists of three different actions (blue rectangles in Figure @fig-package_diagram and Panel b) in Figure @fig-model_diagram). If a given observation did is reported as not passing a quality assurance check we applied a gap filling method to replace that measurement with its monthly mean at that same depth (Section @sec-gapfilling). Belowground measurements of soil water and soil temperature are then interpolated to the same depth as soil CO$_{2}$ measurements. The diffusivity (Section @sec-compute_diffusivity) and soil flux across different soil layers (Section @sec-compute_soil_flux) are then computed.
+The next step is harmonizing the data to compute soil fluxes across soil layers. This step consists of three different actions (blue rectangles in  @fig-package-diagram and Panel b in @fig-model-diagram). If a given observation did is reported as not passing a quality assurance check we applied a gap filling method to replace that measurement with its monthly mean at that same depth (@sec-gapfilling). Belowground measurements of soil water and soil temperature are then interpolated to the same depth as soil CO$_{2}$ measurements. The diffusivity (@sec-compute-diffusivity) and soil flux across different soil layers (@sec-compute-soil-flux) are then computed.
 
-The final step is computing a surface soil flux through extrapolation to the surface (purple parallelogram in Figure @fig-package_diagram and Panel c) in Figure @fig-model_diagram). Uncertainty on a soil flux measurement is computed through quadrature. An aggregate QA flag for each environmental measurement is also reported, representing if any gap-filled measurements were used in the computation of a soil flux. Within the soil flux-gradient method, several different approaches can be used to derive a surface flux [@maierUsingGradientMethod2014]; the `neonSoilFlux` package reports eight different possible values of soil surface flux (Section @sec-compute_soil_flux). 
-
+The final step is computing a surface soil flux through extrapolation to the surface (purple parallelogram in @fig-package-diagram and Panel c in @fig-model-diagram). Uncertainty on a soil flux measurement is computed through quadrature. An aggregate QA flag for each environmental measurement is also reported, representing if any gap-filled measurements were used in the computation of a soil flux. Within the soil flux-gradient method, several different approaches can be used to derive a surface flux [@maierUsingGradientMethod2014]; the `neonSoilFlux` package reports eight different possible values of soil surface flux (@sec-compute-soil-flux). 
 
 ### Gap-filling routine {#sec-gapfilling}
-NEON reports QA flags as a binary value for a given measurement and half-hourly time. We replaced any flagged measurements at a location's spatial depth $z$ with a bootstrapped sample of the monthly mean for all un-flagged measurements for that month. hese measurements are represented by the vector $\mathbf{m}$, standard errors $\boldsymbol\sigma$, and the 95% confidence interval (the so-called expanded uncertainty, @farranceUncertaintyMeasurementReview2012) $\boldsymbol\epsilon$. All of these vectors have length $M$. We have that $\vec{\sigma}_{i}\leq\vec{\epsilon}_{i}$. We define the bias as $\mathbf{b}=\sqrt{\boldsymbol\epsilon^{2}-\boldsymbol\sigma^{2}}$.
 
+NEON reports QA flags as a binary value for a given measurement and half-hourly time. We replaced any flagged measurements at a location's spatial depth $z$ with a bootstrapped sample of the monthly mean for all un-flagged measurements for that month. hese measurements are represented by the vector $\mathbf{m}$, standard errors $\boldsymbol\sigma$, and the 95% confidence interval (the so-called expanded uncertainty, @farranceUncertaintyMeasurementReview2012) $\boldsymbol\epsilon$. All of these vectors have length $M$. We have that $\vec{\sigma}_{i}\leq\vec{\epsilon}_{i}$. We define the bias as $\mathbf{b}=\sqrt{\boldsymbol\epsilon^{2}-\boldsymbol\sigma^{2}}$.
 
 We generate a vector of bootstrap samples of the distribution of the monthly mean $\overline{\boldsymbol{m}}$ and monthly standard error $\overline{\boldsymbol\sigma}$ the following ways:
 
@@ -95,64 +101,71 @@ We generate a vector of bootstrap samples of the distribution of the monthly mea
 3.  With these $N$ random samples, $\overline{y}_{i}=\overline{\vec{x}}+\vec{b}_{k}$ and $s_{i}$ is the sample standard deviation of $\vec{x}$. We expect that $s_{i} \approx \vec{\sigma}_{j}$.
 4. The reported monthly mean and standard deviation are then computed $\overline{\overline{y}}$ and $\overline{s}$. Measurements and uncertainties that did not pass the QA check are then substituted with $\overline{\overline{y}}$ and $\overline{s}$.
 
-### Diffusivity computation {#sec-compute_diffusivity}
+### Diffusivity computation {#sec-compute-diffusivity}
+
 Soil diffusivity $D_{a}$ at a given measurement depth is the product of the diffusivity in free air $D_{a,0}$ (m$^{2}$ s$^{-1}$) and the tortuosity $\xi$ (no units) [@millingtonDiffusionAggregatedPorous1971]. Surface barometric pressure (kPa) [@neonBarometricPressure], soil temperature at depth [@neonSoilTemp], soil water content [@neonSoilWater], and soil physical properties [@neonSoilProperties]. Soil physical properties are surveyed once at each site, whereas the other measurements are provided on a half-hourly basis.
 
-We compute $D_{a,0}$ with Equation~\ref{eq:da0}:
+We compute $D_{a,0}$ with Equation \ref{eq:da0}:
 
 ```{=tex}
 \begin{equation}
-  D_{a,0} = 0.0000147 \cdot \left( \frac{T_{i} + 273.15}{293.15} \right)^{1.75} \cdot \left( \frac{P}{101.3} \right),\label{eq:da0}
-```
-
-where $T_{i}$ is soil temperature ($^\circ}$C) at depth $i$ [@neonSoilTemp] and $P$ surface barometric pressure (kPa) [@neonBarometricPressure]. At that soil depth, the tortuosity $\xi$ is defined by Equation~\ref{eq:tortuosity} [@millingtonDiffusionAggregatedPorous1971]:
-
-```{=tex}
-\begin{equation}
-\xi = \frac{(\phi - SWC_{i})^{10/3}}{\phi^{2}} \label{eq:tortuosity}
+  D_{a,0} = 0.0000147 \cdot \left( \frac{T_{i} + 273.15}{293.15} \right)^{1.75} \cdot \left( \frac{P}{101.3} \right)
+  \label{eq:da0}
 \end{equation}
 ```
 
-In Equation~\ref{eq:tortuosity}, $SWC$ is the soil water content at depth $i$ [@neonSoilWater] and $\phi$ is the porosity (Equation~\ref{eq:porosity}), which in turn is a function of soil physical properties [@neonSoilProperties].
+where $T_{i}$ is soil temperature ($^\circ$C) at depth $i$ [@neonSoilTemp] and $P$ surface barometric pressure (kPa) [@neonBarometricPressure]. At that soil depth, the tortuosity $\xi$ is defined by Equation \ref{eq:tortuosity} [@millingtonDiffusionAggregatedPorous1971]:
+
+```{=tex}
+\begin{equation}
+  \xi = \frac{(\phi - SWC_{i})^{10/3}}{\phi^{2}}
+  \label{eq:tortuosity}
+\end{equation}
+```
+
+In Equation \ref{eq:tortuosity}, $SWC$ is the soil water content at depth $i$ [@neonSoilWater] and $\phi$ is the porosity (Equation \ref{eq:porosity}), which in turn is a function of soil physical properties [@neonSoilProperties].
 
 The tortuosity $\xi$ is computed from soil porosity $\phi$.  : 
 
 ```{=tex}
 \begin{equation}
-  \phi = \left(1- \frac{\rho_{s}}{\rho_{m}} \right) \left(1-f_{V}),\label{eq:porosity}
+  \phi = \left(1- \frac{\rho_{s}}{\rho_{m}} \right) \left(1-f_{V}\right)
+  \label{eq:porosity}
+\end{equation}
 ```
 
-In Equation~\ref{eq:porosity}, $\rho_{m}$ is the particle density of mineral soil (2.65 g cm$^{-3}$), $\rho_{s}$ the soil bulk density (g cm$^{-3}$) excluding coarse fragments greater than 2 mm [@neonSoilProperties]. The term $f_{V}$ is a site-specific value that accounts for the proportion of soil fragments between 2-20 mm. Soil fragments greater than 20 mm were not estimated due to limitations in the amount of soil that can be analyzed [@neonSoilProperties]. We assume there are no pores within rocks. Values of $\rho_{s}$, $\rho_{m}$ are assumed to be constant across the soil profile and the same at each site sampling location.
+In Equation \ref{eq:porosity}, $\rho_{m}$ is the particle density of mineral soil (2.65 g cm$^{-3}$), $\rho_{s}$ the soil bulk density (g cm$^{-3}$) excluding coarse fragments greater than 2 mm [@neonSoilProperties]. The term $f_{V}$ is a site-specific value that accounts for the proportion of soil fragments between 2-20 mm. Soil fragments greater than 20 mm were not estimated due to limitations in the amount of soil that can be analyzed [@neonSoilProperties]. We assume there are no pores within rocks. Values of $\rho_{s}$, $\rho_{m}$ are assumed to be constant across the soil profile and the same at each site sampling location.
 
+### Soil flux computation {#sec-compute-soil-flux}
 
-### Soil flux computation {#sec-compute_soil_flux}
 We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux $F_{ij}$ ($\mu$mol m$^{-2}$ s$^{-1}$) across two adjacent soil depths $i$ and $j$:
 
 ```{=tex}
 \begin{equation}
-F_{ij} = -D_{a} \frac{dC}{dz},\label{eq:ficks}
+  F_{ij} = -D_{a} \frac{dC}{dz}
+  \label{eq:ficks}
 \end{equation}
 ```
-where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$) and $\frac{dC}{dz}$ is the gradient of CO$_{2}$ molar concentration ($\mu$mol m$^{-3}$, so the gradient has units of $\mu$mol m$^{-3}$ m$^{-1}$). The diffusivity (described below) is a function of soil temperature, soil water content, and soil physical properties. The soil surface flux is theoretically defined by applying Equation~\ref{eq:ficks} to measurements collected at the soil surface and directly below the surface. Measurements of soil temperature, soil water content, and soil CO$_{2}$ molar concentration across the soil profile allow for application of Equation~\ref{eq:flux} across different soil depths. The flux gradient method approximates the soil surface flux either by (1) extrapolation of Equation~\ref{eq:ficks} across sub-surface measurement depths to the surface, typically assuming soil flux is a linear function of depth [@maierUsingGradientMethod2014] or (2) linear extrapolation of $D_{a}$ to the surface and from direct calculation of $\frac{dC}{dz}$ from the CO$_{2}$ profile. All these approaches are pThe `neonSoilFlux` package provides several different methods to compute $F_{s}$ for the end-user to compare.
 
+where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$) and $\frac{dC}{dz}$ is the gradient of CO$_{2}$ molar concentration ($\mu$mol m$^{-3}$, so the gradient has units of $\mu$mol m$^{-3}$ m$^{-1}$). The diffusivity (described below) is a function of soil temperature, soil water content, and soil physical properties. The soil surface flux is theoretically defined by applying Equation \ref{eq:ficks} to measurements collected at the soil surface and directly below the surface. Measurements of soil temperature, soil water content, and soil CO$_{2}$ molar concentration across the soil profile allow for application of Equation \ref{eq:flux} across different soil depths. The flux gradient method approximates the soil surface flux either by (1) extrapolation of Equation \ref{eq:ficks} across sub-surface measurement depths to the surface, typically assuming soil flux is a linear function of depth [@maierUsingGradientMethod2014] or (2) linear extrapolation of $D_{a}$ to the surface and from direct calculation of $\frac{dC}{dz}$ from the CO$_{2}$ profile. All these approaches are pThe `neonSoilFlux` package provides several different methods to compute $F_{s}$ for the end-user to compare.
 
 ### Reporting of surface fluxes
 
-A surface flux estimate is derived from Fick's Law (Equation\~\ref{eq:ficks}), which is the product of a diffusivity and a CO$_{2}$ concentration gradient [@maierUsingGradientMethod2014]. The `neonSoilFlux` package provides eight different surface flux estimates, which represent different considerations of how Fick's Law is applied. First, we apply simple linear regression to both CO$_{2}$ and $D_{a}$ at the three different measurement depths. Next, the slope and intercept (and uncertainty by quadrature) from these regressions are used to compute a suite of eight different surface flux estimates (denoted by $F_{ijk}$):
+A surface flux estimate is derived from Fick's Law (Equation \ref{eq:ficks}), which is the product of a diffusivity and a CO$_{2}$ concentration gradient [@maierUsingGradientMethod2014]. The `neonSoilFlux` package provides eight different surface flux estimates, which represent different considerations of how Fick's Law is applied. First, we apply simple linear regression to both CO$_{2}$ and $D_{a}$ at the three different measurement depths. Next, the slope and intercept (and uncertainty by quadrature) from these regressions are used to compute a suite of eight different surface flux estimates (denoted by $F_{ijk}$):
 
 -   $F_{000}$ is a surface flux estimate using the intercept of the linear regression of $D_{a}$ and the slope from linear regression of CO$_{2}$ (which represents $\frac{dC}{dz}$ in Fick's Law). @tangAssessingSoilCO22003 used this approach to compute fluxes in an oak-grass savannah.
 -   $F_{010}$, $F_{001}$ are fluxes across the two most shallow layers and two deepest layers respectively. The diffusivity used in Fick's Law is always at the deeper measurement layer. When used as a surface flux estimate we assume CO$_{2}$ remains constant above this flux depth.
 -   $F_{100}$ is a flux estimate where the gradient $\frac{dC}{dz}$ is estimated using the intercept from linear regression of CO$_{2}$ and the top measurement depth for CO$_{2}$. The diffusivity used in Fick's Law is always at the first measurement layer. @dejongCalculationSoilRespiration1972 applied this approach in a Canadian prairie.
--   $F_{110}$, $F_{101}$, $F_{011}$ are a surface flux estimates using linear extrapolation between $F_{100}$ and $F_{010}$; $F_{100}$ and $F_{001}$; or \$F\_{010} and $F_{001}$ respectively. @hirano_long-term_2003 and @tangContinuousMeasurementsSoil2005 used an approach similar to $F_{101}$ in a temperate deciduous broadleaf forest and ponderosa pine forest respectively.
+-   $F_{110}$, $F_{101}$, $F_{011}$ are a surface flux estimates using linear extrapolation between $F_{100}$ and $F_{010}$; $F_{100}$ and $F_{001}$; or $F\_{010}$ and $F_{001}$ respectively. @hirano_long-term_2003 and @tangContinuousMeasurementsSoil2005 used an approach similar to $F_{101}$ in a temperate deciduous broadleaf forest and ponderosa pine forest respectively.
 -   $F_{111}$ is a surface flux estimate using linear extrapolation between $F_{100}$, $F_{010}$, and $F_{001}$.
 
 Uncertainty in all $F_{ijk}$ is computed through quadrature.
 
-
 # Results
 
 ::: {#fig-stats-plot}
-![](figures/stats-plot.png){fig-alt="Stats of model"} Reported stats from comparison of field data to computed soil fluxes by site. Sites are arranged in increasing temperature.  $m$ is the slope of a linear regression, $R^{2}$, normalized RMSE is the RMSE divided by the mean.  The lag is shift from number of measurement periods compared to the field data.  Lag 30 means that field data were compared to reported soil flux from the half hour previously.
+![Stats of model](figures/stats-plot.png)
+Reported stats from comparison of field data to computed soil fluxes by site. Sites are arranged in increasing temperature.  $m$ is the slope of a linear regression, $R^{2}$, normalized RMSE is the RMSE divided by the mean.  The lag is shift from number of measurement periods compared to the field data.  Lag 30 means that field data were compared to reported soil flux from the half hour previously.
 :::
 
 Figure: flux results at the different levels (000,111,001,010,100)
@@ -168,29 +181,25 @@ Stats at the different levels (with the lags)
 
 ## Model Results
 
-Results for the different flux computations @flux_results
+Results for the different flux computations @fig-flux-results
 
-::: {#fig-flux_results}
-![]('figures/flux-results.png')
+::: {#fig-flux-results}
+![](figures/flux-results.png)
 
-Results for different flux computations, organized by site (in increasing temperature show at each site) across different measurement levels.  $F_{000}$ comes from the diffusivity extrapolation and $F_{111}$ extrapolation across the surface.  Field measurements are shown at the top of each plot.  The computed flux values are shown with reported uncertainty as well.
+Results for different flux computations, organized by site (in increasing temperature show at each site) across different measurement levels. $F_{000}$ comes from the diffusivity extrapolation and $F_{111}$ extrapolation across the surface. Field measurements are shown at the top of each plot. The computed flux values are shown with reported uncertainty as well.
 :::
 
-We evaluate the efficacy of results from the flux-gradient method in two ways.  First, we calculated the signal to noise ratio (SNR), defined as the ratio of the reported flux to its uncertainty ($F_{ijk}/\sigma_{ijk}$).
+We evaluate the efficacy of results from the flux-gradient method in two ways. First, we calculated the signal to noise ratio (SNR), defined as the ratio of the reported flux to its uncertainty ($F_{ijk}/\sigma_{ijk}$).
 
-We evaluated if the measured field fluxes were within the calculated uncertainty from the flux-gradient method using the various approaches outlined above. We observed that the calculated quadrature uncertainty in many cases can be much larger than the reported measurement (as shown through the signal to noise ratio, SNR = $F_{ijk}/\sigma_{ijk}$. We evaluated $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$, where $F_{S}$ is a measured field soil flux (LICOR 6800 or LICOR 8250) and $F_{ijk}$ is a computed flux method from the flux-gradient, and $\sigma_{ijk}$ is the reported uncertainty for the flux method.  The parameter $\epsilon$ was an uncertainty reduction factor to evaluate how sensitive the results were given, measured by the proportion of field measurements contained in that range.  These results are reported in Figure @uncertainty_stats.  
-::: {#fig-uncertainty_stats}
-![]('figures/uncertainty-stats.png')
+We evaluated if the measured field fluxes were within the calculated uncertainty from the flux-gradient method using the various approaches outlined above. We observed that the calculated quadrature uncertainty in many cases can be much larger than the reported measurement (as shown through the signal to noise ratio, SNR = $F_{ijk}/\sigma_{ijk}$. We evaluated $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$, where $F_{S}$ is a measured field soil flux (LICOR 6800 or LICOR 8250) and $F_{ijk}$ is a computed flux method from the flux-gradient, and $\sigma_{ijk}$ is the reported uncertainty for the flux method.  The parameter $\epsilon$ was an uncertainty reduction factor to evaluate how sensitive the results were given, measured by the proportion of field measurements contained in that range.  These results are reported in @fig-uncertainty-stats.  
+
+::: {#fig-uncertainty-stats}
+![](figures/uncertainty-stats.png)
 
 Top panel: distribution of SNR values across each of the different sites for the $F_{000}$ and $F_{111}$ flux gradient calculations.  Bottom panel: Computation of uncertainty reduction to evaluate.  As $\epsilon$ increases this indicates that the uncertainty estimate reduces, making it harder to be within the range. BLAH
 :::
 
-
-
-
 # Discussion
-
-
 
 - CO2 concentration and flux
 - Temperature and moisture controls on respiration
