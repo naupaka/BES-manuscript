@@ -181,7 +181,7 @@ Stats at the different levels (with the lags)
 
 ## Model Results
 
-Results for the different flux computations @fig-flux-results
+Figure @flux-results reports out the measured fluxes from the LICOR 6800 and 8250 and computed fluxes and uncertainty at each measurement site. Results are reported in local time. Positive values of the flux indicate that there is a flux moving towards the surface (FIX WRITING) For ease of clarity the fluxes at $F_{111}$ and $F_{000}$ are only shown in the top row (surface), followed by the fluxes at individual separate layer ($F_{100}$, $F_{010}$, $F_{001}$). Overall, with the exception of WREF and SRER (discussed later) the computed fluxes were on the same order of magnitude and timing as the measured field fluxes.
 
 ::: {#fig-flux-results}
 ![](figures/flux-results.png)
@@ -199,12 +199,63 @@ We evaluated if the measured field fluxes were within the calculated uncertainty
 Top panel: distribution of SNR values across each of the different sites for the $F_{000}$ and $F_{111}$ flux gradient calculations.  Bottom panel: Computation of uncertainty reduction to evaluate.  As $\epsilon$ increases this indicates that the uncertainty estimate reduces, making it harder to be within the range. BLAH
 :::
 
+We also computed the diffusivity at each of the different sites from the derived flux values and the reported gradient in CO2 at each of the surface layers (Figure XXXX) through dividing $F_{field}/dC/dz$  These values were then compared to reported diffusivity from the flux computation method.
+
+```{r}
+
+#| echo: FALSE
+
+# Let's see if we can just put the figures directly in here
+load('data/derived/combined-field-data.Rda') 
+
+field_data_joined |> 
+  mutate(QF_prop = map(.x=model_data,.f=~summarise(.x,across(contains("MeanQF"),~1-sum(.x!=0)/n())))) |>
+  select(site,QF_prop) |>
+  unnest(cols=c("QF_prop")) |>
+  pivot_longer(cols=-"site") |>
+  ggplot(aes(x=site,y=value,fill=name,group=name)) + geom_col(position="dodge") +
+  ylab("Proportion of valid measurements")
+
+```
+
+
 # Discussion
 
 - CO2 concentration and flux
+The results reported from the flux-gradient method provide a robust framework for data processing and evaluation of fluxes across different layers (Figure XXX).  Each of the single flux layers $F_{001}$, $F_{010}$, $F_{100}$ allow for the user to diagnose valid conditions of the flux gradient method are held to produce a surface flux, namely an increasing CO$_{2}$ gradient as depth from surface increases.  Building on the tidyverse framework we leave it up to the user to identify and see if certain site-specific conditions are necessary to further refine the fluxes (or if a combination of one approach or the other is needed).
+
+The methods employed in this paper have been utilized in other approaches throughout the literature, namely XXX, YYY, and ZZZ.  However with this study we have the processing of soil fluxes that could be extrapolated and applied across an entire measurement network.  Future studies can extrapolate this out addiitonally to allow for either site-specific validation and measurement.
+
+The validation approaches espoused in this study highlight the critical need for success of this approach to utilize robust measurements of soil temperature and soil water to capture the dynamic, half-hourly changes in soil carbon fluxes for the surface.  No site had 
+
+Evaluation of flux gradient approaches.
+This project showed the feasibility of incorporating below ground measurements of co2 supplemented with soil moisture and temperature to infer approximately correctly values of belowground soil co2 respiration.  While there is literature applying the flux gradient method across different ecosystems (cite references) this is the first study of this type to compute soil fluxes with a common framework in a collection of measurement sites.
+
+In terms of cost and benefit the flux gradient method provides a passive way to measure CO2 fluxes compared to the maintenance and equipment costs of soil co2 chambers or automated measurements like the LICOR.  Clearly there is more work to be done in to reducing uncertainty, but the methods shown here provide a framework for additional model reduction and uncertianty.
+
+The figure So this suggests that the neonSoilFlux method has low accuracy (bummer). While 1:1 plots provide a comparison, I think I need to go a little deeper.  The issue is that the computed uncertainty from neonSoilFlux tends to be larger than the observed field variability (which you saw in the timeseries), and arguably is indefensible for a soil flux.
+
+It got me thinking about the signal to noise ratios for neonSoilFlux (top panel below):
+uncertainty-stats.png
+What the SNR shows is that for the two soil flux methods that incorporate information across all the layers, they do tend to be pretty noisy (SNR > 1).
+
+I also wondered if the computed uncertainty is an overestimate, how much could we reduce the uncertainty and still have the field measurements within a reported range from neonSoilFlux?  That calculation is shown in the bottom panels above where epsilon is the uncertainty reduction factor.  If epsilon = 0, that means we are just using the reported uncertainty from neonSoilFlux.  Looking at that (epsilon = 0) shows field measurements UNDE, KONZ, SJER are 100% within the reported intervals from neonSoilFlux.  But those sites tend to have a SNR < 1, so the uncertainty is pretty noisy.  For UNDE, we could even reduce the uncertainty by a factor of 75% (epsilon = 0.75), more than half of the field measurements will still be within the reported intervals.  For  KONZ, we are still within 70% of the reported intervals when uncertainty is reduced by 90%.  To me, that suggests that while the reported accuracy (as compared to field measurements), we do have higher precision.
+
+The flux gradient method could be improved with more dynamic measurements of soil water and temperature.  Across the sites, soil water was a primary factor controlling the accuracy of the reported fluxes.  
+
+
+
+TABLE REPORTING HALF HOURLY PERIODS DURING VALIDATION SCHEME - Or plot.
+
+Across all the sites soil water content was not reported to the half hour (did not pass QC filtering test in `neonSoilFlux`). Part of this is calibration issues with the sensors. We expect that sites will be online and working.
+
 - Temperature and moisture controls on respiration
 - Evaluation of methods to estimate soil respiration
 - Uncertainty reduction and what is the "correct" answer
+
+Diffusivity taken from the megapit.  Big microsite and temporal differences, soil shrink / swell.  How do we think about what that means for using this approach to generalize across a NEON site over continuous time.
+
+- Back calculation of bulk density to NEON sites.  
 
 # Conclusions
 
