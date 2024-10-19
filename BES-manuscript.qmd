@@ -222,6 +222,32 @@ field_data_joined |>
 # Discussion
 
 - CO2 concentration and flux
+This study presents a unified data science workflow to efficiently process automated measurements of belowground soil CO$_{2}$ concentrations, water, and temperature to infer estimates of soil effluxes through application of Fick's Law. Derived results from the `neonSoilFlux` package have patterns that are consistent, and comparable, to those directly measured to the field.  The advantage to the `neonSoilFlux` package is the calculation of fluxes across different measurement depths, allowing for additional site-specific customization.  This package extends the type of measurements available from NEON. (Tie back to introduction how this is a high priority ...).
+
+John wonders: Can we make a probability argument here?
+We have 4 sensors, each with probabilty rate p_i. (assume the same)
+We pick one at random, what is the chance that it is one that failed?
+
+How many ways can we have 1 sensor that failed? 4 choose 1,
+4 choose 2, 4 choose 3, 4 choose 4, 4 choose 0
+p
+
+Probability of none, at least k.
+Each instrument has a failure rate of k, they are independent
+
+The largest source of uncertainty to improve reliability of the flux estimate is to prevent the usage of gap-filled data. While laudable, this goal may be impossible in practice. Across the observed half-hourly periods for field measurements, the percentage of half-hourly periods where all four environmental measurements were avaialbe spanned from 0% (SJER) to 7% (SRER). We applied a statistical gap-filling routine to provide a reasonable estimate.  The gap-filling routineThe uncertainty in the derived fluxes can be reduced through several different mechanisms.  First, the reliability of the belowground soil water measurements can be improved. Where appropriate we have replaced measurements flagged to the protocol with a monthly gap-filled mean.  
+REFERENCES:
+@liuRobustGapfillingApproach2023
+@zhangTemporalGapFilling12Hourly2023
+@mariethozFeaturepreservingInterpolationFiltering2015
+NEE:
+@falgeGapFillingStrategies2001
+@moffatComprehensiveComparisonGapfilling2007
+
+and the unified workflow
+
+
+are comparable and co, when compared to field measurements of soil fluxes, show are comparable and consistent patterns to those observed through field automated
 The results reported from the flux-gradient method provide a robust framework for data processing and evaluation of fluxes across different layers (Figure XXX).  Each of the single flux layers $F_{001}$, $F_{010}$, $F_{100}$ allow for the user to diagnose valid conditions of the flux gradient method are held to produce a surface flux, namely an increasing CO$_{2}$ gradient as depth from surface increases.  Building on the tidyverse framework we leave it up to the user to identify and see if certain site-specific conditions are necessary to further refine the fluxes (or if a combination of one approach or the other is needed).
 
 The methods employed in this paper have been utilized in other approaches throughout the literature, namely XXX, YYY, and ZZZ.  However with this study we have the processing of soil fluxes that could be extrapolated and applied across an entire measurement network.  Future studies can extrapolate this out addiitonally to allow for either site-specific validation and measurement.
