@@ -9,6 +9,19 @@ load('data/derived/combined-field-data.Rda')  # field_data_joined
 
 load('data/derived/diffusivity-gradient.Rda')  # diffusivity, co2 gradient, bulk density, and rock volume from neonSoilFlux
 
+# Compute some summary stats.  Organize by the temperature - this is how we make sure each site is ordered in our plots.
+summary_env_data <- field_data_joined |>
+  select(site,field_env) |>
+  unnest(cols=c(field_env)) |>
+  group_by(site) |>
+  summarise(
+    vswc_data = median(VSWC),
+    temp_data = median(soilTemp),
+    .groups="drop"
+  )
+
+
+
 combined_data <- field_data_joined |>
   inner_join(flux_gradient_diffusivity,by="site") |>
   rename(neon_flux = model_data.x,
@@ -73,7 +86,7 @@ standardize_timestamps <- function(input_model_data,input_field_data) {
 
 # Collect all of the field and computed flux data within the same time interval
 field_stats_data <- combined_data |>
-  mutate(harmonized_data = map2(.x=neon_diffusivity_gradient,.y=combined_field,.f=~standardize_timestamps(.x,.y,lag_time = 0))) |>
+  mutate(harmonized_data = map2(.x=neon_diffusivity_gradient,.y=combined_field,.f=~standardize_timestamps(.x,.y))) |>
   mutate(harmonized_data = map2(.x=harmonized_data,
                                 .y=curr_tz,
                                 .f=~(.x |>
@@ -86,16 +99,37 @@ field_stats_data <- combined_data |>
 
 
 
-field_stats_data3 |>
+p_diffus <- field_stats_data |>
+  inner_join(summary_env_data,by="site") |>
+  mutate(site = fct_reorder(site, temp_data)) |>
   pivot_longer(cols=c("diffusivity","diffusivity_field")) |>
   #filter(site == "SJER") |>
   ggplot(aes(x=startDateTime,y=value/1e-6,color=name)) +
   geom_point() +
   facet_grid(.~site,scales="free") + ylim(c(0,10)) +
-  labs(y = "Diffusivity (*1e6)")
+  labs(#y = "Diffusivity (*1e6)",
+       y=bquote(~Diffusivity~'('~10^6~m^-2~s^-1*~')'),
+       color='Diffusivity Calculation:',
+       x='Date') +
+  scale_color_discrete(labels = c('diffusivity' = 'neonSoilFlux',
+                                 'diffusivity_field' = 'LICOR')) +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 12),
+    axis.title.x = element_text(size = 14),
+    axis.text.x = element_text(size = 10,angle=-90),
+    axis.text = element_text(size = 12),
+    axis.title.y = element_text(size = 14),
+    strip.text = element_text(size = 12)
+  ) +
+  scale_x_datetime(breaks = scales::date_breaks("6 hours"),
+                   minor_breaks=scales::date_breaks("3 hours"),
+                   date_labels = "%m-%d %H:%M")
 
 
 
+ggsave(filename = 'figures/diffusivity-plot.png',plot = p_diffus,width = 12,height=5)
 
 
 ### Bulk density calculation time - this is a series of back calculations from
@@ -170,7 +204,7 @@ flux_gradient_diffusivity |> glimpse()
 
 field_stats_data3 |>
   ggplot(aes(x=site)) +
-  geom_boxplot(aes(y=porVol2To20)) + ylim(c(0,1))
+  #geom_boxplot(aes(y=porVol2To20)) + ylim(c(0,1)) +
   geom_point(data = flux_gradient_diffusivity,aes(y=bulk_density),color='red',inherit.aes = TRUE,size=3) + ylim(c(0,3))
 
 ### We would expect that phi is on the higher end of things:
