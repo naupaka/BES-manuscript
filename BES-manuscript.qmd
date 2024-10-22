@@ -162,6 +162,7 @@ A surface flux estimate is derived from Fick's Law (Equation \ref{eq:ficks}), wh
 Uncertainty in all $F_{ijk}$ is computed through quadrature.
 
 ## Post processing evaluation
+
 Following collection of field measurements from the LICOR and calculation of the soil fluxes from `neonSoilFlux` package, we compared measured soil fluxes (from the LICOR instruments) to a given soil flux calculation during the same half hour.  At each site and flux compuation method we also computed the R$^{2}$ value for the half-hourly and measured LICOR values and the RMSE.
 
 We evaluate the efficacy of results from the flux-gradient method in two ways. First, we calculated the signal to noise ratio (SNR), defined as the ratio of the reported flux to its uncertainty ($F_{ijk}/\sigma_{ijk}$).
@@ -169,13 +170,14 @@ We evaluate the efficacy of results from the flux-gradient method in two ways. F
 We evaluated if the measured field fluxes were within the calculated uncertainty from the flux-gradient method using the various approaches outlined above. We observed that the calculated quadrature uncertainty in many cases can be much larger than the reported measurement (as shown through the signal to noise ratio, SNR = $F_{ijk}/\sigma_{ijk}$. We evaluated $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$, where $F_{S}$ is a measured field soil flux from the LICOR 6800 (the LICOR 8250 was used at only three sites) and $F_{ijk}$ is a computed flux method from the flux-gradient, and $\sigma_{ijk}$ is the reported uncertainty for the flux method.  The parameter $\epsilon$ was an uncertainty reduction factor to evaluate how sensitive the results were given, measured by the proportion of field measurements contained in that range.  
 
 ## Diffusivity back calculations
+
 We also computed the diffusivity at each of the different sites from the derived flux values and the reported gradient in CO2 at each of the surface layers (Figure XXXX) through dividing $F_{field}/dC/dz$  These values were then compared to reported diffusivity from the flux computation method.
 
 Finally, the bulk density at a given site was then also computed through back calculation.
 
 # Results
 
-Figure @flux-results reports out the measured fluxes from the LICOR 6800 and 8250 and computed fluxes and uncertainty at each measurement site. Results are reported in local time. Positive values of the flux indicate that there is a flux moving towards the surface (FIX WRITING) For ease of clarity the fluxes at $F_{111}$ and $F_{000}$ are only shown in the top row (surface), followed by the fluxes at individual separate layer ($F_{100}$, $F_{010}$, $F_{001}$). Overall, with the exception of WREF and SRER (discussed later) the computed fluxes were on the same order of magnitude and timing as the measured field fluxes.
+Figure @fig-flux-results reports out the measured fluxes from the LICOR 6800 and 8250 and computed fluxes and uncertainty at each measurement site. Results are reported in local time. Positive values of the flux indicate that there is a flux moving towards the surface (FIX WRITING) For ease of clarity the fluxes at $F_{111}$ and $F_{000}$ are only shown in the top row (surface), followed by the fluxes at individual separate layer ($F_{100}$, $F_{010}$, $F_{001}$). Overall, with the exception of WREF and SRER (discussed later) the computed fluxes were on the same order of magnitude and timing as the measured field fluxes.
 
 ::: {#fig-flux-results}
 ![](figures/flux-results.png)
@@ -183,15 +185,13 @@ Figure @flux-results reports out the measured fluxes from the LICOR 6800 and 825
 Results for different flux computations, organized by site (in increasing temperature show at each site) across different measurement levels. $F_{000}$ comes from the diffusivity extrapolation and $F_{111}$ extrapolation across the surface. Field measurements are shown at the top of each plot. The computed flux values are shown with reported uncertainty as well.
 :::
 
-
-Figure @gap-filled-stats reports which environmental measurements at each site relied on gap-filled measurements (left plot) and in the aggregate, the total number of gap-filled measurements used for each half-hourly flux computation.  the largest contribution to gap-filled data was soil water follwed by soil temperature.
+Figure @fig-gap-filled-stats reports which environmental measurements at each site relied on gap-filled measurements (left plot) and in the aggregate, the total number of gap-filled measurements used for each half-hourly flux computation.  the largest contribution to gap-filled data was soil water follwed by soil temperature.
 
 ::: {#fig-gap-filled-stats}
 ![](figures/gap-filled-stats.png)
 
 Left panel: Proportion of gap-filled environmental observations at each site. Right panel: proportion of measurements that used gap-filled environmental data (0 - 4) at each site. BLAH
 :::
-
 
 ::: {#fig-stats-plot}
 ![Stats of model](figures/stats-plot.png)
@@ -203,9 +203,6 @@ Diffusivity at the different levels for comparison (also include derived diffusi
 Stats at the different levels (with the lags)
 
 
-
-
-
 LEAD IN TABLE HERE These results are reported in @fig-uncertainty-stats.  
 
 ::: {#fig-uncertainty-stats}
@@ -214,7 +211,7 @@ LEAD IN TABLE HERE These results are reported in @fig-uncertainty-stats.
 Top panel: distribution of SNR values across each of the different sites for the $F_{000}$ and $F_{111}$ flux gradient calculations.  Bottom panel: Computation of uncertainty reduction to evaluate.  As $\epsilon$ increases this indicates that the uncertainty estimate reduces, making it harder to be within the range. BLAH
 :::
 
-Calculated diffusivity from both the `neonSoilFlux` method and back calculated from the LICOR are reported in Figure @diffusivity-plot. SAY MORE
+Calculated diffusivity from both the `neonSoilFlux` method and back calculated from the LICOR are reported in Figure @fig-diffusivity-plot. SAY MORE
 
 ::: {#fig-diffusivity-plot}
 ![](figures/diffusivity-plot.png)
@@ -222,21 +219,15 @@ Calculated diffusivity from both the `neonSoilFlux` method and back calculated f
 Calculation of diffusivity at each of the sites SAY MORE
 :::
 
-
 # Discussion
 
 This study presents a unified data science workflow to efficiently process automated measurements of belowground soil CO$_{2}$ concentrations, water, and temperature to infer estimates of soil effluxes through application of Fick's Law. Derived results from the `neonSoilFlux` package have patterns that are consistent, and comparable, to those directly measured to the field (Figure XXX).  The advantage to the `neonSoilFlux` package is the calculation of fluxes across different measurement depths, allowing for additional site-specific customization. Here application of the flux-gradient method provides a baseline estimate of soil fluxes that could be complemented through additional field measurements (e.g. LICOR).
 
-
-
 The largest source of uncertainty to improve reliability of the flux estimate is to prevent the usage of gap-filled data, especially with soil water (Figure XXX). Across the observed half-hourly periods for field measurements, the percentage of half-hourly periods where all four environmental measurements were available spanned from 0% (SJER) to 7% (SRER), but three sites (WREF, SRER, UNDE) had 95% of half-hourly intervals with just one gap-filled measurement.Where appropriate we have replaced measurements flagged to the protocol with a monthly gap-filled value. Further extensions of the gapfilling method could use more sophisticated gap-filling routines, similar to what is used for net ecosystem carbon exchange [@falgeGapFillingStrategies2001; @moffatComprehensiveComparisonGapfilling2007; @mariethozFeaturepreservingInterpolationFiltering2015; @liuRobustGapfillingApproach2023; @zhangTemporalGapFilling12Hourly2023].
-
 
 The `neonSoilFlux` package provides eight different approaches of values for a soil flux. We believe these approaches reflect a variety of site-specific determination and assumptions used to generate a soil flux measurement [@maierUsingGradientMethod2014], with the choice of method having a determinative approach on reported values. Reported results could further be distilled down using ensemble averaging averaging approaches [@rafteryUsingBayesianModel2005; @elshallRelativeModelScore2018].
 
 Figures XXX suggests that the provided uncertainty from `neonSoilFlux` is an overestimate compared to what is actually computed. When $\epsilon=0$ in Figure @fig-uncertainty-stats, that means we are just using the reported uncertainty from neonSoilFlux.  Looking at that (epsilon = 0) shows field measurements UNDE, KONZ, SJER are 100% within the reported intervals from neonSoilFlux.  But those sites tend to have a SNR < 1, so the uncertainty is pretty noisy.  For UNDE, we could even reduce the uncertainty by a factor of 75% (epsilon = 0.75), more than half of the field measurements will still be within the reported intervals.  For  KONZ, we are still within 70% of the reported intervals when uncertainty is reduced by 90%.  To me, that suggests that while the reported accuracy (as compared to field measurements), we do have higher precision.
-
-
 
 Diffusivity taken from the megapit.  Big microsite and temporal differences, soil shrink / swell.  How do we think about what that means for using this approach to generalize across a NEON site over continuous time.
 
