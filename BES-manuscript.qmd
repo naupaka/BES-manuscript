@@ -1,6 +1,8 @@
 ---
-title: "BES-manuscript"
-format: pdf
+title: "A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites"
+format:
+  pdf:
+    keep-tex: true
 number-sections: true
 bibliography: bes-bibliography.bib
 csl: methods-in-ecology-and-evolution.csl
@@ -8,21 +10,23 @@ csl: methods-in-ecology-and-evolution.csl
 
 # Introduction
 
-Soils contain the largest reservoir of terrestrial carbon [@jobbagyVerticalDistributionSoil2000]. Accumulation of soil organic matter can be influenced by biotic factors from above-ground plant inputs [@jacksonEcologySoilCarbon2017], which in turn are influenced through environmental factors such as growing season length, temperature, and moisture [@desaiDriversDecadalCarbon2022]. These biotic factors provide natural climate-based solutions to offsetting any net increases of the terrestrial carbon cycle from greenhouse gas emissions [@friedlingsteinGlobalCarbonBudget2023].
+Soils contain the largest reservoir of terrestrial carbon [@jobbagyVerticalDistributionSoil2000]. A critical component of this reservoir is soil organic matter, the accumulation of which is influenced by biotic factors such as above-ground plant inputs [@jacksonEcologySoilCarbon2017]. These inputs in turn are influenced by environmental factors such as growing season length, temperature, and moisture [@desaiDriversDecadalCarbon2022], which also affect the breakdown of soil organic matter and its return to the atmosphere. Across heterogeneous terrestrial landscapes, the interplay between these biotic and abiotic factors influence the size of the soil contribution to the terrestrial carbon sink  [@friedlingsteinGlobalCarbonBudget2023]. However, the heterogeneity of these processes across diverse ecosystems in the context of rapid environmental change leads to large uncertainty in the magnitude of this sink in the future, and thus a pressing need to quantify changes in soil carbon pools and fluxes across scales.
 
-Ecological networks such as the National Ecological Observatory Network (NEON) and others (e.g. FLUXNET or the Integrated Carbon Observation System) present a significant advancement in the nearly continuous observation of biogeochemical processes at the continental scale. Notably, at 47 core terrestrial sites across the continental United States NEON provides half-hourly measurements of soil carbon content, soil CO$_{2}$ concentration, temperature, and moisture at different vertical depths. In turn, FLUXNET provides measurements of the cumulative sum of all ecosystem carbon fluxes in an airshed using the eddy covariance technique [@baldocchiMeasuringFluxesTrace2014]. Soil observations from NEON data provided by NEON is on the same timescale and standardized with eddy covariance measurements from FLUXNET. When combined together NEON and FLUXNET data reconciling differences between model-derived or data-estimated components [@luoEcologicalForecastingData2011; @phillipsValueSoilRespiration2017; @shaoBioticClimaticControls2015; @shaoSoilMicrobialRespiration2013; @sihiComparingModelsMicrobial2016; @jianHistoricallyInconsistentProductivity2022].
+Ecological observation networks such as the United States' National Ecological Observatory Network (NEON) and others (e.g. FLUXNET or the Integrated Carbon Observation System) present a significant advancement in the nearly continuous observation of biogeochemical processes at the continental scale. Notably, at 47 core terrestrial sites across the continental United States, NEON provides half-hourly measurements of soil carbon content, soil CO$_{2}$ concentration, temperature, and moisture at different vertical depths. In turn, FLUXNET provides measurements of the cumulative sum of all ecosystem carbon fluxes in an airshed using the eddy covariance technique [@baldocchiMeasuringFluxesTrace2014]. Soil observations provided by NEON are on the same timescale and standardized with eddy covariance measurements from FLUXNET. <!-- What about NEON flux towers? This framing seems to suggest they aren't useful/extant? --> When combined together, NEON and FLUXNET data can be used to reconcile differences between model-derived or data-estimated components [@luoEcologicalForecastingData2011; @phillipsValueSoilRespiration2017; @shaoBioticClimaticControls2015; @shaoSoilMicrobialRespiration2013; @sihiComparingModelsMicrobial2016; @jianHistoricallyInconsistentProductivity2022].
 
-Beyond observations of soil CO$_{2}$ concentrations or other environmental variables such as moisture or temperature, a key quantity is soil carbon fluxes [@bond-lambertyTwentyYearsProgress2024]. A soil carbon flux to the atmosphere ($F_{S}$, units $\mu$mol m$^{-2}$ s$^{-1}$) represents the aggregate process of transfer of soil CO$_{2}$ to the atmosphere from physical and biological processes (e.g. diffusion and microbial and autotrophic respiration). Soil carbon fluxes can be coupled with empirical or process models of soil carbon. Soil carbon fluxes can be assumed to represent soil carbon respiration from autotrophic or heterotrophic sources [@davidsonVariabilityRespirationTerrestrial2006], typically assumed to be static across the soil biome and modeled with a exponential $Q_{10}$ paradigm [@bond-lambertyGlobalRelationshipHeterotrophic2004; @chenDoesGeneralTemperatureDependent2005; @hamdiSynthesisAnalysisTemperature2013].
+Beyond direct observations of soil CO$_{2}$ concentrations and other environmental variables such as moisture or temperature, soil carbon fluxes are a key metric for understanding change in soil carbon pools over time [@bond-lambertyTwentyYearsProgress2024]. A soil carbon flux to the atmosphere ($F_{S}$, units $\mu$mol m$^{-2}$ s$^{-1}$), represents the aggregate process of transfer of soil CO$_{2}$ to the atmosphere from physical and biological processes (e.g. diffusion and respiration). Measurements of soil carbon fluxes can be coupled with empirical or process models of soil carbon. Soil carbon fluxes can be assumed to encompass soil carbon respiration from autotrophic or heterotrophic sources [@davidsonVariabilityRespirationTerrestrial2006], typically assumed to be static across the soil biome and modeled with a exponential $Q_{10}$ paradigm [@bond-lambertyGlobalRelationshipHeterotrophic2004; @chenDoesGeneralTemperatureDependent2005; @hamdiSynthesisAnalysisTemperature2013].
 
-Measurement of $F_{S}$ is done through directly with soil chambers (e.g. LICOR or XXXX) or from soil measurements at different depths in the soil. In the latter case, the flux-gradient method is an approach derives from the mass conservation from the vertical soil depth $z$ at steady state by applying Fick's law of diffusion. A simplifying assumption for the flux-gradient method is that there no mass transfer in the other spatial dimensions $x$ and $y$ [@maierUsingGradientMethod2014]. The diffusivity profile across the soil depth is a function of soil temperature, soil volumetric water content, atmospheric air pressure, and soil bulk density [@millingtonDiffusionAggregatedPorous1971; @moldrupModelingDiffusionReaction1999].
+Measurement of $F_{S}$ is done through directly with soil chambers in a closed system with an infrared gas analyzer (e.g. <!-- LICOR or XXXX insert models etc here and maybe find some more citations--> ) or estimated from soil CO$_{2}$ measurements at different depths in the soil. In the latter case, the flux-gradient method can be used to estimate soil flux; it is an approach that is uses conservation of mass to calculate flux at a vertical soil depth $z$ at steady state by applying Fick's law of diffusion. A simplifying assumption for the flux-gradient method is that there no mass transfer in the other spatial dimensions $x$ and $y$ [@maierUsingGradientMethod2014]. The diffusivity profile, a key component of this calculation, varies across the soil depth as a function of soil temperature, soil volumetric water content, atmospheric air pressure, and soil bulk density [@millingtonDiffusionAggregatedPorous1971; @moldrupModelingDiffusionReaction1999].
 
-A growing number of databases such as the Soil Respiration Database (SRDB) or Continuous Soil Respiration Database (COSORE) add to the growing network of observations of soil fluxes [@bond-lambertyCOSORECommunityDatabase2020; @jianRestructuredUpdatedGlobal2021; @jiangGlobalSoilRespiration2024; @bond-lambertyGlobalDatabaseSoil2010; @bond-lambertyNewTechniquesData2018]. Currently NEON provides all measurements to calculate $F_{S}$ from Fick's law, but it was descoped from the initial network launch [@berenbaumReportNSFBIO2015]. Deriving data-based measurements of $F_{S}$ is a high priority.
+A growing number of databases such as the Soil Respiration Database (SRDB) or Continuous Soil Respiration Database (COSORE) add to the growing network of observations of soil fluxes [@bond-lambertyCOSORECommunityDatabase2020; @jianRestructuredUpdatedGlobal2021; @jiangGlobalSoilRespiration2024; @bond-lambertyGlobalDatabaseSoil2010; @bond-lambertyNewTechniquesData2018]. Currently, NEON provides all measurements to calculate $F_{S}$ from Fick's law, but soil flux as a derived data product was descoped from the initial network launch [@berenbaumReportNSFBIO2015]. Deriving data-based estimates of $F_{S}$ across NEON sites thus represents a high priority.
 
-This study describes efforts to derive a standardized estimate of $F_{S}$ at all terrestrial NEON sites. Derived values of $F_{S}$ are then validated from a subset of field observations. Key objectives of this study are to:
+This study describes efforts to develop an R software package, \textit{neonSoilFlux}, that can be used to derive a standardized estimate of $F_{S}$ at all terrestrial NEON sites. After calculating these flux estimates, we then validated them against field observations from a subset of sites.
+
+Key objectives of this study are to:
 
 -   apply the flux-gradient method to measurement to current NEON sites
 -   benchmark produced soil carbon fluxes to other ancillary measurements (e.g. SRDB, measurements of soil respiration)
--   identify sources of error for future work.
+-   identify sources of error for future work
 
 # Materials and Methods
 
@@ -31,6 +35,8 @@ This study describes efforts to derive a standardized estimate of $F_{S}$ at all
 We selected six terrestrial NEON sites for analysis. These sites span a range of environmental gradients and terrestrial domains for analysis (@tbl-neon-sites). Over the course of two field campaigns in 2022 and 2024 we conducted weekly visits at each site through selecting a specific in the soil sampling array, installing a temporary soil collar, and doing direct flux measurements. These data were then compared for analysis later.
 
 ::: {#tbl-neon-sites}
+<!-- what does 'sampling' mean here? also I think we should add site short IDs-->
+\scriptsize
 | Site                                                   | Location              | Ecosystem type             | Mean annual temperature (sampling) | Mean annual precipitation (sampling) |
 |---------------|---------------|---------------|---------------|---------------|
 | Santa Rita Experimental Range                          | 31.91068, -110.83549  | Shrubland                  | 19.3°C                             | 346.2 mm                             |
@@ -39,11 +45,12 @@ We selected six terrestrial NEON sites for analysis. These sites span a range of
 | Chase Lake National Wildlife Refuge                    | 47.1282, -99.241334   | Restored prairie grassland | 4.9°C                              | 495 mm                               |
 | Konza Prairie Biological Station                       | 39.100774, -96.563075 | Tallgrass Prairie          | 12.4°C                             | 870 mm                               |
 | University of Notre Dame Environmental Research Center | 46.23391, -89.537254  | Deciduous forest           | 4.3°C                              | 802 mm                               |
+\normalsize
 
 Listing of NEON sites studied for field work and analysis.
 :::
 
-IDEA: Could have a sparkline plot of temperature / precip over the course of the time spent at each site, although admittedly we didn't see THAT much variation when sampling.
+<!-- IDEA: Could have a sparkline plot of temperature / precip over the course of the time spent at each site, although admittedly we didn't see THAT much variation when sampling. -->
 
 ## Field methods
 
@@ -184,7 +191,7 @@ Figure @fig-flux-results reports out the measured fluxes from the LICOR 6800 and
 Results for different flux computations, organized by site (in increasing temperature show at each site) across different measurement levels. $F_{000}$ comes from the diffusivity extrapolation and $F_{111}$ extrapolation across the surface. Field measurements are shown at the top of each plot. The computed flux values are shown with reported uncertainty as well.
 :::
 
-Figure @fig-gap-filled-stats reports which environmental measurements at each site relied on gap-filled measurements (left plot) and in the aggregate, the total number of gap-filled measurements used for each half-hourly flux computation.  the largest contribution to gap-filled data was soil water follwed by soil temperature.
+Figure @fig-gap-filled-stats reports which environmental measurements at each site relied on gap-filled measurements (left plot) and in the aggregate, the total number of gap-filled measurements used for each half-hourly flux computation.  the largest contribution to gap-filled data was soil water followed by soil temperature.
 
 ::: {#fig-gap-filled-stats}
 ![](figures/gap-filled-stats.png)
@@ -200,7 +207,6 @@ Reported stats from comparison of field data to computed soil fluxes by site. Si
 Figure: flux results at the different levels (000,111,001,010,100)
 Diffusivity at the different levels for comparison (also include derived diffusivity?)
 Stats at the different levels (with the lags)
-
 
 LEAD IN TABLE HERE These results are reported in @fig-uncertainty-stats.  
 
