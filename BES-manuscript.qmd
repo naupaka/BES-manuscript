@@ -3,11 +3,12 @@ title: "BES-manuscript"
 format: pdf
 number-sections: true
 bibliography: bes-bibliography.bib
+csl: methods-in-ecology-and-evolution.csl
 ---
 
 # Introduction
 
-Soils contain the largest reservoir of terrestrial carbon [@jobbagyVerticalDistributionSoil2000]. Accumulation of soil organic matter can be influenced by biotic factors from aboveground plant inputs [@jacksonEcologySoilCarbon2017], which in turn are influenced through environmental factors such as growing season length, temperature, and moisture [@desaiDriversDecadalCarbon2022]. These biotic factors provide natural climate-based solutions to offsetting any net increases of the terrestrial carbon cycle from greenhouse gas emissions [@friedlingsteinGlobalCarbonBudget2023].
+Soils contain the largest reservoir of terrestrial carbon [@jobbagyVerticalDistributionSoil2000]. Accumulation of soil organic matter can be influenced by biotic factors from above-ground plant inputs [@jacksonEcologySoilCarbon2017], which in turn are influenced through environmental factors such as growing season length, temperature, and moisture [@desaiDriversDecadalCarbon2022]. These biotic factors provide natural climate-based solutions to offsetting any net increases of the terrestrial carbon cycle from greenhouse gas emissions [@friedlingsteinGlobalCarbonBudget2023].
 
 Ecological networks such as the National Ecological Observatory Network (NEON) and others (e.g. FLUXNET or the Integrated Carbon Observation System) present a significant advancement in the nearly continuous observation of biogeochemical processes at the continental scale. Notably, at 47 core terrestrial sites across the continental United States NEON provides half-hourly measurements of soil carbon content, soil CO$_{2}$ concentration, temperature, and moisture at different vertical depths. In turn, FLUXNET provides measurements of the cumulative sum of all ecosystem carbon fluxes in an airshed using the eddy covariance technique [@baldocchiMeasuringFluxesTrace2014]. Soil observations from NEON data provided by NEON is on the same timescale and standardized with eddy covariance measurements from FLUXNET. When combined together NEON and FLUXNET data reconciling differences between model-derived or data-estimated components [@luoEcologicalForecastingData2011; @phillipsValueSoilRespiration2017; @shaoBioticClimaticControls2015; @shaoSoilMicrobialRespiration2013; @sihiComparingModelsMicrobial2016; @jianHistoricallyInconsistentProductivity2022].
 
@@ -15,12 +16,12 @@ Beyond observations of soil CO$_{2}$ concentrations or other environmental varia
 
 Measurement of $F_{S}$ is done through directly with soil chambers (e.g. LICOR or XXXX) or from soil measurements at different depths in the soil. In the latter case, the flux-gradient method is an approach derives from the mass conservation from the vertical soil depth $z$ at steady state by applying Fick's law of diffusion. A simplifying assumption for the flux-gradient method is that there no mass transfer in the other spatial dimensions $x$ and $y$ [@maierUsingGradientMethod2014]. The diffusivity profile across the soil depth is a function of soil temperature, soil volumetric water content, atmospheric air pressure, and soil bulk density [@millingtonDiffusionAggregatedPorous1971; @moldrupModelingDiffusionReaction1999].
 
-A growing number of databases such as the Soil Respiration Database (SRDB) or Continuous Soil Respiration Database (COSORE) add to the growing network of observations of soil fluxes [@bond-lambertyCOSORECommunityDatabase2020; @jianRestructuredUpdatedGlobal2021; @jiangGlobalSoilRespiration2024; @bond-lambertyGlobalDatabaseSoil2010; @bond-lambertyNewTechniquesData2018]. Currently NEON provides all measurements to calculuate $F_{S}$ from Fick's law, but it was descoped from the initial network launch [@berenbaumReportNSFBIO2015]. Deriving data-based measurements of $F_{S}$ is a high priority.
+A growing number of databases such as the Soil Respiration Database (SRDB) or Continuous Soil Respiration Database (COSORE) add to the growing network of observations of soil fluxes [@bond-lambertyCOSORECommunityDatabase2020; @jianRestructuredUpdatedGlobal2021; @jiangGlobalSoilRespiration2024; @bond-lambertyGlobalDatabaseSoil2010; @bond-lambertyNewTechniquesData2018]. Currently NEON provides all measurements to calculate $F_{S}$ from Fick's law, but it was descoped from the initial network launch [@berenbaumReportNSFBIO2015]. Deriving data-based measurements of $F_{S}$ is a high priority.
 
 This study describes efforts to derive a standardized estimate of $F_{S}$ at all terrestrial NEON sites. Derived values of $F_{S}$ are then validated from a subset of field observations. Key objectives of this study are to:
 
--   apply the flux-gradeint method to measurement to current NEON sites
--   benchmark produced soil carbon fluxes to other ancillary measusrements (e.g. SRDB, measurements of soil respiration)
+-   apply the flux-gradient method to measurement to current NEON sites
+-   benchmark produced soil carbon fluxes to other ancillary measurements (e.g. SRDB, measurements of soil respiration)
 -   identify sources of error for future work.
 
 # Materials and Methods
@@ -30,7 +31,6 @@ This study describes efforts to derive a standardized estimate of $F_{S}$ at all
 We selected six terrestrial NEON sites for analysis. These sites span a range of environmental gradients and terrestrial domains for analysis (@tbl-neon-sites). Over the course of two field campaigns in 2022 and 2024 we conducted weekly visits at each site through selecting a specific in the soil sampling array, installing a temporary soil collar, and doing direct flux measurements. These data were then compared for analysis later.
 
 ::: {#tbl-neon-sites}
-
 | Site                                                   | Location              | Ecosystem type             | Mean annual temperature (sampling) | Mean annual precipitation (sampling) |
 |---------------|---------------|---------------|---------------|---------------|
 | Santa Rita Experimental Range                          | 31.91068, -110.83549  | Shrubland                  | 19.3°C                             | 346.2 mm                             |
@@ -40,8 +40,7 @@ We selected six terrestrial NEON sites for analysis. These sites span a range of
 | Konza Prairie Biological Station                       | 39.100774, -96.563075 | Tallgrass Prairie          | 12.4°C                             | 870 mm                               |
 | University of Notre Dame Environmental Research Center | 46.23391, -89.537254  | Deciduous forest           | 4.3°C                              | 802 mm                               |
 
-Listing of NEON sites studied for field work and analysis
-
+Listing of NEON sites studied for field work and analysis.
 :::
 
 IDEA: Could have a sparkline plot of temperature / precip over the course of the time spent at each site, although admittedly we didn't see THAT much variation when sampling.
