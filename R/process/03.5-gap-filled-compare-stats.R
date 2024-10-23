@@ -50,7 +50,7 @@ p1 <- field_data_joined |>
 # Gap filled - determine how many gap filled measuresments
 test_data <- field_data_joined |>
   mutate(total_vals = map(.x=model_data, .f=~(.x |>
-  mutate(across(contains("MeanQF"),~.x==0)) |>
+  mutate(across(contains("MeanQF"),~.x!=0)) |>
   rowwise() |>
   mutate(total_sum = sum(c_across((contains("MeanQF")))) ) |>
   count(total_sum) |> ungroup() |>

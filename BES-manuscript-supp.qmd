@@ -217,7 +217,7 @@ Top panel: distribution of SNR values across each of the different sites for the
 :::
 
 Calculated diffusivity from both the `neonSoilFlux` method and back calculated from the LICOR are reported in Figure @fig-diffusivity-plot. SAY MORE
-<!-- Add in bulk density at NEON -->
+
 ::: {#fig-diffusivity-plot}
 ![](figures/diffusivity-plot.png)
 
