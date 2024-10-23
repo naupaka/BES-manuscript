@@ -176,7 +176,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites},
+  pdftitle={A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites enabled by the neonSoilFux R package},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -187,7 +187,7 @@
 
 \title{A direct comparison between field-measured and sensor-based
 estimates of soil carbon dioxide flux across six National Ecological
-Observatory Network sites}
+Observatory Network sites enabled by the \texttt{neonSoilFux} R package}
 \author{}
 \date{}
 
@@ -710,8 +710,8 @@ back calculation.
 
 \section{Results}\label{results}
 
-Figure Figure~\ref{fig-flux-results} reports out the measured fluxes
-from the LICOR 6800 and 8250 and computed fluxes and uncertainty at each
+Figure~\ref{fig-flux-results} reports out the measured fluxes from the
+LICOR 6800 and 8250 and computed fluxes and uncertainty at each
 measurement site. Results are reported in local time. Positive values of
 the flux indicate that there is a flux moving towards the surface (FIX
 WRITING) For ease of clarity the fluxes at \(F_{111}\) and \(F_{000}\)
@@ -738,7 +738,7 @@ computed flux values are shown with reported uncertainty as well.}
 
 \end{figure}%
 
-Figure Figure~\ref{fig-gap-filled-stats} reports which environmental
+Figure~\ref{fig-gap-filled-stats} reports which environmental
 measurements at each site relied on gap-filled measurements (left plot)
 and in the aggregate, the total number of gap-filled measurements used
 for each half-hourly flux computation. the largest contribution to
@@ -813,6 +813,29 @@ of the sites SAY MORE}
 \end{figure}%
 
 \section{Discussion}\label{discussion}
+
+Our core goals in this study were: 1) to generate estimates of soil flux
+from continuous soil sensor data at terrestrial NEON sites using the
+flux-gradient method and then 2) to compare those estimates to
+field-measured fluxes based on the closed chamber approach at six focal
+sites spanning six different states.
+
+We were able to show that the flux-gradient method produced estimates
+within XX of the field measured values at X of Y sites.
+
+In developing and validating our approach, we faced a number of
+challenges related to data availability and uncertainty,
+including\ldots{} gap filling, sensor calibration, depth interpolation,
+rainstorms, etc
+
+These challenges notwithstanding, the method used here and made
+available in the \texttt{neonSoilFlux} R package is able to produce
+nearly continuous estimates of flux across all XXYY terrestrial NEON
+sites. These estimates are a significant improvement on available
+approaches to constrain the portion of ecosystem respiration
+attributable to the soil. This, in turn, aids in our ability to
+understand the components of net ecosystem flux assessed at these sites
+using the co-located eddy flux towers.
 
 This study presents a unified data science workflow to efficiently
 process automated measurements of belowground soil CO\(_{2}\)
