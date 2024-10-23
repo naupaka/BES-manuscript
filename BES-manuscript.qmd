@@ -1,5 +1,5 @@
 ---
-title: "A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites"
+title: "A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites enabled by the `neonSoilFux` R package"
 format:
   pdf:
     keep-tex: true
@@ -183,7 +183,7 @@ Finally, the bulk density at a given site was then also computed through back ca
 
 # Results
 
-Figure @fig-flux-results reports out the measured fluxes from the LICOR 6800 and 8250 and computed fluxes and uncertainty at each measurement site. Results are reported in local time. Positive values of the flux indicate that there is a flux moving towards the surface (FIX WRITING) For ease of clarity the fluxes at $F_{111}$ and $F_{000}$ are only shown in the top row (surface), followed by the fluxes at individual separate layer ($F_{100}$, $F_{010}$, $F_{001}$). Overall, with the exception of WREF and SRER (discussed later) the computed fluxes were on the same order of magnitude and timing as the measured field fluxes.
+@fig-flux-results reports out the measured fluxes from the LICOR 6800 and 8250 and computed fluxes and uncertainty at each measurement site. Results are reported in local time. Positive values of the flux indicate that there is a flux moving towards the surface (FIX WRITING) For ease of clarity the fluxes at $F_{111}$ and $F_{000}$ are only shown in the top row (surface), followed by the fluxes at individual separate layer ($F_{100}$, $F_{010}$, $F_{001}$). Overall, with the exception of WREF and SRER (discussed later) the computed fluxes were on the same order of magnitude and timing as the measured field fluxes.
 
 ::: {#fig-flux-results}
 ![](figures/flux-results.png)
@@ -191,7 +191,7 @@ Figure @fig-flux-results reports out the measured fluxes from the LICOR 6800 and
 Results for different flux computations, organized by site (in increasing temperature show at each site) across different measurement levels. $F_{000}$ comes from the diffusivity extrapolation and $F_{111}$ extrapolation across the surface. Field measurements are shown at the top of each plot. The computed flux values are shown with reported uncertainty as well.
 :::
 
-Figure @fig-gap-filled-stats reports which environmental measurements at each site relied on gap-filled measurements (left plot) and in the aggregate, the total number of gap-filled measurements used for each half-hourly flux computation.  the largest contribution to gap-filled data was soil water followed by soil temperature.
+@fig-gap-filled-stats reports which environmental measurements at each site relied on gap-filled measurements (left plot) and in the aggregate, the total number of gap-filled measurements used for each half-hourly flux computation.  the largest contribution to gap-filled data was soil water followed by soil temperature.
 
 ::: {#fig-gap-filled-stats}
 ![](figures/gap-filled-stats.png)
@@ -217,7 +217,9 @@ Top panel: distribution of SNR values across each of the different sites for the
 :::
 
 Calculated diffusivity from both the `neonSoilFlux` method and back calculated from the LICOR are reported in Figure @fig-diffusivity-plot. SAY MORE
+
 <!-- Add in bulk density at NEON -->
+
 ::: {#fig-diffusivity-plot}
 ![](figures/diffusivity-plot.png)
 
@@ -225,6 +227,18 @@ Calculation of diffusivity at each of the sites SAY MORE
 :::
 
 # Discussion
+
+<!-- discussion sketch begin -->
+
+Our core goals in this study were: 1) to generate estimates of soil flux from continuous soil sensor data at terrestrial NEON sites using the flux-gradient method and then 2) to compare those estimates to field-measured fluxes based on the closed chamber approach at six focal sites spanning six different states.
+
+We were able to show that the flux-gradient method produced estimates within XX of the field measured values at X of Y sites.
+
+In developing and validating our approach, we faced a number of challenges related to data availability and uncertainty, including... gap filling, sensor calibration, depth interpolation, rainstorms, etc
+
+These challenges notwithstanding, the method used here and made available in the `neonSoilFlux` R package is able to produce nearly continuous estimates of flux across all XXYY terrestrial NEON sites. These estimates are a significant improvement on available approaches to constrain the portion of ecosystem respiration attributable to the soil. This, in turn, aids in our ability to understand the components of net ecosystem flux assessed at these sites using the co-located eddy flux towers.
+
+<!-- discussion sketch end -->
 
 This study presents a unified data science workflow to efficiently process automated measurements of belowground soil CO$_{2}$ concentrations, water, and temperature to infer estimates of soil effluxes through application of Fick's Law. Derived results from the `neonSoilFlux` package have patterns that are consistent, and comparable, to those directly measured to the field (Figure XXX).  The advantage to the `neonSoilFlux` package is the calculation of fluxes across different measurement depths, allowing for additional site-specific customization. Here application of the flux-gradient method provides a baseline estimate of soil fluxes that could be complemented through additional field measurements (e.g. LICOR).
 
