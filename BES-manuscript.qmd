@@ -87,7 +87,7 @@ At a given NEON observation there are five different replicate soil sensor array
 ::: {#fig-model-diagram}
 ![](figures/model-diagram.pdf){fig-alt="Diagram of model workflow"}
 
-Model diagram for data workflow for the neonSoilFlux R package. a) Acquire: Data are obtained from given NEON location and horizontal sensor location, which includes soil water content, soil temperature, CO$_{2}$ concentration, and atmospheric pressure. All data are screened for quality assurance, with gap-filling of missing data reported. b) Any belowground data are then harmonized to the same depth as CO$_{2}$ concentrations using linear regression. c) The flux across a given depth is computed via Fick's law, denoted with $F_{ijk}$, where $i$, $j$, or $k$ are either 0 or 1 denoting the layer the flux is computed across ($i$ = closest to surface, $k$ = deepest). The surface flux is all possible combinations of $F_{ijk}$ extrapolating the flux measurements to the surface, so $F_{110}$ is the surface flux intercept linearly extrapolating the measurements $F_{010}$ and $F_{100}$.
+Model diagram for data workflow for the `neonSoilFlux` R package. a) Acquire: Data are obtained from given NEON location and horizontal sensor location, which includes soil water content, soil temperature, CO$_{2}$ concentration, and atmospheric pressure. All data are screened for quality assurance, with gap-filling of missing data reported. b) Any belowground data are then harmonized to the same depth as CO$_{2}$ concentrations using linear regression. c) The flux across a given depth is computed via Fick's law, denoted with $F_{ijk}$, where $i$, $j$, or $k$ are either 0 or 1 denoting the layer the flux is computed across ($i$ = closest to surface, $k$ = deepest). The surface flux is all possible combinations of $F_{ijk}$ extrapolating the flux measurements to the surface, so $F_{110}$ is the surface flux intercept linearly extrapolating the measurements $F_{010}$ and $F_{100}$.
 :::
 
 The workflow to computing a value of $F_{S}$ with the `neonSoilFlux` consists of three primary steps. First, NEON data are acquired for a given site and month via the `neonUtilities` R package (yellow parallelogram and green rectangle in @fig-package-diagram and Panel a in @fig-model-diagram). Acquired environmental data can be exported to a comma separated value file for additional analysis. Quality assurance (QA) flags with an observation are reported as an indicator variable.
@@ -144,7 +144,7 @@ In Equation \ref{eq:porosity}, $\rho_{m}$ is the particle density of mineral soi
 
 ### Soil flux computation {#sec-compute-soil-flux}
 
-We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux $F_{ij}$ ($\mu$mol m$^{-2}$ s$^{-1}$) across two adjacent soil depths $i$ and $j$:
+We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux $F_{ij}$ ($\mu$mol m$^{-2}$ s$^{-1}$) across two soil depths $i$ and $j$:
 
 ```{=tex}
 \begin{equation}
@@ -153,17 +153,11 @@ We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux $F_{ij}
 \end{equation}
 ```
 
-where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$) and $\frac{dC}{dz}$ is the gradient of CO$_{2}$ molar concentration ($\mu$mol m$^{-3}$, so the gradient has units of $\mu$mol m$^{-3}$ m$^{-1}$). The diffusivity (described below) is a function of soil temperature, soil water content, and soil physical properties. The soil surface flux is theoretically defined by applying Equation \ref{eq:ficks} to measurements collected at the soil surface and directly below the surface. Measurements of soil temperature, soil water content, and soil CO$_{2}$ molar concentration across the soil profile allow for application of Equation \ref{eq:flux} across different soil depths. The flux gradient method approximates the soil surface flux either by (1) extrapolation of Equation \ref{eq:ficks} across sub-surface measurement depths to the surface, typically assuming soil flux is a linear function of depth [@maierUsingGradientMethod2014] or (2) linear extrapolation of $D_{a}$ to the surface and from direct calculation of $\frac{dC}{dz}$ from the CO$_{2}$ profile. All these approaches are pThe `neonSoilFlux` package provides several different methods to compute $F_{s}$ for the end-user to compare.
-
-### Reporting of surface fluxes
-
-A surface flux estimate is derived from Fick's Law (Equation \ref{eq:ficks}), which is the product of a diffusivity and a CO$_{2}$ concentration gradient [@maierUsingGradientMethod2014]. The `neonSoilFlux` package provides eight different surface flux estimates, which represent different considerations of how Fick's Law is applied. First, we apply simple linear regression to both CO$_{2}$ and $D_{a}$ at the three different measurement depths. Next, the slope and intercept (and uncertainty by quadrature) from these regressions are used to compute a suite of eight different surface flux estimates (denoted by $F_{ijk}$):
+where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$) and $\frac{dC}{dz}$ is the gradient of CO$_{2}$ molar concentration ($\mu$mol m$^{-3}$, so the gradient has units of $\mu$mol m$^{-3}$ m$^{-1}$). The diffusivity (described below) is a function of soil temperature, soil water content, and soil physical properties. The soil surface flux is theoretically defined by applying Equation \ref{eq:ficks} to measurements collected at the soil surface and directly below the surface. Measurements of soil temperature, soil water content, and soil CO$_{2}$ molar concentration across the soil profile allow for application of Equation \ref{eq:flux} across different soil depths. The flux gradient method approximates the soil surface flux either by (1) computation Equation \ref{eq:ficks} across sub-surface measurement depths to the surface. Each site had three measurement layers, so we denote the flux between which two layers as a three-digit subscript $F_{ijk}$ where indicator variables indicating if a given layer was used (written in order of increasing depth), according to the following:
 
 -   $F_{000}$ is a surface flux estimate using the intercept of the linear regression of $D_{a}$ and the slope from linear regression of CO$_{2}$ (which represents $\frac{dC}{dz}$ in Fick's Law). @tangAssessingSoilCO22003 used this approach to compute fluxes in an oak-grass savannah.
--   $F_{010}$, $F_{001}$ are fluxes across the two most shallow layers and two deepest layers respectively. The diffusivity used in Fick's Law is always at the deeper measurement layer. When used as a surface flux estimate we assume CO$_{2}$ remains constant above this flux depth.
--   $F_{100}$ is a flux estimate where the gradient $\frac{dC}{dz}$ is estimated using the intercept from linear regression of CO$_{2}$ and the top measurement depth for CO$_{2}$. The diffusivity used in Fick's Law is always at the first measurement layer. @dejongCalculationSoilRespiration1972 applied this approach in a Canadian prairie.
--   $F_{110}$, $F_{101}$, $F_{011}$ are a surface flux estimates using linear extrapolation between $F_{100}$ and $F_{010}$; $F_{100}$ and $F_{001}$; or $F\_{010}$ and $F_{001}$ respectively. @hirano_long-term_2003 and @tangContinuousMeasurementsSoil2005 used an approach similar to $F_{101}$ in a temperate deciduous broadleaf forest and ponderosa pine forest respectively.
--   $F_{111}$ is a surface flux estimate using linear extrapolation between $F_{100}$, $F_{010}$, and $F_{001}$.
+-   $F_{110}$, $F_{011}$ are fluxes across the two most shallow layers and two deepest layers respectively. The diffusivity used in Fick's Law is always at the deeper measurement layer. When used as a surface flux estimate we assume CO$_{2}$ remains constant above this flux depth.
+-   $F_{101}$ is a surface flux estimate using linear extrapolation using concentration measurements between the shallowest and deepest measurement layer. @hirano_long-term_2003 and @tangContinuousMeasurementsSoil2005 used an approach similar to $F_{101}$ in a temperate deciduous broadleaf forest and ponderosa pine forest respectively.
 
 Uncertainty in all $F_{ijk}$ is computed through quadrature.
 
@@ -230,8 +224,17 @@ Calculation of diffusivity at each of the sites SAY MORE
 
 <!-- discussion sketch begin -->
 
-Our core goals in this study were: 1) to generate estimates of soil flux from continuous soil sensor data at terrestrial NEON sites using the flux-gradient method and then 2) to compare those estimates to field-measured fluxes based on the closed chamber approach at six focal sites spanning six different states.
+Our core goals in this study were: 1) to generate estimates of soil flux from continuous soil sensor data at terrestrial NEON sites using the flux-gradient method and then 2) to compare those estimates to field-measured fluxes based on the closed chamber approach at six focal sites spanning six different states. We will evaluate the core goals through:
 
+Evaluation of method at each site
+Intercomparison of results across each site
+Factors influencing reported fluxes
+
+The six sites studied provide separate case studies for considerations when applying the flux-gradient method to evaluate resulting uncertainties and fluxes.  SRER is characterized by sandy soil, which also led to the hottest site there.  Fluxes are driven by the change and response to temperature in the temperature driven, whereas we observed a decoupling of temperature across the different layers (supplementary figures?)  For this instance, using the flux across the top two layers ($F_{110}$) produced a pattern of soil flux consistent with the observed field data.  The remaining methods $F_{101}$, $F_{011}$, or $F_{000}$ are derived from information at the deeper layer, which is decoupled both in terms of temperature and CO$_{2}$ concentration.
+
+KONZ is a site that experienced a significant rain event prior to sampling with eventual drying out over the course of the experiment.  In this case we observed storage of soil water (as shown in supplementary figures), which increased the soil CO$_{2}$ at the top layer, leading to negative values of flux at the start of the experiment, with the fluxes drying out afterards.  In this case only when the soil dried out (or returned to a baseline level), that the fluxes at the provided layer would work out in this case.
+
+WREF experienced a generational rainfall leading up the point of measuring, which meant that sensors relied of gap-filled data.  In this case, $F_{000}$ is the better one.
 We were able to show that the flux-gradient method produced estimates within XX of the field measured values at X of Y sites.
 
 In developing and validating our approach, we faced a number of challenges related to data availability and uncertainty, including... gap filling, sensor calibration, depth interpolation, rainstorms, etc
@@ -250,12 +253,21 @@ Figures XXX suggests that the provided uncertainty from `neonSoilFlux` is an ove
 
 Diffusivity taken from the megapit.  Big microsite and temporal differences, soil shrink / swell.  How do we think about what that means for using this approach to generalize across a NEON site over continuous time.
 
-- Back calculation of bulk density to NEON sites.  
+- Back calculation of bulk density to NEON sites.
+
+Recommendations:
+
+Future work could:
+- Refine estimates to provide a realistic constraint on surface concentration measurements, thereby increasing the gradient.
+- Apply machine learning algorithms (e.g. random trees) or model averaging techniques to generate a single flux estimate across each sites spatial location
+- Benchmarking flux results to estimates provided by Net ecosystem carbon exchange. 
 
 # Conclusions
 
 # Acknowledgments
+Undergrads not listed as an author.
 
 # Conflict of Interest Statements
 
 # Author Contributions
+Review Credit Author Statements

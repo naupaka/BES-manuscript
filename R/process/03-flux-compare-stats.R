@@ -87,11 +87,7 @@ extract_stats <- function(harmonized_data) {
 
 }
 
-yoop <- field_stats_data_0$harmonized_data[[1]] |> glimpse()
 
-yee <- yoop |> group_by(method) |> nest()
-
-yee$data[[4]]
 ### OK, let's get cooking!
 
 field_stats_data_0 <- field_data_joined |>
@@ -136,7 +132,7 @@ summary_env_data <- field_data_joined |>
 ## Add in the F111 and F000 separately, or just plot it at the end.  A second factor plot?
 
 
-#p_stats <-
+r2_stats <-
   all_stats |>
   filter(method %in% c("000","111","010","100","001")) |>
   inner_join(summary_env_data,by="site") |>
@@ -166,4 +162,4 @@ summary_env_data <- field_data_joined |>
   )
 
 
-ggsave(filename = 'figures/stats-plot.png',plot = p_stats,width = 13,height=7)
+ggsave(filename = 'figures/r2-plot.png',plot = r2_stats,width = 13,height=7)

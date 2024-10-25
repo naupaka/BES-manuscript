@@ -147,9 +147,13 @@ plot_level <- function(input_data,field_data_in,input_levels,plot_surface,x_axis
 
 }
 
-plot_levels <- c("top", "100", "010", "001")
-plot_surface <- c("111", "000")
-plot_axes <- c(FALSE, FALSE, FALSE, TRUE)
+#plot_levels <- c("top", "100", "010", "001")
+#plot_surface <- c("111", "000")
+#plot_axes <- c(FALSE, FALSE, FALSE, TRUE)
+
+plot_levels <- c("top", "010", "001")
+plot_surface <- c("011", "000")
+plot_axes <- c(FALSE, FALSE, TRUE)
 
 make_joined_plot <- function(model_data_in,licor_data,plot_name) {
 
@@ -159,9 +163,14 @@ make_joined_plot <- function(model_data_in,licor_data,plot_name) {
     unnest(cols = c(flux_compute))
 
   # Define the separate levels we will use to display on the top - we combine two for ease of plotting
-  plot_levels <- c("top", "100", "010", "001")
-  plot_surface <- c("111", "000")
-  plot_axes <- c(FALSE, FALSE, FALSE, TRUE)
+
+  #plot_levels <- c("top", "100", "010", "001")
+  #plot_surface <- c("111", "000")
+  #plot_axes <- c(FALSE, FALSE, FALSE, TRUE)
+
+  plot_levels <- c("top", "010", "001")
+  plot_surface <- c("011", "000")
+  plot_axes <- c(FALSE, FALSE, TRUE)
 
   # Define a data frame that makes the plot work
   plot_nest <- tibble(plot_levels,
@@ -181,12 +190,21 @@ make_joined_plot <- function(model_data_in,licor_data,plot_name) {
 
 
   # We will have 4 plots here
+#  g2 <- ggplotGrob(plot_nest$plots[[1]])
+#  g3 <- ggplotGrob(plot_nest$plots[[2]])
+#  g4 <- ggplotGrob(plot_nest$plots[[3]])
+#  g5 <- ggplotGrob(plot_nest$plots[[4]])
+#  g <- rbind(g2, g3, g4, g5, size = "first")
+#  g$widths <- unit.pmax(g2$widths, g3$widths, g4$widths, g5$widths)
+
+  # We will have 4 plots here
   g2 <- ggplotGrob(plot_nest$plots[[1]])
   g3 <- ggplotGrob(plot_nest$plots[[2]])
   g4 <- ggplotGrob(plot_nest$plots[[3]])
-  g5 <- ggplotGrob(plot_nest$plots[[4]])
-  g <- rbind(g2, g3, g4, g5, size = "first")
-  g$widths <- unit.pmax(g2$widths, g3$widths, g4$widths, g5$widths)
+#  g5 <- ggplotGrob(plot_nest$plots[[4]])
+  g <- rbind(g2, g3, g4, size = "first")
+  g$widths <- unit.pmax(g2$widths, g3$widths, g4$widths)
+
 
   return(g)
 
@@ -213,12 +231,12 @@ model_data_test <- field_data_joined_test$model_data[[1]] |>
 legend_plot_top <- plot_level(input_data = model_data_test,
                               field_data_in = field_data_joined_test$field_flux[[1]],
                               input_levels = "top",
-                              plot_surface =  c("111", "000"),
+                              plot_surface =  c("011", "000"),
                               x_axis = FALSE,
                               plot_title = "plot_name"
 ) + theme(legend.position = "bottom")
 
-legend = gtable_filter(ggplot_gtable(ggplot_build(legend_plot_top)), "guide-box")
+legend = gtable::gtable_filter(ggplot_gtable(ggplot_build(legend_plot_top)), "guide-box")
 lheight <- sum(legend$height)
 lwidth <- sum(legend$width)
 
