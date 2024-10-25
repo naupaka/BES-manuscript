@@ -1,5 +1,5 @@
 ---
-title: "A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites enabled by the `neonSoilFux` R package"
+title: "A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites enabled by the `neonSoilFlux` R package"
 format:
   pdf:
     keep-tex: true
