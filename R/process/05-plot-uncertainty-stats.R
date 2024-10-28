@@ -50,7 +50,11 @@ snr_plot <- snr_data |>
     axis.title.y = element_text(size = 14),
     strip.text = element_text(size = 12)
   ) +
-  scale_fill_discrete(labels=c('000'=bquote(~F['000']),'111'=bquote(~F['111'])))
+  scale_fill_discrete(labels=c('000'=bquote(~F['000']),
+                               '011'=bquote(~F['011']),
+                               '101'=bquote(~F['101']),
+                               '110'=bquote(~F['110'])
+                               ))
 
 
 
@@ -140,7 +144,7 @@ bounds_data <- field_stats_data |>
 bounds_plot <- bounds_data |>
   inner_join(summary_env_data,by="site") |>
   mutate(site = fct_reorder(site, temp_data)) |>
-  filter(method %in% c("111","000")) |>
+  #filter(method %in% c("111","000")) |>
   ggplot(aes(x=1-reduction,y=tot_prop,color=method)) + geom_point() + geom_line() + facet_grid(.~site) +
   labs(x = bquote(epsilon), y = "Proportion within range",color="Flux method:") +
   theme_bw() +
@@ -152,7 +156,11 @@ bounds_plot <- bounds_data |>
     axis.title.y = element_text(size = 14),
     strip.text = element_text(size = 12)
   ) +
-  scale_color_discrete(labels=c('000'=bquote(~F['000']),'111'=bquote(~F['111']))) +
+  scale_color_discrete(labels=c('000'=bquote(~F['000']),
+                                 '011'=bquote(~F['011']),
+                                 '101'=bquote(~F['101']),
+                                 '110'=bquote(~F['110'])
+  )) +
   geom_hline(yintercept = 0.5,linetype='dashed') +
   scale_y_continuous(breaks = seq(0,1,by=0.2),
                     minor_breaks = seq(0.1,0.9,by=0.2)) +
@@ -169,6 +177,6 @@ g$widths <- unit.pmax(g1$widths, g2$widths)
 
 png("figures/uncertainty-stats.png",width = 15, height = 8, units = 'in',res = 300); plot(g); dev.off()
 
-png('figures/test.png', width = 15, height = 7, units = 'in', res = 300); plot(out_big); dev.off()
+
 
 ggsave(filename = 'figures/error-reduction-plot.png',plot = p_stats,width = 13,height=7)
