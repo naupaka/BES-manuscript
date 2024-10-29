@@ -19,20 +19,20 @@ summary_env_data <- field_data_joined |>
 
 
 p1 <- field_data_joined |>
-  mutate(QF_prop = map(.x=model_data,.f=~summarise(.x,across(contains("MeanQF"),~sum(.x==1)/n())))) |>
+  mutate(QF_prop = map(.x=model_data,.f=~summarise(.x,across(contains("MeanQF"),~sum(.x!=0)/n())))) |>
   select(site,QF_prop) |>
   unnest(cols=c("QF_prop")) |>
   pivot_longer(cols=-"site") |>
   inner_join(summary_env_data,by="site") |>
   mutate(site = fct_reorder(site, temp_data)) |>
   ggplot(aes(x=site,y=value,fill=name,group=name)) + geom_col(position="dodge") +
-  labs(y="Proportion of measurements",
+  labs(y="Proportion of gap-filled measurements",
        fill='Measurement:',
        x='Site') +
-  scale_fill_discrete(labels = c('soilCO2concentrationMeanQF' = 'Soil CO2',
-                                'VSWCMeanQF' = 'Soil water',
-                                'soilTempMeanQF' = 'Soil temp',
-                                'staPresMeanQF' = 'Atm. Pressure')) +
+  scale_fill_discrete(labels = c('soilCO2concentrationMeanQF' = bquote(~Soil~CO['2']~'( '*mu*mol~m^-3*~')'),
+                                'VSWCMeanQF' = 'SWC (no units)',
+                                'soilTempMeanQF' = bquote(~T[S]~'('^o*C*')'),
+                                'staPresMeanQF' = 'P (kPa)')) +
   theme_bw() +
   theme(
     legend.position = "bottom",
@@ -41,7 +41,7 @@ p1 <- field_data_joined |>
     axis.text = element_text(size = 12),
     axis.title.y = element_text(size = 14),
     strip.text = element_text(size = 12)
-  )
+  ) + annotate("text", x = 0.8, y = 0.9, label = "a)",size=8)
 
 
 
@@ -78,7 +78,7 @@ p2 <- test_data |>
     axis.text = element_text(size = 12),
     axis.title.y = element_text(size = 14),
     strip.text = element_text(size = 12)
-  )
+  )+annotate("text", x = 0.1, y = 0.9, label = "b)",size=8)
 
 
 # Now put the two plots together, lining them up correctly
