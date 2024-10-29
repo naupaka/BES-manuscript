@@ -15,8 +15,8 @@ summary_env_data <- field_data_joined |>
   unnest(cols=c(field_env)) |>
   group_by(site) |>
   summarise(
-    vswc_data = median(VSWC),
-    temp_data = median(soilTemp),
+    vswc_data = mean(VSWC),
+    temp_data = mean(soilTemp),
     .groups="drop"
   )
 

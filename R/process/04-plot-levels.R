@@ -5,6 +5,8 @@
 library(tidyverse)
 library(lubridate)
 library(broom)
+library(grid)
+library(gridExtra)
 ### Goals:
 # (1) Load up data and measured fluxes for each site
 # (2) Co-locate field obs and neonSoilFlux obs in same half-hourly window
@@ -22,8 +24,8 @@ summary_env_data <- field_data_joined |>
   unnest(cols=c(field_env)) |>
   group_by(site) |>
   summarise(
-    vswc_data = median(VSWC),
-    temp_data = median(soilTemp),
+    vswc_data = mean(VSWC),
+    temp_data = mean(soilTemp),
     .groups="drop"
   )
 
@@ -69,7 +71,7 @@ plot_level <- function(input_data,field_data_in,input_levels,plot_surface,x_axis
     plot_licor <- TRUE
   } else {
     curr_level <- input_levels
-    plot_licor <- FALSE
+    plot_licor <- TRUE
   }
 
   if(plot_licor) {
@@ -136,8 +138,10 @@ plot_level <- function(input_data,field_data_in,input_levels,plot_surface,x_axis
   }
 
   if(input_levels =="top") {
-    out_plot <- out_plot + labs(y=bquote(~F[S]~'('~mu*mol~m^-2~s^-1*~')'),
+    out_plot <- out_plot + labs(y=bquote(~F[.(input_levels)]~'('~mu*mol~m^-2~s^-1*~')'),
                                 title = plot_title)
+    #out_plot <- out_plot + labs(y=bquote(~F[S]~'('~mu*mol~m^-2~s^-1*~')'),
+     #                           title = plot_title)
   } else {
     out_plot <- out_plot + labs(y=bquote(~F[.(input_levels)]~'('~mu*mol~m^-2~s^-1*~')'))
   }
@@ -164,13 +168,13 @@ make_joined_plot <- function(model_data_in,licor_data,plot_name) {
 
   # Define the separate levels we will use to display on the top - we combine two for ease of plotting
 
-  #plot_levels <- c("top", "100", "010", "001")
-  #plot_surface <- c("111", "000")
-  #plot_axes <- c(FALSE, FALSE, FALSE, TRUE)
+  plot_levels <- c("top", "101", "110", "011")
+  plot_surface <- c("000")
+  plot_axes <- c(FALSE, FALSE, FALSE, TRUE)
 
-  plot_levels <- c("top", "010", "001")
-  plot_surface <- c("011", "000")
-  plot_axes <- c(FALSE, FALSE, TRUE)
+  #plot_levels <- c("top", "010", "001")
+  #plot_surface <- c("011", "000")
+  #plot_axes <- c(FALSE, FALSE, TRUE)
 
   # Define a data frame that makes the plot work
   plot_nest <- tibble(plot_levels,
@@ -201,9 +205,9 @@ make_joined_plot <- function(model_data_in,licor_data,plot_name) {
   g2 <- ggplotGrob(plot_nest$plots[[1]])
   g3 <- ggplotGrob(plot_nest$plots[[2]])
   g4 <- ggplotGrob(plot_nest$plots[[3]])
-#  g5 <- ggplotGrob(plot_nest$plots[[4]])
-  g <- rbind(g2, g3, g4, size = "first")
-  g$widths <- unit.pmax(g2$widths, g3$widths, g4$widths)
+  g5 <- ggplotGrob(plot_nest$plots[[4]])
+  g <- rbind(g2, g3, g4, g5, size = "first")
+  g$widths <- grid::unit.pmax(g2$widths, g3$widths, g4$widths)
 
 
   return(g)
@@ -249,6 +253,6 @@ combined <- arrangeGrob(
 )
 
 ### Now let's get these all plotted!
-png('figures/flux-results.png', width = 25, height = 7, units = 'in', res = 300); plot(combined); dev.off()
+png('figures/flux-results.png', width = 25, height = 9, units = 'in', res = 300); plot(combined); dev.off()
 
 
