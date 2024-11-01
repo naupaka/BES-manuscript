@@ -304,45 +304,56 @@ compared for analysis later.
 \scriptsize
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}@{}}
 
 \caption{\label{tbl-neon-sites}Listing of NEON sites studied for field
-work and analysis.}
+work and analysis. \(\overline{T_{S}}\): average soil temperature during
+field measurements. \(\overline{SWC}\): average soil water content
+during field measurements}
 
 \tabularnewline
 
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
-Site
+Site (NEON site ID)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Location
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Ecosystem type
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Mean annual temperature (sampling)
+Mean annual temperature
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Mean annual precipitation (sampling)
+\(\overline{T_{S}}\) (\(^{\circ}\))
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Mean annual precipitation
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\overline{VWC}\) (\%)
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Santa Rita Experimental Range & 31.91068, -110.83549 & Shrubland &
-19.3°C & 346.2 mm \\
-San Joaquin Experimental Range & 37.10878, -119.73228 & Oak woodland &
-16.4°C & 539.62 mm \\
-Wind River Experimental Forest & 45.82049, -121.95191 & Evergreen forest
-& 9.2°C & 2225 mm \\
-Chase Lake National Wildlife Refuge & 47.1282, -99.241334 & Restored
-prairie grassland & 4.9°C & 495 mm \\
-Konza Prairie Biological Station & 39.100774, -96.563075 & Tallgrass
-Prairie & 12.4°C & 870 mm \\
-University of Notre Dame Environmental Research Center & 46.23391,
--89.537254 & Deciduous forest & 4.3°C & 802 mm \\
+Santa Rita Experimental Range (SRER) & 31.91068, -110.83549 & Shrubland
+& 19.3\(^{\circ}\)C & 47.6\(^{\circ}\) & 346.2 mm & 4.0\% \\
+San Joaquin Experimental Range (SJER) & 37.10878, -119.73228 & Oak
+woodland & 16.4\(^{\circ}\)C & 41.7\(^{\circ}\) & 539.62 mm & 1.2\% \\
+Wind River Experimental Forest (WREF) & 45.82049, -121.95191 & Evergreen
+forest & 9.2\(^{\circ}\)C & 15.3\(^{\circ}\) & 2225 mm & 27.2\% \\
+Chase Lake National Wildlife Refuge (WOOD) & 14.9\(^{\circ}\) & 47.1282,
+-99.241334 & Restored prairie grassland & 4.9\(^{\circ}\)C & 495 mm &
+14.9\% \\
+Konza Prairie Biological Station (KONZ) & 39.100774, -96.563075 &
+Tallgrass Prairie & 12.4\(^{\circ}\)C & 23.4\(^{\circ}\) & 870 mm &
+23.4\% \\
+University of Notre Dame Environmental Research Center (UNDE) &
+46.23391, -89.537254 & Deciduous forest & 4.3\(^{\circ}\) &
+13.0\(^{\circ}\) & 802 mm & 13.0\% \\
 
 \end{longtable}
 
@@ -443,19 +454,18 @@ collected and assumed to be constant for the monthly observation period.
 }
 
 \caption{\label{fig-model-diagram}Model diagram for data workflow for
-the neonSoilFlux R package. a) Acquire: Data are obtained from given
-NEON location and horizontal sensor location, which includes soil water
-content, soil temperature, CO\(_{2}\) concentration, and atmospheric
-pressure. All data are screened for quality assurance, with gap-filling
-of missing data reported. b) Any belowground data are then harmonized to
-the same depth as CO\(_{2}\) concentrations using linear regression. c)
-The flux across a given depth is computed via Fick's law, denoted with
-\(F_{ijk}\), where \(i\), \(j\), or \(k\) are either 0 or 1 denoting the
-layer the flux is computed across (\(i\) = closest to surface, \(k\) =
-deepest). The surface flux is all possible combinations of \(F_{ijk}\)
-extrapolating the flux measurements to the surface, so \(F_{110}\) is
-the surface flux intercept linearly extrapolating the measurements
-\(F_{010}\) and \(F_{100}\).}
+the \texttt{neonSoilFlux} R package. a) Acquire: Data are obtained from
+given NEON location and horizontal sensor location, which includes soil
+water content, soil temperature, CO\(_{2}\) concentration, and
+atmospheric pressure. All data are screened for quality assurance, with
+gap-filling of missing data reported. b) Any belowground data are then
+harmonized to the same depth as CO\(_{2}\) concentrations using linear
+regression. c) The flux across a given depth is computed via Fick's law,
+denoted with \(F_{ijk}\), where \(i\), \(j\), or \(k\) are either 0 or 1
+denoting the layers the flux is computed across (\(i\) = closest to
+surface, \(k\) = deepest). \(F_{000}\) represents a flux estimate where
+the gradient \(dC/dz\) is the slope of a linear regression of CO\(_{2}\)
+with depth.}
 
 \end{figure}%
 
@@ -484,20 +494,21 @@ soil layers (Section~\ref{sec-compute-soil-flux}) are then computed.
 The final step is computing a surface soil flux through extrapolation to
 the surface (purple parallelogram in Figure~\ref{fig-package-diagram}
 and Panel c in Figure~\ref{fig-model-diagram}). Uncertainty on a soil
-flux measurement is computed through quadrature. An aggregate QA flag
-for each environmental measurement is also reported, representing if any
-gap-filled measurements were used in the computation of a soil flux.
-Within the soil flux-gradient method, several different approaches can
-be used to derive a surface flux (Maier \& Schack-Kirchner, 2014); the
-\texttt{neonSoilFlux} package reports eight different possible values of
-soil surface flux (Section~\ref{sec-compute-soil-flux}).
+flux measurement is computed through quadrature. An aggregate quality
+assurance (QA) flag for each environmental measurement is also reported,
+representing if any gap-filled measurements were used in the computation
+of a soil flux. Within the soil flux-gradient method, several different
+approaches can be used to derive a surface flux (Maier \&
+Schack-Kirchner, 2014); the \texttt{neonSoilFlux} package reports eight
+different possible values of soil surface flux
+(Section~\ref{sec-compute-soil-flux}).
 
 \subsubsection{Gap-filling routine}\label{sec-gapfilling}
 
 NEON reports QA flags as a binary value for a given measurement and
 half-hourly time. We replaced any flagged measurements at a location's
 spatial depth \(z\) with a bootstrapped sample of the monthly mean for
-all un-flagged measurements for that month. hese measurements are
+all un-flagged measurements for that month. These measurements are
 represented by the vector \(\mathbf{m}\), standard errors
 \(\boldsymbol\sigma\), and the 95\% confidence interval (the so-called
 expanded uncertainty, Farrance \& Frenkel (2012))
@@ -593,8 +604,8 @@ location.
 \subsubsection{Soil flux computation}\label{sec-compute-soil-flux}
 
 We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux
-\(F_{ij}\) (\(\mu\)mol m\(^{-2}\) s\(^{-1}\)) across two adjacent soil
-depths \(i\) and \(j\):
+\(F_{ij}\) (\(\mu\)mol m\(^{-2}\) s\(^{-1}\)) across two soil depths
+\(i\) and \(j\):
 
 \begin{equation}
   F_{ij} = -D_{a} \frac{dC}{dz}
@@ -612,27 +623,12 @@ directly below the surface. Measurements of soil temperature, soil water
 content, and soil CO\(_{2}\) molar concentration across the soil profile
 allow for application of Equation \ref{eq:flux} across different soil
 depths. The flux gradient method approximates the soil surface flux
-either by (1) extrapolation of Equation \ref{eq:ficks} across
-sub-surface measurement depths to the surface, typically assuming soil
-flux is a linear function of depth (Maier \& Schack-Kirchner, 2014) or
-(2) linear extrapolation of \(D_{a}\) to the surface and from direct
-calculation of \(\frac{dC}{dz}\) from the CO\(_{2}\) profile. All these
-approaches are pThe \texttt{neonSoilFlux} package provides several
-different methods to compute \(F_{s}\) for the end-user to compare.
-
-\subsubsection{Reporting of surface
-fluxes}\label{reporting-of-surface-fluxes}
-
-A surface flux estimate is derived from Fick's Law (Equation
-\ref{eq:ficks}), which is the product of a diffusivity and a CO\(_{2}\)
-concentration gradient (Maier \& Schack-Kirchner, 2014). The
-\texttt{neonSoilFlux} package provides eight different surface flux
-estimates, which represent different considerations of how Fick's Law is
-applied. First, we apply simple linear regression to both CO\(_{2}\) and
-\(D_{a}\) at the three different measurement depths. Next, the slope and
-intercept (and uncertainty by quadrature) from these regressions are
-used to compute a suite of eight different surface flux estimates
-(denoted by \(F_{ijk}\)):
+either by (1) computation Equation \ref{eq:ficks} across sub-surface
+measurement depths to the surface. Each site had three measurement
+layers, so we denote the flux between which two layers as a three-digit
+subscript \(F_{ijk}\) where indicator variables indicating if a given
+layer was used (written in order of increasing depth), according to the
+following:
 
 \begin{itemize}
 \tightlist
@@ -643,27 +639,17 @@ used to compute a suite of eight different surface flux estimates
   al. (2003) used this approach to compute fluxes in an oak-grass
   savannah.
 \item
-  \(F_{010}\), \(F_{001}\) are fluxes across the two most shallow layers
+  \(F_{110}\), \(F_{011}\) are fluxes across the two most shallow layers
   and two deepest layers respectively. The diffusivity used in Fick's
   Law is always at the deeper measurement layer. When used as a surface
   flux estimate we assume CO\(_{2}\) remains constant above this flux
   depth.
 \item
-  \(F_{100}\) is a flux estimate where the gradient \(\frac{dC}{dz}\) is
-  estimated using the intercept from linear regression of CO\(_{2}\) and
-  the top measurement depth for CO\(_{2}\). The diffusivity used in
-  Fick's Law is always at the first measurement layer. de Jong \&
-  Schappert (1972) applied this approach in a Canadian prairie.
-\item
-  \(F_{110}\), \(F_{101}\), \(F_{011}\) are a surface flux estimates
-  using linear extrapolation between \(F_{100}\) and \(F_{010}\);
-  \(F_{100}\) and \(F_{001}\); or \(F\_{010}\) and \(F_{001}\)
-  respectively. Hirano et al. (2003) and Tang et al. (2005) used an
+  \(F_{101}\) is a surface flux estimate using linear extrapolation
+  using concentration measurements between the shallowest and deepest
+  measurement layer. Hirano et al. (2003) and Tang et al. (2005) used an
   approach similar to \(F_{101}\) in a temperate deciduous broadleaf
   forest and ponderosa pine forest respectively.
-\item
-  \(F_{111}\) is a surface flux estimate using linear extrapolation
-  between \(F_{100}\), \(F_{010}\), and \(F_{001}\).
 \end{itemize}
 
 Uncertainty in all \(F_{ijk}\) is computed through quadrature.
@@ -714,13 +700,12 @@ back calculation.
 Figure~\ref{fig-flux-results} reports out the measured fluxes from the
 LICOR 6800 and 8250 and computed fluxes and uncertainty at each
 measurement site. Results are reported in local time. Positive values of
-the flux indicate that there is a flux moving towards the surface (FIX
-WRITING) For ease of clarity the fluxes at \(F_{111}\) and \(F_{000}\)
-are only shown in the top row (surface), followed by the fluxes at
-individual separate layer (\(F_{100}\), \(F_{010}\), \(F_{001}\)).
-Overall, with the exception of WREF and SRER (discussed later) the
-computed fluxes were on the same order of magnitude and timing as the
-measured field fluxes.
+the flux indicate that there is a flux moving towards the surface. For
+ease of clarity the fluxes at \(F_{111}\) and \(F_{000}\) are only shown
+in the top row (surface), followed by the fluxes at individual separate
+layer (\(F_{100}\), \(F_{010}\), \(F_{001}\)). Overall, with the
+exception of WREF and SRER (discussed later) the computed fluxes were on
+the same order of magnitude and timing as the measured field fluxes.
 
 \begin{figure}
 
@@ -731,7 +716,7 @@ measured field fluxes.
 }
 
 \caption{\label{fig-flux-results}Results for different flux
-computations, organized by site (in increasing temperature show at each
+computations, organized by site (in increasing temperature shown at each
 site) across different measurement levels. \(F_{000}\) comes from the
 diffusivity extrapolation and \(F_{111}\) extrapolation across the
 surface. Field measurements are shown at the top of each plot. The
@@ -739,11 +724,15 @@ computed flux values are shown with reported uncertainty as well.}
 
 \end{figure}%
 
-Figure~\ref{fig-gap-filled-stats} reports which environmental
-measurements at each site relied on gap-filled measurements (left plot)
-and in the aggregate, the total number of gap-filled measurements used
-for each half-hourly flux computation. the largest contribution to
-gap-filled data was soil water followed by soil temperature.
+Figure~\ref{fig-gap-filled-stats} reports the usage of gap-filled
+environmental measurement types (which could be one CO\(_{2}\), \(SWC\),
+or \(T_{S}\) at any measurement depth, and also including \(P\)) to
+compute \(F_{S}\). Panel a) reports the proportion of gap-filled values
+for an environmental measurement at each site and Panel b) displays the
+distribution of gap-filled measurements at each site. The largest
+contribution to gap-filled measurements was soil water. SJER and WOOD
+utilized the largest number of gap-filled measurements, which were
+primarily \(SWC\) and \(T_{S}\).
 
 \begin{figure}
 
@@ -753,10 +742,10 @@ gap-filled data was soil water followed by soil temperature.
 
 }
 
-\caption{\label{fig-gap-filled-stats}Left panel: Proportion of
-gap-filled environmental observations at each site. Right panel:
-proportion of measurements that used gap-filled environmental data (0 -
-4) at each site. BLAH}
+\caption{\label{fig-gap-filled-stats}Panel a) Proportion of gap-filled
+environmental measurements used to generate \(F_{S}\) from the
+\texttt{neonSoilFlux} package, by study site. Panel b) distribution of
+the usage of gap-filled measurements at each site.}
 
 \end{figure}%
 
@@ -815,40 +804,33 @@ of the sites SAY MORE}
 
 \section{Discussion}\label{discussion}
 
-Our core goals in this study were: 1) to generate estimates of soil flux
-from continuous soil sensor data at terrestrial NEON sites using the
-flux-gradient method and then 2) to compare those estimates to
-field-measured fluxes based on the closed chamber approach at six focal
-sites spanning six different states.
-
-We were able to show that the flux-gradient method produced estimates
-within XX of the field measured values at X of Y sites.
-
-In developing and validating our approach, we faced a number of
-challenges related to data availability and uncertainty,
-including\ldots{} gap filling, sensor calibration, depth interpolation,
-rainstorms, etc
-
-These challenges notwithstanding, the method used here and made
-available in the \texttt{neonSoilFlux} R package is able to produce
-nearly continuous estimates of flux across all XXYY terrestrial NEON
-sites. These estimates are a significant improvement on available
-approaches to constrain the portion of ecosystem respiration
-attributable to the soil. This, in turn, aids in our ability to
-understand the components of net ecosystem flux assessed at these sites
-using the co-located eddy flux towers.
-
 This study presents a unified data science workflow to efficiently
 process automated measurements of belowground soil CO\(_{2}\)
 concentrations, water, and temperature to infer estimates of soil
-effluxes through application of Fick's Law. Derived results from the
-\texttt{neonSoilFlux} package have patterns that are consistent, and
-comparable, to those directly measured to the field (Figure XXX). The
-advantage to the \texttt{neonSoilFlux} package is the calculation of
-fluxes across different measurement depths, allowing for additional
-site-specific customization. Here application of the flux-gradient
-method provides a baseline estimate of soil fluxes that could be
-complemented through additional field measurements (e.g.~LICOR).
+effluxes through application of Fick's Law (Equation XXX). Our core
+goals in this study were: (1) to generate estimates of soil flux from
+continuous soil sensor data at terrestrial NEON sites using the
+flux-gradient method and then (2) to compare those estimates to
+field-measured fluxes based on the closed chamber approach at six focal
+sites across a coordinate measurement network NEON. We will evaluate the
+core goals through (1) an overall evaluation of the flux-gradient
+approach (and uncertainty calculation) and (2) site-specific evaluation
+for differences in fluxes.
+
+\subsection{Evaluation of flux-gradient approach at each
+site}\label{evaluation-of-flux-gradient-approach-at-each-site}
+
+Key assumptions of the flux-gradient approach are that CO\(_{2}\)
+concentrations increase throughout the soil profile. We found that this
+condition was met at XXX\% across the study period. Periods where this
+gradient condition are not met generally are connected to biophysical
+processes such soil wetting events (e.g.~KONZ), which have the effect of
+temporarily reducing the soil respiration or efflux. For modeling soil
+respiration, typically a non-linear response function is considered,
+that also considers soil type as well (Bouma \& Bryla, 2000; Yan et al.,
+2016, 2018). For the \texttt{neonSoilFlux} package soil type is
+connected to the bulk density, which is separately determined / measured
+at a site.
 
 The largest source of uncertainty to improve reliability of the flux
 estimate is to prevent the usage of gap-filled data, especially with
@@ -863,7 +845,71 @@ sophisticated gap-filling routines, similar to what is used for net
 ecosystem carbon exchange (Falge et al., 2001; Liu et al., 2023;
 Mariethoz et al., 2015; Moffat et al., 2007; Zhang et al., 2023).
 
-The \texttt{neonSoilFlux} package provides eight different approaches of
+Diffusivity taken from the megapit. Big microsite and temporal
+differences, soil shrink / swell. How do we think about what that means
+for using this approach to generalize across a NEON site over continuous
+time.
+
+\begin{itemize}
+\tightlist
+\item
+  Back calculation of bulk density to NEON sites.
+\end{itemize}
+
+\subsection{Site specific evaluation}\label{site-specific-evaluation}
+
+Across all the site The six sites studied provide separate case studies
+for considerations when applying the flux-gradient method to evaluate
+resulting uncertainties and fluxes. SRER is characterized by sandy soil,
+which also led to the hottest site there. Fluxes are driven by the
+change and response to temperature in the temperature driven, whereas we
+observed a decoupling of temperature across the different layers
+(supplementary figures?) For this instance, using the flux across the
+top two layers (\(F_{110}\)) produced a pattern of soil flux consistent
+with the observed field data. The remaining methods \(F_{101}\),
+\(F_{011}\), or \(F_{000}\) are derived from information at the deeper
+layer, which is decoupled both in terms of temperature and CO\(_{2}\)
+concentration.
+
+KONZ is a site that experienced a significant rain event prior to
+sampling with eventual drying out over the course of the experiment. In
+this case we observed storage of soil water (as shown in supplementary
+figures), which increased the soil CO\(_{2}\) at the top layer, leading
+to negative values of flux at the start of the experiment, with the
+fluxes drying out afterards. In this case only when the soil dried out
+(or returned to a baseline level), that the fluxes at the provided layer
+would work out in this case.
+
+WREF experienced a generational rainfall leading up the point of
+measuring, which meant that sensors relied of gap-filled data. In this
+case, \(F_{000}\) is the better one. We were able to show that the
+flux-gradient method produced estimates within XX of the field measured
+values at X of Y sites.
+
+TANG 2003 noticed a similar pattern in temperature as SRER Mention
+alternative diffusivity calculations? (Sallam - but this may not be a
+factor compared to water availability and gap filling)
+
+When considering systematic deployment of this method across a
+measurement network, we faced a number of independent challenges for
+consideration. In developing and validating our approach, we faced a
+number of challenges related to data availability, including\ldots{} gap
+filling, sensor calibration, depth interpolation, rainstorms, etc These
+errors are all
+
+Derived results from the \texttt{neonSoilFlux} package have patterns
+that are consistent, and comparable, to those directly measured to the
+field (Figure XXX). The advantage to the \texttt{neonSoilFlux} package
+is the calculation of fluxes across different measurement depths,
+allowing for additional site-specific customization. Here application of
+the flux-gradient method provides a baseline estimate of soil fluxes
+that could be complemented through additional field measurements
+(e.g.~LICOR).
+
+\subsection{Recommendations for future method
+development}\label{recommendations-for-future-method-development}
+
+The \texttt{neonSoilFlux} package provides three different approaches of
 values for a soil flux. We believe these approaches reflect a variety of
 site-specific determination and assumptions used to generate a soil flux
 measurement (Maier \& Schack-Kirchner, 2014), with the choice of method
@@ -886,26 +932,41 @@ when uncertainty is reduced by 90\%. To me, that suggests that while the
 reported accuracy (as compared to field measurements), we do have higher
 precision.
 
-Diffusivity taken from the megapit. Big microsite and temporal
-differences, soil shrink / swell. How do we think about what that means
-for using this approach to generalize across a NEON site over continuous
-time.
+These challenges notwithstanding, the method used here and made
+available in the \texttt{neonSoilFlux} R package is able to produce
+nearly continuous estimates of flux across all XXYY terrestrial NEON
+sites. These estimates are a significant improvement on available
+approaches to constrain the portion of ecosystem respiration
+attributable to the soil. This, in turn, aids in our ability to
+understand the components of net ecosystem flux assessed at these sites
+using the co-located eddy flux towers.
 
 \begin{itemize}
 \tightlist
 \item
-  Back calculation of bulk density to NEON sites.
+  Refine estimates to provide a realistic constraint on surface
+  concentration measurements, thereby increasing the gradient.
+\item
+  Apply machine learning algorithms (e.g.~random trees) or model
+  averaging techniques to generate a single flux estimate across each
+  sites spatial location
+\item
+  Benchmarking flux results to estimates provided by Net ecosystem
+  carbon exchange.
 \end{itemize}
 
 \section{Conclusions}\label{conclusions}
 
 \section{Acknowledgments}\label{acknowledgments}
 
+Undergrads that are not listed as an author.
+
 \section{Conflict of Interest
 Statements}\label{conflict-of-interest-statements}
 
-\section*{Author Contributions}\label{author-contributions}
-\addcontentsline{toc}{section}{Author Contributions}
+\section{Author Contributions}\label{author-contributions}
+
+Review Credit Author Statements
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
@@ -955,6 +1016,12 @@ relationship between the heterotrophic and autotrophic components of
 soil respiration? \emph{Global Change Biology}, \emph{10}(10),
 1756--1766. \url{https://doi.org/10.1111/j.1365-2486.2004.00816.x}
 
+\bibitem[\citeproctext]{ref-boumaAssessmentRootSoil2000}
+Bouma, T. J., \& Bryla, D. R. (2000). On the assessment of root and soil
+respiration for soils of different textures: Interactions with soil
+moisture contents and soil {CO2} concentrations. \emph{Plant and Soil},
+\emph{227}(1), 215--221. \url{https://doi.org/10.1023/A:1026502414977}
+
 \bibitem[\citeproctext]{ref-chenDoesGeneralTemperatureDependent2005}
 Chen, H., \& Tian, H.-Q. (2005). Does a {General Temperature-Dependent
 Q10 Model} of {Soil Respiration Exist} at {Biome} and {Global Scale}?
@@ -966,11 +1033,6 @@ Davidson, E. A., Janssens, I. A., \& Luo, Y. (2006). On the variability
 of respiration in terrestrial ecosystems: Moving beyond {Q10}.
 \emph{Global Change Biology}, \emph{12}, 154--164.
 \url{https://doi.org/10.1111/j.1365-2486.2005.01065.x}
-
-\bibitem[\citeproctext]{ref-dejongCalculationSoilRespiration1972}
-de Jong, E., \& Schappert, H. J. V. (1972). Calculation of {Soil
-Respiration} and {Activity} from {CO2 Profiles} in the {Soil}.
-\emph{Soil Science}, \emph{113}(5), 328--333.
 
 \bibitem[\citeproctext]{ref-desaiDriversDecadalCarbon2022}
 Desai, A. R., Murphy, B. A., Wiesner, S., Thom, J., Butterworth, B. J.,
@@ -1181,6 +1243,20 @@ Tang, J., Misson, L., Gershenson, A., Cheng, W., \& Goldstein, A. H.
 roots in a ponderosa pine plantation in the {Sierra Nevada Mountains}.
 \emph{Agricultural and Forest Meteorology}, \emph{132}(3), 212--227.
 \url{https://doi.org/10.1016/j.agrformet.2005.07.011}
+
+\bibitem[\citeproctext]{ref-yanMoistureFunctionSoil2018}
+Yan, Z., Bond-Lamberty, B., Todd-Brown, K. E., Bailey, V. L., Li, S.,
+Liu, C., \& Liu, C. (2018). A moisture function of soil heterotrophic
+respiration that incorporates microscale processes. \emph{Nature
+Communications}, \emph{9}(1), 2562.
+\url{https://doi.org/10.1038/s41467-018-04971-6}
+
+\bibitem[\citeproctext]{ref-yanPorescaleInvestigationResponse2016}
+Yan, Z., Liu, C., Todd-Brown, K. E., Liu, Y., Bond-Lamberty, B., \&
+Bailey, V. L. (2016). Pore-scale investigation on the response of
+heterotrophic respiration to moisture conditions in heterogeneous soils.
+\emph{Biogeochemistry}, \emph{131}(1), 121--134.
+\url{https://doi.org/10.1007/s10533-016-0270-0}
 
 \bibitem[\citeproctext]{ref-zhangTemporalGapFilling12Hourly2023}
 Zhang, R., Kim, S., Kim, H., Fang, B., Sharma, A., \& Lakshmi, V.
