@@ -225,6 +225,7 @@ This study presents a unified data science workflow to efficiently process autom
 
 
 ## Evaluation of flux-gradient approach at each site
+
 Key assumptions of the flux-gradient approach are that CO$_{2}$ concentrations increase throughout the soil profile. We found that this condition was met at XXX% across the study period. Periods where this gradient condition are not met generally are connected to biophysical processes such soil wetting events (e.g. KONZ), which have the effect of temporarily reducing the soil respiration or efflux.  For modeling soil respiration, typically a non-linear response function is considered, that also considers soil type as well [@boumaAssessmentRootSoil2000; @yanPorescaleInvestigationResponse2016; @yanMoistureFunctionSoil2018].  For the `neonSoilFlux` package soil type is connected to the bulk density, which is separately determined / measured at a site.
 
 The largest source of uncertainty to improve reliability of the flux estimate is to prevent the usage of gap-filled data, especially with soil water (Figure XXX). Across the observed half-hourly periods for field measurements, the percentage of half-hourly periods where all four environmental measurements were available spanned from 0% (SJER) to 7% (SRER), but three sites (WREF, SRER, UNDE) had 95% of half-hourly intervals with just one gap-filled measurement.Where appropriate we have replaced measurements flagged to the protocol with a monthly gap-filled value. Further extensions of the gapfilling method could use more sophisticated gap-filling routines, similar to what is used for net ecosystem carbon exchange [@falgeGapFillingStrategies2001; @moffatComprehensiveComparisonGapfilling2007; @mariethozFeaturepreservingInterpolationFiltering2015; @liuRobustGapfillingApproach2023; @zhangTemporalGapFilling12Hourly2023].
@@ -234,7 +235,9 @@ Diffusivity taken from the megapit.  Big microsite and temporal differences, soi
 - Back calculation of bulk density to NEON sites.
 
 ## Site specific evaluation
+
 Across all the site
+
 The six sites studied provide separate case studies for considerations when applying the flux-gradient method to evaluate resulting uncertainties and fluxes.  SRER is characterized by sandy soil, which also led to the hottest site there.  Fluxes are driven by the change and response to temperature in the temperature driven, whereas we observed a decoupling of temperature across the different layers (supplementary figures?)  For this instance, using the flux across the top two layers ($F_{110}$) produced a pattern of soil flux consistent with the observed field data.  The remaining methods $F_{101}$, $F_{011}$, or $F_{000}$ are derived from information at the deeper layer, which is decoupled both in terms of temperature and CO$_{2}$ concentration.
 
 KONZ is a site that experienced a significant rain event prior to sampling with eventual drying out over the course of the experiment.  In this case we observed storage of soil water (as shown in supplementary figures), which increased the soil CO$_{2}$ at the top layer, leading to negative values of flux at the start of the experiment, with the fluxes drying out afterards.  In this case only when the soil dried out (or returned to a baseline level), that the fluxes at the provided layer would work out in this case.
@@ -249,16 +252,11 @@ When considering systematic deployment of this method across a measurement netwo
 
  Derived results from the `neonSoilFlux` package have patterns that are consistent, and comparable, to those directly measured to the field (Figure XXX).  The advantage to the `neonSoilFlux` package is the calculation of fluxes across different measurement depths, allowing for additional site-specific customization. Here application of the flux-gradient method provides a baseline estimate of soil fluxes that could be complemented through additional field measurements (e.g. LICOR).
 
-
-
-
-
 ## Recommendations for future method development
+
 The `neonSoilFlux` package provides three different approaches of values for a soil flux. We believe these approaches reflect a variety of site-specific determination and assumptions used to generate a soil flux measurement [@maierUsingGradientMethod2014], with the choice of method having a determinative approach on reported values. Reported results could further be distilled down using ensemble averaging averaging approaches [@rafteryUsingBayesianModel2005; @elshallRelativeModelScore2018].
 
 Figures XXX suggests that the provided uncertainty from `neonSoilFlux` is an overestimate compared to what is actually computed. When $\epsilon=0$ in Figure @fig-uncertainty-stats, that means we are just using the reported uncertainty from neonSoilFlux.  Looking at that (epsilon = 0) shows field measurements UNDE, KONZ, SJER are 100% within the reported intervals from neonSoilFlux.  But those sites tend to have a SNR < 1, so the uncertainty is pretty noisy.  For UNDE, we could even reduce the uncertainty by a factor of 75% (epsilon = 0.75), more than half of the field measurements will still be within the reported intervals.  For  KONZ, we are still within 70% of the reported intervals when uncertainty is reduced by 90%.  To me, that suggests that while the reported accuracy (as compared to field measurements), we do have higher precision.
-
-
 
 These challenges notwithstanding, the method used here and made available in the `neonSoilFlux` R package is able to produce nearly continuous estimates of flux across all XXYY terrestrial NEON sites. These estimates are a significant improvement on available approaches to constrain the portion of ecosystem respiration attributable to the soil. This, in turn, aids in our ability to understand the components of net ecosystem flux assessed at these sites using the co-located eddy flux towers.
 
@@ -266,13 +264,14 @@ These challenges notwithstanding, the method used here and made available in the
 - Apply machine learning algorithms (e.g. random trees) or model averaging techniques to generate a single flux estimate across each sites spatial location
 - Benchmarking flux results to estimates provided by Net ecosystem carbon exchange. 
 
-
 # Conclusions
 
 # Acknowledgments
+
 Undergrads that are not listed as an author.
 
 # Conflict of Interest Statements
 
 # Author Contributions
+
 Review Credit Author Statements
