@@ -1,23 +1,9 @@
 # Download and reprocess soil water content sensor data using consistent calibration coefficients for the entire time series
 # Clear the environment to avoid using info from previous site
-rm(list = ls())
 
-# download data
-library(neonUtilities)
-token <- read.csv("C:/Users/eayres/Documents/NEONPortalToken.csv")
-token <- colnames(token)
-start <- "2022-05"
-end <- "2022-06"
+# Adapted from Ed Ayres -
+# https://figshare.com/articles/software/Code_for_SMAP_NLDAS_validations_based_on_NEON_soil_moisture_data/24424762/1?file=43528533
 
-# c("BART", "HARV", "BLAN", "SERC", "SCBI")
-# c("OSBS", "DSNY", "JERC", "GUAN", "LAJA")
-# c("UNDE", "TREE", "STEI", "KONZ", "KONA")
-# c("UKFS", "ORNL", "GRSM", "MLBS", "TALL")
-# c("DELA", "LENO", "WOOD", "NOGP", "DCFS")
-# c("CPER", "RMNP", "STER", "OAES", "CLBJ")
-# c("YELL", "NIWO", "MOAB", "SRER", "JORN")
-# c("ONAQ", "WREF", "ABBY", "SJER", "SOAP")
-# c("TEAK", "TOOL", "BARR", "BONA", "HEAL", "DEJU")
 
 # Create loop to run through a few sites at a time
 information <- tibble(site = c("SRER","SJER","WREF","UNDE","WOOD","KONZ"),
@@ -26,8 +12,10 @@ information <- tibble(site = c("SRER","SJER","WREF","UNDE","WOOD","KONZ"),
 )
 
 swc_results <- vector(mode="list",length = nrow(information))
-for(p in 1:nrow(information)){
-  print(p)
+
+
+reprocess_vswc <- function(site,start,end) {
+
   # Replace data with NA to prevent any carryover to next loop
   swc <- NA
   SWS_30_minute <- NA
@@ -36,12 +24,9 @@ for(p in 1:nrow(information)){
   neonCal <- NA
 
   # download the data
-  site <- information$site[p]
-  start <- information$start[p]
-  end <- information$end[p]
-  swc <- neonUtilities:::loadByProduct(dpID="DP1.00094.001", site=site, startdate=start, enddate=end, package="expanded", timeIndex="30", check.size=F, nCores=3)
+  swc <- neonUtilities::loadByProduct(dpID="DP1.00094.001", site=site, startdate=start, enddate=end, package="expanded", timeIndex="30", check.size=F, nCores=3,include.provisional = TRUE)
   list2env(swc, .GlobalEnv)
-
+  SWS_30_minute <- swc$SWS_30_minute
   # Change dates to posixct
   SWS_30_minute$startDateTime <- as.POSIXct(SWS_30_minute$startDateTime, tz="GMT")
   startYYYYMM <- substr(SWS_30_minute$startDateTime[1], 1, 7)
@@ -444,27 +429,27 @@ for(p in 1:nrow(information)){
   # Assign corrected water content final quality flag based on alpha and beta quality metrics, temp test, and science review flags
   # Use temperature test to inform flagging at all sites for measurement levels 1-3, but for deeper measurement levels only use temperature test at sites where >=35 cm soil temperature falls below 0.1 degrees C (based on 2016-April 2022 RELEASE 2023 soil temperature data)
   coldSites <- c("BARR", "HEAL", "TREE", "TOOL", "DEJU", "NOGP", "NIWO", "WOOD", "BONA", "DCFS", "CPER", "YELL", "RMNP", "MOAB", "STER", "BLAN", "ONAQ")
-  if(length(grep(doThese[p], coldSites)) == 1){
+  if(length(grep(site, coldSites)) == 1){
     # Identify rows with higher alpha metric, but that pass all other tests (beta, temp test, science review)
     goodRows <- intersect(intersect(intersect(intersect(which(SWS_30_minute$VSWCAlphaQM < 30),
-                                                             which(SWS_30_minute$VSWCBetaQM < 20)),
-                                                   c(which(SWS_30_minute$VSWCFinalQFSciRvw == 0),
-                                                     which(is.na(SWS_30_minute$VSWCFinalQFSciRvw), arr.ind=TRUE))),
-                                         which(SWS_30_minute$tempPassQM > 0)),
-                               which(SWS_30_minute$tempFailQM == 0))
+                                                        which(SWS_30_minute$VSWCBetaQM < 20)),
+                                              c(which(SWS_30_minute$VSWCFinalQFSciRvw == 0),
+                                                which(is.na(SWS_30_minute$VSWCFinalQFSciRvw), arr.ind=TRUE))),
+                                    which(SWS_30_minute$tempPassQM > 0)),
+                          which(SWS_30_minute$tempFailQM == 0))
   }else{
     goodRowsDeep <- intersect(intersect(intersect(which(SWS_30_minute$VSWCAlphaQM < 30),
-                                                       which(SWS_30_minute$VSWCBetaQM < 20)),
-                                             c(which(SWS_30_minute$VSWCFinalQFSciRvw == 0),
-                                               which(is.na(SWS_30_minute$VSWCFinalQFSciRvw), arr.ind=T))),
-                                   which(SWS_30_minute$verticalPosition >= 504))
+                                                  which(SWS_30_minute$VSWCBetaQM < 20)),
+                                        c(which(SWS_30_minute$VSWCFinalQFSciRvw == 0),
+                                          which(is.na(SWS_30_minute$VSWCFinalQFSciRvw), arr.ind=T))),
+                              which(SWS_30_minute$verticalPosition >= 504))
     goodRowsShallow <- intersect(intersect(intersect(intersect(intersect(which(SWS_30_minute$VSWCAlphaQM < 30),
-                                                                              which(SWS_30_minute$VSWCBetaQM < 20)),
-                                                                    c(which(SWS_30_minute$VSWCFinalQFSciRvw == 0),
-                                                                      which(is.na(SWS_30_minute$VSWCFinalQFSciRvw), arr.ind=T))),
-                                                          which(SWS_30_minute$verticalPosition < 504)),
-                                                which(SWS_30_minute$tempPassQM > 0)),
-                                      which(SWS_30_minute$tempFailQM == 0))
+                                                                         which(SWS_30_minute$VSWCBetaQM < 20)),
+                                                               c(which(SWS_30_minute$VSWCFinalQFSciRvw == 0),
+                                                                 which(is.na(SWS_30_minute$VSWCFinalQFSciRvw), arr.ind=T))),
+                                                     which(SWS_30_minute$verticalPosition < 504)),
+                                           which(SWS_30_minute$tempPassQM > 0)),
+                                 which(SWS_30_minute$tempFailQM == 0))
     goodRows <- c(goodRowsShallow, goodRowsDeep)
   }
   SWS_30_minute$correctedVSWCFinalQF <- 1
@@ -481,92 +466,92 @@ for(p in 1:nrow(information)){
   goodP3D1 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "003"), which(SWS_30_minute$verticalPosition == "501")), goodRows)
   goodP4D1 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "004"), which(SWS_30_minute$verticalPosition == "501")), goodRows)
   goodP5D1 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "005"), which(SWS_30_minute$verticalPosition == "501")), goodRows)
-  SWS_30_minute$correctedVSWCExpUncert[goodP1D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 1) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP2D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 1) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP3D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 1) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP4D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 1) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP5D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 1) )]
+  SWS_30_minute$correctedVSWCExpUncert[goodP1D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 1) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP2D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 1) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP3D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 1) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP4D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 1) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP5D1] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 1) )] *2
   #### Measurement level 2
   goodP1D2 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "001"), which(SWS_30_minute$verticalPosition == "502")), goodRows)
   goodP2D2 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "002"), which(SWS_30_minute$verticalPosition == "502")), goodRows)
   goodP3D2 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "003"), which(SWS_30_minute$verticalPosition == "502")), goodRows)
   goodP4D2 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "004"), which(SWS_30_minute$verticalPosition == "502")), goodRows)
   goodP5D2 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "005"), which(SWS_30_minute$verticalPosition == "502")), goodRows)
-  SWS_30_minute$correctedVSWCExpUncert[goodP1D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 2) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP2D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 2) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP3D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 2) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP4D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 2) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP5D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 2) )]
+  SWS_30_minute$correctedVSWCExpUncert[goodP1D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 2) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP2D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 2) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP3D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 2) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP4D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 2) )] *2
+  SWS_30_minute$correctedVSWCExpUncert[goodP5D2] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 2) )] *2
   #### Measurement level 3
   goodP1D3 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "001"), which(SWS_30_minute$verticalPosition == "503")), goodRows)
   goodP2D3 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "002"), which(SWS_30_minute$verticalPosition == "503")), goodRows)
   goodP3D3 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "003"), which(SWS_30_minute$verticalPosition == "503")), goodRows)
   goodP4D3 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "004"), which(SWS_30_minute$verticalPosition == "503")), goodRows)
   goodP5D3 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "005"), which(SWS_30_minute$verticalPosition == "503")), goodRows)
-  SWS_30_minute$correctedVSWCExpUncert[goodP1D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 3) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP2D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 3) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP3D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 3) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP4D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 3) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP5D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 3) )]
+  SWS_30_minute$correctedVSWCExpUncert[goodP1D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 3) )] *2
+  SWS_30_minute$correctedVSWCExpUncert[goodP2D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 3) )] *2
+  SWS_30_minute$correctedVSWCExpUncert[goodP3D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 3) )] *2
+  SWS_30_minute$correctedVSWCExpUncert[goodP4D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 3) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP5D3] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 3) )] *2
   #### Measurement level 4
   goodP1D4 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "001"), which(SWS_30_minute$verticalPosition == "504")), goodRows)
   goodP2D4 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "002"), which(SWS_30_minute$verticalPosition == "504")), goodRows)
   goodP3D4 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "003"), which(SWS_30_minute$verticalPosition == "504")), goodRows)
   goodP4D4 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "004"), which(SWS_30_minute$verticalPosition == "504")), goodRows)
   goodP5D4 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "005"), which(SWS_30_minute$verticalPosition == "504")), goodRows)
-  SWS_30_minute$correctedVSWCExpUncert[goodP1D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 4) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP2D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 4) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP3D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 4) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP4D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 4) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP5D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 4) )]
+  SWS_30_minute$correctedVSWCExpUncert[goodP1D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 4) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP2D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 4) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP3D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 4) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP4D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 4) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP5D4] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 4) )]*2
   #### Measurement level 5
   goodP1D5 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "001"), which(SWS_30_minute$verticalPosition == "505")), goodRows)
   goodP2D5 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "002"), which(SWS_30_minute$verticalPosition == "505")), goodRows)
   goodP3D5 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "003"), which(SWS_30_minute$verticalPosition == "505")), goodRows)
   goodP4D5 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "004"), which(SWS_30_minute$verticalPosition == "505")), goodRows)
   goodP5D5 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "005"), which(SWS_30_minute$verticalPosition == "505")), goodRows)
-  SWS_30_minute$correctedVSWCExpUncert[goodP1D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 5) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP2D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 5) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP3D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 5) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP4D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 5) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP5D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 5) )]
+  SWS_30_minute$correctedVSWCExpUncert[goodP1D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 5) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP2D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 5) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP3D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 5) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP4D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 5) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP5D5] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 5) )]*2
   #### Measurement level 6
   goodP1D6 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "001"), which(SWS_30_minute$verticalPosition == "506")), goodRows)
   goodP2D6 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "002"), which(SWS_30_minute$verticalPosition == "506")), goodRows)
   goodP3D6 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "003"), which(SWS_30_minute$verticalPosition == "506")), goodRows)
   goodP4D6 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "004"), which(SWS_30_minute$verticalPosition == "506")), goodRows)
   goodP5D6 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "005"), which(SWS_30_minute$verticalPosition == "506")), goodRows)
-  SWS_30_minute$correctedVSWCExpUncert[goodP1D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 6) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP2D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 6) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP3D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 6) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP4D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 6) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP5D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 6) )]
+  SWS_30_minute$correctedVSWCExpUncert[goodP1D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 6) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP2D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 6) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP3D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 6) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP4D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 6) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP5D6] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 6) )]*2
   #### Measurement level 7
   goodP1D7 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "001"), which(SWS_30_minute$verticalPosition == "507")), goodRows)
   goodP2D7 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "002"), which(SWS_30_minute$verticalPosition == "507")), goodRows)
   goodP3D7 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "003"), which(SWS_30_minute$verticalPosition == "507")), goodRows)
   goodP4D7 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "004"), which(SWS_30_minute$verticalPosition == "507")), goodRows)
   goodP5D7 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "005"), which(SWS_30_minute$verticalPosition == "507")), goodRows)
-  SWS_30_minute$correctedVSWCExpUncert[goodP1D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 7) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP2D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 7) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP3D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 7) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP4D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 7) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP5D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 7) )]
+  SWS_30_minute$correctedVSWCExpUncert[goodP1D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 7) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP2D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 7) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP3D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 7) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP4D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 7) )]*2
+  SWS_30_minute$correctedVSWCExpUncert[goodP5D7] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 7) )]*2
   #### Measurement level 8
   goodP1D8 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "001"), which(SWS_30_minute$verticalPosition == "508")), goodRows)
   goodP2D8 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "002"), which(SWS_30_minute$verticalPosition == "508")), goodRows)
   goodP3D8 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "003"), which(SWS_30_minute$verticalPosition == "508")), goodRows)
   goodP4D8 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "004"), which(SWS_30_minute$verticalPosition == "508")), goodRows)
   goodP5D8 <- intersect(intersect(which(SWS_30_minute$horizontalPosition == "005"), which(SWS_30_minute$verticalPosition == "508")), goodRows)
-  SWS_30_minute$correctedVSWCExpUncert[goodP1D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 8) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP2D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 8) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP3D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 8) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP4D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 8) )]
-  SWS_30_minute$correctedVSWCExpUncert[goodP5D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 8) )]
+  SWS_30_minute$correctedVSWCExpUncert[goodP1D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 1)), which(neonBoulded60Cal$measurementLevel == 8) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP2D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 2)), which(neonBoulded60Cal$measurementLevel == 8) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP3D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 3)), which(neonBoulded60Cal$measurementLevel == 8) )] *2
+  SWS_30_minute$correctedVSWCExpUncert[goodP4D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 4)), which(neonBoulded60Cal$measurementLevel == 8) )] * 2
+  SWS_30_minute$correctedVSWCExpUncert[goodP5D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 8) )] * 2
 
 
 
-  swc_results[[p]] <- SWS_30_minute
+
 
 
   # Plot original L1 data
@@ -743,4 +728,15 @@ for(p in 1:nrow(information)){
   filenameP5 <- paste0("data/derived/Reprocessed SWC Sensor Data/corrected_", site, "_P5_", startYYYYMM, "_to_", end, ".csv")
   write.csv(SWS_30_minute[which(SWS_30_minute$horizontalPosition=="005"), ], row.names = F, file =filenameP5)
 
+  return(SWS_30_minute)
 }
+
+for(i in 1:nrow(information)) {
+  swc_results[[i]] <- reprocess_vswc(information$site[[i]],information$start[[i]],information$end[[i]])
+}
+
+vswc_information <- information |>
+  mutate(vswc_corrected = swc_results)
+
+save(vswc_information,file = 'data/derived/reprocessed_vswc_data.Rda')
+
