@@ -220,74 +220,84 @@ Integrated Carbon Observation System) present a significant advancement
 in the nearly continuous observation of biogeochemical processes at the
 continental scale. Notably, at 47 core terrestrial sites across the
 continental United States, NEON provides half-hourly measurements of
-soil carbon content, soil CO\(_{2}\) concentration, temperature, and
-moisture at different vertical depths. In turn, FLUXNET provides
-measurements of the cumulative sum of all ecosystem carbon fluxes in an
-airshed using the eddy covariance technique (Baldocchi, 2014). Soil
-observations provided by NEON are on the same timescale and standardized
-with eddy covariance measurements from FLUXNET. When combined together,
-NEON and FLUXNET data can be used to reconcile differences between
-model-derived or data-estimated components (Jian et al., 2022; Luo et
-al., 2011; Phillips et al., 2017; J. Shao et al., 2015; P. Shao et al.,
-2013; Sihi et al., 2016).
+soil CO\(_{2}\) concentration, temperature, and moisture at different
+vertical depths. Each of these NEON sites also encompasses measurements
+of the cumulative sum of all ecosystem carbon fluxes in an airshed using
+the eddy covariance technique (Baldocchi, 2014). Soil observations
+provided by NEON are on the same timescale and standardized with eddy
+covariance measurements from FLUXNET. These types of data (NEON and
+FLUXNET) can be used to reconcile differences between model-derived or
+data-estimated components of ecosystem carbon flux (Jian et al., 2022;
+Luo et al., 2011; Phillips et al., 2017; J. Shao et al., 2015; P. Shao
+et al., 2013; Sihi et al., 2016).
 
 Beyond direct observations of soil CO\(_{2}\) concentrations and other
-environmental variables such as moisture or temperature, soil carbon
-fluxes are a key metric for understanding change in soil carbon pools
-over time (Bond-Lamberty et al., 2024). A soil carbon flux to the
-atmosphere (\(F_{S}\), units \(\mu\)mol m\(^{-2}\) s\(^{-1}\)),
-represents the aggregate process of transfer of soil CO\(_{2}\) to the
-atmosphere from physical and biological processes (e.g.~diffusion and
-respiration). Measurements of soil carbon fluxes can be coupled with
-empirical or process models of soil carbon. Soil carbon fluxes can be
-assumed to encompass soil carbon respiration from autotrophic or
-heterotrophic sources (Davidson et al., 2006), typically assumed to be
-static across the soil biome and modeled with a exponential \(Q_{10}\)
-paradigm (Bond-Lamberty et al., 2004; Chen \& Tian, 2005; Hamdi et al.,
-2013).
+environmental variables such as moisture or temperature, estimated or
+observed soil carbon fluxes are a key metric for understanding change in
+soil carbon pools over time (Bond-Lamberty et al., 2024). A soil carbon
+flux to the atmosphere (\(F_{S}\), units \(\mu\)mol m\(^{-2}\)
+s\(^{-1}\)), represents the aggregate process of transfer of soil
+CO\(_{2}\) to the atmosphere from physical and biological processes
+(e.g.~diffusion and respiration). Measurements of soil carbon fluxes can
+be coupled with empirical or process models of soil carbon. Soil carbon
+fluxes can be assumed to encompass soil carbon respiration from
+autotrophic or heterotrophic sources (Davidson et al., 2006), typically
+assumed to be static across the soil biome and modeled with a
+exponential \(Q_{10}\) paradigm (Bond-Lamberty et al., 2004; Chen \&
+Tian, 2005; Hamdi et al., 2013).
 
-Measurement of \(F_{S}\) is done through directly with soil chambers in
-a closed system with an infrared gas analyzer (e.g.~ ) or estimated from
-soil CO\(_{2}\) measurements at different depths in the soil. In the
-latter case, the flux-gradient method can be used to estimate soil flux;
-it is an approach that is uses conservation of mass to calculate flux at
-a vertical soil depth \(z\) at steady state by applying Fick's law of
-diffusion. A simplifying assumption for the flux-gradient method is that
-there no mass transfer in the other spatial dimensions \(x\) and \(y\)
-(Maier \& Schack-Kirchner, 2014). The diffusivity profile, a key
-component of this calculation, varies across the soil depth as a
-function of soil temperature, soil volumetric water content, atmospheric
-air pressure, and soil bulk density (Millington \& Shearer, 1971;
-Moldrup et al., 1999).
+One method by which \(F_{S}\) is measured in the field is through the
+use of soil chambers in a closed, well-mixed system (Norman et al.,
+1997) with headspace trace gas concentrations measured with an infrared
+gas analyzer (IRGA). \(F_{S}\) can also be estimated from soil
+CO\(_{2}\) measurements at different depths in the soil using the
+flux-gradient method. This method is an approach that is uses
+conservation of mass to calculate flux at a vertical soil depth \(z\) at
+steady state by applying Fick's law of diffusion. A simplifying
+assumption for the flux-gradient method is that there no mass transfer
+in the other spatial dimensions \(x\) and \(y\) (Maier \&
+Schack-Kirchner, 2014). The diffusivity profile, a key component of this
+calculation, varies across the soil depth as a function of soil
+temperature, soil volumetric water content, atmospheric air pressure,
+and soil bulk density (Millington \& Shearer, 1971; Moldrup et al.,
+1999).
 
-A growing number of databases such as the Soil Respiration Database
-(SRDB) or Continuous Soil Respiration Database (COSORE) add to the
-growing network of observations of soil fluxes (Bond-Lamberty, 2018;
-Bond-Lamberty et al., 2020; Bond-Lamberty \& Thomson, 2010; Jian et al.,
-2021; Jiang et al., 2024). Currently, NEON provides all measurements to
+Databases such as the Soil Respiration Database (SRDB) or the Continuous
+Soil Respiration Database (COSORE) add to the growing network of
+resources for making collected observations of soil fluxes available to
+other workers (Bond-Lamberty, 2018; Bond-Lamberty et al., 2020;
+Bond-Lamberty \& Thomson, 2010; Jian et al., 2021; Jiang et al., 2024).
+However, these databases currently encompass primarily direct soil
+measurements of fluxes (i.e.~those using methods like the closed-chamber
+method described above). Currently, NEON provides all measurements to
 calculate \(F_{S}\) from Fick's law, but soil flux as a derived data
-product was descoped from the initial network launch (Berenbaum et al.,
-2015). Deriving data-based estimates of \(F_{S}\) across NEON sites thus
-represents a high priority.
+product was descoped from the initial network launch due to budget
+constraints (Berenbaum et al., 2015). Deriving estimates of \(F_{S}\)
+using continuous sensor data across NEON sites thus represents a high
+priority.
 
-This study describes efforts to develop an R software package,
-\textit{neonSoilFlux}, that can be used to derive a standardized
-estimate of \(F_{S}\) at all terrestrial NEON sites. After calculating
-these flux estimates, we then validated them against field observations
-from a subset of sites.
+This study describes an R software package, \texttt{neonSoilFlux}, that
+can be used to derive a standardized estimate of \(F_{S}\) at all
+terrestrial NEON sites. After calculating these flux estimates, we then
+validated them against direct chamber-based field observations of soil
+carbon dioxide flux from a subset of terrestrial NEON sites spanning six
+states.
 
 Key objectives of this study are to:
 
-\begin{itemize}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  apply the flux-gradient method to measurement to current NEON sites
+  Apply the flux-gradient method estimate soil CO\(_{2}\) flux from
+  continuous sensor measurements across NEON sites.
 \item
-  benchmark produced soil carbon fluxes to other ancillary measurements
-  (e.g.~SRDB, measurements of soil respiration)
+  Benchmark estimated soil carbon fluxes against field measurements
+  (e.g.~data from SRDB/COSORE, direct measurements of soil flux).
 \item
-  identify sources of error for future work
-\end{itemize}
+  Identify sources of error in the flux-gradient approach across diverse
+  sites in order to guide future work.
+\end{enumerate}
 
 \section{Materials and Methods}\label{materials-and-methods}
 
@@ -333,21 +343,21 @@ Mean annual temperature
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Mean annual precipitation
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(\overline{VWC}\) (\%)
+\(\overline{SWC}\) (\%)
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
 Santa Rita Experimental Range (SRER) & 31.91068, -110.83549 & Shrubland
-& 19.3\(^{\circ}\)C & 47.6\(^{\circ}\) & 346.2 mm & 4.0\% \\
+& 19.3\(^{\circ}\)C & 47.6\(^{\circ}\) & 346 mm & 4.0\% \\
 San Joaquin Experimental Range (SJER) & 37.10878, -119.73228 & Oak
-woodland & 16.4\(^{\circ}\)C & 41.7\(^{\circ}\) & 539.62 mm & 1.2\% \\
+woodland & 16.4\(^{\circ}\)C & 41.7\(^{\circ}\) & 540 mm & 1.2\% \\
 Wind River Experimental Forest (WREF) & 45.82049, -121.95191 & Evergreen
 forest & 9.2\(^{\circ}\)C & 15.3\(^{\circ}\) & 2225 mm & 27.2\% \\
-Chase Lake National Wildlife Refuge (WOOD) & 14.9\(^{\circ}\) & 47.1282,
--99.241334 & Restored prairie grassland & 4.9\(^{\circ}\)C & 495 mm &
-14.9\% \\
+Chase Lake National Wildlife Refuge (WOOD) & 47.1282, -99.241334 &
+Restored prairie grassland & 4.9\(^{\circ}\)C & 14.9\(^{\circ}\) & 495
+mm & 14.9\% \\
 Konza Prairie Biological Station (KONZ) & 39.100774, -96.563075 &
 Tallgrass Prairie & 12.4\(^{\circ}\)C & 23.4\(^{\circ}\) & 870 mm &
 23.4\% \\
@@ -1197,6 +1207,13 @@ temperature ({DP1}.00041.001)}. National Ecological Observatory Network
 National Ecological Observatory Network (NEON). (2024e). \emph{Soil
 water content and water salinity ({DP1}.00094.001)}. National Ecological
 Observatory Network (NEON). \url{https://doi.org/10.48443/A8VY-Y813}
+
+\bibitem[\citeproctext]{ref-normanComparisonSixMethods1997}
+Norman, J. M., Kucharik, C. J., Gower, S. T., Baldocchi, D. D., Crill,
+P. M., Rayment, M., Savage, K., \& Striegl, R. G. (1997). A comparison
+of six methods for measuring soil-surface carbon dioxide fluxes.
+\emph{Journal of Geophysical Research: Atmospheres}, \emph{102}(D24),
+28771--28777. \url{https://doi.org/10.1029/97JD01440}
 
 \bibitem[\citeproctext]{ref-phillipsValueSoilRespiration2017}
 Phillips, C. L., Bond-Lamberty, B., Desai, A. R., Lavoie, M., Risk, D.,
