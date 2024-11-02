@@ -57,17 +57,17 @@ Listing of NEON sites studied for field work and analysis. $\overline{T_{S}}$: a
 
 Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC soil collars (FIXME: diameter) were installed in close proximity to the permanent NEON soil sensors at each site. The soil plot where measurements was taken was chosen at each site in consultation with NEON staff to maximize likelihood of quality soil sensor measurements during the duration of the IRGA measurements at each site.
 
-IDEA: Add graphic of soil plot layout and placement of soil collar(s) -- could make diagram in OmniGraffle?
+IN PROGRESS: Add graphic of soil plot layout and placement of soil collar(s) -- could make diagram in OmniGraffle?
 
 ### Infrared gas analyzer measurements of soil CO$_{2}$ flux
 
 During the summer 2022 field campaign, a LI-COR 6800 with soil flux chamber attachment was used to measure soil fluxes for 8 hours each day on an hourly interval. During the summer 2024 field campaign, the LI-6800 measurements were taken on a half-hourly interval and were paired with an automated soil flux chamber setup (FIXME multiplexer, IRGA, chamber model numbers) that made automated measurements on a half-hourly interval 24 hours a day while we were on site. Each instrument was paired with a soil temperature and moisture probe (FIXME: Stevens model #) that was used to make soil temperature and moisture measurements concurrent with the CO$_{2}$ flux measurements.
 
-Dead bands, measurement duration, instrument self-testing.
+IN PROGRESS: Dead bands, measurement duration, instrument self-testing.
 
 ### Post-collection processing of data
 
-LI-COR SoilFluxPro software to assess dead band and measurement duration. 
+IN PROGRESS: LI-COR SoilFluxPro software to assess dead band and measurement duration. 
 
 ## `neonSoilFlux` R package
 
@@ -99,9 +99,9 @@ NEON reports QA flags as a binary value for a given measurement and half-hourly 
 
 We generate a vector of bootstrap samples of the distribution of the monthly mean $\overline{\boldsymbol{m}}$ and monthly standard error $\overline{\boldsymbol\sigma}$ the following ways:
 
-1.  Randomly sample from the uncertainty and bias independently: $\boldsymbol\sigma_{j}$ and the bias $\mathbf{b}_{k}$ (not necessarily the same sample)
-2.  Generate a vector $\mathbf{n}$ of length $N$, where $\mathbf{n}_{i}$ is a random sample from a normal distribution with mean $\boldsymbol{m}_{i}$ and standard deviation $\boldsymbol\sigma_{j}$. Since $M<N$, values from $\mathbf{m}$ will be reused.
-3.  With these $N$ random samples, $\overline{y}_{i}=\overline{\vec{x}}+\vec{b}_{k}$ and $s_{i}$ is the sample standard deviation of $\vec{x}$. We expect that $s_{i} \approx \vec{\sigma}_{j}$.
+1. Randomly sample from the uncertainty and bias independently: $\boldsymbol\sigma_{j}$ and the bias $\mathbf{b}_{k}$ (not necessarily the same sample)
+2. Generate a vector $\mathbf{n}$ of length $N$, where $\mathbf{n}_{i}$ is a random sample from a normal distribution with mean $\boldsymbol{m}_{i}$ and standard deviation $\boldsymbol\sigma_{j}$. Since $M<N$, values from $\mathbf{m}$ will be reused.
+3. With these $N$ random samples, $\overline{y}_{i}=\overline{\vec{x}}+\vec{b}_{k}$ and $s_{i}$ is the sample standard deviation of $\vec{x}$. We expect that $s_{i} \approx \vec{\sigma}_{j}$.
 4. The reported monthly mean and standard deviation are then computed $\overline{\overline{y}}$ and $\overline{s}$. Measurements and uncertainties that did not pass the QA check are then substituted with $\overline{\overline{y}}$ and $\overline{s}$.
 
 ### Diffusivity computation {#sec-compute-diffusivity}
@@ -152,23 +152,23 @@ We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux $F_{ij}
 
 where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$) and $\frac{dC}{dz}$ is the gradient of CO$_{2}$ molar concentration ($\mu$mol m$^{-3}$, so the gradient has units of $\mu$mol m$^{-3}$ m$^{-1}$). The diffusivity (described below) is a function of soil temperature, soil water content, and soil physical properties. The soil surface flux is theoretically defined by applying Equation \ref{eq:ficks} to measurements collected at the soil surface and directly below the surface. Measurements of soil temperature, soil water content, and soil CO$_{2}$ molar concentration across the soil profile allow for application of Equation \ref{eq:flux} across different soil depths. The flux gradient method approximates the soil surface flux either by (1) computation Equation \ref{eq:ficks} across sub-surface measurement depths to the surface. Each site had three measurement layers, so we denote the flux between which two layers as a three-digit subscript $F_{ijk}$ where indicator variables indicating if a given layer was used (written in order of increasing depth), according to the following:
 
--   $F_{000}$ is a surface flux estimate using the intercept of the linear regression of $D_{a}$ and the slope from linear regression of CO$_{2}$ (which represents $\frac{dC}{dz}$ in Fick's Law). @tangAssessingSoilCO22003 used this approach to compute fluxes in an oak-grass savannah.
--   $F_{110}$, $F_{011}$ are fluxes across the two most shallow layers and two deepest layers respectively. The diffusivity used in Fick's Law is always at the deeper measurement layer. When used as a surface flux estimate we assume CO$_{2}$ remains constant above this flux depth.
--   $F_{101}$ is a surface flux estimate using linear extrapolation using concentration measurements between the shallowest and deepest measurement layer. @hirano_long-term_2003 and @tangContinuousMeasurementsSoil2005 used an approach similar to $F_{101}$ in a temperate deciduous broadleaf forest and ponderosa pine forest respectively.
+- $F_{000}$ is a surface flux estimate using the intercept of the linear regression of $D_{a}$ and the slope from linear regression of CO$_{2}$ (which represents $\frac{dC}{dz}$ in Fick's Law). @tangAssessingSoilCO22003 used this approach to compute fluxes in an oak-grass savannah.
+- $F_{110}$, $F_{011}$ are fluxes across the two most shallow layers and two deepest layers respectively. The diffusivity used in Fick's Law is always at the deeper measurement layer. When used as a surface flux estimate we assume CO$_{2}$ remains constant above this flux depth.
+- $F_{101}$ is a surface flux estimate using linear extrapolation using concentration measurements between the shallowest and deepest measurement layer. @hirano_long-term_2003 and @tangContinuousMeasurementsSoil2005 used an approach similar to $F_{101}$ in a temperate deciduous broadleaf forest and ponderosa pine forest respectively.
 
 Uncertainty in all $F_{ijk}$ is computed through quadrature.
 
 ## Post processing evaluation
 
-Following collection of field measurements from the LICOR and calculation of the soil fluxes from `neonSoilFlux` package, we compared measured soil fluxes (from the LICOR instruments) to a given soil flux calculation during the same half hour.  At each site and flux compuation method we also computed the R$^{2}$ value for the half-hourly and measured LICOR values and the RMSE.
+Following collection of field measurements from the LICOR and calculation of the soil fluxes from `neonSoilFlux` package, we compared measured soil fluxes (from the LICOR instruments) to a given soil flux calculation during the same half hour. At each site and flux compuation method we also computed the R$^{2}$ value for the half-hourly and measured LICOR values and the RMSE.
 
 We evaluate the efficacy of results from the flux-gradient method in two ways. First, we calculated the signal to noise ratio (SNR), defined as the ratio of the reported flux to its uncertainty ($F_{ijk}/\sigma_{ijk}$).
 
-We evaluated if the measured field fluxes were within the calculated uncertainty from the flux-gradient method using the various approaches outlined above. We observed that the calculated quadrature uncertainty in many cases can be much larger than the reported measurement (as shown through the signal to noise ratio, SNR = $F_{ijk}/\sigma_{ijk}$. We evaluated $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$, where $F_{S}$ is a measured field soil flux from the LICOR 6800 (the LICOR 8250 was used at only three sites) and $F_{ijk}$ is a computed flux method from the flux-gradient, and $\sigma_{ijk}$ is the reported uncertainty for the flux method.  The parameter $\epsilon$ was an uncertainty reduction factor to evaluate how sensitive the results were given, measured by the proportion of field measurements contained in that range.  
+We evaluated if the measured field fluxes were within the calculated uncertainty from the flux-gradient method using the various approaches outlined above. We observed that the calculated quadrature uncertainty in many cases can be much larger than the reported measurement (as shown through the signal to noise ratio, SNR = $F_{ijk}/\sigma_{ijk}$. We evaluated $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$, where $F_{S}$ is a measured field soil flux from the LICOR 6800 (the LICOR 8250 was used at only three sites) and $F_{ijk}$ is a computed flux method from the flux-gradient, and $\sigma_{ijk}$ is the reported uncertainty for the flux method. The parameter $\epsilon$ was an uncertainty reduction factor to evaluate how sensitive the results were given, measured by the proportion of field measurements contained in that range.  
 
 ## Diffusivity back calculations
 
-We also computed the diffusivity at each of the different sites from the derived flux values and the reported gradient in CO2 at each of the surface layers (Figure XXXX) through dividing $F_{field}/dC/dz$  These values were then compared to reported diffusivity from the flux computation method.
+We also computed the diffusivity at each of the different sites from the derived flux values and the reported gradient in CO2 at each of the surface layers (Figure XXXX) through dividing $F_{field}/dC/dz$. These values were then compared to reported diffusivity from the flux computation method.
 
 Finally, the bulk density at a given site was then also computed through back calculation.
 
@@ -192,7 +192,7 @@ Panel a) Proportion of gap-filled environmental measurements used to generate $F
 
 ::: {#fig-stats-plot}
 ![Stats of model](figures/stats-plot.png)
-Reported stats from comparison of field data to computed soil fluxes by site. Sites are arranged in increasing temperature.  $m$ is the slope of a linear regression, $R^{2}$, normalized RMSE is the RMSE divided by the mean.  The lag is shift from number of measurement periods compared to the field data.  Lag 30 means that field data were compared to reported soil flux from the half hour previously.
+Reported stats from comparison of field data to computed soil fluxes by site. Sites are arranged in increasing temperature. $m$ is the slope of a linear regression, $R^{2}$, normalized RMSE is the RMSE divided by the mean. The lag is shift from number of measurement periods compared to the field data. Lag 30 means that field data were compared to reported soil flux from the half hour previously.
 :::
 
 Figure: flux results at the different levels (000,111,001,010,100)
@@ -204,10 +204,10 @@ LEAD IN TABLE HERE These results are reported in @fig-uncertainty-stats.
 ::: {#fig-uncertainty-stats}
 ![](figures/uncertainty-stats.png)
 
-Top panel: distribution of SNR values across each of the different sites for the $F_{000}$ and $F_{111}$ flux gradient calculations.  Bottom panel: Computation of uncertainty reduction to evaluate.  As $\epsilon$ increases this indicates that the uncertainty estimate reduces, making it harder to be within the range. BLAH
+Top panel: distribution of SNR values across each of the different sites for the $F_{000}$ and $F_{111}$ flux gradient calculations. Bottom panel: Computation of uncertainty reduction to evaluate. As $\epsilon$ increases this indicates that the uncertainty estimate reduces, making it harder to be within the range. SAY MORE
 :::
 
-Calculated diffusivity from both the `neonSoilFlux` method and back calculated from the LICOR are reported in Figure @fig-diffusivity-plot. SAY MORE
+Calculated diffusivity from both the `neonSoilFlux` method and back calculated from the LI-COR are reported in Figure @fig-diffusivity-plot. SAY MORE
 
 <!-- Add in bulk density at NEON -->
 
@@ -223,17 +223,19 @@ This study presents a unified data science workflow to efficiently process autom
 
 ## General evaluation of flux-gradient approach
 
-Key assumptions of the flux-gradient approach are that CO$_{2}$ concentrations increase throughout the soil profile. We found that this condition was met at XXX% across the study period. Periods where this gradient condition are not met generally are connected to biophysical processes such soil wetting events (e.g. KONZ), which have the effect of temporarily reducing the soil respiration or efflux.  For modeling soil respiration, typically a non-linear response function is considered, that also considers soil type as well [@boumaAssessmentRootSoil2000; @yanPorescaleInvestigationResponse2016; @yanMoistureFunctionSoil2018].  For the `neonSoilFlux` package soil type is connected to the bulk density, which is separately determined / measured at a site.
+Key assumptions of the flux-gradient approach are that CO$_{2}$ concentrations increase throughout the soil profile. We found that this condition was met at XXX% across the study period. Periods where this gradient condition are not met generally are connected to biophysical processes such soil wetting events (e.g. KONZ), which have the effect of temporarily reducing the soil respiration or efflux. For modeling soil respiration, typically a non-linear response function is considered, that also considers soil type as well [@boumaAssessmentRootSoil2000; @yanPorescaleInvestigationResponse2016; @yanMoistureFunctionSoil2018]. For the `neonSoilFlux` package soil type is connected to the bulk density, which is separately determined / measured at a site.
 
 The largest source of uncertainty to improve reliability of the flux estimate is to prevent the usage of gap-filled data, especially with soil water (Figure XXX). Across the observed half-hourly periods for field measurements, the percentage of half-hourly periods where all four environmental measurements were available spanned from 0% (SJER) to 7% (SRER), but three sites (WREF, SRER, UNDE) had 95% of half-hourly intervals with just one gap-filled measurement.Where appropriate we have replaced measurements flagged to the protocol with a monthly gap-filled value. Further extensions of the gapfilling method could use more sophisticated gap-filling routines, similar to what is used for net ecosystem carbon exchange [@falgeGapFillingStrategies2001; @moffatComprehensiveComparisonGapfilling2007; @mariethozFeaturepreservingInterpolationFiltering2015; @liuRobustGapfillingApproach2023; @zhangTemporalGapFilling12Hourly2023].
 
-Diffusivity taken from the megapit.  Big microsite and temporal differences, soil shrink / swell.  How do we think about what that means for using this approach to generalize across a NEON site over continuous time.
+Diffusivity taken from the megapit.  Big microsite and temporal differences, soil shrink / swell. How do we think about what that means for using this approach to generalize across a NEON site over continuous time.
 
-- Back calculation of bulk density to NEON sites.
+- Back calculation of bulk density to NEON sites (boxplot figure).
 
 ## Evaluation of flux-gradient approach at each site
 
-The six sites studied provide separate case studies for considerations when applying the flux-gradient method to evaluate resulting uncertainties and fluxes.  SRER is characterized by sandy soil, which also led to the hottest site there.  Fluxes are driven by the change and response to temperature in the temperature driven, whereas we observed a decoupling of temperature across the different layers (supplementary figures?)  For this instance, using the flux across the top two layers ($F_{110}$) produced a pattern of soil flux consistent with the observed field data.  The remaining methods $F_{101}$, $F_{011}$, or $F_{000}$ are derived from information at the deeper layer, which is decoupled both in terms of temperature and CO$_{2}$ concentration.
+The six sites studied provide separate case studies for considerations when applying the flux-gradient method to evaluate resulting uncertainties and fluxes.
+
+SRER is characterized by sandy soil, which also led to the hottest site there.  Fluxes are driven by the change and response to temperature in the temperature driven, whereas we observed a decoupling of temperature across the different layers (supplementary figures?)  For this instance, using the flux across the top two layers ($F_{110}$) produced a pattern of soil flux consistent with the observed field data.  The remaining methods $F_{101}$, $F_{011}$, or $F_{000}$ are derived from information at the deeper layer, which is decoupled both in terms of temperature and CO$_{2}$ concentration.
 
 KONZ is a site that experienced a significant rain event prior to sampling with eventual drying out over the course of the experiment.  In this case we observed storage of soil water (as shown in supplementary figures), which increased the soil CO$_{2}$ at the top layer, leading to negative values of flux at the start of the experiment, with the fluxes drying out afterwards. In this case only when the soil dried out (or returned to a baseline level), that the fluxes at the provided layer would work out in this case.
 
@@ -252,7 +254,7 @@ Derived results from the `neonSoilFlux` package have patterns that are consisten
 
 The `neonSoilFlux` package provides three different approaches of values for a soil flux. We believe these approaches reflect a variety of site-specific determination and assumptions used to generate a soil flux measurement [@maierUsingGradientMethod2014], with the choice of method having a determinative approach on reported values. Reported results could further be distilled down using ensemble averaging averaging approaches [@rafteryUsingBayesianModel2005; @elshallRelativeModelScore2018].
 
-Figures XXX suggests that the provided uncertainty from `neonSoilFlux` is an overestimate compared to what is actually computed. When $\epsilon=0$ in Figure @fig-uncertainty-stats, that means we are just using the reported uncertainty from neonSoilFlux.  Looking at that (epsilon = 0) shows field measurements UNDE, KONZ, SJER are 100% within the reported intervals from neonSoilFlux.  But those sites tend to have a SNR < 1, so the uncertainty is pretty noisy.  For UNDE, we could even reduce the uncertainty by a factor of 75% (epsilon = 0.75), more than half of the field measurements will still be within the reported intervals.  For  KONZ, we are still within 70% of the reported intervals when uncertainty is reduced by 90%.  To me, that suggests that while the reported accuracy (as compared to field measurements), we do have higher precision.
+Figures XXX suggests that the provided uncertainty from `neonSoilFlux` is an overestimate compared to what is actually computed. When $\epsilon=0$ in Figure @fig-uncertainty-stats, that means we are just using the reported uncertainty from neonSoilFlux. Looking at that (epsilon = 0) shows field measurements UNDE, KONZ, SJER are 100% within the reported intervals from neonSoilFlux. But those sites tend to have a SNR < 1, so the uncertainty is pretty noisy. For UNDE, we could even reduce the uncertainty by a factor of 75% (epsilon = 0.75), more than half of the field measurements will still be within the reported intervals.  For KONZ, we are still within 70% of the reported intervals when uncertainty is reduced by 90%. That suggests that while the reported accuracy (as compared to field measurements), we do have higher precision.
 
 These challenges notwithstanding, the method used here and made available in the `neonSoilFlux` R package is able to produce nearly continuous estimates of flux across all XXYY terrestrial NEON sites. These estimates are a significant improvement on available approaches to constrain the portion of ecosystem respiration attributable to the soil. This, in turn, aids in our ability to understand the components of net ecosystem flux assessed at these sites using the co-located eddy flux towers.
 
@@ -269,6 +271,8 @@ We have here presented an R package `neonSoilFlux` for the estimation of soil CO
 Undergrads that are not listed as authors. Technical staff at USF. NEON field staff and assignable assets teams. LI-COR technical staff for helpful discussions. NSF grants to JZ and NBZ.
 
 # Conflict of Interest Statements
+
+None declared.
 
 # Author Contributions
 

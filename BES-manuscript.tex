@@ -388,8 +388,8 @@ measurements was taken was chosen at each site in consultation with NEON
 staff to maximize likelihood of quality soil sensor measurements during
 the duration of the IRGA measurements at each site.
 
-IDEA: Add graphic of soil plot layout and placement of soil collar(s) --
-could make diagram in OmniGraffle?
+IN PROGRESS: Add graphic of soil plot layout and placement of soil
+collar(s) -- could make diagram in OmniGraffle?
 
 \subsubsection{\texorpdfstring{Infrared gas analyzer measurements of
 soil CO\(_{2}\)
@@ -406,13 +406,13 @@ instrument was paired with a soil temperature and moisture probe (FIXME:
 Stevens model \#) that was used to make soil temperature and moisture
 measurements concurrent with the CO\(_{2}\) flux measurements.
 
-Dead bands, measurement duration, instrument self-testing.
+IN PROGRESS: Dead bands, measurement duration, instrument self-testing.
 
 \subsubsection{Post-collection processing of
 data}\label{post-collection-processing-of-data}
 
-LI-COR SoilFluxPro software to assess dead band and measurement
-duration.
+IN PROGRESS: LI-COR SoilFluxPro software to assess dead band and
+measurement duration.
 
 \subsection{\texorpdfstring{\texttt{neonSoilFlux} R
 package}{neonSoilFlux R package}}\label{neonsoilflux-r-package}
@@ -699,7 +699,7 @@ calculations}\label{diffusivity-back-calculations}
 
 We also computed the diffusivity at each of the different sites from the
 derived flux values and the reported gradient in CO2 at each of the
-surface layers (Figure XXXX) through dividing \(F_{field}/dC/dz\) These
+surface layers (Figure XXXX) through dividing \(F_{field}/dC/dz\). These
 values were then compared to reported diffusivity from the flux
 computation method.
 
@@ -792,12 +792,12 @@ values across each of the different sites for the \(F_{000}\) and
 \(F_{111}\) flux gradient calculations. Bottom panel: Computation of
 uncertainty reduction to evaluate. As \(\epsilon\) increases this
 indicates that the uncertainty estimate reduces, making it harder to be
-within the range. BLAH}
+within the range. SAY MORE}
 
 \end{figure}%
 
 Calculated diffusivity from both the \texttt{neonSoilFlux} method and
-back calculated from the LICOR are reported in Figure
+back calculated from the LI-COR are reported in Figure
 Figure~\ref{fig-diffusivity-plot}. SAY MORE
 
 \begin{figure}
@@ -864,7 +864,7 @@ time.
 \begin{itemize}
 \tightlist
 \item
-  Back calculation of bulk density to NEON sites.
+  Back calculation of bulk density to NEON sites (boxplot figure).
 \end{itemize}
 
 \subsection{Evaluation of flux-gradient approach at each
@@ -872,15 +872,17 @@ site}\label{evaluation-of-flux-gradient-approach-at-each-site}
 
 The six sites studied provide separate case studies for considerations
 when applying the flux-gradient method to evaluate resulting
-uncertainties and fluxes. SRER is characterized by sandy soil, which
-also led to the hottest site there. Fluxes are driven by the change and
-response to temperature in the temperature driven, whereas we observed a
-decoupling of temperature across the different layers (supplementary
-figures?) For this instance, using the flux across the top two layers
-(\(F_{110}\)) produced a pattern of soil flux consistent with the
-observed field data. The remaining methods \(F_{101}\), \(F_{011}\), or
-\(F_{000}\) are derived from information at the deeper layer, which is
-decoupled both in terms of temperature and CO\(_{2}\) concentration.
+uncertainties and fluxes.
+
+SRER is characterized by sandy soil, which also led to the hottest site
+there. Fluxes are driven by the change and response to temperature in
+the temperature driven, whereas we observed a decoupling of temperature
+across the different layers (supplementary figures?) For this instance,
+using the flux across the top two layers (\(F_{110}\)) produced a
+pattern of soil flux consistent with the observed field data. The
+remaining methods \(F_{101}\), \(F_{011}\), or \(F_{000}\) are derived
+from information at the deeper layer, which is decoupled both in terms
+of temperature and CO\(_{2}\) concentration.
 
 KONZ is a site that experienced a significant rain event prior to
 sampling with eventual drying out over the course of the experiment. In
@@ -941,7 +943,7 @@ intervals from neonSoilFlux. But those sites tend to have a SNR
 even reduce the uncertainty by a factor of 75\% (epsilon = 0.75), more
 than half of the field measurements will still be within the reported
 intervals. For KONZ, we are still within 70\% of the reported intervals
-when uncertainty is reduced by 90\%. To me, that suggests that while the
+when uncertainty is reduced by 90\%. That suggests that while the
 reported accuracy (as compared to field measurements), we do have higher
 precision.
 
@@ -984,6 +986,8 @@ helpful discussions. NSF grants to JZ and NBZ.
 
 \section{Conflict of Interest
 Statements}\label{conflict-of-interest-statements}
+
+None declared.
 
 \section{Author Contributions}\label{author-contributions}
 
