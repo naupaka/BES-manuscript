@@ -4,3 +4,5 @@
 .httr-oauth
 .DS_Store
 /.quarto/
+^data/derived/Reprocessed SWC Sensor Data/$
+^figures/Reprocessed SWC Sensor Data/$
