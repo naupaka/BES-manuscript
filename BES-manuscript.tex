@@ -301,15 +301,25 @@ Key objectives of this study are to:
 
 \section{Materials and Methods}\label{materials-and-methods}
 
-\subsection{Study sites}\label{study-sites}
+\subsection{Field methods}\label{field-methods}
 
-We selected six terrestrial NEON sites for analysis. These sites span a
-range of environmental gradients and terrestrial domains for analysis
-(Table~\ref{tbl-neon-sites}). Over the course of two field campaigns in
-2022 and 2024 we conducted weekly visits at each site through selecting
-a specific in the soil sampling array, installing a temporary soil
-collar, and doing direct flux measurements. These data were then
-compared for analysis later.
+\subsubsection{Focal NEON Sites}\label{focal-neon-sites}
+
+In order to acquire field data to validate model predictions of flux, we
+selected six terrestrial NEON sites for analysis. We conducted field
+measurement campaigns at these sites, which span a range of
+environmental gradients and terrestrial domains
+(Table~\ref{tbl-neon-sites}). SJER, SRER, and WREF were visited during
+May and June of 2022, and WOOD, KONZ, and UNDE during May and June of
+2024.
+
+Over the course of two field campaigns in 2022 and 2024, we conducted
+week-long visits at each site. In consultation with NEON field staff, we
+first selected a specific plot in the soil sampling array to maximize
+the concurrent availability of sensor data. We then made measurements of
+flux on an hourly or half-hourly interval for 8 hours each day after
+letting temporarily-installed soil collar(s) equilibrate for
+approximately 24 hours.
 
 \scriptsize
 
@@ -369,16 +379,6 @@ University of Notre Dame Environmental Research Center (UNDE) &
 
 \normalsize
 
-\subsection{Field methods}\label{field-methods}
-
-In order to acquire field data to validate model predictions of flux, we
-conducted field measurement campaigns at the siz core terrestrial NEON
-sites listed above. SJER, SRER, and WREF were visited during May and
-June of 2022, and WOOD, KONZ, and UNDE during May and June of 2024. We
-spent a week at each site, taking daily measurements of flux on an
-hourly or half-hourly interval after letting soil collar(s) equilibrate
-for approximately 24 hours.
-
 \subsubsection{Soil collar placement}\label{soil-collar-placement}
 
 Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC
@@ -414,7 +414,8 @@ data}\label{post-collection-processing-of-data}
 LI-COR SoilFluxPro software to assess dead band and measurement
 duration.
 
-\subsection{neonSoilFlux R package}\label{neonsoilflux-r-package}
+\subsection{\texorpdfstring{\texttt{neonSoilFlux} R
+package}{neonSoilFlux R package}}\label{neonsoilflux-r-package}
 
 We developed an R package (\texttt{neonSoilFlux};
 https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly
@@ -817,18 +818,18 @@ of the sites SAY MORE}
 This study presents a unified data science workflow to efficiently
 process automated measurements of belowground soil CO\(_{2}\)
 concentrations, water, and temperature to infer estimates of soil
-effluxes through application of Fick's Law (Equation XXX). Our core
-goals in this study were: (1) to generate estimates of soil flux from
-continuous soil sensor data at terrestrial NEON sites using the
-flux-gradient method and then (2) to compare those estimates to
-field-measured fluxes based on the closed chamber approach at six focal
-sites across a coordinate measurement network NEON. We will evaluate the
-core goals through (1) an overall evaluation of the flux-gradient
-approach (and uncertainty calculation) and (2) site-specific evaluation
-for differences in fluxes.
+surface CO\(_{2}\) effluxes through application of Fick's Law (Equation
+XXX). Our core goals in this study were: (1) to generate estimates of
+soil flux from continuous soil sensor data at terrestrial NEON sites
+using the flux-gradient method and then (2) to compare those estimates
+to field-measured fluxes based on the closed chamber approach at six
+NEON focal sites. We here discuss our progress toward these core goals
+through (1) an overall evaluation of the flux-gradient approach (and
+uncertainty calculation) and (2) site-specific evaluation of differences
+in estimated vs measured fluxes.
 
-\subsection{Evaluation of flux-gradient approach at each
-site}\label{evaluation-of-flux-gradient-approach-at-each-site}
+\subsection{General evaluation of flux-gradient
+approach}\label{general-evaluation-of-flux-gradient-approach}
 
 Key assumptions of the flux-gradient approach are that CO\(_{2}\)
 concentrations increase throughout the soil profile. We found that this
@@ -866,9 +867,8 @@ time.
   Back calculation of bulk density to NEON sites.
 \end{itemize}
 
-\subsection{Site specific evaluation}\label{site-specific-evaluation}
-
-Across all the site
+\subsection{Evaluation of flux-gradient approach at each
+site}\label{evaluation-of-flux-gradient-approach-at-each-site}
 
 The six sites studied provide separate case studies for considerations
 when applying the flux-gradient method to evaluate resulting
@@ -887,19 +887,21 @@ sampling with eventual drying out over the course of the experiment. In
 this case we observed storage of soil water (as shown in supplementary
 figures), which increased the soil CO\(_{2}\) at the top layer, leading
 to negative values of flux at the start of the experiment, with the
-fluxes drying out afterards. In this case only when the soil dried out
+fluxes drying out afterwards. In this case only when the soil dried out
 (or returned to a baseline level), that the fluxes at the provided layer
 would work out in this case.
 
-WREF experienced a generational rainfall leading up the point of
-measuring, which meant that sensors relied of gap-filled data. In this
-case, \(F_{000}\) is the better one. We were able to show that the
-flux-gradient method produced estimates within XX of the field measured
-values at X of Y sites.
+WREF experienced an extreme rainfall event in the days preceding field
+measurements, which meant that flux estimates calculated during the
+field measurement period sensors relied of gap-filled data. In this
+case, \(F_{000}\) is the better one.
 
-TANG 2003 noticed a similar pattern in temperature as SRER Mention
-alternative diffusivity calculations? (Sallam - but this may not be a
-factor compared to water availability and gap filling)
+We were able to show that the flux-gradient method produced estimates
+within XX of the field measured values at X of Y sites.
+
+Tang et al. (2003) noticed a similar pattern in temperature as SRER.
+Mention alternative diffusivity calculations? (Sallam - but this may not
+be a factor compared to water availability and gap filling)
 
 When considering systematic deployment of this method across a
 measurement network, we faced a number of independent challenges for
@@ -915,7 +917,7 @@ is the calculation of fluxes across different measurement depths,
 allowing for additional site-specific customization. Here application of
 the flux-gradient method provides a baseline estimate of soil fluxes
 that could be complemented through additional field measurements
-(e.g.~LICOR).
+(e.g.~LI-COR).
 
 \subsection{Recommendations for future method
 development}\label{recommendations-for-future-method-development}
@@ -968,16 +970,24 @@ using the co-located eddy flux towers.
 
 \section{Conclusions}\label{conclusions}
 
+We have here presented an R package \texttt{neonSoilFlux} for the
+estimation of soil CO\(_{2}\) fluxes from continuous buried soil sensor
+measurements across terrestrial National Ecological Observatory Network
+sites. We compared the predicted fluxes to those measured directly using
+a field-based closed chamber approach. We find that\ldots{}
+
 \section{Acknowledgments}\label{acknowledgments}
 
-Undergrads that are not listed as an author.
+Undergrads that are not listed as authors. Technical staff at USF. NEON
+field staff and assignable assets teams. LI-COR technical staff for
+helpful discussions. NSF grants to JZ and NBZ.
 
 \section{Conflict of Interest
 Statements}\label{conflict-of-interest-statements}
 
 \section{Author Contributions}\label{author-contributions}
 
-Review Credit Author Statements
+Review and compile author credit statements from Google sheet.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
