@@ -32,11 +32,11 @@ Key objectives of this study are to:
 
 ## Field methods
 
-In order to acquire field data to validate model predictions of flux, we conducted field measurement campaigns at the six core terrestrial NEON sites listed above. SJER, SRER, and WREF were visited during May and June of 2022, and WOOD, KONZ, and UNDE during May and June of 2024. We spent a week at each site, taking daily measurements of flux on an hourly or half-hourly interval after letting soil collar(s) equilibrate for approximately 24 hours.
+### Focal NEON Sites
 
-## Focal NEON Sites
+In order to acquire field data to validate model predictions of flux, we selected six terrestrial NEON sites for analysis. We conducted field measurement campaigns at these sites, which span a range of environmental gradients and terrestrial domains (@tbl-neon-sites). SJER, SRER, and WREF were visited during May and June of 2022, and WOOD, KONZ, and UNDE during May and June of 2024.
 
-We selected six terrestrial NEON sites for analysis. These sites span a range of environmental gradients and terrestrial domains for analysis (@tbl-neon-sites). Over the course of two field campaigns in 2022 and 2024 we conducted weekly visits at each site through selecting a specific in the soil sampling array, installing a temporary soil collar, and doing direct flux measurements. These data were then compared for analysis later.
+Over the course of two field campaigns in 2022 and 2024, we conducted week-long visits at each site. In consultation with NEON field staff, we first selected a specific plot in the soil sampling array to maximize the concurrent availability of sensor data. We then made measurements of flux on an hourly or half-hourly interval for 8 hours each day after letting temporarily-installed soil collar(s) equilibrate for approximately 24 hours.
 
 ::: {#tbl-neon-sites}
 \scriptsize
@@ -69,7 +69,7 @@ Dead bands, measurement duration, instrument self-testing.
 
 LI-COR SoilFluxPro software to assess dead band and measurement duration. 
 
-## neonSoilFlux R package
+## `neonSoilFlux` R package
 
 We developed an R package (`neonSoilFlux`; https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly soil carbon fluxes and uncertainties from NEON data. The objective of the `neonSoilFlux` package is a unified workflow soil data acquisition and analysis that supplements existing data acquisition software through the `neonUtilities` R package ([https://CRAN.R-project.org/package=neonUtilities](https://CRAN.R-project.org/package=neonUtilities)). @fig-package-diagram outlines the basic workflow of the package. 
 
@@ -219,12 +219,9 @@ Calculation of diffusivity at each of the sites SAY MORE
 
 # Discussion
 
-<!-- discussion sketch begin -->
+This study presents a unified data science workflow to efficiently process automated measurements of belowground soil CO$_{2}$ concentrations, water, and temperature to infer estimates of soil surface CO$_{2}$ effluxes through application of Fick's Law (Equation XXX). Our core goals in this study were: (1) to generate estimates of soil flux from continuous soil sensor data at terrestrial NEON sites using the flux-gradient method and then (2) to compare those estimates to field-measured fluxes based on the closed chamber approach at six NEON focal sites. We here discuss our progress toward these core goals through (1) an overall evaluation of the flux-gradient approach (and uncertainty calculation) and (2) site-specific evaluation of differences in estimated vs measured fluxes.
 
-This study presents a unified data science workflow to efficiently process automated measurements of belowground soil CO$_{2}$ concentrations, water, and temperature to infer estimates of soil effluxes through application of Fick's Law (Equation XXX). Our core goals in this study were: (1) to generate estimates of soil flux from continuous soil sensor data at terrestrial NEON sites using the flux-gradient method and then (2) to compare those estimates to field-measured fluxes based on the closed chamber approach at six focal sites across a coordinate measurement network NEON. We will evaluate the core goals through (1) an overall evaluation of the flux-gradient approach (and uncertainty calculation) and (2) site-specific evaluation for differences in fluxes.
-
-
-## Evaluation of flux-gradient approach at each site
+## General evaluation of flux-gradient approach
 
 Key assumptions of the flux-gradient approach are that CO$_{2}$ concentrations increase throughout the soil profile. We found that this condition was met at XXX% across the study period. Periods where this gradient condition are not met generally are connected to biophysical processes such soil wetting events (e.g. KONZ), which have the effect of temporarily reducing the soil respiration or efflux.  For modeling soil respiration, typically a non-linear response function is considered, that also considers soil type as well [@boumaAssessmentRootSoil2000; @yanPorescaleInvestigationResponse2016; @yanMoistureFunctionSoil2018].  For the `neonSoilFlux` package soil type is connected to the bulk density, which is separately determined / measured at a site.
 
@@ -234,23 +231,22 @@ Diffusivity taken from the megapit.  Big microsite and temporal differences, soi
 
 - Back calculation of bulk density to NEON sites.
 
-## Site specific evaluation
-
-Across all the site
+## Evaluation of flux-gradient approach at each site
 
 The six sites studied provide separate case studies for considerations when applying the flux-gradient method to evaluate resulting uncertainties and fluxes.  SRER is characterized by sandy soil, which also led to the hottest site there.  Fluxes are driven by the change and response to temperature in the temperature driven, whereas we observed a decoupling of temperature across the different layers (supplementary figures?)  For this instance, using the flux across the top two layers ($F_{110}$) produced a pattern of soil flux consistent with the observed field data.  The remaining methods $F_{101}$, $F_{011}$, or $F_{000}$ are derived from information at the deeper layer, which is decoupled both in terms of temperature and CO$_{2}$ concentration.
 
-KONZ is a site that experienced a significant rain event prior to sampling with eventual drying out over the course of the experiment.  In this case we observed storage of soil water (as shown in supplementary figures), which increased the soil CO$_{2}$ at the top layer, leading to negative values of flux at the start of the experiment, with the fluxes drying out afterards.  In this case only when the soil dried out (or returned to a baseline level), that the fluxes at the provided layer would work out in this case.
+KONZ is a site that experienced a significant rain event prior to sampling with eventual drying out over the course of the experiment.  In this case we observed storage of soil water (as shown in supplementary figures), which increased the soil CO$_{2}$ at the top layer, leading to negative values of flux at the start of the experiment, with the fluxes drying out afterwards. In this case only when the soil dried out (or returned to a baseline level), that the fluxes at the provided layer would work out in this case.
 
-WREF experienced a generational rainfall leading up the point of measuring, which meant that sensors relied of gap-filled data.  In this case, $F_{000}$ is the better one.
+WREF experienced an extreme rainfall event in the days preceding field measurements, which meant that flux estimates calculated during the field measurement period sensors relied of gap-filled data. In this case, $F_{000}$ is the better one.
+
 We were able to show that the flux-gradient method produced estimates within XX of the field measured values at X of Y sites.
 
-TANG 2003 noticed a similar pattern in temperature as SRER
+@tangAssessingSoilCO22003 noticed a similar pattern in temperature as SRER.
 Mention alternative diffusivity calculations? (Sallam - but this may not be a factor compared to water availability and gap filling)
 
 When considering systematic deployment of this method across a measurement network, we faced a number of independent challenges for consideration.  In developing and validating our approach, we faced a number of challenges related to data availability, including... gap filling, sensor calibration, depth interpolation, rainstorms, etc  These errors are all 
 
- Derived results from the `neonSoilFlux` package have patterns that are consistent, and comparable, to those directly measured to the field (Figure XXX).  The advantage to the `neonSoilFlux` package is the calculation of fluxes across different measurement depths, allowing for additional site-specific customization. Here application of the flux-gradient method provides a baseline estimate of soil fluxes that could be complemented through additional field measurements (e.g. LICOR).
+Derived results from the `neonSoilFlux` package have patterns that are consistent, and comparable, to those directly measured to the field (Figure XXX). The advantage to the `neonSoilFlux` package is the calculation of fluxes across different measurement depths, allowing for additional site-specific customization. Here application of the flux-gradient method provides a baseline estimate of soil fluxes that could be complemented through additional field measurements (e.g. LI-COR).
 
 ## Recommendations for future method development
 
@@ -266,12 +262,14 @@ These challenges notwithstanding, the method used here and made available in the
 
 # Conclusions
 
+We have here presented an R package `neonSoilFlux` for the estimation of soil CO$_{2}$ fluxes from continuous buried soil sensor measurements across terrestrial National Ecological Observatory Network sites. We compared the predicted fluxes to those measured directly using a field-based closed chamber approach. We find that...
+
 # Acknowledgments
 
-Undergrads that are not listed as an author.
+Undergrads that are not listed as authors. Technical staff at USF. NEON field staff and assignable assets teams. LI-COR technical staff for helpful discussions. NSF grants to JZ and NBZ.
 
 # Conflict of Interest Statements
 
 # Author Contributions
 
-Review Credit Author Statements
+Review and compile author credit statements from Google sheet.
