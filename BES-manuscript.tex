@@ -43,28 +43,14 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
-\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}{
-    \@ifstar
-      \xxxParagraphStar
-      \xxxParagraphNoStar
-  }
-  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
-  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}{
-    \@ifstar
-      \xxxSubParagraphStar
-      \xxxSubParagraphNoStar
-  }
-  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
-  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
-\makeatother
 
 
 \providecommand{\tightlist}{%
@@ -167,7 +153,6 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -177,6 +162,7 @@
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites enabled by the neonSoilFlux R package},
+  pdfauthor={Ed Ayres; Ridwan Abdi; Natalie Ashburner-Wright; Lillian Brown; Christina Tran; Lajntxiag Lee; Ly Xiong; Dijonë Mehmeti; Zoey Werbin; Naupaka Zimmerman; John Zobitz},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -184,17 +170,18 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
-
 \title{A direct comparison between field-measured and sensor-based
 estimates of soil carbon dioxide flux across six National Ecological
 Observatory Network sites enabled by the \texttt{neonSoilFlux} R
 package}
-\author{}
+\author{Ed Ayres \and Ridwan Abdi \and Natalie
+Ashburner-Wright \and Lillian Brown \and Christina Tran \and Lajntxiag
+Lee \and Ly Xiong \and Dijonë Mehmeti \and Zoey Werbin \and Naupaka
+Zimmerman \and John Zobitz}
 \date{}
 
 \begin{document}
 \maketitle
-
 
 \section{Introduction}\label{introduction}
 
@@ -764,7 +751,7 @@ the usage of gap-filled measurements at each site.}
 
 \centering{
 
-\includegraphics{figures/stats-plot.png}
+\captionsetup{labelsep=none}\includegraphics{figures/stats-plot.png}
 
 }
 
@@ -991,7 +978,15 @@ None declared.
 
 \section{Author Contributions}\label{author-contributions}
 
-Review and compile author credit statements from Google sheet.
+Conceptualization: E.A, J.Z., N.Z.; Methodology: E.A, J.Z., N.Z;
+Software: J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.;
+Validation: J.Z., N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L.
+X., L. L.; Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z.,
+N.Z.; Data curation: J.Z., N.Z., D. M., L. X.; Writing -- original
+draft: J.Z., N.Z.; Writing -- review and editing: J.Z., N.Z., Z. W., E.
+A., C. T.; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision:
+J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition:
+J.Z.; N.Z.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
@@ -1298,7 +1293,6 @@ Research}, \emph{59}(12), e2023WR034457.
 \url{https://doi.org/10.1029/2023WR034457}
 
 \end{CSLReferences}
-
 
 
 

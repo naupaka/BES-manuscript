@@ -1,5 +1,17 @@
 ---
 title: "A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites enabled by the `neonSoilFlux` R package"
+author:   
+  - Ed Ayres   
+  - Ridwan Abdi
+  - Natalie Ashburner-Wright   
+  - Lillian Brown
+  - Christina Tran
+  - Lajntxiag Lee
+  - Ly Xiong   
+  - Dijonë Mehmeti
+  - Zoey Werbin
+  - Naupaka Zimmerman   
+  - John Zobitz 
 format:
   pdf:
     keep-tex: true
