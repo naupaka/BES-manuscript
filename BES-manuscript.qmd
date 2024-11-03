@@ -5,10 +5,11 @@ author:
   - Ridwan Abdi
   - Natalie Ashburner-Wright   
   - Lillian Brown
-  - Christina Tran
+  - Ryan Frink-Sobierajski
   - Lajntxiag Lee
-  - Ly Xiong   
   - Dijonë Mehmeti
+  - Christina Tran
+  - Ly Xiong   
   - Zoey Werbin
   - Naupaka Zimmerman   
   - John Zobitz 
