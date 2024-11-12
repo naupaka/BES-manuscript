@@ -184,6 +184,34 @@ Zobitz}
 \begin{document}
 \maketitle
 
+\section{Abstract}\label{abstract}
+
+Current estimates of the global terrestrial carbon fluxes between the
+atmosphere indicate a net sink into soil carbon (not accounting for land
+use change emissions, Friedlingstein et al. (2023)). A key factor to the
+uncertainty of the terrestrial carbon sink is quantification of
+terrestrial soil carbon fluxes, which vary across time and ecosystem
+type. Robust estimation of soil carbon fluxes on a sub-daily level
+requires measurements of soil CO\(_{2}\) concentration, water content,
+temperature, and other environmental measurements and soil properties.
+These data are publicly available from the National Ecological
+Observatory Network at 47 different sites spanning a range of 20
+different ecoclimatic domains. We present an R software package
+(\texttt{neonSoilFlux}) that acquires soil environmental data and to
+computes soil carbon flux at a half-hourly time step at a user-specified
+NEON site and month in a tidy user format. By design, users with a range
+of proficiency in the R statistical language can access the
+\texttt{neonSoilFlux} R package. Soil carbon fluxes and associated
+uncertainties are computed using the flux gradient method via a variety
+of existing approaches. To validate the computed fluxes, we separately
+measured soil carbon fluxes with automated sensors at six focal NEON
+sites. The validation confirmed that a primary challenge in reducing
+soil carbon flux uncertainty is correctly characterizing diffusivity and
+soil water content across the soil profile. Outputs from the
+\texttt{neonSoilFlux} package contribute to existing databases of
+continuous soil carbon measurements, providing near real-time estimates
+of a critical component to the terrestrial carbon cycle.
+
 \section{Introduction}\label{introduction}
 
 Soils contain the largest reservoir of terrestrial carbon (Jobbágy \&
