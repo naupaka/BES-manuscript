@@ -27,16 +27,17 @@ summary_env_data <- field_data_joined |>
 ### First plot: histogram of signal to noise ratios
 # Compute the signal to noise ratio for the different comnputed fluxes
 snr_data <- field_data_joined |>
-  select(site,model_data) |>
-  mutate(model_data = map(.x=model_data,.f=~(select(.x,startDateTime,flux_compute)) |> unnest(cols=c(flux_compute)) |>
+  select(site,model_data_mq,model_data_marshall) |>
+  pivot_longer(cols=c("model_data_mq","model_data_marshall")) |>
+  mutate(value = map(.x=value,.f=~(select(.x,startDateTime,flux_compute)) |> unnest(cols=c(flux_compute)) |>
                             mutate(snr = abs(flux/flux_err) ) )) |>
-  unnest(cols=c(model_data)) |>
-  filter(method %in% c("000","111"))
+  unnest(cols=c(value))
 
 
 # Signal to noise ratio plot
-snr_plot <- snr_data |>
+snr_plot_mq <- snr_data |>
   inner_join(summary_env_data,by="site") |>
+  filter(name == "model_data_mq") |>
   mutate(site = fct_reorder(site, temp_data)) |>
   ggplot(aes(x=snr,fill=method)) +
   geom_histogram(alpha = 0.6,binwidth = 0.2,position="identity") + facet_grid(.~site) + xlim(c(0,3)) +
@@ -54,8 +55,33 @@ snr_plot <- snr_data |>
                                '011'=bquote(~F['011']),
                                '101'=bquote(~F['101']),
                                '110'=bquote(~F['110'])
-                               ))
+                               )) +
+  ggtitle(bquote(~D[a]~'calculation: Millington-Quirk'))
 
+
+snr_plot_marshall <- snr_data |>
+  inner_join(summary_env_data,by="site") |>
+  filter(name == "model_data_marshall") |>
+  mutate(site = fct_reorder(site, temp_data)) |>
+  ggplot(aes(x=snr,fill=method)) +
+  geom_histogram(alpha = 0.6,binwidth = 0.2,position="identity") + facet_grid(.~site) + xlim(c(0,3)) +
+  labs(x = "SNR", y = NULL,fill="Flux method:") +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 12),
+    axis.title.x = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    axis.title.y = element_text(size = 14),
+    strip.text = element_text(size = 12)
+  ) +
+  scale_fill_discrete(labels=c('000'=bquote(~F['000']),
+                               '011'=bquote(~F['011']),
+                               '101'=bquote(~F['101']),
+                               '110'=bquote(~F['110'])
+  )) +
+  #guides(fill = "none") +
+  ggtitle(bquote(~D[a]~'calculation: Marshall'))
 
 
 ### Second plot: are observed field fluxes within the bounds of the data?
@@ -118,7 +144,8 @@ standardize_timestamps <- function(input_model_data,input_field_data,lag_time = 
 
 # Collect all of the field and computed flux data within the same time interval
 field_stats_data <- field_data_joined |>
-  mutate(harmonized_data = map2(.x=model_data,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 0)))
+  pivot_longer(cols=c("model_data_mq","model_data_marshall")) |>
+  mutate(harmonized_data = map2(.x=value,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 0)))
 
 # Determine if the bounds are within a window of data
 within_bounds <- function(data) {
@@ -137,11 +164,12 @@ within_bounds <- function(data) {
 # Now start to combine the different sites together
 bounds_data <- field_stats_data |>
   mutate(values = map(harmonized_data,within_bounds) ) |>
-  select(site,values) |>
+  select(site,name,values) |>
   unnest(cols=c(values))
 
 
-bounds_plot <- bounds_data |>
+bounds_plot_mq <- bounds_data |>
+  filter(name == "model_data_mq" ) |>
   inner_join(summary_env_data,by="site") |>
   mutate(site = fct_reorder(site, temp_data)) |>
   #filter(method %in% c("111","000")) |>
@@ -165,18 +193,59 @@ bounds_plot <- bounds_data |>
   scale_y_continuous(breaks = seq(0,1,by=0.2),
                     minor_breaks = seq(0.1,0.9,by=0.2)) +
   scale_x_continuous(breaks = seq(0,1,by=0.2),
-                     minor_breaks = seq(0.1,0.9,by=0.2) )
+                     minor_breaks = seq(0.1,0.9,by=0.2) )  #+
+  #ggtitle(bquote(~D[a]~'calculation: Millington-Quirk'))
+
+bounds_plot_marshall <- bounds_data |>
+  filter(name == "model_data_marshall" ) |>
+  inner_join(summary_env_data,by="site") |>
+  mutate(site = fct_reorder(site, temp_data)) |>
+  #filter(method %in% c("111","000")) |>
+  ggplot(aes(x=1-reduction,y=tot_prop,color=method)) + geom_point() + geom_line() + facet_grid(.~site) +
+  labs(x = bquote(epsilon), y = NULL,color="Flux method:") +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 12),
+    axis.title.x = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    axis.title.y = element_text(size = 14),
+    strip.text = element_text(size = 12)
+  ) +
+  scale_color_discrete(labels=c('000'=bquote(~F['000']),
+                                '011'=bquote(~F['011']),
+                                '101'=bquote(~F['101']),
+                                '110'=bquote(~F['110'])
+  )) +
+  geom_hline(yintercept = 0.5,linetype='dashed') +
+  scale_y_continuous(breaks = seq(0,1,by=0.2),
+                     minor_breaks = seq(0.1,0.9,by=0.2)) +
+  scale_x_continuous(breaks = seq(0,1,by=0.2),
+                     minor_breaks = seq(0.1,0.9,by=0.2) ) #+
+  #guides(color = "none") #+
+ # ggtitle(bquote(~D[a]~'calculation: Marshall'))
 
 
-# Now put the two plots together, lining them up correctly
-g1 <- ggplotGrob(snr_plot)
-g2 <- ggplotGrob(bounds_plot)
+# Now put the two plots together, lining them up correctly - this will be a two by two plot
+g1a <- ggplotGrob(snr_plot_mq + guides(fill = "none"))
+g2a <- ggplotGrob(snr_plot_marshall + guides(fill = "none"))
 
-g <- rbind(g1,g2, size = "first")
-g$widths <- unit.pmax(g1$widths, g2$widths)
-
-png("figures/uncertainty-stats.png",width = 15, height = 8, units = 'in',res = 300); plot(g); dev.off()
-
+shared_legend_snr<-lemon::g_legend(snr_plot_mq)
+g_snr <- grid.arrange(g1a,g2a,nrow = 1,
+                      bottom=shared_legend_snr$grobs[[1]])
 
 
-ggsave(filename = 'figures/error-reduction-plot.png',plot = p_stats,width = 13,height=7)
+
+
+g1b <- ggplotGrob(bounds_plot_mq + guides(color = "none"))
+g2b <- ggplotGrob(bounds_plot_marshall + guides(color = "none"))
+
+shared_legend_bounds<-lemon::g_legend(bounds_plot_mq)
+g_bounds <- grid.arrange(g1b,g2b,nrow = 1,
+                      bottom=shared_legend_bounds$grobs[[1]])
+
+
+g_all <- grid.arrange(g_snr,g_bounds,ncol = 1)
+
+ggsave('figures/uncertainty-stats.png',plot = g_all,width=18,height=6)
+
