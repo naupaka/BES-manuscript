@@ -64,30 +64,6 @@ plot_daily_flux <- function(site_name,plot_legend,x_axis,y_axis) {
                                   "Marshall" = "#009E73",     # Teal for Method 1
                                   "Millington-Quirk" = "#CC79A7")) +
     guides(linetype = "none")
-  # Ensure the color is purple for "Field Data"
-
-  # base_plot <-
-  # ggplot() +
-  #   geom_line(data = rbind(marshall_plot_data,mq_plot_data),aes(x=day,y=m_flux,color=method,linetype=method),linewidth=1) +
-  #   geom_point(data = field_data,aes(x=day,y=m_flux,color="Field data"),size=3,alpha =0.6) +
-  #   theme(axis.text.x=element_text(angle=-90)) +
-  #   scale_x_datetime('Date',
-  #                    breaks = scales::date_breaks("3 months"),
-  #                    minor_breaks=scales::date_breaks("1 month"),
-  #                    date_labels = "%Y-%m"
-  #   ) +
-  #   # scale_y_continuous(limits=input_limits) +
-  #   theme_bw() +
-  #   theme(
-  #     legend.position = "bottom",
-  #     legend.text = element_text(size = 10),
-  #     axis.title.x = element_text(size = 12),
-  #     #axis.text.x = element_text(size = 10,angle=-90),
-  #     axis.text.y = element_text(size = 12),
-  #     axis.title.y = element_text(size = 12),
-  #     strip.text = element_text(size = 14)
-  #   ) + ggtitle(site_name) + ylim(c(0,20)) +
-  #   scale_color_manual(values = c("Field Data" = "purple"))
 
     if(plot_legend) {
       base_plot <- base_plot +
