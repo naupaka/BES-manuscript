@@ -179,27 +179,35 @@ where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$) and $\frac{dC}{dz}$ is the g
 
 Uncertainty in all $F_{ijk}$ is computed through quadrature [@taylorIntroductionErrorAnalysis2022].
 
-## Post processing evaluation
+## Post processing evaluation {#sec-post-process}
 
 Following collection of field measurements from the LICOR and calculation of the soil fluxes from `neonSoilFlux` package, we compared measured $F_{S}$ (from the LICOR instruments) to a given soil flux calculation `neonSoilFlux` for each site and flux computation method. Statistics included the associated R$^{2}$ value, root mean squared error (RMSE), and signal to noise ratio (SNR), defined as the ratio of a modeled soil flux ($F_{ijk}$) from `neonSoilFlux` to its quadrature uncertainty ($\sigma_{ijk}$).
 
 We observed that the range of values (e.g. $F_{ijk} \pm \sigma_{ijk}$ was much larger than the measured field flux.  We evaluated $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$, where $F_{S}$ is a measured field soil flux from the LICOR 6800 (the LICOR 8250 was used at only three sites). The parameter $\epsilon$ was an uncertainty reduction factor to evaluate how much the quadrature uncertainty could be reduced while maintaining precision between modeled $F_{ijk}$ and measured $F_{S}$.
 
-## Post-hoc diffusivity
-
-We also computed the diffusivity at each of the different sites from the derived flux values and the reported gradient in CO2 at each of the surface layers (Figure XXXX) through dividing $F_{S}/dC/dz$. These values were then compared to reported diffusivity from the flux computation method.
+Finally, for a half-hourly interval we also computed a *post hoc* $D_{a}$ using the LICOR flux along with the CO$_{2}$ surface gradient reported by NEON using the measurement levels closest to the surface. 
 
 
 
 # Results
 
-@fig-flux-results reports out the measured fluxes from the LICOR 6800 and 8250 and computed fluxes and uncertainty at each measurement site. Results are reported in local time. Positive values of the flux indicate that there is a flux moving towards the surface. For ease of clarity the fluxes at $F_{111}$ and $F_{000}$ are only shown in the top row (surface), followed by the fluxes at individual separate layer ($F_{100}$, $F_{010}$, $F_{001}$). Overall, with the exception of WREF and SRER (discussed later) the computed fluxes were on the same order of magnitude and timing as the measured field fluxes.
+@fig-flux-results reports the timeseries of out the measured fluxes from the LICOR 6800 and 8250 compared to modeled soil fluxes from the `neonSoilFlux` R package.  @fig-flux-results-year and and computed fluxes and uncertainty at each measurement site. Results are reported in local time. Positive values of the flux indicate that there is a flux moving towards the surface. For ease of clarity the fluxes at $F_{111}$ and $F_{000}$ are only shown in the top row (surface), followed by the fluxes at individual separate layer ($F_{100}$, $F_{010}$, $F_{001}$). Overall, with the exception of WREF and SRER (discussed later) the computed fluxes were on the same order of magnitude and timing as the measured field fluxes.
 
 ::: {#fig-flux-results}
 ![](figures/flux-results.png)
 
-Results for different flux computations, organized by site (in increasing temperature shown at each site) across different measurement levels. $F_{000}$ comes from the diffusivity extrapolation and $F_{111}$ extrapolation across the surface. Field measurements are shown at the top of each plot. The computed flux values are shown with reported uncertainty as well.
+Timeseries of both measured $F_{S}$ (yellow circles) and modeled soil fluxes (green or purple lines) by the `neonSoilFlux` R package. Fluxes from the `neonSoilFlux` R package are separated by the diffusivity model used (Millington-Quirk or Marshall, @sec-compute-diffusivity). Vertical axis labels in the first column represent the measurement levels where the flux-gradient approach is applied (@sec-compute-soil-flux). Ribbons for modeled soil fluxes represent $\pm$ 1 standard deviation. Results are reported in local time. 
 :::
+
+
+::: {#fig-flux-results-year}
+![](figures/flux-results-year.png)
+
+Timeseries of both daily-averaged field $F_{S}$ (yellow circles) and daily ensemble averaged soil fluxes (green or purple lines) by the `neonSoilFlux` R package, separated by the diffusivity model used (Millington-Quirk or Marshall, @sec-compute-diffusivity). The timeseries of modeled fluxes are a daily ensemble average of all flux-gradient approaches ($F_{000}$, $F_{101}$, $F_{011}$, $F_{110}$, @sec-compute-soil-flux). 
+:::
+
+RESULTS TO INCLUDE: TABLE OF STATS (R2, RMSE)
+
 
 @fig-gap-filled-stats reports the usage of gap-filled environmental measurement types (which could be one CO$_{2}$, $SWC$, or $T_{S}$ at any measurement depth, and also including $P$) to compute $F_{S}$.  Panel a) reports the proportion of gap-filled values for an environmental measurement at each site and Panel b) displays the distribution of gap-filled measurements at each site. The largest contribution to gap-filled measurements was soil water. SJER and WOOD utilized the largest number of gap-filled measurements, which were primarily $SWC$ and $T_{S}$.
 
@@ -209,36 +217,32 @@ Results for different flux computations, organized by site (in increasing temper
 Panel a) Proportion of gap-filled environmental measurements used to generate $F_{S}$ from the `neonSoilFlux` package, by study site. Panel b) distribution of the usage of gap-filled measurements at each site.
 :::
 
-::: {#fig-stats-plot}
-![Stats of model](figures/stats-plot.png)
-Reported stats from comparison of field data to computed soil fluxes by site. Sites are arranged in increasing temperature. $m$ is the slope of a linear regression, $R^{2}$, normalized RMSE is the RMSE divided by the mean. The lag is shift from number of measurement periods compared to the field data. Lag 30 means that field data were compared to reported soil flux from the half hour previously.
-:::
-
 Figure: flux results at the different levels (000,111,001,010,100)
 Diffusivity at the different levels for comparison (also include derived diffusivity?)
 Stats at the different levels (with the lags)
 
-LEAD IN TABLE HERE These results are reported in @fig-uncertainty-stats.  
+ @fig-uncertainty-stats reports both the computed SNR and the proportion of measured field fluxes within the modeled uncertainty for a given flux computation method $F_{ijk}$ (@sec-post-process). Here, values of SNR greater than unity indicates a reported uncertainty is smaller, propogated by quadrature from a relatively higher precision from measured input variables (CO$_{2}$, $T_{S}$, $SWC$, or $P$).  The sensitivity to the uncertainty reduction factor ($\epsilon$, bottom panels in @fig-uncertainty-stats) demonstrates how accuracy could be improved if modeled uncertainty $\sigma_{ijk}$ decreases.
+
+
 
 ::: {#fig-uncertainty-stats}
 ![](figures/uncertainty-stats.png)
 
-Top panel: distribution of SNR values across each of the different sites for the $F_{000}$ and $F_{111}$ flux gradient calculations. Bottom panel: Computation of uncertainty reduction to evaluate. As $\epsilon$ increases this indicates that the uncertainty estimate reduces, making it harder to be within the range. SAY MORE
+Top panels: distribution of SNR values across each of the different sites for modeled effluxes from the `neonSoilFlux` package, depending on the diffusivity calculation used (Millington-Quirk or Marshall, @sec-compute-diffusivity). Bottom panels: Proportion of measured $F_{S}$ within the modeled range of a flux computation method $F_{ijk}$ given an uncertainty reduction factor $\epsilon$, or $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$.
 :::
 
-Calculated diffusivity from both the `neonSoilFlux` method and back calculated from the LI-COR are reported in Figure @fig-diffusivity-plot. SAY MORE
 
-<!-- Add in bulk density at NEON -->
+
+@fig-diffusivity-plot reports the distribution of $D_{a}$ (from both the Marshall and Millington-Quirk methods, @sec-compute-diffusivity) at each study site, and the *post hoc* computed $D_{a}$ (@. For comparison, for a half-hourly interval we also computed a *post hoc* $D_{a}$ using the LICOR flux along with the CO$_{2}$ surface gradient reported by NEON using the measurement levels closest to the surface. 
 
 ::: {#fig-diffusivity-plot}
 ![](figures/diffusivity-plot.png)
-
-Calculation of diffusivity at each of the sites SAY MORE
+Distribution of diffusivity ($D_{a}$) at each study site. Values of $D_{a}$ were provided by the `neonSoilFlux` package, computed from the Millington-Quirk or Marshall models (@sec-compute-diffusivity). A post-hoc estimate of diffusivity (labeled as "Field estimated") was computed through the field measured flux (@fig-flux-results), divided by the CO$_{2}$ gradient from the measurement levels closest to the soil surface, as reported by NEON.
 :::
 
 # Discussion {#sec-discussion}
 
-This study presents a unified data science workflow to efficiently process automated measurements of belowground soil CO$_{2}$ concentrations, water, and temperature to infer estimates of soil surface CO$_{2}$ effluxes through application of Fick's Law (Equation XXX). Our core goals in this study were: (1) to generate estimates of soil flux from continuous soil sensor data at terrestrial NEON sites using the flux-gradient method and then (2) to compare those estimates to field-measured fluxes based on the closed chamber approach at six NEON focal sites. We here discuss our progress toward these core goals through (1) an overall evaluation of the flux-gradient approach (and uncertainty calculation) and (2) site-specific evaluation of differences in estimated vs measured fluxes.
+This study presents a unified data science workflow to efficiently process automated measurements of belowground soil CO$_{2}$ concentrations, water, and temperature to infer estimates of soil surface CO$_{2}$ effluxes through application of Fick's Law (Equation \ref{eq:ficks}). Our core goals in this study were: (1) to generate estimates of soil flux from continuous soil sensor data at terrestrial NEON sites using the flux-gradient method and then (2) to compare those estimates to field-measured fluxes based on the closed chamber approach at six NEON focal sites. We discuss our progress toward these core goals through (1) an overall evaluation of the flux-gradient approach (and uncertainty calculation) and (2) site-specific evaluation of differences in estimated vs measured fluxes.
 
 ## General evaluation of flux-gradient approach
 
@@ -256,6 +260,9 @@ Diffusivity taken from the megapit.  Big microsite and temporal differences, soi
 - Back calculation of bulk density to NEON sites (boxplot figure).
 
 ## Evaluation of flux-gradient approach at each site
+
+@fig-uncertainty-stats illustrates the tradeoff between accuracy for modeled fluxes (defined here as closeness to field-measured $F_{S}$) and precision defined by the SNR, and how this is confounded by the choice of diffusivity model used.  MORE HERE 
+
 
 The six sites studied provide separate case studies for considerations when applying the flux-gradient method to evaluate resulting uncertainties and fluxes.
 
@@ -300,6 +307,6 @@ None declared.
 
 # Author Contributions
 
-Conceptualization: J.Z., N.Z.; Methodology: E.A, J.Z., N.Z; Software:  J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.; Validation: J.Z., N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L. X., L. L.; Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z., N.Z.; Data curation: J.Z., N.Z., D. M., L. X.; Writing – original draft: J.Z., N.Z.; Writing – review and editing: J.Z., N.Z., Z. W., E. A., C. T.; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision: J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition: J.Z.; N.Z. 
+Conceptualization: J.Z., N.Z.; Methodology: E.A, J.Z., N.Z; Software:  J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.; Validation: J.Z., N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L. X., L. L.; Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z., N.Z.; Data curation: J.Z., N.Z., D. M., L. X.; Writing – original draft: J.Z., N.Z.; Writing – review and editing: J.Z., N.Z., Z. W., E. A., C. T., D. M., L. X.,; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision: J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition: J.Z.; N.Z. 
 
 

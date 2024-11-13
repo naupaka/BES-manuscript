@@ -704,8 +704,7 @@ to the following:
 Uncertainty in all \(F_{ijk}\) is computed through quadrature (Taylor,
 2022).
 
-\subsection{Post processing
-evaluation}\label{post-processing-evaluation}
+\subsection{Post processing evaluation}\label{sec-post-process}
 
 Following collection of field measurements from the LICOR and
 calculation of the soil fluxes from \texttt{neonSoilFlux} package, we
@@ -725,25 +724,24 @@ reduction factor to evaluate how much the quadrature uncertainty could
 be reduced while maintaining precision between modeled \(F_{ijk}\) and
 measured \(F_{S}\).
 
-\subsection{Post-hoc diffusivity}\label{post-hoc-diffusivity}
-
-We also computed the diffusivity at each of the different sites from the
-derived flux values and the reported gradient in CO2 at each of the
-surface layers (Figure XXXX) through dividing \(F_{S}/dC/dz\). These
-values were then compared to reported diffusivity from the flux
-computation method.
+Finally, for a half-hourly interval we also computed a \emph{post hoc}
+\(D_{a}\) using the LICOR flux along with the CO\(_{2}\) surface
+gradient reported by NEON using the measurement levels closest to the
+surface.
 
 \section{Results}\label{results}
 
-Figure~\ref{fig-flux-results} reports out the measured fluxes from the
-LICOR 6800 and 8250 and computed fluxes and uncertainty at each
-measurement site. Results are reported in local time. Positive values of
-the flux indicate that there is a flux moving towards the surface. For
-ease of clarity the fluxes at \(F_{111}\) and \(F_{000}\) are only shown
-in the top row (surface), followed by the fluxes at individual separate
-layer (\(F_{100}\), \(F_{010}\), \(F_{001}\)). Overall, with the
-exception of WREF and SRER (discussed later) the computed fluxes were on
-the same order of magnitude and timing as the measured field fluxes.
+Figure~\ref{fig-flux-results} reports the timeseries of out the measured
+fluxes from the LICOR 6800 and 8250 compared to modeled soil fluxes from
+the \texttt{neonSoilFlux} R package. Figure~\ref{fig-flux-results-year}
+and and computed fluxes and uncertainty at each measurement site.
+Results are reported in local time. Positive values of the flux indicate
+that there is a flux moving towards the surface. For ease of clarity the
+fluxes at \(F_{111}\) and \(F_{000}\) are only shown in the top row
+(surface), followed by the fluxes at individual separate layer
+(\(F_{100}\), \(F_{010}\), \(F_{001}\)). Overall, with the exception of
+WREF and SRER (discussed later) the computed fluxes were on the same
+order of magnitude and timing as the measured field fluxes.
 
 \begin{figure}
 
@@ -753,14 +751,38 @@ the same order of magnitude and timing as the measured field fluxes.
 
 }
 
-\caption{\label{fig-flux-results}Results for different flux
-computations, organized by site (in increasing temperature shown at each
-site) across different measurement levels. \(F_{000}\) comes from the
-diffusivity extrapolation and \(F_{111}\) extrapolation across the
-surface. Field measurements are shown at the top of each plot. The
-computed flux values are shown with reported uncertainty as well.}
+\caption{\label{fig-flux-results}Timeseries of both measured \(F_{S}\)
+(yellow circles) and modeled soil fluxes (green or purple lines) by the
+\texttt{neonSoilFlux} R package. Fluxes from the \texttt{neonSoilFlux} R
+package are separated by the diffusivity model used (Millington-Quirk or
+Marshall, Section~\ref{sec-compute-diffusivity}). Vertical axis labels
+in the first column represent the measurement levels where the
+flux-gradient approach is applied (Section~\ref{sec-compute-soil-flux}).
+Ribbons for modeled soil fluxes represent \(\pm\) 1 standard deviation.
+Results are reported in local time.}
 
 \end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{figures/flux-results-year.png}
+
+}
+
+\caption{\label{fig-flux-results-year}Timeseries of both daily-averaged
+field \(F_{S}\) (yellow circles) and daily ensemble averaged soil fluxes
+(green or purple lines) by the \texttt{neonSoilFlux} R package,
+separated by the diffusivity model used (Millington-Quirk or Marshall,
+Section~\ref{sec-compute-diffusivity}). The timeseries of modeled fluxes
+are a daily ensemble average of all flux-gradient approaches
+(\(F_{000}\), \(F_{101}\), \(F_{011}\), \(F_{110}\),
+Section~\ref{sec-compute-soil-flux}).}
+
+\end{figure}%
+
+RESULTS TO INCLUDE: TABLE OF STATS (R2, RMSE)
 
 Figure~\ref{fig-gap-filled-stats} reports the usage of gap-filled
 environmental measurement types (which could be one CO\(_{2}\), \(SWC\),
@@ -787,24 +809,20 @@ the usage of gap-filled measurements at each site.}
 
 \end{figure}%
 
-\begin{figure}
-
-\centering{
-
-\captionsetup{labelsep=none}\includegraphics{figures/stats-plot.png}
-
-}
-
-\caption{\label{fig-stats-plot}}
-
-\end{figure}%
-
 Figure: flux results at the different levels (000,111,001,010,100)
 Diffusivity at the different levels for comparison (also include derived
 diffusivity?) Stats at the different levels (with the lags)
 
-LEAD IN TABLE HERE These results are reported in
-Figure~\ref{fig-uncertainty-stats}.
+Figure~\ref{fig-uncertainty-stats} reports both the computed SNR and the
+proportion of measured field fluxes within the modeled uncertainty for a
+given flux computation method \(F_{ijk}\)
+(Section~\ref{sec-post-process}). Here, values of SNR greater than unity
+indicates a reported uncertainty is smaller, propogated by quadrature
+from a relatively higher precision from measured input variables
+(CO\(_{2}\), \(T_{S}\), \(SWC\), or \(P\)). The sensitivity to the
+uncertainty reduction factor (\(\epsilon\), bottom panels in
+Figure~\ref{fig-uncertainty-stats}) demonstrates how accuracy could be
+improved if modeled uncertainty \(\sigma_{ijk}\) decreases.
 
 \begin{figure}
 
@@ -814,29 +832,34 @@ Figure~\ref{fig-uncertainty-stats}.
 
 }
 
-\caption{\label{fig-uncertainty-stats}Top panel: distribution of SNR
-values across each of the different sites for the \(F_{000}\) and
-\(F_{111}\) flux gradient calculations. Bottom panel: Computation of
-uncertainty reduction to evaluate. As \(\epsilon\) increases this
-indicates that the uncertainty estimate reduces, making it harder to be
-within the range. SAY MORE}
+\caption{\label{fig-uncertainty-stats}Top panels: distribution of SNR
+values across each of the different sites for modeled effluxes from the
+\texttt{neonSoilFlux} package, depending on the diffusivity calculation
+used (Millington-Quirk or Marshall,
+Section~\ref{sec-compute-diffusivity}). Bottom panels: Proportion of
+measured \(F_{S}\) within the modeled range of a flux computation method
+\(F_{ijk}\) given an uncertainty reduction factor \(\epsilon\), or
+\(| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}\).}
 
 \end{figure}%
 
-Calculated diffusivity from both the \texttt{neonSoilFlux} method and
-back calculated from the LI-COR are reported in Figure
-Figure~\ref{fig-diffusivity-plot}. SAY MORE
+Figure~\ref{fig-diffusivity-plot} reports the distribution of \(D_{a}\)
+(from both the Marshall and Millington-Quirk methods,
+Section~\ref{sec-compute-diffusivity}) at each study site, and the
+\emph{post hoc} computed \(D_{a}\) (@. For comparison, for a half-hourly
+interval we also computed a \emph{post hoc} \(D_{a}\) using the LICOR
+flux along with the CO\(_{2}\) surface gradient reported by NEON using
+the measurement levels closest to the surface.
 
 \begin{figure}
 
 \centering{
 
-\includegraphics{figures/diffusivity-plot.png}
+\captionsetup{labelsep=none}\includegraphics{figures/diffusivity-plot.png}
 
 }
 
-\caption{\label{fig-diffusivity-plot}Calculation of diffusivity at each
-of the sites SAY MORE}
+\caption{\label{fig-diffusivity-plot}}
 
 \end{figure}%
 
@@ -846,11 +869,11 @@ This study presents a unified data science workflow to efficiently
 process automated measurements of belowground soil CO\(_{2}\)
 concentrations, water, and temperature to infer estimates of soil
 surface CO\(_{2}\) effluxes through application of Fick's Law (Equation
-XXX). Our core goals in this study were: (1) to generate estimates of
-soil flux from continuous soil sensor data at terrestrial NEON sites
-using the flux-gradient method and then (2) to compare those estimates
-to field-measured fluxes based on the closed chamber approach at six
-NEON focal sites. We here discuss our progress toward these core goals
+\ref{eq:ficks}). Our core goals in this study were: (1) to generate
+estimates of soil flux from continuous soil sensor data at terrestrial
+NEON sites using the flux-gradient method and then (2) to compare those
+estimates to field-measured fluxes based on the closed chamber approach
+at six NEON focal sites. We discuss our progress toward these core goals
 through (1) an overall evaluation of the flux-gradient approach (and
 uncertainty calculation) and (2) site-specific evaluation of differences
 in estimated vs measured fluxes.
@@ -919,6 +942,11 @@ time.
 
 \subsection{Evaluation of flux-gradient approach at each
 site}\label{evaluation-of-flux-gradient-approach-at-each-site}
+
+Figure~\ref{fig-uncertainty-stats} illustrates the tradeoff between
+accuracy for modeled fluxes (defined here as closeness to field-measured
+\(F_{S}\)) and precision defined by the SNR, and how this is confounded
+by the choice of diffusivity model used. MORE HERE
 
 The six sites studied provide separate case studies for considerations
 when applying the flux-gradient method to evaluate resulting
@@ -1046,9 +1074,10 @@ J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.; Validation: J.Z.,
 N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L. X., L. L.;
 Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z., N.Z.; Data
 curation: J.Z., N.Z., D. M., L. X.; Writing -- original draft: J.Z.,
-N.Z.; Writing -- review and editing: J.Z., N.Z., Z. W., E. A., C. T.;
-Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision: J.Z.; N.Z.;
-Project Administration: J.Z.; N.Z.; Funding Acquisition: J.Z.; N.Z.
+N.Z.; Writing -- review and editing: J.Z., N.Z., Z. W., E. A., C. T., D.
+M., L. X.,; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision:
+J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition:
+J.Z.; N.Z.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
