@@ -782,17 +782,31 @@ Section~\ref{sec-compute-soil-flux}).}
 
 \end{figure}%
 
-RESULTS TO INCLUDE: TABLE OF STATS (R2, RMSE)
+\begin{figure}
 
-Figure~\ref{fig-gap-filled-stats} reports the usage of gap-filled
-environmental measurement types (which could be one CO\(_{2}\), \(SWC\),
-or \(T_{S}\) at any measurement depth, and also including \(P\)) to
-compute \(F_{S}\). Panel a) reports the proportion of gap-filled values
-for an environmental measurement at each site and Panel b) displays the
-distribution of gap-filled measurements at each site. The largest
-contribution to gap-filled measurements was soil water. SJER and WOOD
-utilized the largest number of gap-filled measurements, which were
-primarily \(SWC\) and \(T_{S}\).
+\centering{
+
+\captionsetup{labelsep=none}\includegraphics{figures/r2-plot.png}
+
+}
+
+\caption{\label{fig-r2-table}}
+
+\end{figure}%
+
+For a given half-hourly time period, the \texttt{neonSoilFlux} packages
+assigns a QA flag for a measurement if more one values across all
+measurement depths uses gap-filled data (Section~\ref{sec-gapfilling}).
+Panel a of Figure~\ref{fig-gap-filled-stats} reports the distribution
+for all input environmental measurements at each site when field
+measurements were made. Soil fluxes are computed from 4 different types
+of input measurements (\(T_{S}\), \(SWC\), \(P\), and CO\(_{2}\)), any
+of which could have a QA flag in a half-hourly interval. Panel b of
+Figure~\ref{fig-gap-filled-stats} displays at each site the distribution
+of the number of different gap-filled measurements used to compute a
+half-hourly flux. The largest contribution to gap-filled measurements
+was soil water. SJER and WOOD utilized the largest number of gap-filled
+measurements, which were primarily \(SWC\) and \(T_{S}\).
 
 \begin{figure}
 
@@ -802,16 +816,12 @@ primarily \(SWC\) and \(T_{S}\).
 
 }
 
-\caption{\label{fig-gap-filled-stats}Panel a) Proportion of gap-filled
-environmental measurements used to generate \(F_{S}\) from the
-\texttt{neonSoilFlux} package, by study site. Panel b) distribution of
-the usage of gap-filled measurements at each site.}
+\caption{\label{fig-gap-filled-stats}Panel a) Proportion of input
+gap-filled environmental measurements used to generate \(F_{S}\) from
+the \texttt{neonSoilFlux} package, by study site. Panel b) distribution
+of the usage of gap-filled measurements at each site.}
 
 \end{figure}%
-
-Figure: flux results at the different levels (000,111,001,010,100)
-Diffusivity at the different levels for comparison (also include derived
-diffusivity?) Stats at the different levels (with the lags)
 
 Figure~\ref{fig-uncertainty-stats} reports both the computed SNR and the
 proportion of measured field fluxes within the modeled uncertainty for a
@@ -846,10 +856,8 @@ measured \(F_{S}\) within the modeled range of a flux computation method
 Figure~\ref{fig-diffusivity-plot} reports the distribution of \(D_{a}\)
 (from both the Marshall and Millington-Quirk methods,
 Section~\ref{sec-compute-diffusivity}) at each study site, and the
-\emph{post hoc} computed \(D_{a}\) (@. For comparison, for a half-hourly
-interval we also computed a \emph{post hoc} \(D_{a}\) using the LICOR
-flux along with the CO\(_{2}\) surface gradient reported by NEON using
-the measurement levels closest to the surface.
+\emph{post hoc} computation of \(D_{a}\)
+(Section~\ref{sec-compute-diffusivity}).
 
 \begin{figure}
 
@@ -886,41 +894,33 @@ concentrations increase throughout the soil profile. We found that this
 condition was met at XXX\% across the study period. Periods where this
 gradient condition are not met generally are connected to biophysical
 processes such soil wetting events (e.g.~KONZ), which have the effect of
-temporarily reducing the soil respiration or efflux. For modeling soil
+temporarily reducing the soil respiration or efflux. When modeling soil
 respiration, typically a non-linear response function is considered,
 that also considers soil type as well (Bouma \& Bryla, 2000; Yan et al.,
 2016, 2018). For the \texttt{neonSoilFlux} package soil type is
-connected to the bulk density, which is separately determined / measured
-at a site.
+connected to the bulk density, which was separately determined at a
+site.
 
 The largest source of uncertainty to improve reliability of the flux
-estimate is to prevent the usage of gap-filled data, especially with
-soil water (Figure XXX). Across the observed half-hourly periods for
-field measurements, the percentage of half-hourly periods where all four
-environmental measurements were available spanned from 0\% (SJER) to 7\%
-(SRER), but three sites (WREF, SRER, UNDE) had 95\% of half-hourly
-intervals with just one gap-filled measurement.Where appropriate we have
-replaced measurements flagged to the protocol with a monthly gap-filled
-value. Further extensions of the gap filling method could use more
-sophisticated gap-filling routines, similar to what is used for net
-ecosystem carbon exchange (Falge et al., 2001; Liu et al., 2023;
-Mariethoz et al., 2015; Moffat et al., 2007; Zhang et al., 2023).
+estimate is to prevent the usage of gap-filled data. Three sites (KONZ,
+SRER, and KONZ) had more than 75\% of half-hourly periods with no-gap
+filled measurements. Two sites (SJER and WOOD) had more than 75\% of
+half-hourly intervals with just one gap-filled measurement. While WREF
+reported no gap-filled measurements, field data collection occurred
+following a once-in-a century rainstorm with soils observed at their
+water holding capacity. We recommend that whenever available, local
+field knowledge is supplementary to any QA filtering protocol of fluxes
+from the \texttt{neonSoilFlux} package.
 
 We recognize that this gap-filling approach may lead to gap-filled
-values that arebut somewhere we need to say that this this approach may
-lead to gap-filled values that are quite different from the actual
-values. For example, it would probably underestimate soil moisture if a
-rain event has just occurred, right? Also, since it doesn't appear to
-account for time of day, nighttime soil temperature would probably be
-overestimated, whereas the opposite would be true for daytime. It
-probably works fine for pressure. Maybe say that other gap filling
-options could be explored in the future, e.g., I'm involved in
-developing a National Coordinated Soil Moisture Monitoring Network data
-quality document that suggests that soil moisture gaps shorter than 5
-hours be gap-filled via linear interpolation (it hasn't been published
-yet). . Maybe justify the current approach by saying it provides a
-consistent approach that can be applied to each data stream, but further
-work may explore alternative gap-filling approaches.
+values that are quite different from the actual values, such as an
+underestimate of soil moisture following rain events. Further extensions
+of the gap filling method could use more sophisticated gap-filling
+routines, similar to what is used for net ecosystem carbon exchange
+(Falge et al., 2001; Liu et al., 2023; Mariethoz et al., 2015; Moffat et
+al., 2007; Zhang et al., 2023). The current gap-filling routine provides
+a consistent approach that can be applied to each data stream, but
+further work may explore alternative gap-filling approaches.
 
 Based on this approach, we would \emph{a priori} expect
 \(F_{011} \leq F_{101} \leq \leq F_{110} \leq F_{000}\) because the
@@ -929,66 +929,8 @@ could miss CO\(_{2}\) produced in shallower layers. Additionally, field
 flux measurements should correlate with \(F_{000}\) because they
 represent surface fluxes.
 
-Diffusivity taken from the megapit. Big microsite and temporal
-differences, soil shrink / swell. How do we think about what that means
-for using this approach to generalize across a NEON site over continuous
-time.
-
-\begin{itemize}
-\tightlist
-\item
-  Back calculation of bulk density to NEON sites (boxplot figure).
-\end{itemize}
-
 \subsection{Evaluation of flux-gradient approach at each
 site}\label{evaluation-of-flux-gradient-approach-at-each-site}
-
-Figure~\ref{fig-uncertainty-stats} illustrates the tradeoff between
-accuracy for modeled fluxes (defined here as closeness to field-measured
-\(F_{S}\)) and precision defined by the SNR, and how this is confounded
-by the choice of diffusivity model used. MORE HERE
-
-The six sites studied provide separate case studies for considerations
-when applying the flux-gradient method to evaluate resulting
-uncertainties and fluxes.
-
-SRER is characterized by sandy soil, which also led to the hottest site
-there. Fluxes are driven by the change and response to temperature in
-the temperature driven, whereas we observed a decoupling of temperature
-across the different layers (supplementary figures?) For this instance,
-using the flux across the top two layers (\(F_{110}\)) produced a
-pattern of soil flux consistent with the observed field data. The
-remaining methods \(F_{101}\), \(F_{011}\), or \(F_{000}\) are derived
-from information at the deeper layer, which is decoupled both in terms
-of temperature and CO\(_{2}\) concentration.
-
-KONZ is a site that experienced a significant rain event prior to
-sampling with eventual drying out over the course of the experiment. In
-this case we observed storage of soil water (as shown in supplementary
-figures), which increased the soil CO\(_{2}\) at the top layer, leading
-to negative values of flux at the start of the experiment, with the
-fluxes drying out afterwards. In this case only when the soil dried out
-(or returned to a baseline level), that the fluxes at the provided layer
-would work out in this case.
-
-WREF experienced an extreme rainfall event in the days preceding field
-measurements, which meant that flux estimates calculated during the
-field measurement period sensors relied of gap-filled data. In this
-case, \(F_{000}\) is the better one.
-
-We were able to show that the flux-gradient method produced estimates
-within XX of the field measured values at X of Y sites.
-
-Tang et al. (2003) noticed a similar pattern in temperature as SRER.
-Mention alternative diffusivity calculations? (Sallam - but this may not
-be a factor compared to water availability and gap filling)
-
-When considering systematic deployment of this method across a
-measurement network, we faced a number of independent challenges for
-consideration. In developing and validating our approach, we faced a
-number of challenges related to data availability, including\ldots{} gap
-filling, sensor calibration, depth interpolation, rainstorms, etc These
-errors are all
 
 Derived results from the \texttt{neonSoilFlux} package have patterns
 that are consistent, and comparable, to those directly measured to the
@@ -997,7 +939,42 @@ is the calculation of fluxes across different measurement depths,
 allowing for additional site-specific customization. Here application of
 the flux-gradient method provides a baseline estimate of soil fluxes
 that could be complemented through additional field measurements
-(e.g.~LI-COR).
+(e.g.~LICOR).
+
+The six sites studied provide separate case studies for considerations
+when applying the flux-gradient method to evaluate resulting
+uncertainties and fluxes For example, SRER is characterized by sandy
+soil, which also led to the highest observed field soil temperatures. At
+SRER the flux across the top two layers (\(F_{110}\)) produced a pattern
+of soil flux consistent with the observed field data. The remaining
+methods \(F_{101}\), \(F_{011}\), or \(F_{000}\) are derived from
+information at the deeper layer, which is decoupled both in terms of
+temperature and CO\(_{2}\) concentration.
+
+In addition, KONZ is a site that experienced a significant rain event
+prior to sampling with eventual drying out over the course of the
+experiment. In this case we observed storage of soil water which
+increased the soil CO\(_{2}\) at the top layer, leading to negative
+values of flux at the start of the experiment, with the fluxes drying
+out afterwards. In this case only when the soil dried out (or returned
+to a baseline level), that the fluxes at the provided layer would work
+out in this case.
+
+When considering systematic deployment of this method across a
+measurement network, we faced a number of independent challenges for
+consideration.
+
+Figure~\ref{fig-uncertainty-stats} illustrates the tradeoff between
+accuracy for modeled fluxes (defined here as closeness to field-measured
+\(F_{S}\)) and precision defined by the SNR, and how this is confounded
+by the choice of diffusivity model used. MORE HERE
+
+Diffusivity discussion
+
+In developing and validating our approach, we faced a number of
+challenges related to data availability, including\ldots{} gap filling,
+sensor calibration, depth interpolation, rainstorms, etc These errors
+are all
 
 \subsection{Recommendations for future method
 development}\label{recommendations-for-future-method-development}
@@ -1026,8 +1003,8 @@ reported accuracy (as compared to field measurements), we do have higher
 precision.
 
 These challenges notwithstanding, the method used here and made
-available in the \texttt{neonSoilFlux} R package is able to produce
-nearly continuous estimates of flux across all XXYY terrestrial NEON
+available in the \texttt{neonSoilFlux} R package has the potential to
+produce nearly continuous estimates of flux across all terrestrial NEON
 sites. These estimates are a significant improvement on available
 approaches to constrain the portion of ecosystem respiration
 attributable to the soil. This, in turn, aids in our ability to

@@ -5,6 +5,8 @@
 library(tidyverse)
 library(lubridate)
 library(broom)
+library(gtable)
+library(gt)
 ### Goals:
 # (1) Load up data and measured fluxes for each site
 # (2) Co-locate field obs and neonSoilFlux obs in same half-hourly window
@@ -91,31 +93,16 @@ extract_stats <- function(harmonized_data) {
 ### OK, let's get cooking!
 
 field_stats_data_0 <- field_data_joined |>
-  mutate(harmonized_data = map2(.x=model_data,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 0)) ,
+  pivot_longer(cols=c("model_data_mq","model_data_marshall")) |>
+  mutate(harmonized_data = map2(.x=value,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 0)) ,
          comparison_stats = map(harmonized_data,extract_stats)) |>
-  select(site,comparison_stats) |>
+  select(site,name,comparison_stats) |>
   unnest(cols=c(comparison_stats)) |>
   mutate(lag = "0")
 
-# 30 minute lag
-field_stats_data_30 <- field_data_joined |>
-  mutate(harmonized_data = map2(.x=model_data,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 30)),
-         comparison_stats = map(harmonized_data,extract_stats)) |>
-  select(site,comparison_stats) |>
-  unnest(cols=c(comparison_stats)) |>
-  mutate(lag = "30")
-
-# 60 minute lag
-field_stats_data_60 <- field_data_joined |>
-  mutate(harmonized_data = map2(.x=model_data,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 60)),
-         comparison_stats = map(harmonized_data,extract_stats)) |>
-  select(site,comparison_stats) |>
-  unnest(cols=c(comparison_stats)) |>
-  mutate(lag = "60")
-# Plot!
-
+# Plot
 # Combine everything together.
-all_stats <- rbind(field_stats_data_0,field_stats_data_30,field_stats_data_60)
+all_stats <- field_stats_data_0
 
 # Compute some summary stats.  Organize by
 summary_env_data <- field_data_joined |>
@@ -132,34 +119,53 @@ summary_env_data <- field_data_joined |>
 ## Add in the F111 and F000 separately, or just plot it at the end.  A second factor plot?
 
 
-r2_stats <-
-  all_stats |>
-  filter(method %in% c("000","111","010","100","001")) |>
-  inner_join(summary_env_data,by="site") |>
-  pivot_longer(cols=c("nrmse","r.squared","slope")) |>
-    filter(name == "r.squared") |>
-  mutate( #
-    name = case_match(name, "nrmse" ~ "Normalized~RMSE", "r.squared" ~ "R^{2}", "slope" ~ "m"),
-         method = case_match(method,"000" ~ "F['000']","001" ~"F['001']","010" ~"F['010']","100" ~"F['100']","111"~"F['111']"),
-    name = factor(name,levels=c('m',"R^{2}","Normalized~RMSE")),
-    method = factor(method,levels=c("F['111']","F['000']","F['100']","F['010']","F['001']")),
-        )|>
-  ggplot(aes(x=fct_reorder(site, temp_data),y=value,fill=lag)) +
-    geom_col(position="dodge") + #geom_line() +
-  facet_grid(method~name,labeller = label_parsed) +
-  labs(x = "Site", y = "Value", fill = "Lag") +
-  theme(axis.text.x=element_text(angle=-90)) +
-  # scale_y_continuous(limits=input_limits) +
-  theme_bw() +
-  theme(
-    legend.position = "bottom",
-    legend.text = element_text(size = 10),
-    axis.title.x = element_text(size = 12),
-    axis.text.x = element_text(size = 10,angle=-90),
-    axis.text.y = element_text(size = 12),
-    axis.title.y = element_text(size = 12),
-    strip.text = element_text(size = 14)
+gt_tbl <- all_stats |>
+  mutate(across(.cols=c("nrmse","r.squared","slope","p.value"),.fns=~round(.x,2))) |>
+  mutate(sig = if_else((p.value < 0.01),"**",""),
+         sig = if_else(between(p.value,0.01,0.05),"*",sig)
+  ) |>
+  select(-lag,-p.value,-sig,-slope) |>
+  group_by(method,name) |>
+  nest() |>
+  pivot_wider(values_from = "data") |>
+  unnest(cols=c("model_data_mq","model_data_marshall"),names_repair ="unique") |>
+  select(-site...2) |>
+  group_by(site...5) |>
+  mutate(method = factor(method,
+                       levels = c("000",
+                                  "101",
+                                  "110",
+                                  "011"
+                       ),
+                       labels = c(html("<em>F<sub>000</sub></em>"),
+                                  html("<em>F<sub>101</sub></em>"),
+                                  html("<em>F<sub>110</sub></em>"),
+                                  html("<em>F<sub>011</sub></em>")  ) ) ) |>
+  gt(rowname_col = "method")  |>
+  fmt(
+    columns = method,
+    rows = everything(),
+    fns = function(x) {
+      map(.x=x,.f=~html(paste0(.x)) )
+    }
+  ) |>
+  tab_spanner(
+    label = "Millington-Quirk",
+    columns = c(nrmse...3, r.squared...4)
+  ) |>
+  tab_spanner(
+    label = "Marshall",
+    columns = c(nrmse...6, r.squared...7)
+  ) |>
+  cols_label(
+    nrmse...6 = "NRMSE",
+    r.squared...7 = "R2",
+    nrmse...3 = "NRMSE",
+    r.squared...4 = "R2"
   )
 
+# Show the gt Table
+gt_tbl
 
-ggsave(filename = 'figures/r2-plot.png',plot = r2_stats,width = 13,height=7)
+gtsave(gt_tbl,filename='figures/r2-plot.png',vwidth = 3000)
+
