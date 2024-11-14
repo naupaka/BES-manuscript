@@ -1,43 +1,27 @@
-# Download and reprocess soil water content sensor data using consistent calibration coefficients for the entire time series
-# Clear the environment to avoid using info from previous site
+### Process all data for the year preceding and forward
 
-# Adapted from Ed Ayres -
-# https://figshare.com/articles/software/Code_for_SMAP_NLDAS_validations_based_on_NEON_soil_moisture_data/24424762/1?file=43528533
-
-
-# Create loop to run through a few sites at a time
-information <- tibble(site = c("SRER","SJER","WREF","UNDE","WOOD","KONZ"),
-                      start = c("2022-05","2022-05","2022-05","2024-05","2024-05","2024-05"),
-                      end = c("2022-06","2022-06","2022-06","2024-06","2024-06","2024-06")
-)
-
-swc_results <- vector(mode="list",length = nrow(information))
-
-
+library(tidyverse)
+library(neonSoilFlux)
+# Function to reprocess SWC data
 reprocess_vswc <- function(site,start,end) {
 
   # Replace data with NA to prevent any carryover to next loop
-  swc <- NA
-  SWS_30_minute <- NA
-  sensor_positions_00094 <- NA
-  neonBoulded60Cal <- NA
-  neonCal <- NA
+  #swc <- NA
+  #SWS_30_minute <- NA
+  #sensor_positions_00094 <- NA
+  #neonBoulded60Cal <- NA
+  #neonCal <- NA
 
   # download the data
   swc <- neonUtilities::loadByProduct(dpID="DP1.00094.001", site=site, startdate=start, enddate=end, package="expanded", timeIndex="30", check.size=F, nCores=3,include.provisional = TRUE)
-  list2env(swc, .GlobalEnv)
+
+
+  #list2env(swc, .GlobalEnv)
   SWS_30_minute <- swc$SWS_30_minute
   # Change dates to posixct
   SWS_30_minute$startDateTime <- as.POSIXct(SWS_30_minute$startDateTime, tz="GMT")
   startYYYYMM <- substr(SWS_30_minute$startDateTime[1], 1, 7)
 
-  # # save metadata files
-  # positionsFilename <- paste0("N:/Science/FIU/NASA_SMAP/Reprocessed SWC Sensor Data/positions_", site, "_", startYYYYMM, "_to_", end, ".csv")
-  # write.csv(sensor_positions_00094, file =positionsFilename)
-  # readmeFilename <- paste0("N:/Science/FIU/NASA_SMAP/Reprocessed SWC Sensor Data/readme_", site, "_", startYYYYMM, "_to_", end, ".csv")
-  # write.csv(readme_00094, file =readmeFilename)
-  # variablesFilename <- paste0("N:/Science/FIU/NASA_SMAP/Reprocessed SWC Sensor Data/variables_", site, "_", startYYYYMM, "_to_", end, ".csv")
-  # write.csv(variables_00094, file =variablesFilename)
 
   # Read in NEON calibrations
   neonCal <- read.csv("data/raw/SoilMoistureDepths_FromAs-built_DontOpenInExcel.csv", header=T, stringsAsFactors=F)
@@ -62,9 +46,17 @@ reprocess_vswc <- function(site,start,end) {
 
 
   # Calculate sensor scaled frequency for the default calibration rows (based on Sentek Calibration Manual). Multiply water content by 100 to get % vol units
-  SWS_30_minute$sf <- NA
-  SWS_30_minute$sf[defaultCalRows] <- (0.1957 * ((SWS_30_minute$VSWCMean[defaultCalRows]*100)^0.404)) + 0.02852
+  SWS_30_minute$sf_mean <- NA
+  SWS_30_minute$sf_mean[defaultCalRows] <- (0.1957 * ((SWS_30_minute$VSWCMean[defaultCalRows]*100)^0.404)) + 0.02852
 
+  SWS_30_minute$sf_minimum <- NA
+  SWS_30_minute$sf_minimum[defaultCalRows] <- (0.1957 * ((SWS_30_minute$VSWCMinimum[defaultCalRows]*100)^0.404)) + 0.02852
+
+  SWS_30_minute$sf_maximum <- NA
+  SWS_30_minute$sf_maximum[defaultCalRows] <- (0.1957 * ((SWS_30_minute$VSWCMaximum[defaultCalRows]*100)^0.404)) + 0.02852
+
+  SWS_30_minute$sf_stder <- NA
+  SWS_30_minute$sf_stder[defaultCalRows] <- (0.1957 * ((SWS_30_minute$VSWCStdErMean[defaultCalRows]*100)^0.404)) + 0.02852
 
   # Identify rows calculated with the NEON calibration based on calDefaultQM and VSWCExpUncert
   neonCalRowsP1D1 <- intersect(intersect(intersect(which(SWS_30_minute$calNEONQM > 0), which(SWS_30_minute$VSWCExpUncert < 0.21))
@@ -304,7 +296,10 @@ reprocess_vswc <- function(site,start,end) {
     }
 
     # Back-calculate scaled frequency using the calibration coefficients
-    SWS_30_minute$sf[rows] <- (a * ((SWS_30_minute$VSWCMean[rows]*100)^b)) + c
+    SWS_30_minute$sf_mean[rows] <- (a * ((SWS_30_minute$VSWCMean[rows]*100)^b)) + c
+    SWS_30_minute$sf_maximum[rows] <- (a * ((SWS_30_minute$VSWCMaximum[rows]*100)^b)) + c
+    SWS_30_minute$sf_minimum[rows] <- (a * ((SWS_30_minute$VSWCMinimum[rows]*100)^b)) + c
+    SWS_30_minute$sf_stder[rows] <- (a * ((SWS_30_minute$VSWCStdErMean[rows]*100)^b)) + c
 
     # prevent carryover to next loop
     row <- NA
@@ -314,6 +309,9 @@ reprocess_vswc <- function(site,start,end) {
 
   # Calculate soil water content (cm3/cm3) using the neon bounded60 calibration coefficients
   SWS_30_minute$correctedVSWCMean <- NA
+  SWS_30_minute$correctedVSWCMinimum <- NA
+  SWS_30_minute$correctedVSWCMaximum <- NA
+  SWS_30_minute$correctedVSWCStdErMean <- NA
   for(i in 1:length(neonCals)){
     # Find the row in the calibration data frame corresponding to the sensor
     row <- intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == substr(neonCals[i], 13, 13))), which(neonBoulded60Cal$measurementLevel == substr(neonCals[i], 15, 15)) )
@@ -419,7 +417,10 @@ reprocess_vswc <- function(site,start,end) {
     }
 
     # Apply the calibration
-    SWS_30_minute$correctedVSWCMean[rows] <- (((SWS_30_minute$sf[rows] - cBounded) / aBounded)^(1/bBounded)) / 100
+    SWS_30_minute$correctedVSWCMean[rows] <- (((SWS_30_minute$sf_mean[rows] - cBounded) / aBounded)^(1/bBounded)) / 100
+    SWS_30_minute$correctedVSWCMinimum[rows] <- (((SWS_30_minute$sf_minimum[rows] - cBounded) / aBounded)^(1/bBounded)) / 100
+    SWS_30_minute$correctedVSWCMaximum[rows] <- (((SWS_30_minute$sf_maximum[rows] - cBounded) / aBounded)^(1/bBounded)) / 100
+    SWS_30_minute$correctedVSWCStdErMean[rows] <- (((SWS_30_minute$sf_stder[rows] - cBounded) / aBounded)^(1/bBounded)) / 100
 
     # prevent carryover to next loop
     row <- NA
@@ -550,193 +551,274 @@ reprocess_vswc <- function(site,start,end) {
   SWS_30_minute$correctedVSWCExpUncert[goodP5D8] <- neonBoulded60Cal$U_CVALA3[intersect(intersect(grep(site, neonBoulded60Cal$site), which(neonBoulded60Cal$plot == 5)), which(neonBoulded60Cal$measurementLevel == 8) )] * 2
 
 
+  # Overwrite any NAs in the ExpUncert with the maximum uncertianty
+  SWS_30_minute$correctedVSWCExpUncert[is.na( SWS_30_minute$correctedVSWCExpUncert)] <- max(SWS_30_minute$correctedVSWCExpUncert,na.rm=TRUE)
+
+  # Change names
+  SWS_30_minute$VSWCMean <- SWS_30_minute$correctedVSWCMean
+  SWS_30_minute$VSWCMinimum <- SWS_30_minute$correctedVSWCMinimum
+  SWS_30_minute$VSWCMaximum <- SWS_30_minute$correctedVSWCMaximum
+  SWS_30_minute$VSWCStdErMean <- SWS_30_minute$correctedVSWCStdErMean
+  SWS_30_minute$VSWCExpUncert <- SWS_30_minute$correctedVSWCExpUncert
+  SWS_30_minute$VSWCFinalQF <- SWS_30_minute$correctedVSWCFinalQF
 
 
+  # Assign out names:
+  swc$SWS_30_minute_corr <- SWS_30_minute |>
+    select(-correctedVSWCMean,-correctedVSWCMaximum,-correctedVSWCMinimum,-correctedVSWCStdErMean,-correctedVSWCExpUncert,-correctedVSWCFinalQF)
 
-
-  # Plot original L1 data
-  minDate <- min(SWS_30_minute$startDateTime)
-  maxDate <- max(SWS_30_minute$startDateTime)
-  filenameUncorrected <- paste0("figures/Reprocessed SWC Sensor Data/UncorrectedSWC_", site, "_", startYYYYMM, "_to_", end, ".png")
-  png(filenameUncorrected, units = "px", width = 1500, height = 1500, res=150)
-  main <- paste0("Uncorrected soil moisture ", site, " ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D1], SWS_30_minute$VSWCMean[goodP1D1], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  points(SWS_30_minute$startDateTime[goodP2D1], SWS_30_minute$VSWCMean[goodP2D1], pch=".", col="red")
-  points(SWS_30_minute$startDateTime[goodP3D1], SWS_30_minute$VSWCMean[goodP3D1], pch=".", col="orange")
-  points(SWS_30_minute$startDateTime[goodP4D1], SWS_30_minute$VSWCMean[goodP4D1], pch=".", col="green")
-  points(SWS_30_minute$startDateTime[goodP5D1], SWS_30_minute$VSWCMean[goodP5D1], pch=".", col="blue")
-  legend("topleft", legend=c("Plot 1", "Plot 2", "Plot 3", "Plot 4", "Plot 5"), lty=1, col=c("black", "red", "orange", "green", "blue"), bty="n")
-  dev.off()
-
-
-  # plot scaled frequency
-  filenameSF <- paste0("figures/Reprocessed SWC Sensor Data/scaledFreq_", site, "_", startYYYYMM, "_to_", end, ".png")
-  png(filenameSF, units = "px", width = 1500, height = 1500, res=150)
-  main <- paste0("Corrected scaled frequency ", site, " ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D1], SWS_30_minute$sf[goodP1D1], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Scaled frequency (proportion)", main=main)
-  points(SWS_30_minute$startDateTime[goodP2D1], SWS_30_minute$sf[goodP2D1], pch=".", col="red")
-  points(SWS_30_minute$startDateTime[goodP3D1], SWS_30_minute$sf[goodP3D1], pch=".", col="orange")
-  points(SWS_30_minute$startDateTime[goodP4D1], SWS_30_minute$sf[goodP4D1], pch=".", col="green")
-  points(SWS_30_minute$startDateTime[goodP5D1], SWS_30_minute$sf[goodP5D1], pch=".", col="blue")
-  legend("topleft", legend=c("Plot 1", "Plot 2", "Plot 3", "Plot 4", "Plot 5"), lty=1, col=c("black", "red", "orange", "green", "blue"), bty="n")
-  dev.off()
-
-
-  # Plot corrected L1 data
-  filenameCorrected <- paste0("figures/Reprocessed SWC Sensor Data/correctedSWC_", site, "_", startYYYYMM, "_to_", end, ".png")
-  png(filenameCorrected, units = "px", width = 1500, height = 1500, res=150)
-  main <- paste0("Corrected soil moisture ", site, " ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D1], SWS_30_minute$correctedVSWCMean[goodP1D1], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  points(SWS_30_minute$startDateTime[goodP2D1], SWS_30_minute$correctedVSWCMean[goodP2D1], pch=".", col="red")
-  points(SWS_30_minute$startDateTime[goodP3D1], SWS_30_minute$correctedVSWCMean[goodP3D1], pch=".", col="orange")
-  points(SWS_30_minute$startDateTime[goodP4D1], SWS_30_minute$correctedVSWCMean[goodP4D1], pch=".", col="green")
-  points(SWS_30_minute$startDateTime[goodP5D1], SWS_30_minute$correctedVSWCMean[goodP5D1], pch=".", col="blue")
-  legend("topleft", legend=c("Plot 1", "Plot 2", "Plot 3", "Plot 4", "Plot 5"), lty=1, col=c("black", "red", "orange", "green", "blue"), bty="n")
-  dev.off()
-
-
-  # Create graph of soil plot 1 corrected L1 data
-  filenameCorrected <- paste0("figures/Reprocessed SWC Sensor Data/correctedSWC_", site, "_P1_", startYYYYMM, "_to_", end, ".png")
-  png(filenameCorrected, units = "px", width = 2500, height = 1500, res=150)
-  par(mfrow = c(2, 4))
-  main <- paste0("Corrected SWC ", site, " Plot 1 Depth 1 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D1], SWS_30_minute$correctedVSWCMean[goodP1D1], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 1 Depth 2 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D2], SWS_30_minute$correctedVSWCMean[goodP1D2], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 1 Depth 3 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D3], SWS_30_minute$correctedVSWCMean[goodP1D3], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 1 Depth 4 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D4], SWS_30_minute$correctedVSWCMean[goodP1D4], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 1 Depth 5 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D5], SWS_30_minute$correctedVSWCMean[goodP1D5], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 1 Depth 6 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D6], SWS_30_minute$correctedVSWCMean[goodP1D6], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 1 Depth 7 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D7], SWS_30_minute$correctedVSWCMean[goodP1D7], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 1 Depth 8 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP1D8], SWS_30_minute$correctedVSWCMean[goodP1D8], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  # legend("topleft", legend=c("Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8"), lty=1, col=c("black", "red", "orange", "yellow", "green", "turquoise", "blue", "purple"), bty="n")
-  dev.off()
-
-
-  # Create graph of soil plot 2 corrected L1 data
-  filenameCorrected <- paste0("figures/Reprocessed SWC Sensor Data/correctedSWC_", site, "_P2_", startYYYYMM, "_to_", end, ".png")
-  png(filenameCorrected, units = "px", width = 2500, height = 1500, res=150)
-  par(mfrow = c(2, 4))
-  main <- paste0("Corrected SWC ", site, " Plot 2 Depth 1 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP2D1], SWS_30_minute$correctedVSWCMean[goodP2D1], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 2 Depth 2 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP2D2], SWS_30_minute$correctedVSWCMean[goodP2D2], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 2 Depth 3 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP2D3], SWS_30_minute$correctedVSWCMean[goodP2D3], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 2 Depth 4 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP2D4], SWS_30_minute$correctedVSWCMean[goodP2D4], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 2 Depth 5 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP2D5], SWS_30_minute$correctedVSWCMean[goodP2D5], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 2 Depth 6 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP2D6], SWS_30_minute$correctedVSWCMean[goodP2D6], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 2 Depth 7 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP2D7], SWS_30_minute$correctedVSWCMean[goodP2D7], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 2 Depth 8 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP2D8], SWS_30_minute$correctedVSWCMean[goodP2D8], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  # legend("topleft", legend=c("Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8"), lty=1, col=c("black", "red", "orange", "yellow", "green", "turquoise", "blue", "purple"), bty="n")
-  dev.off()
-
-
-  # Create graph of soil plot 3 corrected L1 data
-  filenameCorrected <- paste0("figures/Reprocessed SWC Sensor Data/correctedSWC_", site, "_P3_", startYYYYMM, "_to_", end, ".png")
-  png(filenameCorrected, units = "px", width = 2500, height = 1500, res=150)
-  par(mfrow = c(2, 4))
-  main <- paste0("Corrected SWC ", site, " Plot 3 Depth 1 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP3D1], SWS_30_minute$correctedVSWCMean[goodP3D1], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 3 Depth 2 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP3D2], SWS_30_minute$correctedVSWCMean[goodP3D2], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 3 Depth 3 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP3D3], SWS_30_minute$correctedVSWCMean[goodP3D3], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 3 Depth 4 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP3D4], SWS_30_minute$correctedVSWCMean[goodP3D4], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 3 Depth 5 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP3D5], SWS_30_minute$correctedVSWCMean[goodP3D5], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 3 Depth 6 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP3D6], SWS_30_minute$correctedVSWCMean[goodP3D6], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 3 Depth 7 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP3D7], SWS_30_minute$correctedVSWCMean[goodP3D7], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 3 Depth 8 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP3D8], SWS_30_minute$correctedVSWCMean[goodP3D8], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  # legend("topleft", legend=c("Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8"), lty=1, col=c("black", "red", "orange", "yellow", "green", "turquoise", "blue", "purple"), bty="n")
-  dev.off()
-
-  # Create graph of soil plot 4 corrected L1 data
-  filenameCorrected <- paste0("figures/Reprocessed SWC Sensor Data/correctedSWC_", site, "_P4_", startYYYYMM, "_to_", end, ".png")
-  png(filenameCorrected, units = "px", width = 2500, height = 1500, res=150)
-  par(mfrow = c(2, 4))
-  main <- paste0("Corrected SWC ", site, " Plot 4 Depth 1 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP4D1], SWS_30_minute$correctedVSWCMean[goodP4D1], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 4 Depth 2 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP4D2], SWS_30_minute$correctedVSWCMean[goodP4D2], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 4 Depth 3 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP4D3], SWS_30_minute$correctedVSWCMean[goodP4D3], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 4 Depth 4 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP4D4], SWS_30_minute$correctedVSWCMean[goodP4D4], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 4 Depth 5 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP4D5], SWS_30_minute$correctedVSWCMean[goodP4D5], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 4 Depth 6 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP4D6], SWS_30_minute$correctedVSWCMean[goodP4D6], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 4 Depth 7 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP4D7], SWS_30_minute$correctedVSWCMean[goodP4D7], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 4 Depth 8 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP4D8], SWS_30_minute$correctedVSWCMean[goodP4D8], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  # legend("topleft", legend=c("Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8"), lty=1, col=c("black", "red", "orange", "yellow", "green", "turquoise", "blue", "purple"), bty="n")
-  dev.off()
-
-  # Create graph of soil plot 5 corrected L1 data
-  filenameCorrected <- paste0("figures/Reprocessed SWC Sensor Data/correctedSWC_", site, "_P5_", startYYYYMM, "_to_", end, ".png")
-  png(filenameCorrected, units = "px", width = 2500, height = 1500, res=150)
-  par(mfrow = c(2, 4))
-  main <- paste0("Corrected SWC ", site, " Plot 5 Depth 1 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP5D1], SWS_30_minute$correctedVSWCMean[goodP5D1], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 5 Depth 2 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP5D2], SWS_30_minute$correctedVSWCMean[goodP5D2], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 5 Depth 3 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP5D3], SWS_30_minute$correctedVSWCMean[goodP5D3], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 5 Depth 4 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP5D4], SWS_30_minute$correctedVSWCMean[goodP5D4], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 5 Depth 5 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP5D5], SWS_30_minute$correctedVSWCMean[goodP5D5], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 5 Depth 6 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP5D6], SWS_30_minute$correctedVSWCMean[goodP5D6], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 5 Depth 7 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP5D7], SWS_30_minute$correctedVSWCMean[goodP5D7], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  main <- paste0("Corrected SWC ", site, " Plot 5 Depth 8 ", startYYYYMM, " to ", end)
-  plot(SWS_30_minute$startDateTime[goodP5D8], SWS_30_minute$correctedVSWCMean[goodP5D8], xlim=c(minDate,maxDate), pch=".", ylim=c(0,1), xlab="", ylab="Soil moisture (cm3/cm3)", main=main)
-  # legend("topleft", legend=c("Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8"), lty=1, col=c("black", "red", "orange", "yellow", "green", "turquoise", "blue", "purple"), bty="n")
-  dev.off()
-
-  # save the corrected data in a separate file for each soil plot
-  filenameP1 <- paste0("data/derived/Reprocessed SWC Sensor Data/corrected_", site, "_P1_", startYYYYMM, "_to_", end, ".csv")
-  write.csv(SWS_30_minute[which(SWS_30_minute$horizontalPosition=="001"), ], row.names = F, file =filenameP1)
-
-  filenameP2 <- paste0("data/derived/Reprocessed SWC Sensor Data/corrected_", site, "_P2_", startYYYYMM, "_to_", end, ".csv")
-  write.csv(SWS_30_minute[which(SWS_30_minute$horizontalPosition=="002"), ], row.names = F, file =filenameP2)
-
-  filenameP3 <- paste0("data/derived/Reprocessed SWC Sensor Data/corrected_", site, "_P3_", startYYYYMM, "_to_", end, ".csv")
-  write.csv(SWS_30_minute[which(SWS_30_minute$horizontalPosition=="003"), ], row.names = F, file =filenameP3)
-
-  filenameP4 <- paste0("data/derived/Reprocessed SWC Sensor Data/corrected_", site, "_P4_", startYYYYMM, "_to_", end, ".csv")
-  write.csv(SWS_30_minute[which(SWS_30_minute$horizontalPosition=="004"), ], row.names = F, file =filenameP4)
-
-  filenameP5 <- paste0("data/derived/Reprocessed SWC Sensor Data/corrected_", site, "_P5_", startYYYYMM, "_to_", end, ".csv")
-  write.csv(SWS_30_minute[which(SWS_30_minute$horizontalPosition=="005"), ], row.names = F, file =filenameP5)
-
-  return(SWS_30_minute)
+  return(swc)
 }
 
-for(i in 1:nrow(information)) {
-  swc_results[[i]] <- reprocess_vswc(information$site[[i]],information$start[[i]],information$end[[i]])
+### Modified acquire_neon_data
+
+
+
+acquire_neon_data_bes <- function(site_name,
+                              download_date,
+                              time_frequency = "30_minute",
+                              provisional = FALSE) {
+
+
+  # changelog and author contributions / copyrights
+  #   John Zobitz (2021-07-22)
+  #     original creation
+  #     update to fix auto download (2021-07-25)
+  #     2022-06-10: update to correct flags on swc
+  #     2024-04-08: update to get namespaces correct
+  #     2024-04-10: update to get the swc depths corrected
+  #     2024-04-23: update to allow provisional data
+  #     2024-05-23: update to prepare for CRAN submission
+
+  .data = NULL  # Appease R CMD Check
+
+  # Define the columns that we are plucking from each dataset:
+  column_selectors = c("Mean","Minimum","Maximum","ExpUncert","StdErMean")
+
+  # Stop if we don't specify 1 or 30 minutes
+  if (!(time_frequency %in% c("30_minute","1_minute"))) {
+    stop("Time frequency must be 30 minute (`30_minute`)or 1 minute (`1_minute`). Please revise.")
+  }
+
+  # Extract out the download time
+  download_time <- stringr::str_extract(time_frequency,pattern="^[:digit:]+(?=_)")
+
+
+  site_megapit <- neonUtilities::loadByProduct(dpID="DP1.00096.001",
+                                               site=site_name,
+                                               package="expanded",
+                                               check.size = FALSE,
+                                               include.provisional = provisional)
+
+
+  site_temp <- neonUtilities::loadByProduct(dpID="DP1.00041.001",
+                                            site=site_name,
+                                            startdate=download_date,
+                                            enddate=download_date,
+                                            timeIndex = download_time,
+                                            package="expanded",
+                                            check.size = FALSE,
+                                            include.provisional = provisional)
+
+
+  #site_swc <- neonUtilities::loadByProduct(dpID="DP1.00094.001",
+  #                                         site=site_name,
+  #                                         startdate=download_date,
+  #                                         enddate=download_date,
+  #                                         timeIndex = download_time,
+  #                                         package="expanded",
+  #                                         check.size = FALSE,
+  #                                         include.provisional = provisional)
+  # Then correct the swc
+  site_swc <- reprocess_vswc(site_name,download_date,download_date)
+
+  # Remove original swc and overwrite it with the corrected ones
+  site_swc2 <- site_swc |>
+    purrr::list_assign(SWS_30_minute = zap())
+
+
+  names(site_swc2)[names(site_swc2) == "SWS_30_minute_corr"] <- "SWS_30_minute"
+
+  site_swc <- swc_correct(site_swc2,site_name,download_date)
+
+
+  site_press <- neonUtilities::loadByProduct(dpID="DP1.00004.001",
+                                             site=site_name,
+                                             startdate=download_date,
+                                             enddate=download_date,
+                                             timeIndex = download_time,
+                                             package="expanded",
+                                             check.size = FALSE,
+                                             include.provisional = provisional)
+
+  site_co2 <- neonUtilities::loadByProduct(dpID="DP1.00095.001",
+                                           site=site_name,
+                                           startdate=download_date,
+                                           enddate=download_date,
+                                           timeIndex = download_time,
+                                           package="expanded",
+                                           include.provisional = provisional,
+                                           check.size = FALSE)
+
+
+
+  # Process each site measurement
+  co2 <- site_co2 |>
+    purrr::pluck(paste0("SCO2C_",time_frequency)) |>
+    dplyr::select(tidyselect::all_of(c("domainID","siteID","horizontalPosition","verticalPosition","startDateTime","finalQF")),tidyselect::matches(stringr::str_c("soilCO2concentration",column_selectors))) |>
+    dplyr::rename(soilCO2concentrationFinalQF = tidyselect::all_of("finalQF"))
+
+
+  # Determine a data frame of the different horizontal and vertical positions
+  co2_positions <- site_co2 |>
+    purrr::pluck(paste0("sensor_positions_","00095"))
+
+  # Add on the positions for co2
+  co2 <- determine_position(co2_positions,co2) |>
+    dplyr::ungroup()
+
+  # Apply monthly means
+  co2_monthly_mean <- compute_monthly_mean(co2)
+
+  temperature <- site_temp |>
+    purrr::pluck(paste0("ST_",time_frequency)) |>
+    dplyr::select(tidyselect::all_of(c("domainID","siteID","horizontalPosition","verticalPosition","startDateTime","finalQF")),tidyselect::matches(stringr::str_c("soilTemp",column_selectors)))  |>
+    dplyr::rename(soilTempFinalQF = tidyselect::all_of("finalQF"))
+
+  # Determine a data frame of the different horizontal and vertical positions
+  temperature_positions <- site_temp |>
+    purrr::pluck(paste0("sensor_positions_","00041"))
+
+
+  # Add on the positions for temperature
+  temperature <- determine_position(temperature_positions,temperature) |>
+    dplyr::ungroup()
+
+
+  # Apply monthly means
+  temperature_monthly_mean <- compute_monthly_mean(temperature)
+
+  swc <- site_swc |>
+    purrr::pluck(paste0("SWS_",time_frequency)) |>
+    dplyr::select(tidyselect::all_of(c("domainID","siteID","horizontalPosition","verticalPosition","startDateTime","VSWCFinalQF")),tidyselect::matches(stringr::str_c("VSWC",column_selectors)))
+
+  # Now correct the SWC
+
+  # Determine a data frame of the different horizontal and vertical positions
+
+  swc_positions <- site_swc |>
+    purrr::pluck(paste0("sensor_positions_","00094"))
+
+  # Add on the positions for swc
+  swc <- determine_position(swc_positions,swc) |>
+    dplyr::ungroup()
+
+
+
+
+  # Apply monthly means
+  swc_monthly_mean <- compute_monthly_mean(swc)
+
+  time_frequency_bp <- dplyr::if_else(time_frequency == "30_minute","30min","1min")
+
+  pressure <- site_press |>
+    purrr::pluck(paste0("BP_",time_frequency_bp)) |>
+    dplyr::select(tidyselect::all_of(c("domainID","siteID","horizontalPosition","verticalPosition","startDateTime","staPresFinalQF")),tidyselect::matches(stringr::str_c("staPres",column_selectors)))
+
+  pressure_positions <- site_press |>
+    purrr::pluck(paste0("sensor_positions_","00004"))
+
+
+  # Add on the positions for pressure
+  pressure <- determine_position(pressure_positions,pressure) |>
+    dplyr::ungroup()
+
+  # Apply monthly means - we adjust the monthly mean here to allow for a looser threshold.
+  pressure_monthly_mean <- compute_monthly_mean(pressure,time_horizon = 10)
+
+
+  # Put everything in a nested data frame
+  site_data <- tibble::tibble(
+    measurement=c("soilCO2concentration","VSWC","soilTemp","staPres"),
+    data = list(co2,swc,temperature,pressure),
+    monthly_mean = list(co2_monthly_mean,swc_monthly_mean,temperature_monthly_mean,pressure_monthly_mean)) |>
+    dplyr::mutate(data = purrr::map(.x=.data[["data"]],.f=~(.x |> dplyr::mutate(startDateTime = lubridate::force_tz(.data[["startDateTime"]],tzone="UTC"))))) # Make sure the time zone stamp is in universal time
+
+  return(list(site_data=site_data,site_megapit=site_megapit))
+
+
 }
 
-vswc_information <- information |>
-  mutate(vswc_corrected = swc_results)
 
-save(vswc_information,file = 'data/derived/reprocessed_vswc_data.Rda')
+# --> YOU ADD: Define the name of the site:
+site_name <- c("SRER","SJER","WREF")
 
+# --> Create the dates vector You can shorten these to a single month if you want.
+dates <- c("2021-09","2021-10","2021-11",
+           "2021-12","2022-01","2022-02",
+           "2022-03","2022-04","2022-05",
+           "2022-06","2022-07","2022-08")
+
+places <- expand_grid(site_name,dates)
+
+
+# --> YOU ADD: Define the name of the site:
+site_name <- c("UNDE","WOOD","KONZ")
+
+
+# --> Create the dates vector You can shorten these to a single month if you want.
+dates <- c("2023-09","2023-10","2023-11",
+           "2023-12","2024-01","2024-02",
+           "2024-03","2024-04","2024-05",
+           "2024-06","2024-07","2024-08")
+
+
+places2 <- expand_grid(site_name,dates)
+
+tot_places <- rbind(places,places2)
+
+curr_time <-  vector(mode = "list", length = nrow(tot_places))
+
+
+# Now we go through and do the dirty work of saving and computing fluxes. Yay .... :)
+for(i in 1:nrow(tot_places)) {
+  print(i)
+
+  # Name current month (you will need to adjust this on your computer)
+  curr_download_date <- tot_places$dates[[i]]
+  curr_site_name <- tot_places$site_name[[i]]
+  env_name <- paste0("data/raw/flux-data/env-meas-",curr_site_name,"-",curr_download_date,".Rda")
+  flux_name <- paste0('data/raw/flux-data/out-flux-',curr_site_name,"-",curr_download_date,'.Rda')
+
+  # Process
+  try(
+    # NOTE: you will need to say y/n at several points here
+    {
+
+
+      start_time <- Sys.time()
+
+       out_env_data <- acquire_neon_data_bes(
+         site_name = curr_site_name,
+         download_date = curr_download_date,
+         provisional = TRUE
+       )
+
+      site_data <- out_env_data$site_data
+      site_megapit <- out_env_data$site_megapit
+
+      save(site_data,site_megapit,file = env_name)
+
+      out_fluxes <- compute_neon_flux(input_site_env = site_data,
+                                      input_site_megapit = site_megapit)
+
+
+      save(out_fluxes,file = flux_name)
+
+
+      curr_time[[i]] <- Sys.time() - start_time
+
+    }
+
+  )
+}

@@ -2,19 +2,56 @@
 title: "A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites enabled by the `neonSoilFlux` R package"
 author:   
   - Ed Ayres   
-  - Ridwan Abdi
+  - name: Ridwan Abdi
+    affiliations:
+      - name: Augsburg University
+        address: 2211 Riverside Avenue
+        city: Minneapolis
+        state: MN
+        postal-code: 55454 
   - Natalie Ashburner-Wright   
   - Lillian Brown
   - Ryan Frink-Sobierajski
-  - Lajntxiag Lee
-  - Dijonë Mehmeti
+  - name: Lajntxiag Lee
+    affiliations:
+      - name: Augsburg University
+        address: 2211 Riverside Avenue
+        city: Minneapolis
+        state: MN
+        postal-code: 55454 
+  - name: Dijonë Mehmeti
+    affiliations:
+      - name: Augsburg University
+        address: 2211 Riverside Avenue
+        city: Minneapolis
+        state: MN
+        postal-code: 55454 
   - Christina Tran
-  - Ly Xiong   
+  - name: Ly Xiong
+    affiliations:
+      - name: Augsburg University
+        address: 2211 Riverside Avenue
+        city: Minneapolis
+        state: MN
+        postal-code: 55454 
   - Zoey Werbin
   - Naupaka Zimmerman   
-  - John Zobitz 
+  - name: John Zobitz
+    orcid: 0000-0002-1830-143X
+    email: zobitz@augsburg.edu
+    affiliations:
+      - name: Augsburg University
+        address: 2211 Riverside Avenue
+        city: Minneapolis
+        state: MN
+        postal-code: 55454 
 format:
   pdf:
+    include-in-header:
+      text: |
+        \usepackage{lineno,setspace}
+        \linenumbers
+        \doublespacing
     keep-tex: true
 number-sections: true
 bibliography: bes-bibliography.bib
@@ -295,15 +332,17 @@ These challenges notwithstanding, the method used here and made available in the
 We have here presented an R package `neonSoilFlux` for the estimation of soil CO$_{2}$ fluxes from continuous buried soil sensor measurements across terrestrial National Ecological Observatory Network sites. We compared the predicted fluxes to those measured directly using a field-based closed chamber approach. We find that...
 
 # Acknowledgments
+Will be inserted after peer review.
 
-Undergrads that are not listed as authors. Technical staff at USF. NEON field staff and assignable assets teams. LI-COR technical staff for helpful discussions. NSF grants to JZ and NBZ.
+<!-- J.Z acknowledges Kathleen O'Rourke for code development.. Technical staff at USF. NEON field staff and assignable assets teams. LI-COR technical staff for helpful discussions. NSF DEB grant \#2017829 awarded to J.Z., and NSF DEB grant \#2017860 awarded to N. Z. -->
 
 # Conflict of Interest Statements
 
-None declared.
+None of the authors have a financial, personal, or professional conflict of interest related to this work.
 
 # Author Contributions
+Will be inserted after peer review.
 
-Conceptualization: J.Z., N.Z.; Methodology: E.A, J.Z., N.Z; Software:  J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.; Validation: J.Z., N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L. X., L. L.; Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z., N.Z.; Data curation: J.Z., N.Z., D. M., L. X.; Writing – original draft: J.Z., N.Z.; Writing – review and editing: J.Z., N.Z., Z. W., E. A., C. T., D. M., L. X.,; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision: J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition: J.Z.; N.Z. 
+<!-- Conceptualization: J.Z., N.Z.; Methodology: E.A, J.Z., N.Z; Software:  J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.; Validation: J.Z., N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L. X., L. L.; Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z., N.Z.; Data curation: J.Z., N.Z., D. M., L. X.; Writing – original draft: J.Z., N.Z.; Writing – review and editing: J.Z., N.Z., Z. W., E. A., C. T., D. M., L. X.,; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision: J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition: J.Z.; N.Z.  -->
 
 

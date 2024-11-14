@@ -14,18 +14,19 @@ load('data/derived/field-data-info.Rda')
 flux_files <- list.files(path='data/raw/flux-data',pattern='out-flux-',full.names=TRUE)
 env_files <- list.files(path='data/raw/flux-data',pattern='env-meas-',full.names=TRUE)
 
-model_fluxes <- vector(mode = "list", length = length(flux_files))
+model_fluxes_mq <- vector(mode = "list", length = length(flux_files))
+model_fluxes_marshall <- vector(mode = "list", length = length(flux_files))
 env_values <- vector(mode = "list", length = length(env_files))
 
 
 
-for(i in seq_along(model_fluxes)) {
+for(i in seq_along(flux_files)) {
 
   load(flux_files[[i]])
   site_name <- str_extract(flux_files[[i]],
                            pattern="(?<=out-flux-)[:alpha:]{4}")
-  model_fluxes[[i]] <- out_fluxes |> mutate(site=site_name)
-
+  model_fluxes_mq[[i]] <- out_fluxes$millington_quirk |> mutate(site=site_name)
+  model_fluxes_marshall[[i]] <- out_fluxes$marshall |> mutate(site=site_name)
 }
 
 ### Do the same for the env values
@@ -42,12 +43,13 @@ for(i in seq_along(env_values)) {
 }
 
 # Bind everything together
-model_fluxes <- bind_rows(model_fluxes)
-
+model_fluxes_mq <- bind_rows(model_fluxes_mq)
+model_fluxes_marshall <- bind_rows(model_fluxes_marshall)
 env_values <- bind_rows(env_values)
 
-
-
+# For simplicity, we only want to take
+save(model_fluxes_mq,model_fluxes_marshall,env_values,
+     file = 'data/derived/all-year-flux-results.Rda')
 
 ### FORCE THE TIME ZONE WHEN PROCESSING THE FLUXES
 
@@ -77,14 +79,23 @@ licor_env <- licor_rev_all |>
 
 
 # Combine model and revised data, only using the times that are here
-model_sites <- model_fluxes |>
+model_sites_mq <- model_fluxes_mq |>
   group_by(site) |>
   nest() |>
   inner_join(measurement_times,by="site") |>
-  mutate(model_data = pmap(.l=list(data,start_time,end_time,sampling_location),
+  mutate(model_data_mq = pmap(.l=list(data,start_time,end_time,sampling_location),
                            .f=~filter(..1,between(startDateTime,..2,..3),
                                       horizontalPosition == ..4))) |>
-  select(site,model_data,sampling_location)
+  select(site,model_data_mq,sampling_location)
+
+model_sites_marshall <- model_fluxes_marshall |>
+  group_by(site) |>
+  nest() |>
+  inner_join(measurement_times,by="site") |>
+  mutate(model_data_marshall = pmap(.l=list(data,start_time,end_time,sampling_location),
+                           .f=~filter(..1,between(startDateTime,..2,..3),
+                                      horizontalPosition == ..4))) |>
+  select(site,model_data_marshall,sampling_location)
 
 
 env_sites <- env_values |>
@@ -113,10 +124,12 @@ env_sites <- env_values |>
 
 
 # Now join the licor data to the flux data.
-field_data_joined <- model_sites |>
+field_data_joined <- model_sites_mq |>
+  inner_join(model_sites_marshall,by=c("site","sampling_location")) |>
   inner_join(licor_flux,by=c("site")) |>
   inner_join(env_sites,by=c("site","sampling_location")) |>
   inner_join(licor_env,by="site") |>
+  relocate(site,sampling_location) |>
   ungroup()
 
 
