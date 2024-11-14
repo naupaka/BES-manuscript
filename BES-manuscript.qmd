@@ -1,50 +1,56 @@
 ---
 title: "A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites enabled by the `neonSoilFlux` R package"
 author:   
-  - Ed Ayres   
+  - name: Ed Ayres
+    orcid: 0000-0001-5190-258X
+    affiliations:
+      - name: National Ecological Observatory Network, 1685 38th Street, Suite 100, Boulder, CO 80301  
   - name: Ridwan Abdi
     affiliations:
-      - name: Augsburg University
-        address: 2211 Riverside Avenue
-        city: Minneapolis
-        state: MN
-        postal-code: 55454 
-  - Natalie Ashburner-Wright   
-  - Lillian Brown
-  - Ryan Frink-Sobierajski
+      - ref: augsburg 
+  - name: Natalie Ashburner-Wright
+    affiliations:
+      - ref: usfca
+  - name: Lillian Brown
+    affiliations:
+      - ref: usfca 
+  - name: Ryan Frink-Sobierajski
+    affiliations:
+      - ref: usfca 
   - name: Lajntxiag Lee
     affiliations:
-      - name: Augsburg University
-        address: 2211 Riverside Avenue
-        city: Minneapolis
-        state: MN
-        postal-code: 55454 
+      - ref: augsburg 
   - name: Dijonë Mehmeti
     affiliations:
-      - name: Augsburg University
-        address: 2211 Riverside Avenue
-        city: Minneapolis
-        state: MN
-        postal-code: 55454 
-  - Christina Tran
+      - ref: augsburg 
+  - name: Christina Tran
+    affiliations:
+      - ref: usfca 
   - name: Ly Xiong
     affiliations:
-      - name: Augsburg University
-        address: 2211 Riverside Avenue
-        city: Minneapolis
-        state: MN
-        postal-code: 55454 
-  - Zoey Werbin
-  - Naupaka Zimmerman   
+      - ref: augsburg 
+  - name: Zoey Werbin
+    orcid: 0000-0003-2927-2838
+    affiliations:
+      - name: Boston University, 5 Cummington Street, Boston, MA 02215
+  - name: Naupaka Zimmerman
+    orcid: 0000-0003-2168-6390
+    email: nzimmerman@usfca.edu
+    affiliations:
+      - ref: usfca 
   - name: John Zobitz
     orcid: 0000-0002-1830-143X
     email: zobitz@augsburg.edu
     affiliations:
-      - name: Augsburg University
-        address: 2211 Riverside Avenue
-        city: Minneapolis
-        state: MN
-        postal-code: 55454 
+      - ref: augsburg 
+
+affiliations:
+  - id: augsburg
+    name: Augsburg University, 2211 Riverside Avenue, Minneapolis, MN 55454
+  - id: usfca
+    name: University of San Francisco, 2130 Fulton Street, San Francisco, CA 94117
+  
+    
 format:
   pdf:
     include-in-header:
@@ -53,13 +59,36 @@ format:
         \linenumbers
         \doublespacing
     keep-tex: true
+
+filters:
+  - authors-block
+
 number-sections: true
 bibliography: bes-bibliography.bib
 csl: methods-in-ecology-and-evolution.csl
 ---
+
+# Acknowledgments {.unnumbered}
+J.Z acknowledges Kathleen O'Rourke for code development.. Technical staff at USF. NEON field staff and assignable assets teams. LI-COR technical staff for helpful discussions. NSF DEB grant \#2017829 awarded to J.Z., and NSF DEB grant \#2017860 awarded to N. Z.
+
+# Conflict of Interest Statements {.unnumbered}
+None of the authors have a financial, personal, or professional conflict of interest related to this work.
+
+# Author Contributions {.unnumbered}
+Conceptualization: J.Z., N.Z.; Methodology: E.A, J.Z., N.Z; Software:  J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.; Validation: J.Z., N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L. X., L. L.; Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z., N.Z.; Data curation: J.Z., N.Z., D. M., L. X.; Writing – original draft: J.Z., N.Z.; Writing – review and editing: J.Z., N.Z., Z. W., E. A., C. T., D. M., L. X.,; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision: J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition: J.Z.; N.Z.
+
+# Data Availability {.unnumbered}
+Data available from the Zenodo LINK http://dx.doi.org/10.5061/dryad.41qh7 (Kiere & Drummond 2016).” .
+
+\newpage
+
 # Abstract
 Current estimates of the global terrestrial carbon fluxes between the atmosphere indicate a net sink into soil carbon (not accounting for land use change emissions, @friedlingsteinGlobalCarbonBudget2023). A key factor to the uncertainty of the terrestrial carbon sink is quantification of terrestrial soil carbon fluxes, which vary across time and ecosystem type. Robust estimation of soil carbon fluxes on a sub-daily level requires measurements of soil CO$_{2}$ concentration, water content, temperature, and other environmental measurements and soil properties. These data are publicly available from the National Ecological Observatory Network at 47 different sites spanning a range of 20 different ecoclimatic domains. We present an R software package (`neonSoilFlux`) that acquires soil environmental data and to computes soil carbon flux at a half-hourly time step at a user-specified NEON site and month in a tidy user format. By design, users with a range of proficiency in the R statistical language can access the `neonSoilFlux` R package. Soil carbon fluxes and associated uncertainties are computed using the flux gradient method via a variety of existing approaches. To validate the computed fluxes, we separately measured soil carbon fluxes with automated sensors at six focal NEON sites. The validation confirmed that a primary challenge in reducing soil carbon flux uncertainty is correctly characterizing diffusivity and soil water content across the soil profile. Outputs from the `neonSoilFlux` package contribute to existing databases of continuous soil carbon measurements, providing near real-time estimates of a critical component to the terrestrial carbon cycle.
 
+## Keywords
+
+# Data for peer review
+Anonymous data and code for peer review is available here: LINK
 
 # Introduction
 
@@ -331,18 +360,5 @@ These challenges notwithstanding, the method used here and made available in the
 
 We have here presented an R package `neonSoilFlux` for the estimation of soil CO$_{2}$ fluxes from continuous buried soil sensor measurements across terrestrial National Ecological Observatory Network sites. We compared the predicted fluxes to those measured directly using a field-based closed chamber approach. We find that...
 
-# Acknowledgments
-Will be inserted after peer review.
-
-<!-- J.Z acknowledges Kathleen O'Rourke for code development.. Technical staff at USF. NEON field staff and assignable assets teams. LI-COR technical staff for helpful discussions. NSF DEB grant \#2017829 awarded to J.Z., and NSF DEB grant \#2017860 awarded to N. Z. -->
-
-# Conflict of Interest Statements
-
-None of the authors have a financial, personal, or professional conflict of interest related to this work.
-
-# Author Contributions
-Will be inserted after peer review.
-
-<!-- Conceptualization: J.Z., N.Z.; Methodology: E.A, J.Z., N.Z; Software:  J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.; Validation: J.Z., N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L. X., L. L.; Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z., N.Z.; Data curation: J.Z., N.Z., D. M., L. X.; Writing – original draft: J.Z., N.Z.; Writing – review and editing: J.Z., N.Z., Z. W., E. A., C. T., D. M., L. X.,; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision: J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition: J.Z.; N.Z.  -->
 
 
