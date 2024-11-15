@@ -157,9 +157,9 @@ Spatial layout of field sampling using a closed-dynamic chamber setup at a repre
 Listing of NEON sites studied for field work and analysis. $\overline{T_{S}}$: average soil temperature during field measurements. $\overline{SWC}$: average soil water content during field measurements. Soil plot refers to the particular location in the soil sensor array (denoted as HOR by NEON) where field measurements were made.
 :::
 
-### Post-collection processing of data
+### Post-collection processing of field data
 
-We used LI-COR SoilFluxPro software (v 5.3.1) to assess the data after collection and to inform sampling parameters. We checked appropriateness of dead band and measurement durations using built-in evaluation tools. Based on this, the deadband period was set for 30-40 seconds, depending on the site, and the measurement duration was 180 seconds with a 30 second pre-purge and a 30 second post-purge. We also assessed the R$^{2}$ of linear and exponential model fits to measured CO$_{2}$ to verify measurement quality.
+We used LI-COR SoilFluxPro software (v 5.3.1) to assess the data after collection and to inform sampling parameters. We checked appropriateness of dead band and measurement durations using built-in evaluation tools. Based on this, the deadband period was set for 30-40 seconds, depending on the site, and the measurement duration was 180 seconds with a 30 second pre-purge and a 30 second post-purge at most sites, and a 90 sec pre- and post-purge at sites with higher humidity due to recent precipitation events. We also assessed the R$^{2}$ of linear and exponential model fits to measured CO$_{2}$ to verify measurement quality.
 
 ## `neonSoilFlux` R package
 
@@ -280,7 +280,7 @@ Timeseries of both measured $F_{S}$ (yellow circles) and modeled soil fluxes (gr
 Timeseries of both daily-averaged field $F_{S}$ (yellow circles) and daily ensemble averaged soil fluxes (green or purple lines) by the `neonSoilFlux` R package, separated by the diffusivity model used (Millington-Quirk or Marshall, @sec-compute-diffusivity). The timeseries of modeled fluxes are a daily ensemble average of all flux-gradient approaches ($F_{000}$, $F_{101}$, $F_{011}$, $F_{110}$, @sec-compute-soil-flux). 
 :::
 
-@tbl-r2-table compares statistics of the modeled soil fluxes to field $F_{S}$ at each site.  As `neonSoilFlux` models half-hourly fluxes, we considered all measured fluxes over the duration of the half-hourly interval when computing the normalized root mean square error (NRMSE), $R^{2}$, at each of the flux methods ($F_{000}$, $F_{110}$, $F_{011}$, $F_{101}$) for the diffusivity models studied (Millington-Quirk or Marshall). MORE HERE
+@tbl-r2-table compares statistics of the modeled soil fluxes to field $F_{S}$ at each site.  As `neonSoilFlux` models half-hourly fluxes, we considered all measured fluxes over the duration of the half-hourly interval when computing the normalized root mean square error (NRMSE), $R^{2}$, at each of the flux methods ($F_{000}$, $F_{110}$, $F_{011}$, $F_{101}$) for the diffusivity models studied (Millington-Quirk or Marshall).
 
 ::: {#tbl-r2-table}
 ![](figures/r2-plot.png)
@@ -303,10 +303,13 @@ Panel a) Proportion of input gap-filled environmental measurements used to gener
 Top panels: distribution of SNR values across each of the different sites for modeled effluxes from the `neonSoilFlux` package, depending on the diffusivity calculation used (Millington-Quirk or Marshall, @sec-compute-diffusivity). Bottom panels: Proportion of measured $F_{S}$ within the modeled range of a flux computation method $F_{ijk}$ given an uncertainty reduction factor $\epsilon$, or $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$.
 :::
 
-@fig-diffusivity-plot reports the distribution of $D_{a}$ (from both the Marshall and Millington-Quirk methods, @sec-compute-diffusivity) at each study site, and the *post hoc* computation of $D_{a}$ (@sec-compute-diffusivity). 
+@fig-diffusivity-plot reports the distribution of $D_{a}$ (from both the Marshall and Millington-Quirk methods, @sec-compute-diffusivity) at each study site, and the *post hoc* computation of $D_{a}$ (@sec-compute-diffusivity).
+
+MORE HERE and DESCRIPTION.
 
 ::: {#fig-diffusivity-plot}
 ![](figures/diffusivity-plot.png)
+
 Distribution of diffusivity ($D_{a}$) at each study site. Values of $D_{a}$ were provided by the `neonSoilFlux` package, computed from the Millington-Quirk or Marshall models (@sec-compute-diffusivity). A post-hoc estimate of diffusivity (labeled as "Field estimated") was computed through the field measured flux (@fig-flux-results), divided by the CO$_{2}$ gradient from the measurement levels closest to the soil surface, as reported by NEON.
 :::
 
