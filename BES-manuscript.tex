@@ -43,14 +43,28 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
+\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+\makeatother
 
 
 \providecommand{\tightlist}{%
@@ -156,6 +170,7 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
+
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -173,41 +188,46 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
+
 \title{A direct comparison between field-measured and sensor-based
 estimates of soil carbon dioxide flux across six National Ecological
 Observatory Network sites enabled by the \texttt{neonSoilFlux} R
 package}
-\author{Ed Ayres\textsuperscript{1} \and Ridwan
-Abdi\textsuperscript{3} \and Natalie
+\author{John Zobitz\textsuperscript{1} \and Ed
+Ayres\textsuperscript{2} \and Zoey Werbin\textsuperscript{3} \and Ridwan
+Abdi\textsuperscript{1} \and Natalie
 Ashburner-Wright\textsuperscript{4} \and Lillian
 Brown\textsuperscript{4} \and Ryan
 Frink-Sobierajski\textsuperscript{4} \and Lajntxiag
-Lee\textsuperscript{3} \and Dijonë
-Mehmeti\textsuperscript{3} \and Christina
-Tran\textsuperscript{4} \and Ly Xiong\textsuperscript{3} \and Zoey
-Werbin\textsuperscript{2} \and Naupaka
-Zimmerman\textsuperscript{4} \and John Zobitz\textsuperscript{3}}
+Lee\textsuperscript{1} \and Dijonë
+Mehmeti\textsuperscript{1} \and Christina
+Tran\textsuperscript{4} \and Ly Xiong\textsuperscript{1} \and Naupaka
+Zimmerman\textsuperscript{4}}
 \date{}
 
 \begin{document}
 \maketitle
 
-\textsuperscript{1} National Ecological Observatory Network, 1685 38th
-Street, Suite 100, Boulder, CO 80301\\
-\textsuperscript{2} Boston University, 5 Cummington Street, Boston, MA
-02215\\
-\textsuperscript{3} Augsburg University, 2211 Riverside Avenue,
+
+\textsuperscript{1} Augsburg University, 2211 Riverside Avenue,
 Minneapolis, MN 55454\\
+\textsuperscript{2} National Ecological Observatory Network, 1685 38th
+Street, Suite 100, Boulder, CO 80301\\
+\textsuperscript{3} Boston University, 5 Cummington Street, Boston, MA
+02215\\
 \textsuperscript{4} University of San Francisco, 2130 Fulton Street, San
 Francisco, CA 94117
 
 \section*{Acknowledgments}\label{acknowledgments}
 \addcontentsline{toc}{section}{Acknowledgments}
 
-J.Z acknowledges Kathleen O'Rourke for code development.. Technical
-staff at USF. NEON field staff and assignable assets teams. LI-COR
-technical staff for helpful discussions. NSF DEB grant \#2017829 awarded
-to J.Z., and NSF DEB grant \#2017860 awarded to N. Z.
+JZ acknowledges Kathleen O'Rourke for code development. NZ thanks
+technical staff at USF for support with field gear assembly and
+shipping. We thank the NEON field staff and assignable assets teams for
+facilitating each of the six NEON site visits. We are grateful to LI-COR
+technical staff for helpful discussions about optimal sampling methods.
+This work was supported by NSF DEB grant \#2017829 awarded to JZ, and
+NSF DEB grant \#2017860 awarded to NZ.
 
 \section*{Conflict of Interest
 Statements}\label{conflict-of-interest-statements}
@@ -219,53 +239,52 @@ of interest related to this work.
 \section*{Author Contributions}\label{author-contributions}
 \addcontentsline{toc}{section}{Author Contributions}
 
-Conceptualization: J.Z., N.Z.; Methodology: E.A, J.Z., N.Z; Software:
-J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.; Validation: J.Z.,
-N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L. X., L. L.;
-Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z., N.Z.; Data
-curation: J.Z., N.Z., D. M., L. X.; Writing -- original draft: J.Z.,
-N.Z.; Writing -- review and editing: J.Z., N.Z., Z. W., E. A., C. T., D.
-M., L. X.,; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision:
-J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition:
-J.Z.; N.Z.
+Conceptualization: JZ, NZ; Methodology: EA, JZ, NZ; Software: JZ, NZ,
+ZW, E A, DM, RA, LX, LL; Validation: JZ, NZ; Formal Analysis: JZ, NZ,
+DM, RA, LX, LL; Investigation: JZ, NZ, RF-S, CT, NA-W, LB; Resources:
+JZ, NZ; Data curation: JZ, NZ, DM, LX; Writing -- original draft: JZ,
+NZ; Writing -- review and editing: JZ, NZ, ZW, EA, CT, DM, LX,;
+Visualization: JZ, NZ, DM, RA, LX; Supervision: JZ; NZ; Project
+Administration: JZ; NZ; Funding Acquisition: JZ; NZ
 
 \section*{Data Availability}\label{data-availability}
 \addcontentsline{toc}{section}{Data Availability}
 
 Data available from the Zenodo LINK
-http://dx.doi.org/10.5061/dryad.41qh7 (Kiere \& Drummond 2016).'' .
+http://dx.doi.org/10.5061/dryad.41qh7 (Kiere \& Drummond 2016).''
 
 \newpage
 
 \section{Abstract}\label{abstract}
 
-Current estimates of the global terrestrial carbon fluxes between the
-atmosphere indicate a net sink into soil carbon (not accounting for land
-use change emissions, Friedlingstein et al. (2023)). A key factor to the
-uncertainty of the terrestrial carbon sink is quantification of
-terrestrial soil carbon fluxes, which vary across time and ecosystem
-type. Robust estimation of soil carbon fluxes on a sub-daily level
-requires measurements of soil CO\(_{2}\) concentration, water content,
+A key component of constraining the uncertainty of the terrestrial
+carbon sink is quantification of terrestrial soil carbon fluxes, which
+vary across time and ecosystem type. One method for the estimation of
+these fluxes and their associated uncertainties is the flux gradient
+method, which can be calculated via a variety of existing approaches.
+Robust estimation of soil carbon fluxes on a sub-daily level requires
+measurements of soil CO\(_{2}\) concentration, water content,
 temperature, and other environmental measurements and soil properties.
 These data are publicly available from the National Ecological
-Observatory Network at 47 different sites spanning a range of 20
-different ecoclimatic domains. We present an R software package
-(\texttt{neonSoilFlux}) that acquires soil environmental data and to
+Observatory Network at sites spanning a range of 20 different
+ecoclimatic domains across the continental United States, Puerto Rico,
+Alaska, and Hawai'i. We present an R software package
+(\texttt{neonSoilFlux}) that acquires NEON soil environmental data and
 computes soil carbon flux at a half-hourly time step at a user-specified
-NEON site and month in a tidy user format. By design, users with a range
-of proficiency in the R statistical language can access the
-\texttt{neonSoilFlux} R package. Soil carbon fluxes and associated
-uncertainties are computed using the flux gradient method via a variety
-of existing approaches. To validate the computed fluxes, we separately
-measured soil carbon fluxes with automated sensors at six focal NEON
-sites. The validation confirmed that a primary challenge in reducing
-soil carbon flux uncertainty is correctly characterizing diffusivity and
-soil water content across the soil profile. Outputs from the
-\texttt{neonSoilFlux} package contribute to existing databases of
-continuous soil carbon measurements, providing near real-time estimates
-of a critical component to the terrestrial carbon cycle.
+NEON site and month in a tidy data format. To validate the computed
+fluxes, we visited six focal NEON sites and measured soil carbon fluxes
+using a closed-dynamic chamber approach. The validation confirmed that a
+primary challenge in reducing soil carbon flux uncertainty is correctly
+characterizing diffusivity and soil water content across the soil
+profile. Outputs from the \texttt{neonSoilFlux} package contribute to
+existing databases of soil carbon flux measurements, providing near
+real-time estimates of a critical component of the terrestrial carbon
+cycle.
 
 \subsection{Keywords}\label{keywords}
+
+Soil carbon, carbon dioxide, flux gradient, carbon cycle, field
+validation, soil respiration, ecosystem variability, diffusion
 
 \section{Data for peer review}\label{data-for-peer-review}
 
@@ -507,9 +526,9 @@ package}{neonSoilFlux R package}}\label{neonsoilflux-r-package}
 We developed an R package (\texttt{neonSoilFlux};
 https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly
 soil carbon fluxes and uncertainties from NEON data. The objective of
-the \texttt{neonSoilFlux} package is a unified workflow soil data
-acquisition and analysis that supplements existing data acquisition
-software through the \texttt{neonUtilities} R package
+the \texttt{neonSoilFlux} package is a unified workflow for soil data
+acquisition and analysis that supplements the existing data acquisition
+R package \texttt{neonUtilities}
 (\url{https://CRAN.R-project.org/package=neonUtilities}).
 Figure~\ref{fig-package-diagram} outlines the basic workflow of the
 package.
@@ -534,10 +553,10 @@ parallelogram).}
 
 \end{figure}%
 
-At a given NEON observation there are five different replicate soil
-sensor plots, each with measurements of soil CO\(_{2}\) concentration,
-soil temperature, and soil moisture at different depths. The
-\texttt{neonSoilFlux} package acquires measured soil water content
+At a given NEON observation there are five replicate soil plots, each
+with measurements of soil CO\(_{2}\) concentration, soil temperature,
+and soil moisture at different depths (Figure~\ref{fig-model-diagram}).
+The \texttt{neonSoilFlux} package acquires measured soil water content
 (National Ecological Observatory Network (NEON), 2024e), soil CO\(_{2}\)
 concentration (National Ecological Observatory Network (NEON), 2024b),
 barometric pressure from the nearby tower (National Ecological
@@ -845,7 +864,7 @@ Section~\ref{sec-compute-soil-flux}).}
 
 \centering{
 
-\captionsetup{labelsep=none}\includegraphics{figures/r2-plot.png}
+\includegraphics{figures/r2-plot.png}
 
 }
 
@@ -922,7 +941,7 @@ Section~\ref{sec-compute-diffusivity}) at each study site, and the
 
 \centering{
 
-\captionsetup{labelsep=none}\includegraphics{figures/diffusivity-plot.png}
+\includegraphics{figures/diffusivity-plot.png}
 
 }
 
@@ -953,12 +972,18 @@ concentrations increase throughout the soil profile. We found that this
 condition was met at XXX\% across the study period. Periods where this
 gradient condition are not met generally are connected to biophysical
 processes such soil wetting events (e.g.~KONZ), which have the effect of
-temporarily reducing the soil respiration or efflux. When modeling soil
-respiration, typically a non-linear response function is considered,
-that also considers soil type as well (Bouma \& Bryla, 2000; Yan et al.,
-2016, 2018). For the \texttt{neonSoilFlux} package soil type is
-connected to the bulk density, which was separately determined at a
-site.
+reducing the soil respiration or efflux due to a temporary reduction in
+diffusivity. When modeling soil respiration, typically a non-linear
+response function that also considers soil type is used (Bouma \& Bryla,
+2000; Yan et al., 2016, 2018). For the \texttt{neonSoilFlux} package,
+soil type is connected to the bulk density, which was characterized at
+each NEON site based on replicate samples collected from the site
+megapit at a subset of soil horizons, with an estimated uncertainty of
+\(\pm5\%\) (see NEON User Guide to Soil physical and chemical
+properties, Megapit (DP1.00096.001)). Coarse fragment estimates also
+have very large uncertainties, but because the volume fraction tends to
+be low in surface soils it probably wouldn't contribute much additional
+flux uncertainty.
 
 The largest source of uncertainty to improve reliability of the flux
 estimate is to prevent the usage of gap-filled data. Three sites (KONZ,
@@ -1413,6 +1438,7 @@ Research}, \emph{59}(12), e2023WR034457.
 \url{https://doi.org/10.1029/2023WR034457}
 
 \end{CSLReferences}
+
 
 
 
