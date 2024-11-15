@@ -43,14 +43,28 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
+\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+\makeatother
 
 
 \providecommand{\tightlist}{%
@@ -156,6 +170,7 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
+
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -173,41 +188,46 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
+
 \title{A direct comparison between field-measured and sensor-based
 estimates of soil carbon dioxide flux across six National Ecological
 Observatory Network sites enabled by the \texttt{neonSoilFlux} R
 package}
-\author{Ed Ayres\textsuperscript{1} \and Ridwan
-Abdi\textsuperscript{3} \and Natalie
+\author{John Zobitz\textsuperscript{1} \and Ed
+Ayres\textsuperscript{2} \and Zoey Werbin\textsuperscript{3} \and Ridwan
+Abdi\textsuperscript{1} \and Natalie
 Ashburner-Wright\textsuperscript{4} \and Lillian
 Brown\textsuperscript{4} \and Ryan
 Frink-Sobierajski\textsuperscript{4} \and Lajntxiag
-Lee\textsuperscript{3} \and Dijonë
-Mehmeti\textsuperscript{3} \and Christina
-Tran\textsuperscript{4} \and Ly Xiong\textsuperscript{3} \and Zoey
-Werbin\textsuperscript{2} \and Naupaka
-Zimmerman\textsuperscript{4} \and John Zobitz\textsuperscript{3}}
+Lee\textsuperscript{1} \and Dijonë
+Mehmeti\textsuperscript{1} \and Christina
+Tran\textsuperscript{4} \and Ly Xiong\textsuperscript{1} \and Naupaka
+Zimmerman\textsuperscript{4}}
 \date{}
 
 \begin{document}
 \maketitle
 
-\textsuperscript{1} National Ecological Observatory Network, 1685 38th
-Street, Suite 100, Boulder, CO 80301\\
-\textsuperscript{2} Boston University, 5 Cummington Street, Boston, MA
-02215\\
-\textsuperscript{3} Augsburg University, 2211 Riverside Avenue,
+
+\textsuperscript{1} Augsburg University, 2211 Riverside Avenue,
 Minneapolis, MN 55454\\
+\textsuperscript{2} National Ecological Observatory Network, 1685 38th
+Street, Suite 100, Boulder, CO 80301\\
+\textsuperscript{3} Boston University, 5 Cummington Street, Boston, MA
+02215\\
 \textsuperscript{4} University of San Francisco, 2130 Fulton Street, San
 Francisco, CA 94117
 
 \section*{Acknowledgments}\label{acknowledgments}
 \addcontentsline{toc}{section}{Acknowledgments}
 
-J.Z acknowledges Kathleen O'Rourke for code development.. Technical
-staff at USF. NEON field staff and assignable assets teams. LI-COR
-technical staff for helpful discussions. NSF DEB grant \#2017829 awarded
-to J.Z., and NSF DEB grant \#2017860 awarded to N. Z.
+JZ acknowledges Kathleen O'Rourke for code development. NZ thanks
+technical staff at USF for support with field gear assembly and
+shipping. We thank the NEON field staff and assignable assets teams for
+facilitating each of the six NEON site visits. We are grateful to LI-COR
+technical staff for helpful discussions about optimal sampling methods.
+This work was supported by NSF DEB grant \#2017829 awarded to JZ, and
+NSF DEB grant \#2017860 awarded to NZ.
 
 \section*{Conflict of Interest
 Statements}\label{conflict-of-interest-statements}
@@ -219,53 +239,52 @@ of interest related to this work.
 \section*{Author Contributions}\label{author-contributions}
 \addcontentsline{toc}{section}{Author Contributions}
 
-Conceptualization: J.Z., N.Z.; Methodology: E.A, J.Z., N.Z; Software:
-J.Z., N.Z, Z. W., E. A., D. M., R. A., L. X., L. L.; Validation: J.Z.,
-N.Z.; Formal Analysis: J.Z., N.Z., D. M., R. A., L. X., L. L.;
-Investigation: J.Z., N.Z., R. F-S., C. T.; Resources: J.Z., N.Z.; Data
-curation: J.Z., N.Z., D. M., L. X.; Writing -- original draft: J.Z.,
-N.Z.; Writing -- review and editing: J.Z., N.Z., Z. W., E. A., C. T., D.
-M., L. X.,; Visualization: J.Z., N.Z., D. M., R. A., L. X.; Supervision:
-J.Z.; N.Z.; Project Administration: J.Z.; N.Z.; Funding Acquisition:
-J.Z.; N.Z.
+Conceptualization: JZ, NZ; Methodology: EA, JZ, NZ; Software: JZ, NZ,
+ZW, E A, DM, RA, LX, LL; Validation: JZ, NZ; Formal Analysis: JZ, NZ,
+DM, RA, LX, LL; Investigation: JZ, NZ, RF-S, CT, NA-W, LB; Resources:
+JZ, NZ; Data curation: JZ, NZ, DM, LX; Writing -- original draft: JZ,
+NZ; Writing -- review and editing: JZ, NZ, ZW, EA, CT, DM, LX,;
+Visualization: JZ, NZ, DM, RA, LX; Supervision: JZ; NZ; Project
+Administration: JZ; NZ; Funding Acquisition: JZ; NZ
 
 \section*{Data Availability}\label{data-availability}
 \addcontentsline{toc}{section}{Data Availability}
 
 Data available from the Zenodo LINK
-http://dx.doi.org/10.5061/dryad.41qh7 (Kiere \& Drummond 2016).'' .
+http://dx.doi.org/10.5061/dryad.41qh7 (Kiere \& Drummond 2016).''
 
 \newpage
 
 \section{Abstract}\label{abstract}
 
-Current estimates of the global terrestrial carbon fluxes between the
-atmosphere indicate a net sink into soil carbon (not accounting for land
-use change emissions, Friedlingstein et al. (2023)). A key factor to the
-uncertainty of the terrestrial carbon sink is quantification of
-terrestrial soil carbon fluxes, which vary across time and ecosystem
-type. Robust estimation of soil carbon fluxes on a sub-daily level
-requires measurements of soil CO\(_{2}\) concentration, water content,
+A key component of constraining the uncertainty of the terrestrial
+carbon sink is quantification of terrestrial soil carbon fluxes, which
+vary across time and ecosystem type. One method for the estimation of
+these fluxes and their associated uncertainties is the flux gradient
+method, which can be calculated via a variety of existing approaches.
+Robust estimation of soil carbon fluxes on a sub-daily level requires
+measurements of soil CO\(_{2}\) concentration, water content,
 temperature, and other environmental measurements and soil properties.
 These data are publicly available from the National Ecological
-Observatory Network at 47 different sites spanning a range of 20
-different ecoclimatic domains. We present an R software package
-(\texttt{neonSoilFlux}) that acquires soil environmental data and to
+Observatory Network at sites spanning a range of 20 different
+ecoclimatic domains across the continental United States, Puerto Rico,
+Alaska, and Hawai'i. We present an R software package
+(\texttt{neonSoilFlux}) that acquires NEON soil environmental data and
 computes soil carbon flux at a half-hourly time step at a user-specified
-NEON site and month in a tidy user format. By design, users with a range
-of proficiency in the R statistical language can access the
-\texttt{neonSoilFlux} R package. Soil carbon fluxes and associated
-uncertainties are computed using the flux gradient method via a variety
-of existing approaches. To validate the computed fluxes, we separately
-measured soil carbon fluxes with automated sensors at six focal NEON
-sites. The validation confirmed that a primary challenge in reducing
-soil carbon flux uncertainty is correctly characterizing diffusivity and
-soil water content across the soil profile. Outputs from the
-\texttt{neonSoilFlux} package contribute to existing databases of
-continuous soil carbon measurements, providing near real-time estimates
-of a critical component to the terrestrial carbon cycle.
+NEON site and month in a tidy data format. To validate the computed
+fluxes, we visited six focal NEON sites and measured soil carbon fluxes
+using a closed-dynamic chamber approach. The validation confirmed that a
+primary challenge in reducing soil carbon flux uncertainty is correctly
+characterizing diffusivity and soil water content across the soil
+profile. Outputs from the \texttt{neonSoilFlux} package contribute to
+existing databases of soil carbon flux measurements, providing near
+real-time estimates of a critical component of the terrestrial carbon
+cycle.
 
 \subsection{Keywords}\label{keywords}
+
+Soil carbon, carbon dioxide, flux gradient, carbon cycle, field
+validation, soil respiration, ecosystem variability, diffusion
 
 \section{Data for peer review}\label{data-for-peer-review}
 
@@ -307,15 +326,12 @@ ecosystem carbon flux (Jian et al., 2022; Luo et al., 2011; Phillips et
 al., 2017; J. Shao et al., 2015; P. Shao et al., 2013; Sihi et al.,
 2016).
 
-Beyond direct observations of soil CO\(_{2}\) concentrations and other
-environmental variables such as moisture or temperature, estimated or
-observed soil carbon fluxes are a key metric for understanding change in
-soil carbon pools over time (Bond-Lamberty et al., 2024). A soil carbon
-flux to the atmosphere (\(F_{S}\), units \(\mu\)mol m\(^{-2}\)
-s\(^{-1}\)), represents the aggregate process of transfer of soil
-CO\(_{2}\) to the atmosphere from physical and biological processes
-(e.g.~diffusion and respiration). Measurements of soil carbon fluxes can
-be coupled with empirical or process models of soil carbon. Soil carbon
+Estimated or observed soil carbon fluxes are a key metric for
+understanding change in soil carbon pools over time (Bond-Lamberty et
+al., 2024). A soil carbon flux to the atmosphere (\(F_{S}\), units
+\(\mu\)mol m\(^{-2}\) s\(^{-1}\)), represents the aggregate process of
+transfer of soil CO\(_{2}\) to the atmosphere from physical and
+biological processes (e.g.~diffusion and respiration). Soil carbon
 fluxes can be assumed to encompass soil carbon respiration from
 autotrophic or heterotrophic sources (Davidson et al., 2006), typically
 assumed to be static across the soil biome and modeled with a
@@ -369,7 +385,7 @@ Key objectives of this study are to:
   continuous sensor measurements across NEON sites.
 \item
   Benchmark estimated soil carbon fluxes against field measurements
-  (e.g.~direct measurements of soil flux).
+  (e.g.~direct chamber measurements of soil flux).
 \item
   Identify sources of error in the flux-gradient approach across diverse
   sites in order to guide future work.
@@ -392,10 +408,61 @@ May and June of 2022, and WOOD, KONZ, and UNDE during May and June of
 Over the course of two field campaigns in 2022 and 2024, we conducted
 week-long visits at each site. In consultation with NEON field staff, we
 first selected a specific plot in the soil sampling array to maximize
-the concurrent availability of sensor data. We then made measurements of
-flux on an hourly or half-hourly interval for 8 hours each day after
-letting temporarily-installed soil collar(s) equilibrate for
-approximately 24 hours.
+the concurrent availability of sensor data.
+
+\subsubsection{Soil collar placement}\label{soil-collar-placement}
+
+Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC
+soil collars (20.1 cm inside diameter) were installed in close proximity
+to the permanent NEON soil sensors at each site
+(Figure~\ref{fig-collar-images}). The soil plot where measurements were
+taken was chosen at each site in consultation with NEON staff to
+maximize likelihood of quality soil sensor measurements during the
+duration of the IRGA measurements at each site. After installation,
+collar(s) were left to equilibrate for approximately 24 hours prior to
+measurements being taken.
+
+\subsubsection{\texorpdfstring{Infrared gas analyzer measurements of
+soil CO\(_{2}\)
+flux}{Infrared gas analyzer measurements of soil CO\_\{2\} flux}}\label{infrared-gas-analyzer-measurements-of-soil-co_2-flux}
+
+In 2022, we then made measurements of flux on an hourly interval for 8
+hours each day. Measurements were taken from roughly 8 am to 4 pm, with
+the time interval selected to capture the majority of the diurnal
+gradient of soil temperature each day. These measurements were made
+using a LI-6800 infrared gas analyzer instrument (LI-COR Environmental,
+Lincoln, NE) fitted with a soil chamber attachment (attachment 6800-09).
+In 2024, we again used the same LI-6800 instrument, but made half-hourly
+measurements over an approximately 8 hour period. In addition, we also
+installed a second collar and used a second instrument, an LI-870
+CO\(_{2}\) IRGA, connected to an automated robotic chamber (LI-COR
+chamber 8200-104) controlled by an LI-8250 multiplexer, to make
+automated measurements. The multiplexer was configured to take
+half-hourly measurements 24 hours a day for the duration of our sampling
+bout at each site. Each instrument was paired with a soil temperature
+and moisture probe (Stevens HydraProbe, Stevens Water, Portland, OR)
+that was used to make soil temperature and moisture measurements
+concurrent with the CO\(_{2}\) flux measurements. Chamber volumes were
+set by measuring collar offsets at each site. System checks were
+conducted daily for the LI-6800 and weekly for the LI-8250. Instruments
+were factory calibrated before each field season.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{figures/collar-images.jpeg}
+
+}
+
+\caption{\label{fig-collar-images}Spatial layout of field sampling using
+a closed-dynamic chamber setup at a representative NEON site (KONZ).
+Left image shows collars (white arrows) and permanent soil sensor
+installation (black arrow) and right image shows the LI-6800
+(foreground) and LI-8200-104 (background) instruments placed on the
+collars.}
+
+\end{figure}%
 
 \scriptsize
 
@@ -466,40 +533,17 @@ University of Notre Dame Environmental Research Center (UNDE) &
 
 \normalsize
 
-\subsubsection{Soil collar placement}\label{soil-collar-placement}
-
-Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC
-soil collars (FIXME: diameter) were installed in close proximity to the
-permanent NEON soil sensors at each site. The soil plot where
-measurements were taken was chosen at each site in consultation with
-NEON staff to maximize likelihood of quality soil sensor measurements
-during the duration of the IRGA measurements at each site.
-
-IN PROGRESS: Add graphic of soil plot layout and placement of soil
-collar(s) -- could make diagram in OmniGraffle?
-
-\subsubsection{\texorpdfstring{Infrared gas analyzer measurements of
-soil CO\(_{2}\)
-flux}{Infrared gas analyzer measurements of soil CO\_\{2\} flux}}\label{infrared-gas-analyzer-measurements-of-soil-co_2-flux}
-
-During the summer 2022 field campaign, a LI-COR 6800 with soil flux
-chamber attachment was used to measure soil fluxes for 8 hours each day
-on an hourly interval. During the summer 2024 field campaign, the
-LI-6800 measurements were taken on a half-hourly interval and were
-paired with an automated soil flux chamber setup (FIXME multiplexer,
-IRGA, chamber model numbers) that made automated measurements on a
-half-hourly interval 24 hours a day while we were on site. Each
-instrument was paired with a soil temperature and moisture probe (FIXME:
-Stevens model \#) that was used to make soil temperature and moisture
-measurements concurrent with the CO\(_{2}\) flux measurements.
-
-IN PROGRESS: Dead bands, measurement duration, instrument self-testing.
-
 \subsubsection{Post-collection processing of
 data}\label{post-collection-processing-of-data}
 
-IN PROGRESS: LI-COR SoilFluxPro software to assess dead band and
-measurement duration.
+We used LI-COR SoilFluxPro software (v 5.3.1) to assess the data after
+collection and to inform sampling parameters. We checked appropriateness
+of dead band and measurement durations using built-in evaluation tools.
+Based on this, the deadband period was set for 30-40 seconds, depending
+on the site, and the measurement duration was 180 seconds with a 30
+second pre-purge and a 30 second post-purge. We also assessed the
+R\(^{2}\) of linear and exponential model fits to measured CO\(_{2}\) to
+verify measurement quality.
 
 \subsection{\texorpdfstring{\texttt{neonSoilFlux} R
 package}{neonSoilFlux R package}}\label{neonsoilflux-r-package}
@@ -507,12 +551,11 @@ package}{neonSoilFlux R package}}\label{neonsoilflux-r-package}
 We developed an R package (\texttt{neonSoilFlux};
 https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly
 soil carbon fluxes and uncertainties from NEON data. The objective of
-the \texttt{neonSoilFlux} package is a unified workflow soil data
-acquisition and analysis that supplements existing data acquisition
-software through the \texttt{neonUtilities} R package
+the \texttt{neonSoilFlux} package is a unified workflow
+(Figure~\ref{fig-package-diagram}) for soil data acquisition and
+analysis that supplements the existing data acquisition R package
+\texttt{neonUtilities}
 (\url{https://CRAN.R-project.org/package=neonUtilities}).
-Figure~\ref{fig-package-diagram} outlines the basic workflow of the
-package.
 
 \begin{figure}
 
@@ -523,7 +566,7 @@ package.
 }
 
 \caption{\label{fig-package-diagram}Diagram of \texttt{neonSoilFlux} R
-package. For a given month, year and NEON site (orange parallelogram),
+package. For a given month, year, and NEON site (orange parallelogram),
 the package acquires all relevant data to compute \(F_{S}\) using the
 \texttt{neonUtilities} R package (green rectangle). Data are gap-filled
 according to reported QA flags and interpolated to the same measurement
@@ -534,10 +577,10 @@ parallelogram).}
 
 \end{figure}%
 
-At a given NEON observation there are five different replicate soil
-sensor plots, each with measurements of soil CO\(_{2}\) concentration,
-soil temperature, and soil moisture at different depths. The
-\texttt{neonSoilFlux} package acquires measured soil water content
+At a given NEON observation there are five replicate soil plots, each
+with measurements of soil CO\(_{2}\) concentration, soil temperature,
+and soil moisture at different depths (Figure~\ref{fig-model-diagram}).
+The \texttt{neonSoilFlux} package acquires measured soil water content
 (National Ecological Observatory Network (NEON), 2024e), soil CO\(_{2}\)
 concentration (National Ecological Observatory Network (NEON), 2024b),
 barometric pressure from the nearby tower (National Ecological
@@ -560,31 +603,31 @@ site.
 the \texttt{neonSoilFlux} R package. a) Acquire: Data are obtained from
 given NEON location and horizontal sensor location, which includes soil
 water content, soil temperature, CO\(_{2}\) concentration, and
-atmospheric pressure. All data are screened for quality assurance, with
-gap-filling of missing data reported. b) Any belowground data are then
-harmonized to the same depth as CO\(_{2}\) concentrations using linear
-regression. c) The flux across a given depth is computed via Fick's law,
-denoted with \(F_{ijk}\), where \(i\), \(j\), or \(k\) are either 0 or 1
-denoting the layers the flux is computed across (\(i\) = closest to
-surface, \(k\) = deepest). \(F_{000}\) represents a flux estimate where
-the gradient \(dC/dz\) is the slope of a linear regression of CO\(_{2}\)
-with depth.}
+atmospheric pressure. All data are screened for quality assurance; if
+gap-filling of missing data occurs, it is flagged for the user. b) Any
+belowground data are then harmonized to the same depth as CO\(_{2}\)
+concentrations using linear regression. c) The flux across a given depth
+is computed via Fick's law, denoted with \(F_{ijk}\), where \(i\),
+\(j\), or \(k\) are either 0 or 1 denoting the layers the flux is
+computed across (\(i\) = closest to surface, \(k\) = deepest).
+\(F_{000}\) represents a flux estimate where the gradient \(dC/dz\) is
+the slope of a linear regression of CO\(_{2}\) with depth.}
 
 \end{figure}%
 
-The workflow to computing a value of \(F_{S}\) with the
-\texttt{neonSoilFlux} consists of three primary steps, illustrate in
+The workflow to compute a value of \(F_{S}\) with \texttt{neonSoilFlux}
+consists of three primary steps, illustrated in
 Figure~\ref{fig-model-diagram}. First, NEON data are acquired for a
 given site and month via the \texttt{neonUtilities} R package (yellow
 parallelogram and green rectangle in Figure~\ref{fig-package-diagram}
 and Panel a in Figure~\ref{fig-model-diagram}). Acquired environmental
 data can be exported to a comma separated value file for additional
-analysis. Quality assurance (QA) flags with an observation are reported
-as an indicator variable.
+analysis. Quality assurance (QA) flags are reported as an indicator
+variable.
 
-The next step is harmonizing the data to compute soil fluxes across soil
-layers. This step consists of three different actions (blue rectangles
-in Figure~\ref{fig-package-diagram} and Panel b in
+The second step is harmonizing the data to compute soil fluxes across
+soil layers. This step consists of three different actions (blue
+rectangles in Figure~\ref{fig-package-diagram} and Panel b in
 Figure~\ref{fig-model-diagram}). If a given observation by NEON is
 reported as not passing a quality assurance check, we applied a gap
 filling method to replace that measurement with its monthly mean at that
@@ -594,25 +637,25 @@ as soil CO\(_{2}\) measurements. The diffusivity
 (Section~\ref{sec-compute-diffusivity}) and soil flux across different
 soil layers (Section~\ref{sec-compute-soil-flux}) are then computed.
 
-The final step is computing a surface soil flux through extrapolation to
-the surface (purple parallelogram in Figure~\ref{fig-package-diagram}
-and Panel c in Figure~\ref{fig-model-diagram}). Uncertainty on a soil
-flux measurement is computed through quadrature. An aggregate quality
-assurance (QA) flag for each environmental measurement is also reported,
-representing if any gap-filled measurements were used in the computation
-of a soil flux. Within the soil flux-gradient method, several different
-approaches can be used to derive a surface flux (Maier \&
-Schack-Kirchner, 2014); the \texttt{neonSoilFlux} package reports four
-different possible values of soil surface flux
-(Section~\ref{sec-compute-soil-flux}).
+The third and final step is computing a surface soil flux through
+extrapolation to the surface (purple parallelogram in
+Figure~\ref{fig-package-diagram} and Panel c in
+Figure~\ref{fig-model-diagram}). Uncertainty on a soil flux measurement
+is computed through quadrature. An aggregate quality assurance (QA) flag
+for each environmental measurement is also reported, representing if any
+gap-filled measurements were used in the computation of a soil flux.
+Within the soil flux-gradient method, several different approaches can
+be used to derive a surface flux (Maier \& Schack-Kirchner, 2014); the
+\texttt{neonSoilFlux} package reports four different possible values for
+soil surface flux (Section~\ref{sec-compute-soil-flux}).
 
 \subsubsection{Gap-filling routine}\label{sec-gapfilling}
 
 NEON reports QA flags as a binary value for a given measurement and
-half-hourly time. We replaced any flagged measurements at a location's
-spatial depth \(z\) with a bootstrapped sample of the monthly mean for
-all un-flagged measurements for that month. These measurements are
-represented by the vector \(\mathbf{m}\), standard errors
+half-hourly time interval. We replaced any flagged measurements at a
+location's spatial depth \(z\) with a bootstrapped sample of the monthly
+mean for all un-flagged measurements for that month. These measurements
+are represented by the vector \(\mathbf{m}\), standard errors
 \(\boldsymbol\sigma\), and the 95\% confidence interval (the so-called
 expanded uncertainty, Farrance \& Frenkel (2012))
 \(\boldsymbol\epsilon\). All of these vectors have length \(M\). We have
@@ -678,7 +721,7 @@ demonstrated the sensitivity of modeled \(F_{S}\) depending on the
 tortuousity model used to compute diffusivity. At low soil water
 content, the choice of tortusoity model may lead to order of magnitude
 differences in \(D_{a}\), which in turn affect modeled \(F_{S}\). The
-\texttt{neonSoilFlux} package uses two different models for \(\xi\).
+\texttt{neonSoilFlux} package uses two different models for \(\xi\),
 representing the extremes reported in Sallam et al. (1984). The first
 approach uses the Millington-Quirk model for diffusivity, Equation
 \ref{eq:tortuosity-mq} (Millington \& Shearer, 1971):
@@ -765,42 +808,45 @@ Uncertainty in all \(F_{ijk}\) is computed through quadrature (Taylor,
 
 \subsection{Post processing evaluation}\label{sec-post-process}
 
-Following collection of field measurements from the LICOR and
-calculation of the soil fluxes from \texttt{neonSoilFlux} package, we
-compared measured \(F_{S}\) (from the LICOR instruments) to a given soil
-flux calculation \texttt{neonSoilFlux} for each site and flux
-computation method. Statistics included the associated R\(^{2}\) value,
-root mean squared error (RMSE), and signal to noise ratio (SNR), defined
-as the ratio of a modeled soil flux (\(F_{ijk}\)) from
-\texttt{neonSoilFlux} to its quadrature uncertainty (\(\sigma_{ijk}\)).
+Following collection of field measurements and calculation of the soil
+fluxes from \texttt{neonSoilFlux} package, we compared measured
+\(F_{S}\) based on closed-dynamic chamber measurements with the LI-COR
+instruments to a given soil flux calculation from \texttt{neonSoilFlux}
+for each site and flux computation method. Statistics included the
+associated R\(^{2}\) value, root mean squared error (RMSE), and signal
+to noise ratio (SNR), defined as the ratio of a modeled soil flux
+(\(F_{ijk}\)) from \texttt{neonSoilFlux} to its quadrature uncertainty
+(\(\sigma_{ijk}\)).
 
 We observed that the range of values (e.g.~\(F_{ijk} \pm \sigma_{ijk}\)
 was much larger than the measured field flux. We evaluated
 \(| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}\), where \(F_{S}\) is
-a measured field soil flux from the LICOR 6800 (the LICOR 8250 was used
-at only three sites). The parameter \(\epsilon\) was an uncertainty
-reduction factor to evaluate how much the quadrature uncertainty could
-be reduced while maintaining precision between modeled \(F_{ijk}\) and
-measured \(F_{S}\).
+a measured field soil flux from the LI-COR 6800 (as the LI-COR 870/8250
+was used at only three sites in 2024 but the 6800 was used at all sites
+in both years). The parameter \(\epsilon\) was an uncertainty reduction
+factor to evaluate how much the quadrature uncertainty could be reduced
+while maintaining precision between modeled \(F_{ijk}\) and measured
+\(F_{S}\).
 
 Finally, for a half-hourly interval we also computed a \emph{post hoc}
-\(D_{a}\) using the LICOR flux along with the CO\(_{2}\) surface
+\(D_{a}\) using the LI-COR flux along with the CO\(_{2}\) surface
 gradient reported by NEON using the measurement levels closest to the
 surface.
 
 \section{Results}\label{results}
 
-Figure~\ref{fig-flux-results} reports the timeseries of out the measured
-fluxes from the LICOR 6800 and 8250 compared to modeled soil fluxes from
-the \texttt{neonSoilFlux} R package. Figure~\ref{fig-flux-results-year}
-and and computed fluxes and uncertainty at each measurement site.
-Results are reported in local time. Positive values of the flux indicate
-that there is a flux moving towards the surface. For ease of clarity the
-fluxes at \(F_{111}\) and \(F_{000}\) are only shown in the top row
-(surface), followed by the fluxes at individual separate layer
-(\(F_{100}\), \(F_{010}\), \(F_{001}\)). Overall, with the exception of
-WREF and SRER (discussed later) the computed fluxes were on the same
-order of magnitude and timing as the measured field fluxes.
+The timeseries of the measured fluxes from the LI-COR 6800 and 870/8250
+were compared to modeled soil fluxes from the \texttt{neonSoilFlux} R
+package (Figure~\ref{fig-flux-results}). We also assessed year-long
+estimated flux time series and compared those field measurements for
+each measurement site (Figure~\ref{fig-flux-results-year}). Results are
+reported in local time. Positive values of the flux indicate that there
+is a flux moving towards the surface. For ease of clarity the fluxes at
+\(F_{111}\) and \(F_{000}\) are only shown in the top row (surface),
+followed by the fluxes at individual separate layers (\(F_{100}\),
+\(F_{010}\), \(F_{001}\)). Overall, with the exception of WREF and SRER
+(discussed later) the computed fluxes determined using a variety of
+plausible methods spanned the measured field fluxes.
 
 \begin{figure}
 
@@ -845,7 +891,7 @@ Section~\ref{sec-compute-soil-flux}).}
 
 \centering{
 
-\captionsetup{labelsep=none}\includegraphics{figures/r2-plot.png}
+\includegraphics{figures/r2-plot.png}
 
 }
 
@@ -922,7 +968,7 @@ Section~\ref{sec-compute-diffusivity}) at each study site, and the
 
 \centering{
 
-\captionsetup{labelsep=none}\includegraphics{figures/diffusivity-plot.png}
+\includegraphics{figures/diffusivity-plot.png}
 
 }
 
@@ -953,12 +999,18 @@ concentrations increase throughout the soil profile. We found that this
 condition was met at XXX\% across the study period. Periods where this
 gradient condition are not met generally are connected to biophysical
 processes such soil wetting events (e.g.~KONZ), which have the effect of
-temporarily reducing the soil respiration or efflux. When modeling soil
-respiration, typically a non-linear response function is considered,
-that also considers soil type as well (Bouma \& Bryla, 2000; Yan et al.,
-2016, 2018). For the \texttt{neonSoilFlux} package soil type is
-connected to the bulk density, which was separately determined at a
-site.
+reducing the soil respiration or efflux due to a temporary reduction in
+diffusivity. When modeling soil respiration, typically a non-linear
+response function that also considers soil type is used (Bouma \& Bryla,
+2000; Yan et al., 2016, 2018). For the \texttt{neonSoilFlux} package,
+soil type is connected to the bulk density, which was characterized at
+each NEON site based on replicate samples collected from the site
+megapit at a subset of soil horizons, with an estimated uncertainty of
+\(\pm5\%\) (see NEON User Guide to Soil physical and chemical
+properties, Megapit (DP1.00096.001)). Coarse fragment estimates also
+have very large uncertainties, but because the volume fraction tends to
+be low in surface soils it probably wouldn't contribute much additional
+flux uncertainty.
 
 The largest source of uncertainty to improve reliability of the flux
 estimate is to prevent the usage of gap-filled data. Three sites (KONZ,
@@ -1413,6 +1465,7 @@ Research}, \emph{59}(12), e2023WR034457.
 \url{https://doi.org/10.1029/2023WR034457}
 
 \end{CSLReferences}
+
 
 
 
