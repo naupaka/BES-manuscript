@@ -134,7 +134,7 @@ Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC soil col
 
 ### Infrared gas analyzer measurements of soil CO$_{2}$ flux
 
-In 2022, we then made measurements of flux on an hourly interval for 8 hours each day. Measurements were taken from roughly 8 am to 4 pm, with the time interval selected to capture the majority of the diurnal gradient of soil temperature each day. These measurements were made using a LI-6800 infrared gas analyzer instrument (LI-COR Environmental, Lincoln, NE) fitted with a soil chamber attachment (attachment 6800-09). In 2024, we again used the same LI-6800 instrument, but made half-hourly measurements over an approximately 8 hour period. In addition, we also installed a second collar and used a second instrument, an LI-870 CO$_{2}$ IRGA, connected to an automated robotic chamber (LI-COR chamber 8200-104) controlled by an LI-8250 multiplexer, to make automated measurements. The multiplexer was configured to take half-hourly measurements 24 hours a day for the duration of our sampling bout at each site. Each instrument was paired with a soil temperature and moisture probe (Stevens HydraProbe, Stevens Water, Portland, OR) that was used to make soil temperature and moisture measurements concurrent with the CO$_{2}$ flux measurements. System checks were conducted daily for the LI-6800 and weekly for the LI-8250.
+In 2022, we then made measurements of flux on an hourly interval for 8 hours each day. Measurements were taken from roughly 8 am to 4 pm, with the time interval selected to capture the majority of the diurnal gradient of soil temperature each day. These measurements were made using a LI-6800 infrared gas analyzer instrument (LI-COR Environmental, Lincoln, NE) fitted with a soil chamber attachment (attachment 6800-09). In 2024, we again used the same LI-6800 instrument, but made half-hourly measurements over an approximately 8 hour period. In addition, we also installed a second collar and used a second instrument, an LI-870 CO$_{2}$ IRGA, connected to an automated robotic chamber (LI-COR chamber 8200-104) controlled by an LI-8250 multiplexer, to make automated measurements. The multiplexer was configured to take half-hourly measurements 24 hours a day for the duration of our sampling bout at each site. Each instrument was paired with a soil temperature and moisture probe (Stevens HydraProbe, Stevens Water, Portland, OR) that was used to make soil temperature and moisture measurements concurrent with the CO$_{2}$ flux measurements. Chamber volumes were set by measuring collar offsets at each site. System checks were conducted daily for the LI-6800 and weekly for the LI-8250. Instruments were factory calibrated before each field season.
 
 ::: {#fig-collar-images}
 ![](figures/collar-images.jpeg)
@@ -159,7 +159,7 @@ Listing of NEON sites studied for field work and analysis. $\overline{T_{S}}$: a
 
 ### Post-collection processing of data
 
-We used LI-COR SoilFluxPro software to assess the appropriateness of dead band and measurement duration using built-in tools. 
+We used LI-COR SoilFluxPro software (v 5.3.1) to assess the appropriateness of dead band and measurement duration using built-in evaluation tools. The deadband was set for 30-40 seconds, depending on the site, and the measurement duration was 180 seconds with a 30 second pre-purge and a 30 second post-purge.
 
 ## `neonSoilFlux` R package
 
