@@ -551,12 +551,11 @@ package}{neonSoilFlux R package}}\label{neonsoilflux-r-package}
 We developed an R package (\texttt{neonSoilFlux};
 https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly
 soil carbon fluxes and uncertainties from NEON data. The objective of
-the \texttt{neonSoilFlux} package is a unified workflow for soil data
-acquisition and analysis that supplements the existing data acquisition
-R package \texttt{neonUtilities}
+the \texttt{neonSoilFlux} package is a unified workflow
+(Figure~\ref{fig-package-diagram}) for soil data acquisition and
+analysis that supplements the existing data acquisition R package
+\texttt{neonUtilities}
 (\url{https://CRAN.R-project.org/package=neonUtilities}).
-Figure~\ref{fig-package-diagram} outlines the basic workflow of the
-package.
 
 \begin{figure}
 
@@ -567,7 +566,7 @@ package.
 }
 
 \caption{\label{fig-package-diagram}Diagram of \texttt{neonSoilFlux} R
-package. For a given month, year and NEON site (orange parallelogram),
+package. For a given month, year, and NEON site (orange parallelogram),
 the package acquires all relevant data to compute \(F_{S}\) using the
 \texttt{neonUtilities} R package (green rectangle). Data are gap-filled
 according to reported QA flags and interpolated to the same measurement
@@ -604,31 +603,31 @@ site.
 the \texttt{neonSoilFlux} R package. a) Acquire: Data are obtained from
 given NEON location and horizontal sensor location, which includes soil
 water content, soil temperature, CO\(_{2}\) concentration, and
-atmospheric pressure. All data are screened for quality assurance, with
-gap-filling of missing data reported. b) Any belowground data are then
-harmonized to the same depth as CO\(_{2}\) concentrations using linear
-regression. c) The flux across a given depth is computed via Fick's law,
-denoted with \(F_{ijk}\), where \(i\), \(j\), or \(k\) are either 0 or 1
-denoting the layers the flux is computed across (\(i\) = closest to
-surface, \(k\) = deepest). \(F_{000}\) represents a flux estimate where
-the gradient \(dC/dz\) is the slope of a linear regression of CO\(_{2}\)
-with depth.}
+atmospheric pressure. All data are screened for quality assurance; if
+gap-filling of missing data occurs, it is flagged for the user. b) Any
+belowground data are then harmonized to the same depth as CO\(_{2}\)
+concentrations using linear regression. c) The flux across a given depth
+is computed via Fick's law, denoted with \(F_{ijk}\), where \(i\),
+\(j\), or \(k\) are either 0 or 1 denoting the layers the flux is
+computed across (\(i\) = closest to surface, \(k\) = deepest).
+\(F_{000}\) represents a flux estimate where the gradient \(dC/dz\) is
+the slope of a linear regression of CO\(_{2}\) with depth.}
 
 \end{figure}%
 
-The workflow to computing a value of \(F_{S}\) with the
-\texttt{neonSoilFlux} consists of three primary steps, illustrate in
+The workflow to compute a value of \(F_{S}\) with \texttt{neonSoilFlux}
+consists of three primary steps, illustrated in
 Figure~\ref{fig-model-diagram}. First, NEON data are acquired for a
 given site and month via the \texttt{neonUtilities} R package (yellow
 parallelogram and green rectangle in Figure~\ref{fig-package-diagram}
 and Panel a in Figure~\ref{fig-model-diagram}). Acquired environmental
 data can be exported to a comma separated value file for additional
-analysis. Quality assurance (QA) flags with an observation are reported
-as an indicator variable.
+analysis. Quality assurance (QA) flags are reported as an indicator
+variable.
 
-The next step is harmonizing the data to compute soil fluxes across soil
-layers. This step consists of three different actions (blue rectangles
-in Figure~\ref{fig-package-diagram} and Panel b in
+The second step is harmonizing the data to compute soil fluxes across
+soil layers. This step consists of three different actions (blue
+rectangles in Figure~\ref{fig-package-diagram} and Panel b in
 Figure~\ref{fig-model-diagram}). If a given observation by NEON is
 reported as not passing a quality assurance check, we applied a gap
 filling method to replace that measurement with its monthly mean at that
@@ -638,25 +637,25 @@ as soil CO\(_{2}\) measurements. The diffusivity
 (Section~\ref{sec-compute-diffusivity}) and soil flux across different
 soil layers (Section~\ref{sec-compute-soil-flux}) are then computed.
 
-The final step is computing a surface soil flux through extrapolation to
-the surface (purple parallelogram in Figure~\ref{fig-package-diagram}
-and Panel c in Figure~\ref{fig-model-diagram}). Uncertainty on a soil
-flux measurement is computed through quadrature. An aggregate quality
-assurance (QA) flag for each environmental measurement is also reported,
-representing if any gap-filled measurements were used in the computation
-of a soil flux. Within the soil flux-gradient method, several different
-approaches can be used to derive a surface flux (Maier \&
-Schack-Kirchner, 2014); the \texttt{neonSoilFlux} package reports four
-different possible values of soil surface flux
-(Section~\ref{sec-compute-soil-flux}).
+The third and final step is computing a surface soil flux through
+extrapolation to the surface (purple parallelogram in
+Figure~\ref{fig-package-diagram} and Panel c in
+Figure~\ref{fig-model-diagram}). Uncertainty on a soil flux measurement
+is computed through quadrature. An aggregate quality assurance (QA) flag
+for each environmental measurement is also reported, representing if any
+gap-filled measurements were used in the computation of a soil flux.
+Within the soil flux-gradient method, several different approaches can
+be used to derive a surface flux (Maier \& Schack-Kirchner, 2014); the
+\texttt{neonSoilFlux} package reports four different possible values for
+soil surface flux (Section~\ref{sec-compute-soil-flux}).
 
 \subsubsection{Gap-filling routine}\label{sec-gapfilling}
 
 NEON reports QA flags as a binary value for a given measurement and
-half-hourly time. We replaced any flagged measurements at a location's
-spatial depth \(z\) with a bootstrapped sample of the monthly mean for
-all un-flagged measurements for that month. These measurements are
-represented by the vector \(\mathbf{m}\), standard errors
+half-hourly time interval. We replaced any flagged measurements at a
+location's spatial depth \(z\) with a bootstrapped sample of the monthly
+mean for all un-flagged measurements for that month. These measurements
+are represented by the vector \(\mathbf{m}\), standard errors
 \(\boldsymbol\sigma\), and the 95\% confidence interval (the so-called
 expanded uncertainty, Farrance \& Frenkel (2012))
 \(\boldsymbol\epsilon\). All of these vectors have length \(M\). We have
@@ -722,7 +721,7 @@ demonstrated the sensitivity of modeled \(F_{S}\) depending on the
 tortuousity model used to compute diffusivity. At low soil water
 content, the choice of tortusoity model may lead to order of magnitude
 differences in \(D_{a}\), which in turn affect modeled \(F_{S}\). The
-\texttt{neonSoilFlux} package uses two different models for \(\xi\).
+\texttt{neonSoilFlux} package uses two different models for \(\xi\),
 representing the extremes reported in Sallam et al. (1984). The first
 approach uses the Millington-Quirk model for diffusivity, Equation
 \ref{eq:tortuosity-mq} (Millington \& Shearer, 1971):
@@ -809,42 +808,45 @@ Uncertainty in all \(F_{ijk}\) is computed through quadrature (Taylor,
 
 \subsection{Post processing evaluation}\label{sec-post-process}
 
-Following collection of field measurements from the LICOR and
-calculation of the soil fluxes from \texttt{neonSoilFlux} package, we
-compared measured \(F_{S}\) (from the LICOR instruments) to a given soil
-flux calculation \texttt{neonSoilFlux} for each site and flux
-computation method. Statistics included the associated R\(^{2}\) value,
-root mean squared error (RMSE), and signal to noise ratio (SNR), defined
-as the ratio of a modeled soil flux (\(F_{ijk}\)) from
-\texttt{neonSoilFlux} to its quadrature uncertainty (\(\sigma_{ijk}\)).
+Following collection of field measurements and calculation of the soil
+fluxes from \texttt{neonSoilFlux} package, we compared measured
+\(F_{S}\) based on closed-dynamic chamber measurements with the LI-COR
+instruments to a given soil flux calculation from \texttt{neonSoilFlux}
+for each site and flux computation method. Statistics included the
+associated R\(^{2}\) value, root mean squared error (RMSE), and signal
+to noise ratio (SNR), defined as the ratio of a modeled soil flux
+(\(F_{ijk}\)) from \texttt{neonSoilFlux} to its quadrature uncertainty
+(\(\sigma_{ijk}\)).
 
 We observed that the range of values (e.g.~\(F_{ijk} \pm \sigma_{ijk}\)
 was much larger than the measured field flux. We evaluated
 \(| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}\), where \(F_{S}\) is
-a measured field soil flux from the LICOR 6800 (the LICOR 8250 was used
-at only three sites). The parameter \(\epsilon\) was an uncertainty
-reduction factor to evaluate how much the quadrature uncertainty could
-be reduced while maintaining precision between modeled \(F_{ijk}\) and
-measured \(F_{S}\).
+a measured field soil flux from the LI-COR 6800 (as the LI-COR 870/8250
+was used at only three sites in 2024 but the 6800 was used at all sites
+in both years). The parameter \(\epsilon\) was an uncertainty reduction
+factor to evaluate how much the quadrature uncertainty could be reduced
+while maintaining precision between modeled \(F_{ijk}\) and measured
+\(F_{S}\).
 
 Finally, for a half-hourly interval we also computed a \emph{post hoc}
-\(D_{a}\) using the LICOR flux along with the CO\(_{2}\) surface
+\(D_{a}\) using the LI-COR flux along with the CO\(_{2}\) surface
 gradient reported by NEON using the measurement levels closest to the
 surface.
 
 \section{Results}\label{results}
 
-Figure~\ref{fig-flux-results} reports the timeseries of out the measured
-fluxes from the LICOR 6800 and 8250 compared to modeled soil fluxes from
-the \texttt{neonSoilFlux} R package. Figure~\ref{fig-flux-results-year}
-and and computed fluxes and uncertainty at each measurement site.
-Results are reported in local time. Positive values of the flux indicate
-that there is a flux moving towards the surface. For ease of clarity the
-fluxes at \(F_{111}\) and \(F_{000}\) are only shown in the top row
-(surface), followed by the fluxes at individual separate layer
-(\(F_{100}\), \(F_{010}\), \(F_{001}\)). Overall, with the exception of
-WREF and SRER (discussed later) the computed fluxes were on the same
-order of magnitude and timing as the measured field fluxes.
+The timeseries of the measured fluxes from the LI-COR 6800 and 870/8250
+were compared to modeled soil fluxes from the \texttt{neonSoilFlux} R
+package (Figure~\ref{fig-flux-results}). We also assessed year-long
+estimated flux time series and compared those field measurements for
+each measurement site (Figure~\ref{fig-flux-results-year}). Results are
+reported in local time. Positive values of the flux indicate that there
+is a flux moving towards the surface. For ease of clarity the fluxes at
+\(F_{111}\) and \(F_{000}\) are only shown in the top row (surface),
+followed by the fluxes at individual separate layers (\(F_{100}\),
+\(F_{010}\), \(F_{001}\)). Overall, with the exception of WREF and SRER
+(discussed later) the computed fluxes determined using a variety of
+plausible methods spanned the measured field fluxes.
 
 \begin{figure}
 
