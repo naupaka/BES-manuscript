@@ -104,32 +104,7 @@ compute_bad_vals <- function(input_site_data) {
 
 
 
-# Make the plots
 
- p1 <- prop_bad |>
-   group_by(site,measurement) |>
-   summarize(tot_bad = sum(prop>=0.3)/n()) |>
-   ungroup() |>
-   inner_join(summary_env_data,by="site") |>
-   mutate(site = fct_reorder(site, temp_data)) |>
-   ggplot(aes(x=site,y=tot_bad,fill=measurement,group=measurement)) + geom_col(position="dodge") +
-   labs(y="Proportion of gap-filled measurements",
-        fill='Measurement:',
-        x='Site') +
-   theme_bw() +
-   theme(
-     legend.position = "bottom",
-     legend.text = element_text(size = 12),
-     axis.title.x = element_text(size = 14),
-     axis.text = element_text(size = 12),
-     axis.title.y = element_text(size = 14),
-     strip.text = element_text(size = 12)
-   ) + annotate("text", x = 0.8, y = 0.9, label = "a)",size=8) +
-   scale_fill_manual(values = RColorBrewer::brewer.pal(4, "Set2"),
-                     labels = c('soilCO2concentration' = bquote(~Soil~CO['2']~'( '*mu*mol~m^-3*~')'),
-                                  'VSWC' = bquote('SWC ('~m^3~m^-3*')'),
-                                  'soilTemp' = bquote(~T[S]~'('^o*C*')'),
-                                  'staPres' = 'P (kPa)'))
 
 
 
@@ -156,6 +131,33 @@ compute_bad_vals <- function(input_site_data) {
   mutate(n = if_else(is.na(n), 0, n))
 
 
+ # Make the plots
+
+ p1 <- prop_bad |>
+   group_by(site,measurement) |>
+   summarize(tot_bad = sum(prop>=0.3)/n()) |>
+   ungroup() |>
+   inner_join(summary_env_data,by="site") |>
+   mutate(site = fct_reorder(site, temp_data)) |>
+   ggplot(aes(x=site,y=tot_bad,fill=measurement,group=measurement)) + geom_col(position="dodge") +
+   labs(y="Proportion of gap-filled measurements",
+        fill='Measurement:',
+        x='Site') +
+   theme_bw() +
+   theme(
+     legend.position = "bottom",
+     legend.text = element_text(size = 12),
+     axis.title.x = element_text(size = 14),
+     axis.text = element_text(size = 12),
+     axis.title.y = element_text(size = 14),
+     strip.text = element_text(size = 12)
+   ) + annotate("text", x = 0.8, y = 0.9, label = "a)",size=8) +
+   scale_fill_manual(values = RColorBrewer::brewer.pal(4, "Set2"),
+                     labels = c('soilCO2concentration' = bquote(~Soil~CO['2']~'( '*mu*mol~m^-3*~')'),
+                                'VSWC' = bquote('SWC ('~m^3~m^-3*')'),
+                                'soilTemp' = bquote(~T[S]~'('^o*C*')'),
+                                'staPres' = 'P (kPa)'))
+
 p2 <- meas_dist |>
    ungroup() |>
    inner_join(summary_env_data,by="site") |>
@@ -164,7 +166,7 @@ p2 <- meas_dist |>
    ggplot(aes(x=site,y=n,fill=as.factor(tot))) +
    geom_bar(position =position_fill(reverse = TRUE),stat = "identity") +
    labs(y="Proportion",
-        fill='"Number of gap-filled measurements:',
+        fill='Number of gap-filled measurements:',
         x='Site') +
    theme_bw() +
    theme(
