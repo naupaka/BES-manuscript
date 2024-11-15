@@ -163,7 +163,9 @@ We used LI-COR SoilFluxPro software (v 5.3.1) to assess the data after collectio
 
 ## `neonSoilFlux` R package
 
-We developed an R package (`neonSoilFlux`; https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly soil carbon fluxes and uncertainties from NEON data. The objective of the `neonSoilFlux` package is a unified workflow (@fig-package-diagram) for soil data acquisition and analysis that supplements the existing data acquisition R package `neonUtilities` ([https://CRAN.R-project.org/package=neonUtilities](https://CRAN.R-project.org/package=neonUtilities)). 
+We developed an R package (`neonSoilFlux`; https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly soil carbon fluxes and uncertainties from NEON data. The objective of the `neonSoilFlux` package is a unified workflow (@fig-package-diagram) for soil data acquisition and analysis that supplements the existing data acquisition R package `neonUtilities` (LINK TO BE ADDED AFTER PEER REVIEW). 
+
+<!-- ([https://CRAN.R-project.org/package=neonUtilities](https://CRAN.R-project.org/package=neonUtilities)) -->
 
 ::: {#fig-package-diagram}
 ![](figures/neonSoilFluxOutline.png)
@@ -278,9 +280,11 @@ Timeseries of both measured $F_{S}$ (yellow circles) and modeled soil fluxes (gr
 Timeseries of both daily-averaged field $F_{S}$ (yellow circles) and daily ensemble averaged soil fluxes (green or purple lines) by the `neonSoilFlux` R package, separated by the diffusivity model used (Millington-Quirk or Marshall, @sec-compute-diffusivity). The timeseries of modeled fluxes are a daily ensemble average of all flux-gradient approaches ($F_{000}$, $F_{101}$, $F_{011}$, $F_{110}$, @sec-compute-soil-flux). 
 :::
 
-::: {#fig-r2-table}
+@tbl-r2-table compares statistics of the modeled soil fluxes to field $F_{S}$ at each site.  As `neonSoilFlux` models half-hourly fluxes, we considered all measured fluxes over the duration of the half-hourly interval when computing the normalized root mean square error (NRMSE), $R^{2}$, at each of the flux methods ($F_{000}$, $F_{110}$, $F_{011}$, $F_{101}$) for the diffusivity models studied (Millington-Quirk or Marshall). MORE HERE
+
+::: {#tbl-r2-table}
 ![](figures/r2-plot.png)
-Reported statistics from the model fits
+Reported statistics from the model fits. MORE HERE
 :::
 
 For a given half-hourly time period, the `neonSoilFlux` packages assigns a QA flag for a measurement if more one values across all measurement depths uses gap-filled data (@sec-gapfilling). Panel a of @fig-gap-filled-stats reports the distribution for all input environmental measurements at each site when field measurements were made. Soil fluxes are computed from 4 different types of input measurements ($T_{S}$, $SWC$, $P$, and CO$_{2}$), any of which could have a QA flag in a half-hourly interval. Panel b of @fig-gap-filled-stats displays at each site the distribution of the number of different gap-filled measurements used to compute a half-hourly flux. The largest contribution to gap-filled measurements was soil water. SJER and WOOD utilized the largest number of gap-filled measurements, which were primarily $SWC$ and $T_{S}$.
