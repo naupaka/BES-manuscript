@@ -87,6 +87,7 @@ Data available from the Zenodo LINK http://dx.doi.org/10.5061/dryad.41qh7 (Kiere
 \newpage
 
 # Abstract
+
 A key component of constraining the uncertainty of the terrestrial carbon sink is quantification of terrestrial soil carbon fluxes, which vary across time and ecosystem type. One method for the estimation of these fluxes and their associated uncertainties is the flux gradient method, which can be calculated via a variety of existing approaches. Robust estimation of soil carbon fluxes on a sub-daily level requires measurements of soil CO$_{2}$ concentration, water content, temperature, and other environmental measurements and soil properties. These data are publicly available from the National Ecological Observatory Network at sites spanning a range of 20 different ecoclimatic domains across the continental United States, Puerto Rico, Alaska, and Hawai'i. We present an R software package (`neonSoilFlux`) that acquires NEON soil environmental data and computes soil carbon flux at a half-hourly time step at a user-specified NEON site and month in a tidy data format. To validate the computed fluxes, we visited six focal NEON sites and  measured soil carbon fluxes using a closed-dynamic chamber approach. The validation confirmed that a primary challenge in reducing soil carbon flux uncertainty is correctly characterizing diffusivity and soil water content across the soil profile. Outputs from the `neonSoilFlux` package contribute to existing databases of soil carbon flux measurements, providing near real-time estimates of a critical component of the terrestrial carbon cycle.
 
 ## Keywords
@@ -94,6 +95,7 @@ A key component of constraining the uncertainty of the terrestrial carbon sink i
 Soil carbon, carbon dioxide, flux gradient, carbon cycle, field validation, soil respiration, ecosystem variability, diffusion
 
 # Data for peer review
+
 Anonymous data and code for peer review is available here: LINK
 
 # Introduction
@@ -102,7 +104,7 @@ Soils contain the largest reservoir of terrestrial carbon [@jobbagyVerticalDistr
 
 Ecological observation networks such as the United States' National Ecological Observatory Network (NEON) and others (e.g. FLUXNET or the Integrated Carbon Observation System) present a significant advancement in the nearly continuous observation of biogeochemical processes at the continental scale. Notably, at 47 terrestrial sites across the continental United States, NEON provides half-hourly measurements of soil CO$_{2}$ concentration, temperature, and moisture at different vertical depths. Each of these NEON sites also encompasses measurements of the cumulative sum of all ecosystem carbon fluxes in an airshed using the eddy covariance technique [@baldocchiMeasuringFluxesTrace2014]. Soil observations provided by NEON are on the same timescale and standardized with eddy covariance measurements from FLUXNET. These types of nearly continuous observational data (NEON and FLUXNET) can be used to reconcile differences between model-derived or data-estimated components of ecosystem carbon flux [@luoEcologicalForecastingData2011; @phillipsValueSoilRespiration2017; @shaoBioticClimaticControls2015; @shaoSoilMicrobialRespiration2013; @sihiComparingModelsMicrobial2016; @jianHistoricallyInconsistentProductivity2022].
 
-Beyond direct observations of soil CO$_{2}$ concentrations and other environmental variables such as moisture or temperature, estimated or observed soil carbon fluxes are a key metric for understanding change in soil carbon pools over time [@bond-lambertyTwentyYearsProgress2024]. A soil carbon flux to the atmosphere ($F_{S}$, units $\mu$mol m$^{-2}$ s$^{-1}$), represents the aggregate process of transfer of soil CO$_{2}$ to the atmosphere from physical and biological processes (e.g. diffusion and respiration). Measurements of soil carbon fluxes can be coupled with empirical or process models of soil carbon. Soil carbon fluxes can be assumed to encompass soil carbon respiration from autotrophic or heterotrophic sources [@davidsonVariabilityRespirationTerrestrial2006], typically assumed to be static across the soil biome and modeled with a exponential $Q_{10}$ paradigm [@bond-lambertyGlobalRelationshipHeterotrophic2004; @chenDoesGeneralTemperatureDependent2005; @hamdiSynthesisAnalysisTemperature2013].
+Estimated or observed soil carbon fluxes are a key metric for understanding change in soil carbon pools over time [@bond-lambertyTwentyYearsProgress2024]. A soil carbon flux to the atmosphere ($F_{S}$, units $\mu$mol m$^{-2}$ s$^{-1}$), represents the aggregate process of transfer of soil CO$_{2}$ to the atmosphere from physical and biological processes (e.g. diffusion and respiration). Soil carbon fluxes can be assumed to encompass soil carbon respiration from autotrophic or heterotrophic sources [@davidsonVariabilityRespirationTerrestrial2006], typically assumed to be static across the soil biome and modeled with a exponential $Q_{10}$ paradigm [@bond-lambertyGlobalRelationshipHeterotrophic2004; @chenDoesGeneralTemperatureDependent2005; @hamdiSynthesisAnalysisTemperature2013].
 
 One method by which $F_{S}$ is measured in the field is through the use of soil chambers in a closed, well-mixed system [@normanComparisonSixMethods1997] with headspace trace gas concentrations measured with an infrared gas analyzer (IRGA). $F_{S}$ can also be estimated from soil CO$_{2}$ measurements at different depths in the soil using the flux-gradient method [@maierUsingGradientMethod2014]. This method is an approach that uses conservation of mass to calculate flux at a vertical soil depth $z$ at steady state by applying Fick's law of diffusion. A simplifying assumption for the flux-gradient method is that there is no mass transfer in the other spatial dimensions $x$ and $y$ [@maierUsingGradientMethod2014]. The diffusivity profile, a key component of this calculation, varies across the soil depth as a function of soil temperature, soil volumetric water content, atmospheric air pressure, and soil bulk density [@millingtonDiffusionAggregatedPorous1971; @sallamMeasurementGasDiffusion1984; @moldrupModelingDiffusionReaction1999].
 
@@ -113,7 +115,7 @@ This study describes an R software package, `neonSoilFlux`, that can be used to 
 Key objectives of this study are to:
 
 1. Apply the flux-gradient method to estimate soil CO$_{2}$ flux from continuous sensor measurements across NEON sites.
-2. Benchmark estimated soil carbon fluxes against field measurements (e.g. direct measurements of soil flux).
+2. Benchmark estimated soil carbon fluxes against field measurements (e.g. direct chamber measurements of soil flux).
 3. Identify sources of error in the flux-gradient approach across diverse sites in order to guide future work.
 
 # Materials and Methods
@@ -124,7 +126,21 @@ Key objectives of this study are to:
 
 In order to acquire field data to validate model predictions of flux, we selected six terrestrial NEON sites for analysis. We conducted field measurement campaigns at these sites, which span a range of environmental gradients and terrestrial domains (@tbl-neon-sites). SJER, SRER, and WREF were visited during May and June of 2022, and WOOD, KONZ, and UNDE during May and June of 2024.
 
-Over the course of two field campaigns in 2022 and 2024, we conducted week-long visits at each site. In consultation with NEON field staff, we first selected a specific plot in the soil sampling array to maximize the concurrent availability of sensor data. We then made measurements of flux on an hourly or half-hourly interval for 8 hours each day after letting temporarily-installed soil collar(s) equilibrate for approximately 24 hours.
+Over the course of two field campaigns in 2022 and 2024, we conducted week-long visits at each site. In consultation with NEON field staff, we first selected a specific plot in the soil sampling array to maximize the concurrent availability of sensor data.
+
+### Soil collar placement
+
+Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC soil collars (20.1 cm inside diameter) were installed in close proximity to the permanent NEON soil sensors at each site (@fig-collar-images). The soil plot where measurements were taken was chosen at each site in consultation with NEON staff to maximize likelihood of quality soil sensor measurements during the duration of the IRGA measurements at each site. After installation, collar(s) were left to equilibrate for approximately 24 hours prior to measurements being taken.
+
+### Infrared gas analyzer measurements of soil CO$_{2}$ flux
+
+In 2022, we then made measurements of flux on an hourly interval for 8 hours each day. Measurements were taken from roughly 8 am to 4 pm, with the time interval selected to capture the majority of the diurnal gradient of soil temperature each day. These measurements were made using a LI-6800 infrared gas analyzer instrument (LI-COR Environmental, Lincoln, NE) fitted with a soil chamber attachment (attachment 6800-09). In 2024, we again used the same LI-6800 instrument, but made half-hourly measurements over an approximately 8 hour period. In addition, we also installed a second collar and used a second instrument, an LI-870 CO$_{2}$ IRGA, connected to an automated robotic chamber (LI-COR chamber 8200-104) controlled by an LI-8250 multiplexer, to make automated measurements. The multiplexer was configured to take half-hourly measurements 24 hours a day for the duration of our sampling bout at each site. Each instrument was paired with a soil temperature and moisture probe (Stevens HydraProbe, Stevens Water, Portland, OR) that was used to make soil temperature and moisture measurements concurrent with the CO$_{2}$ flux measurements. System checks were conducted daily for the LI-6800 and weekly for the LI-8250.
+
+::: {#fig-collar-images}
+![](figures/collar-images.jpeg)
+
+Spatial layout of field sampling using a closed-dynamic chamber setup at a representative NEON site (KONZ). Left image shows collars (white arrows) and permanent soil sensor installation (black arrow) and right image shows the LI-6800 (foreground) and LI-8200-104 (background) instruments placed on the collars.
+:::
 
 ::: {#tbl-neon-sites}
 \scriptsize
@@ -141,21 +157,9 @@ Over the course of two field campaigns in 2022 and 2024, we conducted week-long 
 Listing of NEON sites studied for field work and analysis. $\overline{T_{S}}$: average soil temperature during field measurements. $\overline{SWC}$: average soil water content during field measurements. Soil plot refers to the particular location in the soil sensor array (denoted as HOR by NEON) where field measurements were made.
 :::
 
-### Soil collar placement
-
-Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC soil collars (FIXME: diameter) were installed in close proximity to the permanent NEON soil sensors at each site. The soil plot where measurements were taken was chosen at each site in consultation with NEON staff to maximize likelihood of quality soil sensor measurements during the duration of the IRGA measurements at each site.
-
-IN PROGRESS: Add graphic of soil plot layout and placement of soil collar(s) -- could make diagram in OmniGraffle?
-
-### Infrared gas analyzer measurements of soil CO$_{2}$ flux
-
-During the summer 2022 field campaign, a LI-COR 6800 with soil flux chamber attachment was used to measure soil fluxes for 8 hours each day on an hourly interval. During the summer 2024 field campaign, the LI-6800 measurements were taken on a half-hourly interval and were paired with an automated soil flux chamber setup (FIXME multiplexer, IRGA, chamber model numbers) that made automated measurements on a half-hourly interval 24 hours a day while we were on site. Each instrument was paired with a soil temperature and moisture probe (FIXME: Stevens model #) that was used to make soil temperature and moisture measurements concurrent with the CO$_{2}$ flux measurements.
-
-IN PROGRESS: Dead bands, measurement duration, instrument self-testing.
-
 ### Post-collection processing of data
 
-IN PROGRESS: LI-COR SoilFluxPro software to assess dead band and measurement duration. 
+We used LI-COR SoilFluxPro software to assess the appropriateness of dead band and measurement duration using built-in tools. 
 
 ## `neonSoilFlux` R package
 

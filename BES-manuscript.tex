@@ -326,15 +326,12 @@ ecosystem carbon flux (Jian et al., 2022; Luo et al., 2011; Phillips et
 al., 2017; J. Shao et al., 2015; P. Shao et al., 2013; Sihi et al.,
 2016).
 
-Beyond direct observations of soil CO\(_{2}\) concentrations and other
-environmental variables such as moisture or temperature, estimated or
-observed soil carbon fluxes are a key metric for understanding change in
-soil carbon pools over time (Bond-Lamberty et al., 2024). A soil carbon
-flux to the atmosphere (\(F_{S}\), units \(\mu\)mol m\(^{-2}\)
-s\(^{-1}\)), represents the aggregate process of transfer of soil
-CO\(_{2}\) to the atmosphere from physical and biological processes
-(e.g.~diffusion and respiration). Measurements of soil carbon fluxes can
-be coupled with empirical or process models of soil carbon. Soil carbon
+Estimated or observed soil carbon fluxes are a key metric for
+understanding change in soil carbon pools over time (Bond-Lamberty et
+al., 2024). A soil carbon flux to the atmosphere (\(F_{S}\), units
+\(\mu\)mol m\(^{-2}\) s\(^{-1}\)), represents the aggregate process of
+transfer of soil CO\(_{2}\) to the atmosphere from physical and
+biological processes (e.g.~diffusion and respiration). Soil carbon
 fluxes can be assumed to encompass soil carbon respiration from
 autotrophic or heterotrophic sources (Davidson et al., 2006), typically
 assumed to be static across the soil biome and modeled with a
@@ -388,7 +385,7 @@ Key objectives of this study are to:
   continuous sensor measurements across NEON sites.
 \item
   Benchmark estimated soil carbon fluxes against field measurements
-  (e.g.~direct measurements of soil flux).
+  (e.g.~direct chamber measurements of soil flux).
 \item
   Identify sources of error in the flux-gradient approach across diverse
   sites in order to guide future work.
@@ -411,10 +408,59 @@ May and June of 2022, and WOOD, KONZ, and UNDE during May and June of
 Over the course of two field campaigns in 2022 and 2024, we conducted
 week-long visits at each site. In consultation with NEON field staff, we
 first selected a specific plot in the soil sampling array to maximize
-the concurrent availability of sensor data. We then made measurements of
-flux on an hourly or half-hourly interval for 8 hours each day after
-letting temporarily-installed soil collar(s) equilibrate for
-approximately 24 hours.
+the concurrent availability of sensor data.
+
+\subsubsection{Soil collar placement}\label{soil-collar-placement}
+
+Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC
+soil collars (20.1 cm inside diameter) were installed in close proximity
+to the permanent NEON soil sensors at each site
+(Figure~\ref{fig-collar-images}). The soil plot where measurements were
+taken was chosen at each site in consultation with NEON staff to
+maximize likelihood of quality soil sensor measurements during the
+duration of the IRGA measurements at each site. After installation,
+collar(s) were left to equilibrate for approximately 24 hours prior to
+measurements being taken.
+
+\subsubsection{\texorpdfstring{Infrared gas analyzer measurements of
+soil CO\(_{2}\)
+flux}{Infrared gas analyzer measurements of soil CO\_\{2\} flux}}\label{infrared-gas-analyzer-measurements-of-soil-co_2-flux}
+
+In 2022, we then made measurements of flux on an hourly interval for 8
+hours each day. Measurements were taken from roughly 8 am to 4 pm, with
+the time interval selected to capture the majority of the diurnal
+gradient of soil temperature each day. These measurements were made
+using a LI-6800 infrared gas analyzer instrument (LI-COR Environmental,
+Lincoln, NE) fitted with a soil chamber attachment (attachment 6800-09).
+In 2024, we again used the same LI-6800 instrument, but made half-hourly
+measurements over an approximately 8 hour period. In addition, we also
+installed a second collar and used a second instrument, an LI-870
+CO\(_{2}\) IRGA, connected to an automated robotic chamber (LI-COR
+chamber 8200-104) controlled by an LI-8250 multiplexer, to make
+automated measurements. The multiplexer was configured to take
+half-hourly measurements 24 hours a day for the duration of our sampling
+bout at each site. Each instrument was paired with a soil temperature
+and moisture probe (Stevens HydraProbe, Stevens Water, Portland, OR)
+that was used to make soil temperature and moisture measurements
+concurrent with the CO\(_{2}\) flux measurements. System checks were
+conducted daily for the LI-6800 and weekly for the LI-8250.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{figures/collar-images.jpeg}
+
+}
+
+\caption{\label{fig-collar-images}Spatial layout of field sampling using
+a closed-dynamic chamber setup at a representative NEON site (KONZ).
+Left image shows collars (white arrows) and permanent soil sensor
+installation (black arrow) and right image shows the LI-6800
+(foreground) and LI-8200-104 (background) instruments placed on the
+collars.}
+
+\end{figure}%
 
 \scriptsize
 
@@ -485,40 +531,11 @@ University of Notre Dame Environmental Research Center (UNDE) &
 
 \normalsize
 
-\subsubsection{Soil collar placement}\label{soil-collar-placement}
-
-Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC
-soil collars (FIXME: diameter) were installed in close proximity to the
-permanent NEON soil sensors at each site. The soil plot where
-measurements were taken was chosen at each site in consultation with
-NEON staff to maximize likelihood of quality soil sensor measurements
-during the duration of the IRGA measurements at each site.
-
-IN PROGRESS: Add graphic of soil plot layout and placement of soil
-collar(s) -- could make diagram in OmniGraffle?
-
-\subsubsection{\texorpdfstring{Infrared gas analyzer measurements of
-soil CO\(_{2}\)
-flux}{Infrared gas analyzer measurements of soil CO\_\{2\} flux}}\label{infrared-gas-analyzer-measurements-of-soil-co_2-flux}
-
-During the summer 2022 field campaign, a LI-COR 6800 with soil flux
-chamber attachment was used to measure soil fluxes for 8 hours each day
-on an hourly interval. During the summer 2024 field campaign, the
-LI-6800 measurements were taken on a half-hourly interval and were
-paired with an automated soil flux chamber setup (FIXME multiplexer,
-IRGA, chamber model numbers) that made automated measurements on a
-half-hourly interval 24 hours a day while we were on site. Each
-instrument was paired with a soil temperature and moisture probe (FIXME:
-Stevens model \#) that was used to make soil temperature and moisture
-measurements concurrent with the CO\(_{2}\) flux measurements.
-
-IN PROGRESS: Dead bands, measurement duration, instrument self-testing.
-
 \subsubsection{Post-collection processing of
 data}\label{post-collection-processing-of-data}
 
-IN PROGRESS: LI-COR SoilFluxPro software to assess dead band and
-measurement duration.
+We used LI-COR SoilFluxPro software to assess the appropriateness of
+dead band and measurement duration using built-in tools.
 
 \subsection{\texorpdfstring{\texttt{neonSoilFlux} R
 package}{neonSoilFlux R package}}\label{neonsoilflux-r-package}
