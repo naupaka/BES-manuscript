@@ -159,7 +159,7 @@ Listing of NEON sites studied for field work and analysis. $\overline{T_{S}}$: a
 
 ### Post-collection processing of data
 
-We used LI-COR SoilFluxPro software (v 5.3.1) to assess the appropriateness of dead band and measurement duration using built-in evaluation tools. The deadband was set for 30-40 seconds, depending on the site, and the measurement duration was 180 seconds with a 30 second pre-purge and a 30 second post-purge.
+We used LI-COR SoilFluxPro software (v 5.3.1) to assess the data after collection and to inform sampling parameters. We checked appropriateness of dead band and measurement durations using built-in evaluation tools. Based on this, the deadband period was set for 30-40 seconds, depending on the site, and the measurement duration was 180 seconds with a 30 second pre-purge and a 30 second post-purge. We also assessed the R$^{2}$ of linear and exponential model fits to measured CO$_{2}$ to verify measurement quality.
 
 ## `neonSoilFlux` R package
 
@@ -197,7 +197,6 @@ We generate a vector of bootstrap samples of the distribution of the monthly mea
 4. The reported monthly mean and standard deviation are then computed $\overline{\overline{y}}$ and $\overline{s}$. Measurements and uncertainties that did not pass the QA check are then substituted with $\overline{\overline{y}}$ and $\overline{s}$.
 
 This gap-filling method described here provides a consistent approach for each data stream, however we recognize that other gap-filling alternatives may be warranted for longer-term gaps (e.g. such as correlations with other NEON measurement levels and soil plots), or measurement specific gap-filling routines. We discuss the effect of gap-filling on our measurements in @sec-discussion.
-
 
 ### Soil diffusivity {#sec-compute-diffusivity}
 
@@ -273,7 +272,6 @@ Finally, for a half-hourly interval we also computed a *post hoc* $D_{a}$ using 
 Timeseries of both measured $F_{S}$ (yellow circles) and modeled soil fluxes (green or purple lines) by the `neonSoilFlux` R package. Fluxes from the `neonSoilFlux` R package are separated by the diffusivity model used (Millington-Quirk or Marshall, @sec-compute-diffusivity). Vertical axis labels in the first column represent the measurement levels where the flux-gradient approach is applied (@sec-compute-soil-flux). Ribbons for modeled soil fluxes represent $\pm$ 1 standard deviation. Results are reported in local time. 
 :::
 
-
 ::: {#fig-flux-results-year}
 ![](figures/flux-results-year.png)
 
@@ -285,7 +283,6 @@ Timeseries of both daily-averaged field $F_{S}$ (yellow circles) and daily ensem
 Reported statistics from the model fits
 :::
 
-
 For a given half-hourly time period, the `neonSoilFlux` packages assigns a QA flag for a measurement if more one values across all measurement depths uses gap-filled data (@sec-gapfilling). Panel a of @fig-gap-filled-stats reports the distribution for all input environmental measurements at each site when field measurements were made. Soil fluxes are computed from 4 different types of input measurements ($T_{S}$, $SWC$, $P$, and CO$_{2}$), any of which could have a QA flag in a half-hourly interval. Panel b of @fig-gap-filled-stats displays at each site the distribution of the number of different gap-filled measurements used to compute a half-hourly flux. The largest contribution to gap-filled measurements was soil water. SJER and WOOD utilized the largest number of gap-filled measurements, which were primarily $SWC$ and $T_{S}$.
 
 ::: {#fig-gap-filled-stats}
@@ -294,18 +291,13 @@ For a given half-hourly time period, the `neonSoilFlux` packages assigns a QA fl
 Panel a) Proportion of input gap-filled environmental measurements used to generate $F_{S}$ from the `neonSoilFlux` package, by study site. Panel b) distribution of the usage of gap-filled measurements at each site.
 :::
 
-
- @fig-uncertainty-stats reports both the computed SNR and the proportion of measured field fluxes within the modeled uncertainty for a given flux computation method $F_{ijk}$ (@sec-post-process). Here, values of SNR greater than unity indicates a reported uncertainty is smaller, propogated by quadrature from a relatively higher precision from measured input variables (CO$_{2}$, $T_{S}$, $SWC$, or $P$).  The sensitivity to the uncertainty reduction factor ($\epsilon$, bottom panels in @fig-uncertainty-stats) demonstrates how accuracy could be improved if modeled uncertainty $\sigma_{ijk}$ decreases.
-
-
+@fig-uncertainty-stats reports both the computed SNR and the proportion of measured field fluxes within the modeled uncertainty for a given flux computation method $F_{ijk}$ (@sec-post-process). Here, values of SNR greater than unity indicates a reported uncertainty is smaller, propogated by quadrature from a relatively higher precision from measured input variables (CO$_{2}$, $T_{S}$, $SWC$, or $P$).  The sensitivity to the uncertainty reduction factor ($\epsilon$, bottom panels in @fig-uncertainty-stats) demonstrates how accuracy could be improved if modeled uncertainty $\sigma_{ijk}$ decreases.
 
 ::: {#fig-uncertainty-stats}
 ![](figures/uncertainty-stats.png)
 
 Top panels: distribution of SNR values across each of the different sites for modeled effluxes from the `neonSoilFlux` package, depending on the diffusivity calculation used (Millington-Quirk or Marshall, @sec-compute-diffusivity). Bottom panels: Proportion of measured $F_{S}$ within the modeled range of a flux computation method $F_{ijk}$ given an uncertainty reduction factor $\epsilon$, or $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$.
 :::
-
-
 
 @fig-diffusivity-plot reports the distribution of $D_{a}$ (from both the Marshall and Millington-Quirk methods, @sec-compute-diffusivity) at each study site, and the *post hoc* computation of $D_{a}$ (@sec-compute-diffusivity). 
 
@@ -332,7 +324,6 @@ Based on this approach, we would *a priori* expect $F_{011} \leq F_{101} \leq \l
 ## Evaluation of flux-gradient approach at each site
 
 Derived results from the `neonSoilFlux` package have patterns that are consistent, and comparable, to those directly measured to the field (Figure XXX). The advantage to the `neonSoilFlux` package is the calculation of fluxes across different measurement depths, allowing for additional site-specific customization. Here application of the flux-gradient method provides a baseline estimate of soil fluxes that could be complemented through additional field measurements (e.g. LICOR).
-
 
 The six sites studied provide separate case studies for considerations when applying the flux-gradient method to evaluate resulting uncertainties and fluxes For example, SRER is characterized by sandy soil, which also led to the highest observed field soil temperatures. At SRER the flux across the top two layers ($F_{110}$) produced a pattern of soil flux consistent with the observed field data.  The remaining methods $F_{101}$, $F_{011}$, or $F_{000}$ are derived from information at the deeper layer, which is decoupled both in terms of temperature and CO$_{2}$ concentration.
 
@@ -361,6 +352,3 @@ These challenges notwithstanding, the method used here and made available in the
 # Conclusions
 
 We have here presented an R package `neonSoilFlux` for the estimation of soil CO$_{2}$ fluxes from continuous buried soil sensor measurements across terrestrial National Ecological Observatory Network sites. We compared the predicted fluxes to those measured directly using a field-based closed chamber approach. We find that...
-
-
-
