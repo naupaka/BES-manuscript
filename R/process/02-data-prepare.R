@@ -54,7 +54,7 @@ save(model_fluxes_mq,model_fluxes_marshall,env_values,
 ### FORCE THE TIME ZONE WHEN PROCESSING THE FLUXES
 
 
-### Verify the times are correct with Naupaka
+### Verify the times are correct with NZ
 licor_rev_all <- licor_all_data |>
   rename(flux = fluxes,
          startDateTime = date) |>
