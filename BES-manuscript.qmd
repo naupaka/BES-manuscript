@@ -325,14 +325,6 @@ Timeseries of both measured $F_{S}$ (yellow circles) and modeled soil fluxes (gr
 Timeseries of both daily-averaged field $F_{S}$ (yellow circles) and daily ensemble averaged soil fluxes (average of $F_{000}$, $F_{101}$, $F_{011}$, $F_{110}$, @sec-compute-soil-flux) by the `neonSoilFlux` R package, separated by the diffusivity model used (green or purple lines, Millington-Quirk or Marshall, @sec-compute-diffusivity).
 :::
 
-We compared statistics of the modeled soil fluxes to field $F_{S}$ at each site (@tbl-r2-table). As `neonSoilFlux` models half-hourly fluxes, we considered all measured fluxes over the duration of the half-hourly interval when computing the normalized root mean square error (NRMSE), $R^{2}$, at each of the flux methods ($F_{000}$, $F_{110}$, $F_{011}$, $F_{101}$) for the diffusivity models studied (Millington-Quirk or Marshall).
-
-::: {#tbl-r2-table}
-![](figures/r2-plot.png)
-
-Reported statistics from the model fits.
-:::
-
 ## Assessment of data gaps
 
 For a given half-hourly time period, the `neonSoilFlux` packages assigns a QA flag for a measurement if more one values across all measurement depths uses gap-filled data (@sec-gapfilling). Panel a of @fig-gap-filled-stats reports the proportion of gap-filled data for all input environmental measurements at each site during the period when field measurements were made. Soil fluxes are computed from 4 different types of input measurements ($T_{S}$, $SWC$, $P$, and CO$_{2}$), any of which could have a QA flag in a half-hourly interval. Panel b of @fig-gap-filled-stats displays at each site the distribution of the number of different gap-filled measurements used to compute a half-hourly flux. The largest cause of measurements needing to be gap-filled was missing or flagged soil moisture data. SJER and WOOD required the largest number of gap-filled measurements, which were primarily $SWC$ and $T_{S}$.
