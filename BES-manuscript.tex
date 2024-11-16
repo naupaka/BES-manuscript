@@ -125,6 +125,20 @@
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \usepackage{lineno,setspace}
 \linenumbers
 \doublespacing
@@ -836,20 +850,76 @@ surface.
 
 \section{Results}\label{results}
 
+Our overall goal was to design and validate an R package to estimate
+soil carbon dioxide fluxes fluxes across terrestrial NEON sites using
+the flux gradient method. Validation of the approach was based on
+comparison of estimated fluxes to field measurements made at six focal
+sites. We first present our field measurement results, then the
+concordance between the modeled and measured results, and lastly assess
+the factors that influenced the success of the modeled approach at a
+given site.
+
+\subsection{Field measurements}\label{field-measurements}
+
+We visited six NEON sites in the summers of 2022 and 2024. Using a
+closed-dynamic chamber approach, we quantified soil carbon dioxide
+fluxes over the course of a week at each site. The sites we visited
+ranged substantially in both their annual average temperature and
+precipitation as well as their biome type
+(Table~\ref{tbl-licor-results}). These differences also influenced the
+wide range of observed flux rates across sites. We used a LI-6800 to
+take manual hourly measurements at the sites we visited in 2022 (SRER,
+SJER, WREF) and half-hourly manual measurements for the sites we visited
+in 2024 (UNDE, KONZ, WOOD). In 2024 we also used an automated chamber
+system (LI-870/LI-8250) to take half-hourly measurements 24 hours a day,
+thereby also capturing nighttime fluxes in addition to the daytime
+fluxes also measured with the LI-6800.
+
+\begin{table}
+
+\caption{\label{tbl-licor-results}Summary of measured soil
+characteristics and flux results from field measurements across six NEON
+sites using a LI-COR 6800 (LI-870/8250 measurements omitted to enable
+direct comparability) via the closed-dynamic chamber method. Numeric
+values for soil CO\(_{2}\) flux, soil temperature, and volumetric soil
+water content (VSWC) are the mean and standard deviation of field
+measurements at each site.}
+
+\centering{
+
+\begin{tabular}{ccccc}
+\toprule
+Site & \makecell[c]{Flux\\ $\mu$mol m$\textsuperscript{-2}$ s$\textsuperscript{-1}$} & \makecell[c]{Soil temp\\ °C} & \makecell[c]{VSWC\\ cm$\textsuperscript{3}$ cm$\textsuperscript{-3}$} & n\\
+\midrule
+UNDE & 2.55 $\pm$ 0.26 & 14.33 $\pm$ 0.77 & 0.33 $\pm$ 0.02 & 61\\
+WOOD & 3.02 $\pm$ 0.4 & 16.01 $\pm$ 1.54 & 0.28 $\pm$ 0.01 & 53\\
+WREF & 3.62 $\pm$ 0.3 & 15.34 $\pm$ 1.76 & 0.27 $\pm$ 0.06 & 21\\
+KONZ & 6.35 $\pm$ 0.97 & 27.28 $\pm$ 4.14 & 0.37 $\pm$ 0.01 & 44\\
+SJER & 0.94 $\pm$ 0.02 & 41.68 $\pm$ 11.22 & 0.01 $\pm$ 0.01 & 32\\
+SRER & 0.72 $\pm$ 0.09 & 47.64 $\pm$ 7.46 & 0.04 $\pm$ 0.01 & 32\\
+\bottomrule
+\end{tabular}
+
+}
+
+\end{table}%
+
+\subsection{\texorpdfstring{Concordance between modelled and measured
+soil CO\(_{2}\)
+flux}{Concordance between modelled and measured soil CO\_\{2\} flux}}\label{concordance-between-modelled-and-measured-soil-co_2-flux}
+
 The timeseries of the measured fluxes from the LI-COR 6800 and 870/8250
 were compared to modeled soil fluxes from the \texttt{neonSoilFlux} R
 package (Figure~\ref{fig-flux-results}). We also assessed year-long
-estimated flux time series and compared those field measurements for
-each measurement site (Figure~\ref{fig-flux-results-year}). Results are
-reported in local time. Where applicable, sites are displayed by
-increasing soil temperature (Table~\ref{tbl-neon-sites}). Positive
+estimated flux time series and compared those to field measurements made
+at each site (Figure~\ref{fig-flux-results-year}). Results are reported
+in local time. Where applicable, sites are displayed from left to right
+by increasing soil temperature (Table~\ref{tbl-neon-sites}). Positive
 values of the flux indicate that there is a flux moving towards the
-surface. For ease of clarity the fluxes at \(F_{111}\) and \(F_{000}\)
-are only shown in the top row (surface), followed by the fluxes at
-individual separate layers (\(F_{100}\), \(F_{010}\), \(F_{001}\)).
-Overall, with the exception of WREF and SRER (discussed later) the
+surface. Overall, with the exception of SRER (discussed later) the
 computed fluxes determined using a variety of plausible methods spanned
-the measured field fluxes.
+the field-measured fluxes, but the flux-gradient method that best
+approximated field measurements varied by site.
 
 \begin{figure}
 
@@ -881,17 +951,15 @@ Results are reported in local time.}
 
 \caption{\label{fig-flux-results-year}Timeseries of both daily-averaged
 field \(F_{S}\) (yellow circles) and daily ensemble averaged soil fluxes
-(green or purple lines) by the \texttt{neonSoilFlux} R package,
-separated by the diffusivity model used (Millington-Quirk or Marshall,
-Section~\ref{sec-compute-diffusivity}). The timeseries of modeled fluxes
-are a daily ensemble average of all flux-gradient approaches
-(\(F_{000}\), \(F_{101}\), \(F_{011}\), \(F_{110}\),
-Section~\ref{sec-compute-soil-flux}).}
+(average of \(F_{000}\), \(F_{101}\), \(F_{011}\), \(F_{110}\),
+Section~\ref{sec-compute-soil-flux}) by the \texttt{neonSoilFlux} R
+package, separated by the diffusivity model used (green or purple lines,
+Millington-Quirk or Marshall, Section~\ref{sec-compute-diffusivity}).}
 
 \end{figure}%
 
-Table~\ref{tbl-r2-table} compares statistics of the modeled soil fluxes
-to field \(F_{S}\) at each site. As \texttt{neonSoilFlux} models
+We compared statistics of the modeled soil fluxes to field \(F_{S}\) at
+each site (Table~\ref{tbl-r2-table}). As \texttt{neonSoilFlux} models
 half-hourly fluxes, we considered all measured fluxes over the duration
 of the half-hourly interval when computing the normalized root mean
 square error (NRMSE), \(R^{2}\), at each of the flux methods
@@ -900,7 +968,7 @@ models studied (Millington-Quirk or Marshall).
 
 \begin{table}
 
-\caption{\label{tbl-r2-table}}
+\caption{\label{tbl-r2-table}Reported statistics from the model fits.}
 
 \centering{
 
@@ -910,19 +978,22 @@ models studied (Millington-Quirk or Marshall).
 
 \end{table}%
 
+\subsection{Assessment of data gaps}\label{assessment-of-data-gaps}
+
 For a given half-hourly time period, the \texttt{neonSoilFlux} packages
 assigns a QA flag for a measurement if more one values across all
 measurement depths uses gap-filled data (Section~\ref{sec-gapfilling}).
-Panel a of Figure~\ref{fig-gap-filled-stats} reports the distribution
-for all input environmental measurements at each site when field
-measurements were made. Soil fluxes are computed from 4 different types
-of input measurements (\(T_{S}\), \(SWC\), \(P\), and CO\(_{2}\)), any
-of which could have a QA flag in a half-hourly interval. Panel b of
-Figure~\ref{fig-gap-filled-stats} displays at each site the distribution
-of the number of different gap-filled measurements used to compute a
-half-hourly flux. The largest contribution to gap-filled measurements
-was soil water. SJER and WOOD utilized the largest number of gap-filled
-measurements, which were primarily \(SWC\) and \(T_{S}\).
+Panel a of Figure~\ref{fig-gap-filled-stats} reports the proportion of
+gap-filled data for all input environmental measurements at each site
+during the period when field measurements were made. Soil fluxes are
+computed from 4 different types of input measurements (\(T_{S}\),
+\(SWC\), \(P\), and CO\(_{2}\)), any of which could have a QA flag in a
+half-hourly interval. Panel b of Figure~\ref{fig-gap-filled-stats}
+displays at each site the distribution of the number of different
+gap-filled measurements used to compute a half-hourly flux. The largest
+cause of measurements needing to be gap-filled was missing or flagged
+soil moisture data. SJER and WOOD required the largest number of
+gap-filled measurements, which were primarily \(SWC\) and \(T_{S}\).
 
 \begin{figure}
 
@@ -939,16 +1010,27 @@ of the usage of gap-filled measurements at each site.}
 
 \end{figure}%
 
-Figure~\ref{fig-uncertainty-stats} reports both the computed SNR and the
-proportion of measured field fluxes within the modeled uncertainty for a
-given flux computation method \(F_{ijk}\)
-(Section~\ref{sec-post-process}). Here, values of SNR greater than unity
-indicates a reported uncertainty is smaller, propogated by quadrature
-from a relatively higher precision from measured input variables
-(CO\(_{2}\), \(T_{S}\), \(SWC\), or \(P\)). The sensitivity to the
-uncertainty reduction factor (\(\epsilon\), bottom panels in
-Figure~\ref{fig-uncertainty-stats}) demonstrates how accuracy could be
-improved if modeled uncertainty \(\sigma_{ijk}\) decreases.
+\subsection{Assessing the signal to noise ratio (SNR) and evaluating
+estimated
+uncertainties}\label{assessing-the-signal-to-noise-ratio-snr-and-evaluating-estimated-uncertainties}
+
+The computed signal to noise ratio (SNR) and the proportion of measured
+field fluxes within the modeled uncertainty for a given flux computation
+method \(F_{ijk}\) suggest that there was substantial variability in the
+agreement between the gradient method and field-measured observations
+(Figure~\ref{fig-uncertainty-stats}, Section~\ref{sec-post-process}).
+Here, values of SNR greater than unity indicates lower reported
+uncertainty, as propogated by quadrature due to a relatively higher
+precision of measured input variables (CO\(_{2}\), \(T_{S}\), \(SWC\),
+or \(P\)).
+
+The sensitivity to an uncertainty reduction factor (\(\epsilon\), bottom
+panels in Figure~\ref{fig-uncertainty-stats}) demonstrates how
+concordance between measured and modeled fluxes would be affected if
+modeled uncertainty \(\sigma_{ijk}\) decreases. As \(\epsilon\)
+increases from left to right in each figure, the possible range of
+values for each predicted flux value decreases and the proportion of
+measured fluxes that fall within that range also decreases.
 
 \begin{figure}
 
@@ -968,6 +1050,9 @@ measured \(F_{S}\) within the modeled range of a flux computation method
 \(| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}\).}
 
 \end{figure}%
+
+\subsection{Effects of method choice on diffusivity
+estimates}\label{effects-of-method-choice-on-diffusivity-estimates}
 
 Figure~\ref{fig-diffusivity-plot} reports the distribution of \(D_{a}\)
 (from both the Marshall and Millington-Quirk methods,
