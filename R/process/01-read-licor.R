@@ -46,7 +46,7 @@ site_ids <- read_tsv('data/raw/AmeriFlux-site-search-results-20240422535.tsv') |
   filter(NEON %in% sites)
 
 ### Check to see if results changes if SRER is set to SJER timezone
-### 5/29/24: correspondence with Naupaka via text suggested he may have not
+### 5/29/24: correspondence with NZ via text suggested he may have not
 ### switched the timezone.
 
 # Load up sampling sites

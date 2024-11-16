@@ -159,9 +159,9 @@ gt_tbl <- all_stats |>
   ) |>
   cols_label(
     nrmse...6 = "NRMSE",
-    r.squared...7 = "R2",
+    r.squared...7 = html("R<sup>2</sup>"),
     nrmse...3 = "NRMSE",
-    r.squared...4 = "R2"
+    r.squared...4 = html("R<sup>2</sup>")
   )
 
 # Show the gt Table

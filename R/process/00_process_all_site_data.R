@@ -580,15 +580,7 @@ acquire_neon_data_bes <- function(site_name,
                               provisional = FALSE) {
 
 
-  # changelog and author contributions / copyrights
-  #   John Zobitz (2021-07-22)
-  #     original creation
-  #     update to fix auto download (2021-07-25)
-  #     2022-06-10: update to correct flags on swc
-  #     2024-04-08: update to get namespaces correct
-  #     2024-04-10: update to get the swc depths corrected
-  #     2024-04-23: update to allow provisional data
-  #     2024-05-23: update to prepare for CRAN submission
+
 
   .data = NULL  # Appease R CMD Check
 

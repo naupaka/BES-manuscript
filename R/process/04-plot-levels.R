@@ -59,7 +59,11 @@ field_data_joined_test <- field_data_joined |>
 
 ## All of this is run from field_data_joined_test
 
-
+days_at_site <- field_data_joined_test |>
+  mutate(days = map_dbl(.x=field_flux,.f=~(.x$startDateTime |>
+  as_date() |> unique() |> length() ) ) ) |>
+  select(site,days) |>
+  distinct(site,.keep_all = TRUE)
 
 base_plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=TRUE,
                        y_axis = TRUE) {
@@ -80,9 +84,13 @@ base_plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=T
     pull(startDateTime) |>
     min() |> floor_date(unit="day")
 
+  end_date <- field_results |>
+    pull(startDateTime) |>
+    max() |> floor_date(unit="day")
+
   # subtract a day
   start_date <- start_date - as.difftime(1,units="days")
-  end_date <- start_date + as.difftime(8, units = "days")
+  end_date <- end_date + as.difftime(1, units = "days")
 
   out_plot <- model_results |> # Make sure errors aren't negative
     mutate(tort = if_else(tort == "millington_quirk","Millington-Quirk","Marshall")) |>
@@ -153,9 +161,13 @@ plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=TRUE,
     pull(startDateTime) |>
     min() |> floor_date(unit="day")
 
+  end_date <- field_results |>
+    pull(startDateTime) |>
+    max() |> floor_date(unit="day")
+
   # subtract a day
-  start_date <- start_date - as.difftime(1,units="days")
-  end_date <- start_date + as.difftime(8, units = "days")
+  start_date <- start_date - as.difftime(0.5,units="days")
+  end_date <- end_date + as.difftime(0.5, units = "days")
 
   out_plot <- model_results |> # Make sure errors aren't negative
     mutate(tort = if_else(tort == "millington_quirk","Millington-Quirk","Marshall")) |>
@@ -227,45 +239,61 @@ grid_plots <- summary_env_data |>
     fourth_row = pmap(.l=list(site,y_axis,limits),.f=~plot_level(..1,"011",FALSE,..3,TRUE,..2) |> ggplotGrob()),
     )
 
+
+
+
+
+grid_plots_rev <- grid_plots |>
+  inner_join(days_at_site,by="site")
+
 # now start putting this all together
-g1 <- rbind(grid_plots$first_row[[1]],
-           grid_plots$second_row[[1]],
-           grid_plots$third_row[[1]],
-           grid_plots$fourth_row[[1]],
-           size = "first")
+g1 <- rbind(grid_plots_rev$first_row[[1]],
+           grid_plots_rev$second_row[[1]],
+           grid_plots_rev$third_row[[1]],
+           grid_plots_rev$fourth_row[[1]],
+           size = "first") |>
+  grid.arrange(widths = unit(grid_plots_rev$days[[1]],"cm"))
 
-g2 <- rbind(grid_plots$first_row[[2]],
-            grid_plots$second_row[[2]],
-            grid_plots$third_row[[2]],
-            grid_plots$fourth_row[[2]],
-            size = "first")
+g2 <- rbind(grid_plots_rev$first_row[[2]],
+            grid_plots_rev$second_row[[2]],
+            grid_plots_rev$third_row[[2]],
+            grid_plots_rev$fourth_row[[2]],
+            size = "first") |>
+  grid.arrange(widths = unit(grid_plots_rev$days[[2]],"cm"))
 
-g3 <- rbind(grid_plots$first_row[[3]],
-            grid_plots$second_row[[3]],
-            grid_plots$third_row[[3]],
-            grid_plots$fourth_row[[3]],
-            size = "first")
+g3 <- rbind(grid_plots_rev$first_row[[3]],
+            grid_plots_rev$second_row[[3]],
+            grid_plots_rev$third_row[[3]],
+            grid_plots_rev$fourth_row[[3]],
+            size = "first") |>
+  grid.arrange(widths = unit(grid_plots_rev$days[[3]],"cm"))
 
-g4 <- rbind(grid_plots$first_row[[4]],
-            grid_plots$second_row[[4]],
-            grid_plots$third_row[[4]],
-            grid_plots$fourth_row[[4]],
-            size = "first")
+g4 <- rbind(grid_plots_rev$first_row[[4]],
+            grid_plots_rev$second_row[[4]],
+            grid_plots_rev$third_row[[4]],
+            grid_plots_rev$fourth_row[[4]],
+            size = "first") |>
+  grid.arrange(widths = unit(grid_plots_rev$days[[4]],"cm"))
 
-g5 <- rbind(grid_plots$first_row[[5]],
-            grid_plots$second_row[[5]],
-            grid_plots$third_row[[5]],
-            grid_plots$fourth_row[[5]],
-            size = "first")
+g5 <- rbind(grid_plots_rev$first_row[[5]],
+            grid_plots_rev$second_row[[5]],
+            grid_plots_rev$third_row[[5]],
+            grid_plots_rev$fourth_row[[5]],
+            size = "first") |>
+        grid.arrange(widths = unit(grid_plots_rev$days[[5]],"cm"))
 
-g6 <- rbind(grid_plots$first_row[[6]],
-            grid_plots$second_row[[6]],
-            grid_plots$third_row[[6]],
-            grid_plots$fourth_row[[6]],
-            size = "first")
+
+
+g6 <- rbind(grid_plots_rev$first_row[[6]],
+            grid_plots_rev$second_row[[6]],
+            grid_plots_rev$third_row[[6]],
+            grid_plots_rev$fourth_row[[6]],
+            size = "first") |>
+  grid.arrange(widths = unit(grid_plots_rev$days[[6]],"cm"))
 out_big <- grid.arrange(g1,g2,g3,g4,g5,g6,nrow=1,
-             bottom=shared_legend$grobs[[1]])
+             bottom=shared_legend$grobs[[1]],vp=viewport(width=1, height=1, clip = TRUE))
 
 
-ggsave('figures/flux-results.png',plot = out_big,width=16,height=8)
+
+ggsave('figures/flux-results.png',plot = out_big,width=14,height=8)
 

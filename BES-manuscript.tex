@@ -43,28 +43,14 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
-\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}{
-    \@ifstar
-      \xxxParagraphStar
-      \xxxParagraphNoStar
-  }
-  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
-  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}{
-    \@ifstar
-      \xxxSubParagraphStar
-      \xxxSubParagraphNoStar
-  }
-  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
-  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
-\makeatother
 
 
 \providecommand{\tightlist}{%
@@ -184,7 +170,6 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -201,7 +186,6 @@
   citecolor={Blue},
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
-
 
 \title{A direct comparison between field-measured and sensor-based
 estimates of soil carbon dioxide flux across six National Ecological
@@ -221,7 +205,6 @@ Zimmerman\textsuperscript{4}}
 
 \begin{document}
 \maketitle
-
 
 \textsuperscript{1} Augsburg University, 2211 Riverside Avenue,
 Minneapolis, MN 55454\\
@@ -264,8 +247,7 @@ Administration: JZ; NZ; Funding Acquisition: JZ; NZ
 \section*{Data Availability}\label{data-availability}
 \addcontentsline{toc}{section}{Data Availability}
 
-Data available from the Zenodo LINK
-http://dx.doi.org/10.5061/dryad.41qh7 (Kiere \& Drummond 2016).''
+Data available will be made available via Zenodo prior to publication.
 
 \newpage
 
@@ -557,20 +539,19 @@ Based on this, the deadband period was set for 30-40 seconds, depending
 on the site, and the measurement duration was 180 seconds with a 30
 second pre-purge and a 30 second post-purge at most sites, and a 90 sec
 pre- and post-purge at sites with higher humidity due to recent
-precipitation events. We also assessed the R\(^{2}\) of linear and
+precipitation events. We also assessed the \(R^{2}\) of linear and
 exponential model fits to measured CO\(_{2}\) to verify measurement
 quality.
 
 \subsection{\texorpdfstring{\texttt{neonSoilFlux} R
 package}{neonSoilFlux R package}}\label{neonsoilflux-r-package}
 
-We developed an R package (\texttt{neonSoilFlux};
-https://CRAN.R-project.org/package=neonSoilFlux) to compute half-hourly
-soil carbon fluxes and uncertainties from NEON data. The objective of
-the \texttt{neonSoilFlux} package is a unified workflow
-(Figure~\ref{fig-package-diagram}) for soil data acquisition and
-analysis that supplements the existing data acquisition R package
-\texttt{neonUtilities} (LINK TO BE ADDED AFTER PEER REVIEW).
+We developed an R package (\texttt{neonSoilFlux}; LINK TO BE ADDED AFTER
+PEER REVIEW) to compute half-hourly soil carbon fluxes and uncertainties
+from NEON data. The objective of the \texttt{neonSoilFlux} package is a
+unified workflow (Figure~\ref{fig-package-diagram}) for soil data
+acquisition and analysis that supplements the existing data acquisition
+R package \texttt{neonUtilities} (LINK TO BE ADDED AFTER PEER REVIEW).
 
 \begin{figure}
 
@@ -1099,22 +1080,22 @@ CO\(_{2}\) due to microbial respiration pulses following rewetting. This
 effect is likely to be largest at sites with rich organic soils
 (e.g.~KONZ). Based on this reasoning, in these types of situations we
 would \emph{a priori} expect
-\(F_{011} \leq F_{101} \leq \leq F_{110} \leq F_{000}\) because the
-previous flux estimates rely primarily on CO\(_2\) concentrations at
-deeper depths, and could miss high concentrations of CO\(_{2}\) produced
-in shallower layers.
+\(F_{011} \leq F_{101} \leq F_{110} \leq F_{000}\) because the previous
+flux estimates rely primarily on CO\(_2\) concentrations at deeper
+depths, and could miss high concentrations of CO\(_{2}\) produced in
+shallower layers.
 
 When modeling soil respiration, typically a non-linear response function
 that also considers soil type is used (Bouma \& Bryla, 2000; Yan et al.,
-2016, 2018). For the \texttt{neonSoilFlux} package, our characterization
-of soil type is connected to the measurement of bulk density, which was
-characterized at each NEON site. This bulk density estimate is based on
-replicate samples collected from the site megapit at a subset of soil
-horizons, with an estimated uncertainty of \(\pm5\%\) (National
-Ecological Observatory Network (NEON), 2024c). Coarse fragment estimates
-also have very large uncertainties, but because the volume fraction
-tends to be low in surface soils it probably wouldn't contribute much
-additional flux uncertainty.
+2016, 2018). For the \texttt{neonSoilFlux} package, soil type is
+connected to the measurement of bulk density, which was characterized at
+each NEON site. This bulk density estimate is based on replicate samples
+collected from the site megapit at a subset of soil horizons, with an
+estimated uncertainty of \(\pm5\%\) (National Ecological Observatory
+Network (NEON), 2024c). Coarse fragment estimates also have very large
+uncertainties, but because the volume fraction tends to be low in
+surface soils it probably wouldn't contribute much additional flux
+uncertainty.
 
 Our results suggest that the most important way to improve reliability
 of the flux estimate is to reduce the usage of gap-filled data. The
@@ -1160,7 +1141,7 @@ different considerations may apply to different sites when applying the
 flux-gradient method. For example, the Santa Rita Experimental Range
 (SRER) is a desert site characterized by sandy soil, which also was the
 location of the highest field soil temperatures that we observed
-(\textbf{?@tbl-licor-summary}). At SRER the flux across the top two
+(Table~\ref{tbl-licor-results}). At SRER the flux across the top two
 layers (\(F_{110}\)) produced a pattern of soil flux most consistent
 with the observed field data. The remaining methods \(F_{101}\),
 \(F_{011}\), or \(F_{000}\) are derived from information taken from the
@@ -1217,7 +1198,7 @@ reflection of differences in soil moisture across the sites
 incorporate soil moisture equivalently. While we here have compares two
 approaches to calculate diffusivity (the Millington-Quirk and Marshall
 models), it may be valuable to evaluate other diffusivity models
-(e.g.~the Moldrup model Moldrup et al. (1999)) as well. Ultimately the
+(e.g.~the Moldrup model; Moldrup et al. (1999)) as well. Ultimately the
 choice of a particular diffusivity model could be determined based on
 knowledge of site-specific evaluations or a set of these models could be
 used to generate a model ensemble average as a means to trade precision
@@ -1592,7 +1573,6 @@ Research}, \emph{59}(12), e2023WR034457.
 \url{https://doi.org/10.1029/2023WR034457}
 
 \end{CSLReferences}
-
 
 
 
