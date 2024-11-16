@@ -95,7 +95,16 @@ licor_all_data <- licor_flux_data |>
              by = c("site" = "NEON")) |>
   select(site, data) |>
   unnest(cols = c(data)) |>
-  ungroup()
+  ungroup() |>
+  # remove measurements within ~24 hours of collar installation
+  filter(!(instrument == "8250" & site == "WOOD" & lubridate::ymd_hms(date) <
+             lubridate::ymd_hms("2024-06-04 19:30:00"))) |>
+  filter(!(instrument == "8250" & site == "UNDE" & lubridate::ymd_hms(date) <
+             lubridate::ymd_hms("2024-05-21 23:00:00"))) |>
+  # remove data from 6800 testing collar effects by making measurements
+  # on 8250 collar
+  filter(!(instrument == "6800" & site == "WOOD" & lubridate::ymd_hms(date) >
+             lubridate::ymd_hms("2024-06-08 23:45:00")))
 
 save(licor_all_data,
      file = 'data/derived/licor-all-data.Rda')

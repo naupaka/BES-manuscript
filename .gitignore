@@ -6,3 +6,4 @@
 /.quarto/
 ^data/derived/Reprocessed SWC Sensor Data/$
 ^figures/Reprocessed SWC Sensor Data/$
+data/derived/all-year-flux-results.Rda
