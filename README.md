@@ -4,4 +4,4 @@
 
 by John Zobitz, Ed Ayres, Zoey Werbin, Ridwan Abdi, Natalie Ashburner-Wright, Lillian Brown, Ryan Frink-Sobierajski, Lajntxiag Lee, Dijonë Mehmeti, Christina Tran, Ly Xiong, Naupaka Zimmerman
 
-Code and manuscript for a manuscript submitted to Methods in Ecology and Evolution.
+Code and text for a manuscript submitted to Methods in Ecology and Evolution.
