@@ -43,14 +43,28 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
+\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+\makeatother
 
 
 \providecommand{\tightlist}{%
@@ -170,6 +184,7 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
+
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -186,6 +201,7 @@
   citecolor={Blue},
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
+
 
 \title{A direct comparison between field-measured and sensor-based
 estimates of soil carbon dioxide flux across six National Ecological
@@ -205,6 +221,7 @@ Zimmerman\textsuperscript{4}}
 
 \begin{document}
 \maketitle
+
 
 \textsuperscript{1} Augsburg University, 2211 Riverside Avenue,
 Minneapolis, MN 55454\\
@@ -918,7 +935,10 @@ Marshall, Section~\ref{sec-compute-diffusivity}). Vertical axis labels
 in the first column represent the measurement levels where the
 flux-gradient approach is applied (Section~\ref{sec-compute-soil-flux}).
 Ribbons for modeled soil fluxes represent \(\pm\) 1 standard deviation.
-Results are reported in local time.}
+Results are reported in local time. WREF, SJER, and SRER were sampled in
+2022, and UNDE, WOOD, and KONZ were sampled in 2024. Sites (columns) are
+arranged from left to right in terms of increasing mean annual
+temperature.}
 
 \end{figure}%
 
@@ -1573,6 +1593,7 @@ Research}, \emph{59}(12), e2023WR034457.
 \url{https://doi.org/10.1029/2023WR034457}
 
 \end{CSLReferences}
+
 
 
 

@@ -229,7 +229,7 @@ plot_level <- function(input_site,
       'Date',
       breaks = scales::date_breaks("1 day"),
       minor_breaks = scales::date_breaks("6 hours"),
-      date_labels = "%d-%m-%y",
+      date_labels = "%m-%d",
       limits = c(start_date, end_date)
     ) +
     # scale_y_continuous(limits=input_limits) +
@@ -238,7 +238,7 @@ plot_level <- function(input_site,
       legend.position = "none",
       legend.text = element_text(size = 10),
       axis.title.x = element_text(size = 12),
-      axis.text.x = element_text(size = 10, angle = -90),
+      axis.text.x = element_text(size = 10, angle = -90, vjust = 0.5),
       axis.text.y = element_text(size = 12),
       axis.title.y = element_text(size = 12),
       strip.text = element_text(size = 14)
@@ -260,12 +260,9 @@ plot_level <- function(input_site,
     )) +
     coord_cartesian(ylim = y_limits)  # Points are kept, just cropped from view
 
-
-
   if (plot_title) {
     out_plot <- out_plot + ggtitle(input_site)
   }
-
 
   if (!x_axis) {
     out_plot <- out_plot + theme(axis.title.x = element_blank(), axis.text.x =
@@ -277,7 +274,6 @@ plot_level <- function(input_site,
   }
 
   return(out_plot)
-
 }
 
 # Define a base plot for the legend
@@ -290,7 +286,7 @@ shared_legend <- lemon::g_legend(base_plot)
 
 y_limits <- tibble(
   site = c("KONZ", "UNDE", "WOOD", "SRER", "SJER", "WREF"),
-  limits = list(c(0, 20), c(0, 6), c(0, 12.5), c(0, 2), c(0, 2), c(0, 7))
+  limits = list(c(-10, 22), c(-0.5, 4.5), c(-3.5, 11), c(0, 2), c(0, 2), c(-0.5, 6.5))
 )
 
 grid_plots <- summary_env_data |>
@@ -393,8 +389,6 @@ out_big <- grid.arrange(
     clip = TRUE
   )
 )
-plot(out_big)
-
 
 ggsave(
   'figures/flux-results.png',
