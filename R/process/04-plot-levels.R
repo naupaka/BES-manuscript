@@ -78,7 +78,10 @@ base_plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=T
   field_results <- field_data_joined_test |>
     filter(site == input_site) |>
     select(field_flux) |> unnest(cols=c("field_flux")) |> ungroup() |>
-    mutate(horizontalPosition = fct_relevel(horizontalPosition,"LICOR") )
+    arrange(startDateTime) |>  # arrange, and then allow there to be a gap using geom_line
+    mutate(horizontalPosition = fct_relevel(horizontalPosition,"LICOR"),
+           gap = as.numeric(difftime(startDateTime, lag(startDateTime), units = "days")),
+           segment = cumsum(is.na(gap) | gap > 0.25))
 
   start_date <- field_results |>
     pull(startDateTime) |>
@@ -96,7 +99,7 @@ base_plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=T
     mutate(tort = if_else(tort == "millington_quirk","Millington-Quirk","Marshall")) |>
     ggplot(aes(x=startDateTime,y=flux)) + geom_line(aes(color=tort),linewidth = 1.5) +
 #    geom_ribbon(aes(ymin=flux_min,ymax=flux_max,fill=tort),alpha=0.25) +
-    geom_point(data=field_results,aes(x=startDateTime,y=flux,color="LICOR"),size=1.5,inherit.aes=FALSE,alpha=0.6) +
+    geom_line(data=field_results,aes(x=startDateTime,y=flux,color="LICOR",group=segment),size=1.5,inherit.aes=FALSE,alpha=0.6) +
     theme(axis.text.x=element_text(angle=-90)) +
     scale_x_datetime('Date (Local time)',
                      breaks = scales::date_breaks("1 day"),
@@ -152,10 +155,16 @@ plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=TRUE,
     mutate(flux_min = flux-flux_err,
            flux_max = flux+flux_err)
 
+
   field_results <- field_data_joined_test |>
     filter(site == input_site) |>
     select(field_flux) |> unnest(cols=c("field_flux")) |> ungroup() |>
-    mutate(horizontalPosition = fct_relevel(horizontalPosition,"LICOR") )
+    arrange(startDateTime) |>  # arrange, and then allow there to be a gap using geom_line
+    mutate(horizontalPosition = fct_relevel(horizontalPosition,"LICOR"),
+           gap = as.numeric(difftime(startDateTime, lag(startDateTime), units = "days")),
+           segment = cumsum(is.na(gap) | gap > 0.25))
+
+
 
   start_date <- field_results |>
     pull(startDateTime) |>
@@ -173,7 +182,7 @@ plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=TRUE,
     mutate(tort = if_else(tort == "millington_quirk","Millington-Quirk","Marshall")) |>
     ggplot(aes(x=startDateTime,y=flux)) + geom_line(aes(color=tort),linewidth = 1.5) +
     geom_ribbon(aes(ymin=flux_min,ymax=flux_max,fill=tort),alpha=0.25) +
-    geom_point(data=field_results,aes(x=startDateTime,y=flux,color="LICOR"),size=1.5,inherit.aes=FALSE,alpha=0.6) +
+    geom_line(data=field_results,aes(x=startDateTime,y=flux,color="LICOR",group=segment),linewidth=1.5,inherit.aes=FALSE,alpha=0.6) +
     theme(axis.text.x=element_text(angle=-90)) +
     scale_x_datetime('Date (Local time)',
                      breaks = scales::date_breaks("1 day"),
@@ -191,7 +200,9 @@ plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=TRUE,
       axis.text.y = element_text(size = 12),
       axis.title.y = element_text(size = 12),
       strip.text = element_text(size = 14)
-    ) + labs(y=bquote(~F[.(input_method)]~'('~mu*mol~m^-2~s^-1*~')')) +
+    ) +
+    #labs(y=bquote(~F[.(input_method)]~'('~mu*mol~m^-2~s^-1*~')')) +
+    labs(y=bquote(~F[.(input_method)])) +
     scale_color_manual(values = c("LICOR" = "#E69F00",  # Orange for Field Data
                                   "Marshall" = "#009E73",     # Teal for Method 1
                                   "Millington-Quirk" = "#CC79A7")) +
@@ -254,6 +265,11 @@ g1 <- rbind(grid_plots_rev$first_row[[1]],
            size = "first") |>
   grid.arrange(widths = unit(grid_plots_rev$days[[1]],"cm"))
 
+g1 <- grid.arrange(
+  g1,  # your plot object
+  left = textGrob(bquote(~Soil~flux~"("*mu*mol~m^{-2}~s^{-1}*")"), rot = 90, vjust = 0.45, gp = gpar(fontsize = 16))
+)
+
 g2 <- rbind(grid_plots_rev$first_row[[2]],
             grid_plots_rev$second_row[[2]],
             grid_plots_rev$third_row[[2]],
@@ -295,5 +311,5 @@ out_big <- grid.arrange(g1,g2,g3,g4,g5,g6,nrow=1,
 
 
 
-ggsave('figures/flux-results.png',plot = out_big,width=14,height=8)
+ggsave('figures/flux-results.png',plot = out_big,width=16,height=8)
 
