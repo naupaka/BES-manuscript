@@ -254,6 +254,12 @@ g1 <- rbind(grid_plots_rev$first_row[[1]],
            size = "first") |>
   grid.arrange(widths = unit(grid_plots_rev$days[[1]],"cm"))
 
+g1 <- grid.arrange(
+g1,  # your plot object
+left = textGrob(bquote(~Soil~flux~"("*mu*mol~m^{-2}~s^{-1}*")"), rot = 90, vjust = 0.40, gp = gpar(fontsize = 16))
+)
+
+
 g2 <- rbind(grid_plots_rev$first_row[[2]],
             grid_plots_rev$second_row[[2]],
             grid_plots_rev$third_row[[2]],
@@ -295,5 +301,6 @@ out_big <- grid.arrange(g1,g2,g3,g4,g5,g6,nrow=1,
 
 
 
-ggsave('figures/flux-results.png',plot = out_big,width=14,height=8)
+ggsave('figures/flux-results.png',plot = out_big,width=15,height=8)
+
 
