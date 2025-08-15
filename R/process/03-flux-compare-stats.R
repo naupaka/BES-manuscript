@@ -124,13 +124,16 @@ gt_tbl <- all_stats |>
   mutate(sig = if_else((p.value < 0.01),"**",""),
          sig = if_else(between(p.value,0.01,0.05),"*",sig)
   ) |>
-  select(-lag,-p.value,-sig,-slope) |>
+  select(-lag,-p.value) |> #,-sig,-slope) |>
   group_by(method,name) |>
   nest() |>
   pivot_wider(values_from = "data") |>
   unnest(cols=c("model_data_mq","model_data_marshall"),names_repair ="unique") |>
+  mutate(slope...5 = paste0(slope...5,sig...6),
+         slope...10 = paste0(slope...10,sig...11)) |>
+  select(-sig...6,-sig...11) |>
   select(-site...2) |>
-  group_by(site...5) |>
+  group_by(site...7) |>
   mutate(method = factor(method,
                        levels = c("000",
                                   "101",
@@ -151,17 +154,19 @@ gt_tbl <- all_stats |>
   ) |>
   tab_spanner(
     label = "Millington-Quirk",
-    columns = c(nrmse...3, r.squared...4)
+    columns = c(slope...5,nrmse...3, r.squared...4)
   ) |>
   tab_spanner(
     label = "Marshall",
-    columns = c(nrmse...6, r.squared...7)
+    columns = c(slope...10,nrmse...8, r.squared...9)
   ) |>
   cols_label(
-    nrmse...6 = "NRMSE",
-    r.squared...7 = html("R<sup>2</sup>"),
+    slope...10 = html("<em>m</em>"),
+    slope...5 = html("<em>m</em>"),
+    nrmse...8 = "NRMSE",
+    r.squared...9 = html("<em>R</em><sup>2</sup>"),
     nrmse...3 = "NRMSE",
-    r.squared...4 = html("R<sup>2</sup>")
+    r.squared...4 = html("<em>R</em><sup>2</sup>")
   )
 
 # Show the gt Table
