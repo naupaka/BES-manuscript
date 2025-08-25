@@ -40,7 +40,7 @@ author:
       - ref: augsburg 
   - name: Naupaka Zimmerman
     orcid: 0000-0003-2168-6390
-    email: nzimmerman@usfca.edu
+    email: nbzimmerman@ku.edu
     affiliations:
       - ref: usfca
       - ref: ku 
@@ -55,7 +55,7 @@ affiliations:
   - id: usfca
     name: University of San Francisco, 2130 Fulton Street, San Francisco, CA 94117
   - id: ku
-    name: University of Kansas, 1251 Wescoe Dr. Lawrence, KS 66045
+    name: University of Kansas, 1450 Jayhawk Boulevard, Lawrence, KS 66045
     
 format:
   pdf:
@@ -76,7 +76,7 @@ csl: methods-in-ecology-and-evolution.csl
 
 # Acknowledgments {.unnumbered}
 
-JZ acknowledges Kathleen O'Rourke for code development. NZ thanks technical staff at USF for support with field gear assembly and shipping. We thank the NEON field staff and assignable assets teams for facilitating each of the six NEON site visits. We are grateful to LI-COR technical staff for helpful discussions about optimal sampling methods. This work was supported by NSF DEB grant #2017829 awarded to JZ, and NSF DEB grant #2017860 awarded to NZ. This material is based in part upon work supported by the National Ecological Observatory Network (NEON), a program sponsored by the U.S. National Science Foundation (NSF) and operated under cooperative agreement by Battelle.
+JZ acknowledges Kathleen O'Rourke for code development. NZ thanks technical staff at USF for support with field gear assembly and shipping. We thank the NEON field staff and assignable assets teams for facilitating each of the six NEON site visits. We are grateful to LI-COR technical staff for helpful discussions about optimal soil chamber sampling methods. This work was supported by NSF DEB grant #2017829 awarded to JZ, and NSF DEB grant #2017860 awarded to NZ. This material is based in part upon work supported by the National Ecological Observatory Network (NEON), a program sponsored by the U.S. National Science Foundation (NSF) and operated under cooperative agreement by Battelle.
 
 # Conflict of Interest Statements {.unnumbered}
 
@@ -88,7 +88,7 @@ Conceptualization: JZ, NZ; Methodology: EA, JZ, NZ; Software: JZ, NZ, ZW, E A, D
 
 # Data Availability {.unnumbered}
 
-Data available will be made available via Zenodo prior to publication.
+Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. All will be made publicly available on Zenodo with a DOI upon publication.
 
 \newpage
 
@@ -102,7 +102,7 @@ Soil carbon, carbon dioxide, flux gradient, carbon cycle, field validation, soil
 
 # Data for peer review
 
-Anonymous data and code for peer review is available here: LINK
+Anonymous field-collected data, neonSoilFlux calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. All will be made publicly available on Zenodo with a DOI upon publication.
 
 # Introduction
 
