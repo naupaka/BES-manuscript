@@ -1,22 +1,20 @@
-### Derive RMSE and R2 values for the different model results compared to measured values
-### Work in progress
-# TO DO: Compare lagged from the measurements (+/half hour?)
-# Don't add lines
+### Table 3: Derive RMSE and R2 values for the different model results compared to measured values
+
+# NOTE: because gt and gtable are used in processing, the output is a png file that is displayed in the text.
+
+### Load up the associated libraries
 library(tidyverse)
 library(lubridate)
 library(broom)
 library(gtable)
 library(gt)
-### Goals:
-# (1) Load up data and measured fluxes for each site
-# (2) Co-locate field obs and neonSoilFlux obs in same half-hourly window
-# (3) Compute R2 and RMSE.  For RMSE we also normalize it by dividing by the mean
 
-# (1) Load up flux data
+# (1) Load up data and measured fluxes for each site
 load('data/derived/combined-field-data.Rda')
 
-# (2) Co-locate field obs and neonSoilFlux obs in same half-hourly window.  The lag determines how far back in time the field data are compared to the computed flux. (lag_time = 30 means we compare field data to the computed flux a half hour previously.)
 
+# (2) Co-locate field obs and neonSoilFlux obs in same half-hourly window
+# Helper function to co-locate field obs and neonSoilFlux obs in same half-hourly window.  The lag determines how far back in time the field data are compared to the computed flux. (lag_time = 30 means we compare field data to the computed flux a half hour previously.)
 standardize_timestamps <- function(input_model_data,input_field_data,lag_time = 0) {
 # lag_time is the number of minutes we subtract from field data to comapre with NEON
   # Create a tibble of intervals for NEON
@@ -169,8 +167,6 @@ gt_tbl <- all_stats |>
     r.squared...4 = html("<em>R</em><sup>2</sup>")
   )
 
-# Show the gt Table
-gt_tbl
-
+# Save the table to a file for use in the manuscript
 gtsave(gt_tbl,filename='figures/r2-plot.png',vwidth = 3000)
 

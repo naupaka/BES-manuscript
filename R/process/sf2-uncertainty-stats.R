@@ -1,9 +1,11 @@
-### Plot Signal to Noise ratios and a within bound plot for different model results.
+### Supplemental figure 2: Plot Signal to Noise ratios and a within bound plot for different soil flux outputs
 
+# Load up associated libraries
 library(tidyverse)
 library(lubridate)
 library(broom)
-### Goals:
+
+### Script objectives:
 # (1) Load up data and measured fluxes for each site
 # (2) Co-locate field obs and neonSoilFlux obs in same half-hourly window
 
@@ -13,7 +15,7 @@ load('data/derived/combined-field-data.Rda')
 
 
 
-# Compute some summary stats.  Organize by the temperature
+# Compute some summary stats.  Organized by the mean temperature and mean SWC
 summary_env_data <- field_data_joined |>
   select(site,field_env) |>
   unnest(cols=c(field_env)) |>
@@ -90,7 +92,7 @@ snr_plot_marshall <- snr_data |>
 # (2) Co-locate field obs and neonSoilFlux obs in same half-hourly window.  The lag determines how far back in time the field data are compared to the computed flux. (lag_time = 30 means we compare field data to the computed flux a half hour previously.)
 
 
-# Function to standardize timestamps with a lag
+# Helper Function to standardize timestamps with a lag
 standardize_timestamps <- function(input_model_data,input_field_data,lag_time = 0) {
   # lag_time is the number of minutes we subtract from field data to comapre with NEON
   # Create a tibble of intervals for NEON

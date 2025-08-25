@@ -1,25 +1,19 @@
-# Plot of the different levels for a given flux value
+# Figure 5: Make a plot of the direct comparison between field measured data and neonSoilFlux outputs at each validation site
 
-# Choose 001, 010, 100, add on the top layer
 
+# Load in the associated libraries
 library(tidyverse)
 library(lubridate)
 library(broom)
 library(grid)
 library(gridExtra)
-library(gtable)
-### Goals:
-# (1) Load up data and measured fluxes for each site
-# (2) Co-locate field obs and neonSoilFlux obs in same half-hourly window
-
-### Somehow the stats don't seem to be working, but perhaps show every 3 hours on a plot
-### Convert to local time?
 
 
-# (1) Load up flux data
+# (1) Load up flux data (field and neonSoilFlux outputs)
 load('data/derived/combined-field-data.Rda')
+load('data/derived/field-data-info.Rda')
 
-# Compute some summary stats.  Organize by the temperature
+# Compute some summary stats, used primarily for plot presentation
 summary_env_data <- field_data_joined |>
   select(site,field_env) |>
   unnest(cols=c(field_env)) |>
@@ -31,8 +25,8 @@ summary_env_data <- field_data_joined |>
   )
 
 
-# Get up the function that we need
-load('data/derived/field-data-info.Rda')
+# Join the field data neonSoilFlux data to match when field sites were visited.
+
 field_data_joined_test <- field_data_joined |>
   inner_join(select(measurement_times,site,curr_tz),by="site") |>
   mutate(model_data_mq = map2(.x=model_data_mq,
@@ -65,6 +59,7 @@ days_at_site <- field_data_joined_test |>
   select(site,days) |>
   distinct(site,.keep_all = TRUE)
 
+# Define a helper function to generate a base plot - used for legend manipulation
 base_plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=TRUE,
                             y_axis = TRUE) {
 
@@ -145,6 +140,7 @@ base_plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=T
 }
 
 
+# Generate a helper function to plot the field results with obs data
 plot_level <- function(input_site,input_method,plot_title,y_limits,x_axis=TRUE,
                        y_axis = TRUE) {
 
@@ -310,4 +306,5 @@ out_big <- grid.arrange(g1,g2,g3,g4,g5,g6,nrow=1,widths = rep(0.5,6),
                         bottom=shared_legend$grobs[[1]],vp=viewport(width=1, height=1, clip = TRUE))
 
 
+# Save the figure to the associated directory
 ggsave('figures/flux-results.png',plot = out_big,width=16,height=8)

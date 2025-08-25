@@ -1,13 +1,15 @@
-### Author: JMZ
-### Purpose: Use the measured LICOR data and flux gradient data to back-compute diffusivity, ultimately comparing the two
+### Figure 6: Use the measured LICOR data and flux gradient data to back-compute diffusivity, ultimately comparing the two approaches to each other
 
 
+# Load up the associated libraries:
+library(tidyverse)
+library(lubridate)
 
 # All the env data are contained in the combined data frame
 
 load('data/derived/combined-field-data.Rda')  # field_data_joined
 
-load('data/derived/diffusivity-gradient.Rda')  # co2 gradient from neonSoilFlux (computed in 02.5-flux-gradient-prepare.R)   ## Note: when gradient is positive, then the co2 at the deeper depth is smaller.
+load('data/derived/diffusivity-gradient.Rda')  # co2 gradient from neonSoilFlux (computed in 03-diffusivity-prepare.R)   ## Note: when gradient is positive, then the co2 at the deeper depth is smaller.
 
 # Compute some summary stats.  Organize by the temperature - this is how we make sure each site is ordered in our plots.
 summary_env_data <- field_data_joined |>
@@ -29,10 +31,7 @@ combined_data <- field_data_joined |>
   mutate(combined_field = map2(.x=field_flux,.y=field_env,.f=~inner_join(.x,.y,by=c("startDateTime","instrument","horizontalPosition")))) |>
   select(site,sampling_location,combined_field,model_data_mq,model_data_marshall,neon_diffusivity_gradient,curr_tz)
 
-### Now standardize
-
-
-
+### Helper function to standardize the timestapes between field and measured data
 standardize_timestamps <- function(input_model_data,input_field_data) {
   # lag_time is the number of minutes we subtract from field data to comapre with NEON
   # Create a tibble of intervals for NEON
@@ -97,10 +96,7 @@ field_stats_data <- combined_data |>
   select(site,sampling_location,diffusivity_mq,diffusivity_marshall,diffusivity_field)
 
 
-# Now we can be ready to boxplot!
-
-
-
+# Now we can be ready to generate the boxplot!
 diffusivity_plot <- field_stats_data |>
   pivot_longer(cols=c("diffusivity_mq","diffusivity_marshall","diffusivity_field")) |> unnest(cols=c("value")) |>
   inner_join(summary_env_data,by="site") |>
@@ -123,6 +119,6 @@ diffusivity_plot <- field_stats_data |>
     strip.text = element_text(size = 12)
   )
 
-
+# Save the diffusivity plot to the associated file
 ggsave(filename = 'figures/diffusivity-plot.png',plot = diffusivity_plot,width = 16,height=4)
 
