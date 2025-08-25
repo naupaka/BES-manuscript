@@ -214,7 +214,7 @@
 
 \title{\texttt{neonSoilFlux}: An R Package for Continuous Sensor-Based
 Estimation of Soil CO\textsubscript{2} Fluxes}
-\author{John Zobitz\textsuperscript{1} \and Ed
+\author{John Zobitz\textsuperscript{1} \and Edward
 Ayres\textsuperscript{2} \and Zoey Werbin\textsuperscript{3} \and Ridwan
 Abdi\textsuperscript{1} \and Natalie
 Ashburner-Wright\textsuperscript{4} \and Lillian
@@ -237,8 +237,8 @@ Minneapolis, MN 55454\\
 02215\\
 \textsuperscript{4} University of San Francisco, 2130 Fulton Street, San
 Francisco, CA 94117\\
-\textsuperscript{5} University of Kansas, 1251 Wescoe Dr.~Lawrence, KS
-66045
+\textsuperscript{5} University of Kansas, 1450 Jayhawk Boulevard,
+Lawrence, KS 66045
 
 \section*{Acknowledgments}\label{acknowledgments}
 \addcontentsline{toc}{section}{Acknowledgments}
@@ -247,12 +247,14 @@ JZ acknowledges Kathleen O'Rourke for code development. NZ thanks
 technical staff at USF for support with field gear assembly and
 shipping. We thank the NEON field staff and assignable assets teams for
 facilitating each of the six NEON site visits. We are grateful to LI-COR
-technical staff for helpful discussions about optimal sampling methods.
-This work was supported by NSF DEB grant \#2017829 awarded to JZ, and
-NSF DEB grant \#2017860 awarded to NZ. This material is based in part
-upon work supported by the National Ecological Observatory Network
-(NEON), a program sponsored by the U.S. National Science Foundation
-(NSF) and operated under cooperative agreement by Battelle.
+technical staff for helpful discussions about optimal soil chamber
+sampling methods. This work was supported by NSF DEB grant \#2017829
+awarded to JZ, and NSF DEB grant \#2017860 awarded to NZ. This material
+is based in part upon work supported by the National Ecological
+Observatory Network (NEON), a program sponsored by the U.S. National
+Science Foundation (NSF) and operated under cooperative agreement by
+Battelle. We also thank the reviewers and subject editor for their
+constructive feedback.
 
 \section*{Conflict of Interest
 Statements}\label{conflict-of-interest-statements}
@@ -275,28 +277,33 @@ Administration: JZ; NZ; Funding Acquisition: JZ; NZ
 \section*{Data Availability}\label{data-availability}
 \addcontentsline{toc}{section}{Data Availability}
 
-Data available will be made available via Zenodo prior to publication.
+Anonymous field-collected data, \texttt{neonSoilFlux} calculated
+outputs, and manuscript-generating code for peer review are provided as
+supplemental files. All will be made publicly available on Zenodo with a
+DOI upon publication.
 
 \newpage
 
 \section{Abstract}\label{abstract}
 
 Accurate quantification of soil carbon fluxes is essential to reduce
-uncertainty in the terrestrial carbon sink. These fluxes vary over time
-and across ecosystem types. The flux gradient method estimates soil
-carbon fluxes using paired measurements of soil CO\(_{2}\)
-concentration, temperature, moisture, and other soil properties. The
-National Ecological Observatory Network (NEON) provides such data across
-20 ecoclimatic domains spanning the continental U.S., Puerto Rico,
-Alaska, and Hawai`i. We present an R software package
-(\texttt{neonSoilFlux}) that acquires soil environmental data to compute
-half-hourly soil carbon fluxes for each soil replicate plot at a
-terrestrial NEON site. To assess the computed fluxes, we visited six
-focal NEON sites and measured soil carbon fluxes using a closed-dynamic
-chamber approach. Outputs from the \texttt{neonSoilFlux} showed
-order-of-magnitude agreement to measured fluxes (\(R^{2}\) between
-measured and \texttt{neonSoilFlux} outputs ranging from 0.00 to 0.78),
-but fell within the range of calculated uncertainties. Calculated fluxes
+uncertainty in estimates of the terrestrial carbon sink. However, these
+fluxes vary over time and across ecosystem types and so it can be
+difficult to estimate them accurately across large scales. The flux
+gradient method estimates soil carbon fluxes using co-located
+measurements of soil CO\(_{2}\) concentration, soil temperature, soil
+moisture, and other soil properties. The National Ecological Observatory
+Network (NEON) provides such data across 20 ecoclimatic domains spanning
+the continental U.S., Puerto Rico, Alaska, and Hawai`i. We present an R
+software package (\texttt{neonSoilFlux}) that acquires soil
+environmental data to compute half-hourly soil carbon fluxes for each
+soil replicate plot at a given terrestrial NEON site. To assess the
+computed fluxes, we visited six focal NEON sites and measured soil
+carbon fluxes using a closed-dynamic chamber approach. Outputs from the
+\texttt{neonSoilFlux} showed order-of-magnitude agreement to measured
+fluxes (\(R^{2}\) between measured and \texttt{neonSoilFlux} outputs
+ranging from 0.00 to 0.78); measured outputs fell within the range of
+calculated uncertainties from the gradient method. Calculated fluxes
 from \texttt{neonSoilFlux} aggregated to the daily scale exhibited
 expected site-specific seasonal patterns. While the flux gradient method
 is broadly effective, its accuracy is highly sensitive to site-specific
@@ -313,42 +320,46 @@ validation, soil respiration, ecosystem variability, diffusion
 
 \section{Data for peer review}\label{data-for-peer-review}
 
-Anonymous data and code for peer review is available here: LINK
+Anonymous field-collected data, neonSoilFlux calculated outputs, and
+manuscript-generating code for peer review are provided as supplemental
+files. All will be made publicly available on Zenodo with a DOI upon
+publication.
 
 \section{Introduction}\label{introduction}
 
-Soils contain the largest reservoir of terrestrial carbon (Jobbágy \&
-Jackson, 2000). A critical component of this reservoir is soil organic
-matter, the accumulation of which is influenced by biotic factors such
-as above-ground plant inputs (Jackson et al., 2017). These inputs in
-turn are influenced by environmental factors such as growing season
-length, temperature, and moisture (Desai et al., 2022), which also
-affect the breakdown of soil organic matter and its return to the
+Soils contain the planet's largest reservoir of terrestrial carbon
+(Jobbágy \& Jackson, 2000). A critical component of this reservoir is
+soil organic matter, the accumulation of which is influenced by biotic
+factors such as above-ground plant inputs (Jackson et al., 2017). These
+inputs in turn are influenced by environmental factors such as growing
+season length, temperature, and moisture (Desai et al., 2022), which
+also affect the breakdown of soil organic matter and its return to the
 atmosphere. Across heterogeneous terrestrial landscapes, the interplay
 between these biotic and abiotic factors influence the size of the soil
 contribution to the terrestrial carbon sink (Friedlingstein et al.,
 2025). However, the heterogeneity of these processes across diverse
 ecosystems in the context of rapid environmental change leads to large
-uncertainty in the magnitude of this sink in the future, and thus a
-pressing need to quantify changes in soil carbon pools and fluxes across
-scales.
+uncertainty about the magnitude of this sink in the future, and thus
+there remains a pressing need to quantify changes in soil carbon pools
+and fluxes across scales.
 
 Ecological observation networks such as the United States' National
-Ecological Observatory Network (NEON) and others (e.g.~FLUXNET or the
-Integrated Carbon Observation System) present a significant advancement
-in the nearly continuous observation of biogeochemical processes at the
-continental scale. Notably, at 47 terrestrial sites across the
-continental United States, NEON provides half-hourly measurements of
-soil CO\(_{2}\) concentration, temperature, and moisture at different
-vertical depths. Each of these NEON sites also encompasses measurements
-of the cumulative sum of all ecosystem carbon fluxes in an airshed using
-the eddy covariance technique (Baldocchi, 2014). Soil observations
-provided by NEON are on the same timescale and standardized with eddy
-covariance measurements from FLUXNET. These types of nearly continuous
-observational data (NEON and FLUXNET) can be used to reconcile
-differences between model-derived or data-estimated components of
-ecosystem carbon flux (Jian et al., 2022; Luo et al., 2011; Phillips et
-al., 2017; J. Shao et al., 2015; P. Shao et al., 2013; Sihi et al.,
+Ecological Observatory Network (NEON) and others (e.g.~the
+globally-distributed FLUXNET or the European Integrated Carbon
+Observation System) present a significant advancement in the nearly
+continuous observation of biogeochemical processes at the continental
+scale. Notably, at 47 terrestrial sites across the continental United
+States that span 20 ecoclimatic domains, NEON provides half-hourly
+measurements of soil CO\(_{2}\) concentration, temperature, and moisture
+at different vertical depths. Each of these NEON sites also encompasses
+measurements of the cumulative sum of all ecosystem carbon fluxes in an
+airshed using the eddy covariance technique (Baldocchi, 2014). Soil
+observations provided by NEON are on the same timescale and standardized
+with eddy covariance measurements from FLUXNET. These types of nearly
+continuous observational data (NEON and FLUXNET) can be used to
+reconcile differences between model-derived or data-estimated components
+of ecosystem carbon flux (Jian et al., 2022; Luo et al., 2011; Phillips
+et al., 2017; J. Shao et al., 2015; P. Shao et al., 2013; Sihi et al.,
 2016).
 
 Estimated or observed soil carbon fluxes are a key metric for
@@ -368,18 +379,19 @@ the use of soil chambers in a closed, well-mixed system (Norman et al.,
 gas analyzer (IRGA). \(F_{S}\) can also be estimated from soil
 CO\(_{2}\) measurements at different depths in the soil using the
 flux-gradient method (Maier \& Schack-Kirchner, 2014). Closed-chamber
-IRGA measurements require either frequent in-person site visits or an
-expensive automated systems; the flux-gradient method is calculated from
-using solid-state sensors. The flux-gradient method is an approach that
-uses conservation of mass to calculate flux at a vertical soil depth
-\(z\) at steady state by applying Fick's law of diffusion. A simplifying
-assumption for the flux-gradient method is that there is no mass
-transfer in the other spatial dimensions \(x\) and \(y\) (Maier \&
-Schack-Kirchner, 2014). The diffusivity profile, a key component of this
-calculation, varies across the soil depth as a function of soil
-temperature, soil volumetric water content, atmospheric air pressure,
-and soil bulk density (Millington \& Shearer, 1971; Moldrup et al.,
-1999; Sallam et al., 1984).
+IRGA measurements, while being the most common method, require either
+frequent in-person site visits or expensive and fragile automated
+systems. The potential of the gradient method is that fluxes can be
+estimated from continuous data recorded by robust solid-state sensors.
+The flux-gradient method is an approach that uses conservation of mass
+to calculate flux at a vertical soil depth \(z\) at steady state by
+applying Fick's law of diffusion. A simplifying assumption for the
+flux-gradient method is that there is no mass transfer in the other
+spatial dimensions \(x\) and \(y\) (Maier \& Schack-Kirchner, 2014). The
+diffusivity profile, a key component of this calculation, varies across
+the soil depth as a function of soil temperature, soil volumetric water
+content, atmospheric air pressure, and soil bulk density (Millington \&
+Shearer, 1971; Moldrup et al., 1999; Sallam et al., 1984).
 
 Databases such as the Soil Respiration Database (SRDB) or the Continuous
 Soil Respiration Database (COSORE) add to the growing network of
@@ -392,15 +404,15 @@ method described above). Currently, NEON provides all measurements to
 calculate \(F_{S}\) from Fick's law, but soil flux as a derived data
 product was descoped from the initial network launch due to budget
 constraints (Berenbaum et al., 2015). Deriving estimates of \(F_{S}\)
-using continuous sensor data across NEON sites thus represents a high
+using continuous sensor data across NEON sites thus remains a high
 priority.
 
-This study describes the application of an R software package,
-\texttt{neonSoilFlux}, that computes a standardized estimate of
-\(F_{S}\) at all terrestrial NEON sites using the flux-gradient method.
-Using direct chamber-based field observations of soil carbon dioxide
-flux from a subset of terrestrial NEON sites spanning six states, we
-provide a direct validation of \(F_{S}\) from \texttt{neonSoilFlux}.
+This study describes an R software package, \texttt{neonSoilFlux}, that
+computes a standardized estimate of \(F_{S}\) at all terrestrial NEON
+sites using the flux-gradient method. Using direct chamber-based field
+observations of soil carbon dioxide flux from a subset of terrestrial
+NEON sites spanning six states, we provide a direct validation of
+\(F_{S}\) from \texttt{neonSoilFlux}.
 
 Key objectives of this study are to:
 
@@ -425,29 +437,27 @@ Key objectives of this study are to:
 \subsubsection{Focal NEON Sites}\label{focal-neon-sites}
 
 In order to acquire field data to validate model predictions of flux, we
-selected six terrestrial NEON sites for analysis. We conducted field
-measurement campaigns at these sites, which span a range of
-environmental gradients and terrestrial domains
+selected six terrestrial NEON sites for analysis. We conducted roughly
+week-long field measurement campaigns at these sites, which span a range
+of environmental gradients and terrestrial domains
 (Table~\ref{tbl-neon-sites}). SJER, SRER, and WREF were visited during
 May and June of 2022, and WOOD, KONZ, and UNDE during May and June of
 2024.
-
-Over the course of two field campaigns in 2022 and 2024, we conducted
-week-long visits at each site. In consultation with NEON field staff, we
-first selected a specific plot in the soil sampling array to maximize
-the concurrent availability of sensor data.
 
 \subsubsection{Soil collar placement}\label{soil-collar-placement}
 
 Either one (2022 sampling campaign) or two (2024 sampling campaign) PVC
 soil collars (20.1 cm inside diameter) were installed in close proximity
 to the permanent NEON soil sensors at each site
-(Figure~\ref{fig-collar-images}). The soil plot where measurements were
-taken was chosen at each site in consultation with NEON staff to
-maximize likelihood of quality soil sensor measurements during the
-duration of the IRGA measurements at each site. After installation,
-collar(s) were left to equilibrate for approximately 24 hours prior to
-measurements being taken.
+(Figure~\ref{fig-collar-images}). As instruments in the NEON soil sensor
+arrays can occasionally break down or stop working, the specific soil
+plot where we made measurements was chosen at each site in consultation
+with NEON staff to maximize likelihood of quality soil sensor
+measurements during the duration of the IRGA measurements. The plot
+selected at each site (out of the 5 in each replicate array at each
+site) are presented in the last column of Table~\ref{tbl-neon-sites}.
+After installation, collar(s) were left to equilibrate for approximately
+24 hours prior to any measurements being taken.
 
 \subsubsection{\texorpdfstring{Infrared gas analyzer measurements of
 soil CO\(_{2}\)
@@ -460,10 +470,10 @@ gradient of soil temperature each day. These measurements were made
 using a LI-6800 infrared gas analyzer instrument (LI-COR Environmental,
 Lincoln, NE) fitted with a soil chamber attachment (attachment 6800-09).
 In 2024, we again used the same LI-6800 instrument, but made half-hourly
-measurements over an approximately 8 hour period. In addition, we also
-installed a second collar and used a second instrument, an LI-870
-CO\(_{2}\) IRGA, connected to an automated robotic chamber (LI-COR
-chamber 8200-104) controlled by an LI-8250 multiplexer, to make
+measurements over an approximately 8 hour period. In addition, in 2024
+we also installed a second collar and used a second instrument, an
+LI-870 CO\(_{2}\) IRGA, connected to an automated robotic chamber
+(LI-COR chamber 8200-104) controlled by an LI-8250 multiplexer to make
 automated measurements. The multiplexer was configured to take
 half-hourly measurements 24 hours a day for the duration of our sampling
 bout at each site. Each instrument was paired with a soil temperature
@@ -491,7 +501,7 @@ collars.}
 
 \end{figure}%
 
-\scriptsize
+\tiny
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
@@ -505,9 +515,16 @@ collars.}
   >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}@{}}
 
 \caption{\label{tbl-neon-sites}Listing of NEON sites studied for field
-work and analysis. \(\overline{T_{S}}\): average soil temperature during
-field measurements. \(\overline{SWC}\): average soil water content
-during field measurements. Soil plot refers to the particular location
+work and analysis. Site refers to NEON site codes: Santa Rita
+Experimental Range (SRER), San Joaquin Experimental Range (SJER), Wind
+River Experimental Forest (WREF), Chase Lake National Wildlife Refuge
+(WOOD), Konza Prairie Biological Station (KONZ), and the University of
+Notre Dame Environmental Research Center (UNDE). Location is reported in
+decimal degrees of latitude and longitude. Other abbreviations include
+Mean Annual Temperature (MAT); \(\overline{T_{S}}\): average soil
+temperature during field measurements; \(\overline{SWC}\): average soil
+water content during field measurements. Dates refer to field
+measurement dates for each site. Plot refers to the particular location
 in the soil sensor array (denoted as HOR by NEON) where field
 measurements were made.}
 
@@ -515,46 +532,40 @@ measurements were made.}
 
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
-Site (NEON site ID)
+Site
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Location
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Ecosystem type
+Ecosystem
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Mean annual temperature
+MAT
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(\overline{T_{S}}\) (\(^{\circ}\))
+\(\overline{T_{S}}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Mean annual precipitation
+MAP
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(\overline{SWC}\) (\%)
+\(\overline{SWC}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Field measurement dates
+Dates
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Soil plot
+Plot
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Santa Rita Experimental Range (SRER) & 31.91068, -110.83549 & Shrubland
-& 19.3\(^{\circ}\)C & 47.6\(^{\circ}\) & 346 mm & 4.0\% & 29 May 2024 -
-01 June 2024 & 004 \\
-San Joaquin Experimental Range (SJER) & 37.10878, -119.73228 & Oak
-woodland & 16.4\(^{\circ}\)C & 41.7\(^{\circ}\) & 540 mm & 1.2\% & 01
-June 2022 - 04 June 2022 & 005 \\
-Wind River Experimental Forest (WREF) & 45.82049, -121.95191 & Evergreen
-forest & 9.2\(^{\circ}\)C & 15.3\(^{\circ}\) & 2225 mm & 27.2\% & 07
-June 2022 - 09 June 2022 & 001 \\
-Chase Lake National Wildlife Refuge (WOOD) & 47.1282, -99.241334 &
-Restored prairie grassland & 4.9\(^{\circ}\)C & 14.9\(^{\circ}\) & 495
-mm & 14.9\% & 03 June 2024 - 09 June 2024 & 001 \\
-Konza Prairie Biological Station (KONZ) & 39.100774, -96.563075 &
-Tallgrass Prairie & 12.4\(^{\circ}\)C & 23.4\(^{\circ}\) & 870 mm &
-23.4\% & 29 May 2024 - 01 June 2024 & 001 \\
-University of Notre Dame Environmental Research Center (UNDE) &
-46.23391, -89.537254 & Deciduous forest & 4.3\(^{\circ}\) &
-13.0\(^{\circ}\) & 802 mm & 13.0\% & 22 May 2024 - 25 May 2024 & 004 \\
+SRER & 31.91068, -110.83549 & Shrubland & 19.3 \(^{\circ}\)C & 47.6
+\(^{\circ}\)C & 346 mm & 4.0\% & May 29-- June 1 2022 & 004 \\
+SJER & 37.10878, -119.73228 & Oak woodland & 16.4 \(^{\circ}\)C & 41.7
+\(^{\circ}\)C & 540 mm & 1.2\% & June 1--4 2022 & 005 \\
+WREF & 45.82049, -121.95191 & Evergreen forest & 9.2 \(^{\circ}\)C &
+15.3 \(^{\circ}\)C & 2225 mm & 27.2\% & June 7--9 2022 & 001 \\
+WOOD & 47.1282, -99.241334 & Restored prairie & 4.9 \(^{\circ}\)C & 14.9
+\(^{\circ}\)C & 495 mm & 14.9\% & June 3--9 2024 & 001 \\
+KONZ & 39.100774, -96.563075 & Tallgrass prairie & 12.4 \(^{\circ}\)C &
+23.4 \(^{\circ}\)C & 870 mm & 23.4\% & May 29-- June 1 2024 & 001 \\
+UNDE & 46.23391, -89.537254 & Deciduous forest & 4.3 \(^{\circ}\)C &
+13.0 \(^{\circ}\)C & 802 mm & 13.0\% & May 22--25 2024 & 004 \\
 
 \end{longtable}
 
@@ -653,7 +664,11 @@ parallelogram and green rectangle in Figure~\ref{fig-package-diagram}
 and Panel a in Figure~\ref{fig-model-diagram}). Acquired environmental
 data can be exported to a comma separated value file for additional
 analysis. Quality assurance (QA) flags are reported as an indicator
-variable.
+variable. Since the calibration coefficients on the soil water content
+sensors have changed over time (National Ecological Observatory Network
+(NEON), 2024e), raw sensor measurements were back-calculated and
+soil-specific calibrations were applied following Ayres et al. (2024) to
+generate a consistent time series at each measurement location.
 
 The second step is harmonizing the data to compute soil fluxes across
 soil layers. This step consists of three different actions (blue
@@ -697,8 +712,7 @@ unflagged measurements (\(\mathbf{m}\)), reported standard errors
 (2012)). We also defined a bias vector
 \(\mathbf{b}=\sqrt{\boldsymbol\epsilon^{2}-\boldsymbol\sigma^{2}}\),
 which quantifies the spread of uncertainty in a given period and is
-incorporated into \(\overline{m}\). Each of these vectors
-(\(\mathbf{m}, \boldsymbol\sigma, \boldsymbol\epsilon, \mathbf{b}\)).
+incorporated into \(\overline{m}\).
 
 From these, 5000 bootstrap samples were generated for
 \(\mathbf{m}, \boldsymbol\sigma\), and \(\mathbf{b}\). For each sample
@@ -802,10 +816,9 @@ soil surface and directly below the surface. Measurements of soil
 temperature, soil water content, and soil CO\(_{2}\) molar concentration
 across the soil profile allow for application of Equation \ref{eq:ficks}
 across different soil depths. Each site had three measurement layers, so
-we denote the flux between which two layers as a three-digit subscript
-\(F_{ijk}\) with indicator variables \(i\), \(j\), and \(k\) indicate if
-a given layer was used (written in order of increasing depth), according
-to the following:
+we denote the flux as a three-digit subscript \(F_{ijk}\) with indicator
+variables \(i\), \(j\), and \(k\) indicate if a given layer was used
+(written in order of increasing depth), according to the following:
 
 \begin{itemize}
 \tightlist
@@ -838,9 +851,9 @@ Following collection of field measurements and calculation of the soil
 fluxes from \texttt{neonSoilFlux} package, we compared measured
 \(F_{S}\) based on closed-dynamic chamber measurements with the LI-COR
 instruments to a given soil flux calculation from \texttt{neonSoilFlux}
-for each site and flux computation method. Statistics included the
-associated R\(^{2}\) value, root mean squared error (RMSE), slope from a
-linear regression (\(m\)), normalized root mean square error.
+for each site and flux computation method. Statistics included the ,
+slope from a linear regression (\(m\)), normalized root mean squared
+error (NRMSE), and associated R\(^{2}\) value.
 
 Finally, for a half-hourly interval we also computed a \emph{post hoc}
 \(D_{a}\) using the LI-COR flux along with the CO\(_{2}\) surface
@@ -938,10 +951,10 @@ Millington-Quirk or Marshall, Section~\ref{sec-compute-diffusivity}).}
 
 \end{figure}%
 
-We computed the soil fluxes measured by \texttt{neonSoilFlux} with the
-LICOR measured fluxes at that within that half-hourly period, and then
-calculated the statistical 1-1 comparison between the two. Statistics
-for each are reported in Table~\ref{tbl-flux-11-compare}.
+We calculated the statistical 1-1 comparison between the various
+estimates of soil flux computed by \texttt{neonSoilFlux} with the
+field-measured fluxes within half-hourly periods. Statistics for these
+comparisons are reported in Table~\ref{tbl-flux-11-compare}.
 
 \begin{table}
 
@@ -1043,7 +1056,7 @@ Our results suggest that the most important way to improve reliability
 of the flux estimate is to reduce the usage of gap-filled data. The
 current approach to gap filling in \texttt{neonSoilFlux} uses monthly
 mean data to gap fill---this approach decreases the ability of the
-estimate to be responsive to short turn pulses that occur with rapid
+estimate to be responsive to short-term pulses that occur with rapid
 weather shifts. Four sites (KONZ, SRER, WREF, and UNDE) had more than
 75\% of half-hourly periods with no-gap filled measurements (Figure S1,
 Supplementary Information). Two sites (SJER and WOOD) had more than 75\%
@@ -1195,6 +1208,13 @@ diverse ecosystems are responding to a changing climate.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-ayresValidationRemotelySensed2024}
+Ayres, E., Reichle, R. H., Colliander, A., Cosh, M. H., \& Smith, L.
+(2024). Validation of {Remotely Sensed} and {Modeled Soil Moisture} at
+{Forested} and {Unforested NEON Sites}. \emph{IEEE Journal of Selected
+Topics in Applied Earth Observations and Remote Sensing}, \emph{17},
+14248--14264. \url{https://doi.org/10.1109/JSTARS.2024.3430928}
+
 \bibitem[\citeproctext]{ref-baldocchiMeasuringFluxesTrace2014}
 Baldocchi, D. (2014). Measuring fluxes of trace gases and energy between
 ecosystems and the atmosphere - the state and future of the eddy
@@ -1365,9 +1385,10 @@ Earth System Sciences}, \emph{27}(2), 577--598.
 \url{https://doi.org/10.5194/hess-27-577-2023}
 
 \bibitem[\citeproctext]{ref-lunchNeonUtilitiesUtilitiesWorking2025}
-Lunch, C., Laney, C., Mietkiewicz, N., Sokol, E., Cawley, K., \&
-Network), N. (National. E. O. (2025). \emph{{neonUtilities}: {Utilities}
-for {Working} with {NEON Data}}.
+Lunch, C., Laney, C., Mietkiewicz, N., Sokol, E., Cawley, K., \& NEON
+(National Ecological Observatory Network). (2025). \emph{neonUtilities:
+Utilities for working with NEON data}.
+\url{https://doi.org/10.32614/CRAN.package.neonUtilities}
 
 \bibitem[\citeproctext]{ref-luoEcologicalForecastingData2011}
 Luo, Y., Ogle, K., Tucker, C., Fei, S., Gao, C., LaDeau, S., Clark, J.
@@ -1527,6 +1548,7 @@ Research}, \emph{59}(12), e2023WR034457.
 Zobitz, J., Ayres, E., O'Rourke, K., Werbin, Z., Lee, L., Abdi, R.,
 Mehmeti, D., \& Xiong, L. (2024). \emph{{neonSoilFlux}: {Compute Soil
 Carbon Fluxes} for the {National Ecological Observatory Network Sites}}.
+\url{https://doi.org/10.32614/CRAN.package.neonSoilFlux}
 
 \end{CSLReferences}
 
