@@ -94,7 +94,7 @@ Data available will be made available via Zenodo prior to publication.
 
 # Abstract
 
-Accurate quantification of soil carbon fluxes is essential to reduce uncertainty in the terrestrial carbon sink. These fluxes vary over time and across ecosystem types. The flux gradient method estimates soil carbon fluxes using paired measurements of soil CO$_{2}$ concentration, temperature, moisture, and other soil properties. The National Ecological Observatory Network (NEON) provides such data across 20 ecoclimatic domains spanning the continental U.S., Puerto Rico, Alaska, and Hawai‘i. We present an R software package (`neonSoilFlux`) that acquires soil environmental data to compute half-hourly soil carbon fluxes for each soil replicate plot at a terrestrial NEON site. To assess the computed fluxes, we visited six focal NEON sites and measured soil carbon fluxes using a closed-dynamic chamber approach. Outputs from the `neonSoilFlux` showed order-of-magnitude agreement to measured fluxes ($R^{2}$ between measured and `neonSoilFlux` outputs ranging from 0.00 to 0.78), but fell within the range of calculated uncertainties. Calculated fluxes from `neonSoilFlux` aggregated to the daily scale exhibited expected site-specific seasonal patterns. While the flux gradient method is broadly effective, its accuracy is highly sensitive to site-specific inputs, particularly estimates of soil diffusivity and moisture content. Future refinement and validation of `neonSoilFlux` outputs can contribute to existing databases of soil carbon flux measurements, providing near real-time estimates of a critical component of the terrestrial carbon cycle. 
+Accurate quantification of soil carbon fluxes is essential to reduce uncertainty in the terrestrial carbon sink. These fluxes vary over time and across ecosystem types. The flux gradient method estimates soil carbon fluxes using paired measurements of soil CO$_{2}$ concentration, temperature, moisture, and other soil properties. The National Ecological Observatory Network (NEON) provides such data across 20 ecoclimatic domains spanning the continental U.S., Puerto Rico, Alaska, and Hawai‘i. We present an R software package (`neonSoilFlux`) that acquires soil environmental data to compute half-hourly soil carbon fluxes for each soil replicate plot at a terrestrial NEON site. To assess the computed fluxes, we visited six focal NEON sites and measured soil carbon fluxes using a closed-dynamic chamber approach. Outputs from the `neonSoilFlux` showed order-of-magnitude agreement to measured fluxes ($R^{2}$ between measured and `neonSoilFlux` outputs ranging from 0.00 to 0.78), but fell within the range of calculated uncertainties. Calculated fluxes from `neonSoilFlux` aggregated to the daily scale exhibited expected site-specific seasonal patterns. While the flux gradient method is broadly effective, its accuracy is highly sensitive to site-specific inputs, particularly estimates of soil diffusivity and moisture content. Future refinement and validation of `neonSoilFlux` outputs can contribute to existing databases of soil carbon flux measurements, providing near real-time estimates of a critical component of the terrestrial carbon cycle.
 
 ## Keywords
 
@@ -114,7 +114,7 @@ Estimated or observed soil carbon fluxes are a key metric for understanding chan
 
 One common method by which $F_{S}$ is measured in the field is through the use of soil chambers in a closed, well-mixed system [@normanComparisonSixMethods1997] with headspace trace gas concentrations measured with an infrared gas analyzer (IRGA). $F_{S}$ can also be estimated from soil CO$_{2}$ measurements at different depths in the soil using the flux-gradient method [@maierUsingGradientMethod2014]. Closed-chamber IRGA measurements require either frequent in-person site visits or an expensive automated systems; the flux-gradient method is calculated from using solid-state sensors. The flux-gradient method is an approach that uses conservation of mass to calculate flux at a vertical soil depth $z$ at steady state by applying Fick's law of diffusion. A simplifying assumption for the flux-gradient method is that there is no mass transfer in the other spatial dimensions $x$ and $y$ [@maierUsingGradientMethod2014]. The diffusivity profile, a key component of this calculation, varies across the soil depth as a function of soil temperature, soil volumetric water content, atmospheric air pressure, and soil bulk density [@millingtonDiffusionAggregatedPorous1971; @sallamMeasurementGasDiffusion1984; @moldrupModelingDiffusionReaction1999].
 
-Databases such as the Soil Respiration Database (SRDB) or the Continuous Soil Respiration Database (COSORE) add to the growing network of resources for making collected observations of soil fluxes available to other researchers [@bond-lambertyCOSORECommunityDatabase2020; @jianRestructuredUpdatedGlobal2021; @jiangGlobalSoilRespiration2024; @bond-lambertyGlobalDatabaseSoil2010; @bond-lambertyNewTechniquesData2018]. However, these databases currently encompass primarily direct soil measurements of fluxes (i.e. those using methods like the closed-chamber method described above). Currently, NEON provides all measurements to calculate $F_{S}$ from Fick's law, but soil flux as a derived data product was descoped from the initial network launch due to budget constraints [@berenbaumReportNSFBIO2015]. Deriving estimates of $F_{S}$ using continuous sensor data across NEON sites thus represents a high priority. 
+Databases such as the Soil Respiration Database (SRDB) or the Continuous Soil Respiration Database (COSORE) add to the growing network of resources for making collected observations of soil fluxes available to other researchers [@bond-lambertyCOSORECommunityDatabase2020; @jianRestructuredUpdatedGlobal2021; @jiangGlobalSoilRespiration2024; @bond-lambertyGlobalDatabaseSoil2010; @bond-lambertyNewTechniquesData2018]. However, these databases currently encompass primarily direct soil measurements of fluxes (i.e. those using methods like the closed-chamber method described above). Currently, NEON provides all measurements to calculate $F_{S}$ from Fick's law, but soil flux as a derived data product was descoped from the initial network launch due to budget constraints [@berenbaumReportNSFBIO2015]. Deriving estimates of $F_{S}$ using continuous sensor data across NEON sites thus represents a high priority.
 
 This study describes the application of an R software package, `neonSoilFlux`, that computes a standardized estimate of $F_{S}$ at all terrestrial NEON sites using the flux-gradient method. Using direct chamber-based field observations of soil carbon dioxide flux from a subset of terrestrial NEON sites spanning six states, we provide a direct validation of $F_{S}$ from `neonSoilFlux`.
 
@@ -171,8 +171,7 @@ We used LI-COR SoilFluxPro software (v 5.3.1) to assess the data after collectio
 
 ## `neonSoilFlux` R package {#sec-nsf-desc}
 
-We developed an R package ([`neonSoilFlux`](https://CRAN.R-project.org/package=neonSoilFlux); @zobitzNeonSoilFluxComputeSoil2024) to compute half-hourly soil carbon fluxes and uncertainties from NEON data. The objective of the `neonSoilFlux` package is a unified workflow (@fig-package-diagram) for soil data acquisition and analysis that supplements the existing data acquisition R package ([https://CRAN.R-project.org/package=neonUtilities](https://CRAN.R-project.org/package=neonUtilities); @lunchNeonUtilitiesUtilitiesWorking2025).
-
+We developed an R package ([`neonSoilFlux`](https://CRAN.R-project.org/package=neonSoilFlux); @zobitzNeonSoilFluxComputeSoil2024) to compute half-hourly soil carbon fluxes and uncertainties from NEON data. The objective of the `neonSoilFlux` package is a unified workflow (@fig-package-diagram) for soil data acquisition and analysis that supplements the existing data acquisition R package (<https://CRAN.R-project.org/package=neonUtilities>; @lunchNeonUtilitiesUtilitiesWorking2025).
 
 ::: {#fig-package-diagram}
 ![](figures/neonSoilFluxOutline.png)
@@ -237,7 +236,6 @@ In Equation \ref{eq:porosity}, $\rho_{m}$ is the particle density of mineral soi
 
 The Millington-Quirk model assumes $\xi$ is modulated by the amount of fluid saturation in soil pores [@millingtonDiffusionAggregatedPorous1971]. In contrast, the Marshall model [@marshallDiffusionGasesPorous1959] expresses tortuosity as only a function of porosity ($\xi = \phi^{1.5}$), with $\phi$ defined from Equation \ref{eq:porosity}. The Marshall model is independent of soil water content and assumes tortuosity is only governed by soil structure. The `neonSoilFlux` package allows users to choose the tortuosity model most appropriate for site-specific conditions and research goals.
 
-
 ### Soil flux computation {#sec-compute-soil-flux}
 
 We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux $F_{ij}$ ($\mu$mol m$^{-2}$ s$^{-1}$) across two soil depths $i$ and $j$:
@@ -264,6 +262,7 @@ Finally, for a half-hourly interval we also computed a *post hoc* $D_{a}$ using 
 # Results
 
 ## Concordance between modelled and measured soil CO$_{2}$ flux
+
 The sites we visited ranged substantially in both their annual average temperature and precipitation as well as their biome type (@tbl-licor-results). These differences also influenced the wide range of observed flux rates across sites.
 
 ::: {#tbl-licor-results}
@@ -303,8 +302,6 @@ licor_all_data %>%
 Summary of measured soil characteristics and flux results from field measurements across six NEON sites using a LI-COR 6800 (LI-870/8250 measurements omitted to enable direct comparability) via the closed-dynamic chamber method. Numeric values for soil CO$_{2}$ flux, soil temperature, and volumetric soil water content (VSWC) are the mean and standard deviation of field measurements at each site.
 :::
 
-
-
 The timeseries of the measured fluxes from the LI-COR 6800 and 870/8250 were compared to modeled soil fluxes from the `neonSoilFlux` R package (@fig-flux-results). We also assessed year-long estimated flux time series and compared those to field measurements made at each site (@fig-flux-results-year). Results are reported in local time. Where applicable, sites are displayed from left to right by increasing soil temperature (@tbl-neon-sites). Positive values of the flux indicate that there is a flux moving towards the surface. Overall, with the exception of SRER (discussed later) the computed fluxes determined using a variety of plausible methods spanned the field-measured fluxes, but the specific flux-gradient method that best approximated field measurements varied by site.
 
 ::: {#fig-flux-results}
@@ -321,11 +318,10 @@ Timeseries of both daily-averaged field $F_{S}$ (yellow circles) and daily ensem
 
 We computed the soil fluxes measured by `neonSoilFlux` with the LICOR measured fluxes at that within that half-hourly period, and then calculated the statistical 1-1 comparison between the two. Statistics for each are reported in @tbl-flux-11-compare.
 
-::: {.tbl #tbl-flux-11-compare}
+::: {#tbl-flux-11-compare .tbl}
 ![](figures/r2-plot.png)
 
-Statistical comparison between measured fluxes at each site with fluxes reported by `neonSoilFlux` with the different diffusivity calculations applied. *m* refers to the slope of a linear regression between the LICOR measured fluxes at each site and the outputs from `neonSoilFlux`. * = significance at the 5% level, ** = significance at the 1% level. NRMSE is the normalized root mean square error between measured and `neonSoilFlux` outputs, normalized by the sample mean of the LICOR measured fluxes.
-
+Statistical comparison between measured fluxes at each site with fluxes reported by `neonSoilFlux` with the different diffusivity calculations applied. *m* refers to the slope of a linear regression between the LICOR measured fluxes at each site and the outputs from `neonSoilFlux`. \* = significance at the 5% level, \*\* = significance at the 1% level. NRMSE is the normalized root mean square error between measured and `neonSoilFlux` outputs, normalized by the sample mean of the LICOR measured fluxes.
 :::
 
 ## Effects of method choice on diffusivity estimates
