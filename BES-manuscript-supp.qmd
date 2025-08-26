@@ -1,0 +1,45 @@
+---
+title: "Supplemental information for `neonSoilFlux`: An R Package for Continuous Sensor-Based Estimation of Soil CO~2~ Fluxes"
+    
+format:
+  pdf:
+    include-in-header:
+      text: |
+        \usepackage{lineno,setspace}
+        \linenumbers
+        \doublespacing
+    keep-tex: true
+    header-includes:
+      - \renewcommand{\figurename}{Figure}
+      - \renewcommand{\thefigure}{S\arabic{figure}}
+
+number-sections: true
+bibliography: bes-bibliography.bib
+csl: methods-in-ecology-and-evolution.csl
+---
+
+## Assessment of data gaps
+
+For a given half-hourly time period, the `neonSoilFlux` packages assigns a QA flag for a measurement if more one values across all measurement depths uses gap-filled data (Section 4.2.1 of the main text). Panel a of @fig-gap-filled-stats reports the proportion of gap-filled data for all input environmental measurements at each site during the period when field measurements were made. Soil fluxes are computed from 4 different types of input measurements ($T_{S}$, $SWC$, $P$, and CO$_{2}$), any of which could have a QA flag in a half-hourly interval. Panel b of @fig-gap-filled-stats displays at each site the distribution of the number of different gap-filled measurements used to compute a half-hourly flux. The largest cause of measurements needing to be gap-filled was missing or flagged soil moisture data. Calculating fluxes for WOOD and SJER required using the largest proportion of gap-filled measurements, due to substantially large fractions of flagged or missing $SWC$ and $T_{S}$ data.
+
+::: {#fig-gap-filled-stats}
+![](figures/gap-filled-stats.png)
+
+Panel a) Proportion of input gap-filled environmental measurements used to generate $F_{S}$ from the `neonSoilFlux` package, by study site. Panel b) distribution of the usage of gap-filled measurements at each site.
+:::
+
+## Assessing the signal to noise ratio (SNR) and evaluating estimated uncertainties
+
+Following collection of field measurements and calculation of the soil fluxes from `neonSoilFlux` package, we compared measured $F_{S}$ based on closed-dynamic chamber measurements with the LI-COR instruments to a given soil flux calculation from `neonSoilFlux` for each site and flux computation method. Beyond the model statistics defined in the main text, we computed the signal to noise ratio (SNR), defined as the ratio of a modeled soil flux ($F_{ijk}$) from `neonSoilFlux` to its quadrature uncertainty ($\sigma_{ijk}$).
+
+We observed that the range of values (e.g. $F_{ijk} \pm \sigma_{ijk}$ was much larger than the measured field flux. We evaluated $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$, where $F_{S}$ is a measured field soil flux from the LI-COR 6800 (as the LI-COR 870/8250 was used at only three sites in 2024 but the 6800 was used at all sites in both years). The parameter $\epsilon$ was an uncertainty reduction factor to evaluate how much the quadrature uncertainty could be reduced while maintaining precision between modeled $F_{ijk}$ and measured $F_{S}$.
+
+The computed signal to noise ratio (SNR) and the proportion of measured field fluxes within the modeled uncertainty for a given flux computation method $F_{ijk}$ suggest that there was substantial variability in the agreement between the gradient method and field-measured observations (@fig-uncertainty-stats, Section 4.3 of the main text). Here, values of SNR greater than unity indicate lower reported uncertainty, as propagated by quadrature due to a relatively higher precision of measured input variables (CO$_{2}$, $T_{S}$, $SWC$, or $P$).
+
+The sensitivity to an uncertainty reduction factor ($\epsilon$, bottom panels in @fig-uncertainty-stats) demonstrates how concordance between measured and modeled fluxes would be affected if environmental measurement uncertainty $\sigma_{ijk}$ were to decrease. As $\epsilon$ increases from left to right in each figure, the possible range of values for each predicted flux value decreases and the proportion of measured fluxes that fall within that range also decreases.
+
+::: {#fig-uncertainty-stats}
+![](figures/uncertainty-stats.png)
+
+Top panels: distribution of SNR values across each of the different sites for modeled effluxes from the `neonSoilFlux` package, depending on the diffusivity calculation used (Millington-Quirk or Marshall, Section 4.2.2 of the main text). Bottom panels: Proportion of measured $F_{S}$ within the modeled range of a flux computation method $F_{ijk}$ given an uncertainty reduction factor $\epsilon$, or $| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}$.
+:::
