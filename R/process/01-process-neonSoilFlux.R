@@ -1,5 +1,6 @@
 # ### Purpose: script file to acquire NEON data and compute soil fluxes using neonSoilFlux.
-# ### NOTE: this code is commented out because it may take a while to run.  All the pre-downloaded data files for review are located in data/raw/flux-data
+# ### NOTE: this code is commented out because it may take a while to run.
+# # Due to size limitations in the manuscript submission portal, we could not include all of the individually downloaded files from neonSoilFlux.  We include the aggregated .Rda file.
 #
 #
 # # Load libraries
@@ -88,3 +89,45 @@
 # }
 #
 #
+
+# # Combine all the downloaded files into a single one:
+# # Load up the flux and env files
+# flux_files <- list.files(path='data/raw/flux-data',pattern='out-flux-',full.names=TRUE)
+# env_files <- list.files(path='data/raw/flux-data',pattern='env-meas-',full.names=TRUE)
+#
+# model_fluxes_mq <- vector(mode = "list", length = length(flux_files))
+# model_fluxes_marshall <- vector(mode = "list", length = length(flux_files))
+# env_values <- vector(mode = "list", length = length(env_files))
+#
+#
+#
+# for(i in seq_along(flux_files)) {
+#
+#   load(flux_files[[i]])
+#   site_name <- str_extract(flux_files[[i]],
+#                            pattern="(?<=out-flux-)[:alpha:]{4}")
+#   model_fluxes_mq[[i]] <- out_fluxes$millington_quirk |> mutate(site=site_name)
+#   model_fluxes_marshall[[i]] <- out_fluxes$marshall |> mutate(site=site_name)
+# }
+#
+# ### Do the same for the env values
+# ### More graveyard for env data
+# for(i in seq_along(env_values)) {
+#
+#   load(env_files[[i]])
+#   site_name <- str_extract(env_files[[i]],
+#                            pattern="(?<=env-meas-)[:alpha:]{4}")
+#
+#   env_values[[i]] <- site_data |> mutate(site=site_name)
+#
+#
+# }
+#
+# # Bind everything together
+# model_fluxes_mq <- bind_rows(model_fluxes_mq)
+# model_fluxes_marshall <- bind_rows(model_fluxes_marshall)
+# env_values <- bind_rows(env_values)
+#
+# # For simplicity, we only want to take
+# save(model_fluxes_mq,model_fluxes_marshall,env_values,
+#      file = 'data/derived/all-year-flux-results.Rda')

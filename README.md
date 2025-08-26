@@ -30,3 +30,7 @@
 -   `neonUtilities`
 
 To reproduce manuscript figures and tables, source the following file: `source('00-start-here.R')`
+
+**NOTE:** Due to size limitations in the manuscript submission portal, we could not include all of the individually downloaded files from `neonSoilFlux` that would be found in `data/raw/flux-data`. We include the aggregated `.Rda` file (`data/derived/all-year-flux-results.Rda`).
+
+To download each of the individual files source the following file: `source('R/process/01-process-neonSoilFlux.R')`.

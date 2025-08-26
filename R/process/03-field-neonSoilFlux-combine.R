@@ -4,58 +4,18 @@ library(tidyverse)
 library(lubridate)
 
 
-
 # Load up the flux results
 load('data/derived/licor-all-data.Rda')
 
 # Load up information about the sites
 load('data/derived/field-data-info.Rda')
 
-# Load up the flux and env files
-flux_files <- list.files(path='data/raw/flux-data',pattern='out-flux-',full.names=TRUE)
-env_files <- list.files(path='data/raw/flux-data',pattern='env-meas-',full.names=TRUE)
-
-model_fluxes_mq <- vector(mode = "list", length = length(flux_files))
-model_fluxes_marshall <- vector(mode = "list", length = length(flux_files))
-env_values <- vector(mode = "list", length = length(env_files))
+# Load up the combined outputs from `neonSoilFlux`:
+load('data/derived/all-year-flux-results.Rda')
 
 
 
-for(i in seq_along(flux_files)) {
-
-  load(flux_files[[i]])
-  site_name <- str_extract(flux_files[[i]],
-                           pattern="(?<=out-flux-)[:alpha:]{4}")
-  model_fluxes_mq[[i]] <- out_fluxes$millington_quirk |> mutate(site=site_name)
-  model_fluxes_marshall[[i]] <- out_fluxes$marshall |> mutate(site=site_name)
-}
-
-### Do the same for the env values
-### More graveyard for env data
-for(i in seq_along(env_values)) {
-
-  load(env_files[[i]])
-  site_name <- str_extract(env_files[[i]],
-                           pattern="(?<=env-meas-)[:alpha:]{4}")
-
-  env_values[[i]] <- site_data |> mutate(site=site_name)
-
-
-}
-
-# Bind everything together
-model_fluxes_mq <- bind_rows(model_fluxes_mq)
-model_fluxes_marshall <- bind_rows(model_fluxes_marshall)
-env_values <- bind_rows(env_values)
-
-# For simplicity, we only want to take
-save(model_fluxes_mq,model_fluxes_marshall,env_values,
-     file = 'data/derived/all-year-flux-results.Rda')
-
-### FORCE THE TIME ZONE WHEN PROCESSING THE FLUXES
-
-
-### Verify the times are correct with NZ
+### Verify the times are correct
 licor_rev_all <- licor_all_data |>
   rename(flux = fluxes,
          startDateTime = date) |>
