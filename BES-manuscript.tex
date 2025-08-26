@@ -807,21 +807,24 @@ variables \(i\), \(j\), and \(k\) indicate if a given layer was used
   \(\displaystyle \frac{dC}{dz}\) in Fick's Law). Tang et al. (2003)
   used this approach to compute fluxes in an oak-grass savannah.
 \item
-  \(F_{110}\), \(F_{011}\) are fluxes across the two most shallow layers
-  and two deepest layers respectively. The diffusivity used in Fick's
-  Law is always at the deeper measurement layer. When used as a surface
-  flux estimate we assume CO\(_{2}\) remains constant above this flux
-  depth.
+  \(F_{110}\) is a flux estimate across the two shallowest measurement
+  layers.
 \item
-  \(F_{101}\) is a surface flux estimate across the shallowest and
-  deepest measurement layers (\(F_{110}\), \(F_{011}\)). The diffusivity
-  used in Fick's Law is always at the deepest measurement layer.
+  \(F_{011}\) is a flux estimate across the two deepest measurement
+  layers.
+\item
+  \(F_{101}\) is a flux estimate across the shallowest and deepest
+  measurement layers.
 \end{itemize}
 
-These computed fluxes provide the basis for linear extrapolation to the
-soil surface. For example, Tang et al. (2005) estimated surface flux by
-linearly extrapolating \(F_{110}\) and \(F_{011}\). Uncertainty in all
-\(F_{ijk}\) values was quantified using quadrature (Taylor, 2022).
+For \(F_{110}\), \(F_{011}\), and \(F_{101}\), the diffusivity used in
+Fick's Law is always at the deeper measurement layer. When used as a
+surface flux estimate we assume CO\(_{2}\) remains constant above this
+flux depth. Uncertainty in all \(F_{ijk}\) values was quantified using
+quadrature (Taylor, 2022). These computed fluxes could provide the basis
+for additional soil flux estimates. For example, Tang et al. (2005)
+estimated surface flux by linearly extrapolating \(F_{110}\) and
+\(F_{011}\) to the soil surface.
 
 \subsection{Post processing evaluation}\label{sec-post-process}
 
