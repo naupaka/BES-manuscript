@@ -1,10 +1,7 @@
 % Options for packages loaded elsewhere
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL BES-manuscript-oldtmp-3563.tex   Tue Aug 26 00:56:11 2025
-%DIF ADD BES-manuscript.tex               Tue Aug 26 00:51:45 2025
-%DIF 2a2
-% Options for packages loaded elsewhere %DIF > 
-%DIF -------
+%DIF DEL BES-manuscript-oldtmp-48267.tex   Tue Aug 26 12:14:04 2025
+%DIF ADD BES-manuscript.tex                Tue Aug 26 12:12:29 2025
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
@@ -13,32 +10,21 @@
   letterpaper,
   DIV=11,
   numbers=noendperiod]{scrartcl}
-%DIF 10c11
-%DIF < 
-%DIF -------
-\usepackage{xcolor} %DIF > 
-%DIF -------
+
 \usepackage{amsmath,amssymb}
-%DIF 12a13
-\setcounter{secnumdepth}{5} %DIF > 
-%DIF -------
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-%DIF 18c20
-%DIF <   \usepackage{unicode-math}
-%DIF -------
-  \usepackage{unicode-math} % this also loads fontspec %DIF > 
-%DIF -------
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -56,54 +42,22 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-%DIF 42-44d44
-%DIF < \usepackage{xcolor}
-%DIF < \setlength{\emergencystretch}{3em} % prevent overfull lines
-%DIF < \setcounter{secnumdepth}{5}
-%DIF -------
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
-%DIF 46a45
-\makeatletter %DIF > 
-%DIF -------
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-%DIF 48c48-54
-%DIF <   \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-%DIF -------
-  \renewcommand{\paragraph}{ %DIF > 
-    \@ifstar %DIF > 
-      \xxxParagraphStar %DIF > 
-      \xxxParagraphNoStar %DIF > 
-  } %DIF > 
-  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}} %DIF > 
-  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}} %DIF > 
-%DIF -------
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-%DIF 52c58-64
-%DIF <   \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-%DIF -------
-  \renewcommand{\subparagraph}{ %DIF > 
-    \@ifstar %DIF > 
-      \xxxSubParagraphStar %DIF > 
-      \xxxSubParagraphNoStar %DIF > 
-  } %DIF > 
-  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}} %DIF > 
-  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}} %DIF > 
-%DIF -------
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
-%DIF 54a66
-\makeatother %DIF > 
-%DIF -------
 
 
-%DIF 56-57c69
-%DIF < \providecommand{\tightlist}{%
-%DIF <   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
-%DIF -------
-\usepackage{longtable,booktabs,array} %DIF > 
-%DIF -------
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -115,36 +69,17 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-%DIF 69-75c81-90
-%DIF < \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-%DIF < \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-%DIF < \makeatother
-%DIF < % Scale images if necessary, so that they will not overflow the page
-%DIF < % margins by default, and it is still possible to overwrite the defaults
-%DIF < % using explicit options in \includegraphics[width, height, ...]{}
-%DIF < \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-%DIF -------
-\newsavebox\pandoc@box %DIF > 
-\newcommand*\pandocbounded[1]{% scales image to fit in text height/width %DIF > 
-  \sbox\pandoc@box{#1}% %DIF > 
-  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}% %DIF > 
-  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}% %DIF > 
-  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both %DIF > 
-  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}% %DIF > 
-  \else\usebox{\pandoc@box}% %DIF > 
-  \fi% %DIF > 
-} %DIF > 
-%DIF -------
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 % Set default figure placement to htbp
-%DIF 77d92
-%DIF < \makeatletter
-%DIF -------
+\makeatletter
 \def\fps@figure{htbp}
 \makeatother
-%DIF 80a94-95
- %DIF > 
- %DIF > 
-%DIF -------
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
 \NewDocumentCommand\citeproc{mm}{%
@@ -179,20 +114,6 @@
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
-%DIF 114a130-141
- %DIF > 
- %DIF > 
-\setlength{\emergencystretch}{3em} % prevent overfull lines %DIF > 
- %DIF > 
-\providecommand{\tightlist}{% %DIF > 
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}} %DIF > 
- %DIF > 
- %DIF > 
- %DIF > 
-  %DIF > 
- %DIF > 
- %DIF > 
-%DIF -------
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -252,23 +173,15 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-%DIF 173-175d201
-%DIF < \ifLuaTeX
-%DIF <   \usepackage{selnolig}  % disable illegal ligatures
-%DIF < \fi
-%DIF -------
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 \usepackage{bookmark}
-%DIF 177d202
-%DIF < 
-%DIF -------
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-%DIF 179c203
-%DIF < \urlstyle{same} % disable monospaced font for URLs
-%DIF -------
-\urlstyle{same} %DIF > 
-%DIF -------
+\urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-%DIF 181c205
+%DIF 181c181
 %DIF <   pdftitle={A direct comparison between field-measured and sensor-based estimates of soil carbon dioxide flux across six National Ecological Observatory Network sites enabled by the neonSoilFlux R package},
 %DIF -------
   pdftitle={neonSoilFlux: An R Package for Continuous Sensor-Based Estimation of Soil CO2 Fluxes}, %DIF > 
@@ -280,9 +193,6 @@
   citecolor={Blue},
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
-%DIF 189a213
- %DIF > 
-%DIF -------
 
 \title{\DIFdelbegin \DIFdel{A direct comparison between field-measured and sensor-based
 estimates of soil carbon dioxide flux across six National Ecological
@@ -306,7 +216,7 @@ Zimmerman\DIFdelbegin \DIFdel{\textsuperscript{4}}\DIFdelend \DIFaddbegin \DIFad
 \RequirePackage[normalem]{ulem} %DIF PREAMBLE
 \RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
 \providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
-\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
 %DIF SAFE PREAMBLE %DIF PREAMBLE
 \providecommand{\DIFaddbegin}{} %DIF PREAMBLE
 \providecommand{\DIFaddend}{} %DIF PREAMBLE
@@ -362,11 +272,6 @@ Zimmerman\DIFdelbegin \DIFdel{\textsuperscript{4}}\DIFdelend \DIFaddbegin \DIFad
 \DeclareRobustCommand{\DIFaddendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
 \DeclareRobustCommand{\DIFdelbeginFL}{\DIFOdelbeginFL \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
 \DeclareRobustCommand{\DIFdelendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
-%DIF AMSMATHULEM PREAMBLE %DIF PREAMBLE
-\makeatletter %DIF PREAMBLE
-\let\sout@orig\sout %DIF PREAMBLE
-\renewcommand{\sout}[1]{\ifmmode\text{\sout@orig{\ensuremath{#1}}}\else\sout@orig{#1}\fi} %DIF PREAMBLE
-\makeatother %DIF PREAMBLE
 %DIF COLORLISTINGS PREAMBLE %DIF PREAMBLE
 \RequirePackage{listings} %DIF PREAMBLE
 \RequirePackage{color} %DIF PREAMBLE
@@ -383,13 +288,10 @@ Zimmerman\DIFdelbegin \DIFdel{\textsuperscript{4}}\DIFdelend \DIFaddbegin \DIFad
 } %DIF PREAMBLE
 \lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
 \lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
-\lstset{extendedchars=\true,inputencoding=utf8}
-
 %DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
 
 \begin{document}
 \maketitle
-
 
 \textsuperscript{1} Augsburg University, 2211 Riverside Avenue,
 Minneapolis, MN 55454\\
@@ -443,8 +345,9 @@ Administration: JZ; NZ; Funding Acquisition: JZ; NZ
 
 \DIFdelbegin \DIFdel{Data available }\DIFdelend \DIFaddbegin \DIFadd{Anonymous field-collected data, }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{calculated
 outputs, and manuscript-generating code for peer review are provided as
-supplemental files. All }\DIFaddend will be made \DIFdelbegin \DIFdel{available via Zenodo prior to }\DIFdelend \DIFaddbegin \DIFadd{publicly available on Zenodo with a
-DOI upon }\DIFaddend publication.
+supplemental files. An anonymous link for peer-review is here:
+}\url{https://doi.org/10.5281/zenodo.16951117}\DIFadd{. This }\DIFaddend will be made
+\DIFdelbegin \DIFdel{available via Zenodo prior to }\DIFdelend \DIFaddbegin \DIFadd{publicly available upon }\DIFaddend publication.
 
 \newpage
 
@@ -499,10 +402,12 @@ validation, soil respiration, ecosystem variability, diffusion
 \section{Data for peer review}\label{data-for-peer-review}
 
 Anonymous \DIFdelbegin \DIFdel{data and }\DIFdelend \DIFaddbegin \DIFadd{field-collected data, }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{calculated
-outputs, and manuscript-generating }\DIFaddend code for peer review \DIFdelbegin \DIFdel{is available here: LINK
+outputs, and manuscript-generating }\DIFaddend code for peer review \DIFdelbegin \DIFdel{is available here:
+LINK
 }\DIFdelend \DIFaddbegin \DIFadd{are provided as
-supplemental files. All will be made publicly available on Zenodo with a
-DOI upon publication.
+supplemental files. An anonymous link for peer-review is here:
+}\url{https://doi.org/10.5281/zenodo.16951117}\DIFadd{. This will be made
+publicly available upon publication.
 }\DIFaddend 
 
 \section{Introduction}\label{introduction}
@@ -676,20 +581,11 @@ were factory calibrated before each field season.
 
 \begin{figure}
 
-\DIFdelbeginFL %DIFDELCMD < \centering{
-%DIFDELCMD < 
+\centering{
 
-%DIFDELCMD < \includegraphics{figures/collar-images.jpeg}
-%DIFDELCMD < 
-
-%DIFDELCMD < }
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{figures/collar-images.jpeg}}
+\includegraphics{figures/collar-images.jpeg}
 
 }
-\DIFaddendFL 
 
 \caption{\label{fig-collar-images}Spatial layout of field sampling using
 a closed-dynamic chamber setup at a representative NEON site (KONZ).
@@ -705,28 +601,16 @@ collars.}
 \DIFdelend \DIFaddbegin \tiny
 \DIFaddend 
 
-\DIFdelbegin %DIFDELCMD < \begin{longtable}[]{@{}
-%DIFDELCMD <   >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
-%DIFDELCMD <   >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
-%DIFDELCMD <   >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
-%DIFDELCMD <   >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
-%DIFDELCMD <   >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
-%DIFDELCMD <   >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
-%DIFDELCMD <   >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
-%DIFDELCMD <   >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
-%DIFDELCMD <   >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}@{}}
-%DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}@{}}
-\DIFaddend 
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1111}}@{}}
 
 \caption{\label{tbl-neon-sites}Listing of NEON sites studied for field
 work and analysis. \DIFaddbegin \DIFadd{Site refers to NEON site codes: Santa Rita
@@ -828,20 +712,11 @@ acquisition and analysis that supplements the existing
 
 \begin{figure}
 
-\DIFdelbeginFL %DIFDELCMD < \centering{
-%DIFDELCMD < 
+\centering{
 
-%DIFDELCMD < \includegraphics{figures/neonSoilFluxOutline.png}
-%DIFDELCMD < 
-
-%DIFDELCMD < }
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{figures/neonSoilFluxOutline.png}}
+\includegraphics{figures/neonSoilFluxOutline.png}
 
 }
-\DIFaddendFL 
 
 \caption{\label{fig-package-diagram}Diagram of \texttt{neonSoilFlux} R
 package. For a given month, year, and NEON site (orange parallelogram),
@@ -876,20 +751,11 @@ site. \DIFaddbegin \DIFadd{A soil flux calculation is computed at each replicate
 
 \begin{figure}
 
-\DIFdelbeginFL %DIFDELCMD < \centering{
-%DIFDELCMD < 
+\centering{
 
-%DIFDELCMD < \includegraphics{figures/model-diagram.pdf}
-%DIFDELCMD < 
-
-%DIFDELCMD < }
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{figures/model-diagram.pdf}}
+\includegraphics{figures/model-diagram.pdf}
 
 }
-\DIFaddendFL 
 
 \caption{\label{fig-model-diagram}Model diagram \DIFdelbeginFL \DIFdelFL{for }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{of the }\DIFaddendFL data workflow for
 the \texttt{neonSoilFlux} R package. a) Acquire: Data are obtained \DIFdelbeginFL \DIFdelFL{from
@@ -1134,27 +1000,45 @@ variables \(i\), \(j\), and \(k\) indicate if a given layer was used
   \(\displaystyle \frac{dC}{dz}\) in Fick's Law). Tang et al. (2003)
   used this approach to compute fluxes in an oak-grass savannah.
 \item
-  \(F_{110}\), \(F_{011}\) are fluxes across the two most shallow layers
-  and two deepest layers respectively. The diffusivity used in Fick's
-  Law is always at the deeper measurement layer. When used as a surface
-  flux estimate we assume CO\(_{2}\) remains constant above this flux
-  depth.
-\item
-  \(F_{101}\) is a surface flux estimate using \DIFdelbegin \DIFdel{linear extrapolation
-  using concentration measurements between }\DIFdelend \DIFaddbegin \DIFadd{fluxes estimated at }\DIFaddend the
-  shallowest and deepest measurement \DIFdelbegin \DIFdel{layer.
-  }\DIFdelend \DIFaddbegin \DIFadd{layers (\(F_{110}\), \(F_{011}\)).
-  These computed fluxes then form the basis of additional linear
-  extrapolation to the surface. For example, }\DIFaddend Hirano et al. (2003) and
-  Tang et al. (2005) used an approach similar to \(F_{101}\) in a
-  temperate deciduous broadleaf forest and ponderosa pine forest
-  respectively.
-\end{itemize}
+  \(F_{110}\) \DIFdelbegin \DIFdel{, }\DIFdelend \DIFaddbegin \DIFadd{is a flux estimate across the two shallowest measurement
+  layers.
+}\item
+  \DIFaddend \(F_{011}\) \DIFdelbegin \DIFdel{are fluxes }\DIFdelend \DIFaddbegin \DIFadd{is a flux estimate }\DIFaddend across the two \DIFdelbegin \DIFdel{most shallow layersand two deepest
+  layers respectively.
+The }\DIFdelend \DIFaddbegin \DIFadd{deepest measurement
+  layers.
+}\item
+  \DIFadd{\(F_{101}\) is a flux estimate across the shallowest and deepest
+  measurement layers.
+}\end{itemize}
 
-Uncertainty in all \(F_{ijk}\) is computed through quadrature (Taylor,
+\DIFadd{For \(F_{110}\), \(F_{011}\), and \(F_{101}\), the }\DIFaddend diffusivity used in
+Fick's Law is always at the deeper measurement layer. When used as a
+surface flux estimate we assume CO\(_{2}\) remains constant above this
+flux depth. \DIFdelbegin %DIFDELCMD < \item
+%DIFDELCMD <   %%%
+\DIFdel{\(F_{101}\) is a surface flux estimate using
+linear extrapolation
+  using concentration measurements between the shallowest and deepest
+  measurement layer. Hirano et al. (2003)and }\DIFdelend \DIFaddbegin \DIFadd{Uncertainty in all \(F_{ijk}\) values was quantified using
+quadrature (Taylor, 2022). These computed fluxes could provide the basis
+for additional soil flux estimates. For example, }\DIFaddend Tang et al. (2005)
+\DIFdelbegin \DIFdel{used an
+  approach similar to \(F_{101}\) in a temperate deciduous broadleaf
+  forest and
+ponderosa pine forest respectively.
+}%DIFDELCMD < \end{itemize}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{estimated surface flux by linearly extrapolating \(F_{110}\) and
+\(F_{011}\) to the soil surface.
+}\DIFaddend 
+
+\DIFdelbegin \DIFdel{Uncertainty in all \(F_{ijk}\) is computed through quadrature (Taylor,
 2022).
+}%DIFDELCMD < 
 
-\subsection{Post processing evaluation}\label{sec-post-process}
+%DIFDELCMD < %%%
+\DIFdelend \subsection{Post processing evaluation}\label{sec-post-process}
 
 Following collection of field measurements and calculation of the soil
 fluxes from \texttt{neonSoilFlux} package, we compared measured
@@ -1274,20 +1158,11 @@ best approximated field measurements varied by site.
 
 \begin{figure}
 
-\DIFdelbeginFL %DIFDELCMD < \centering{
-%DIFDELCMD < 
+\centering{
 
-%DIFDELCMD < \includegraphics{figures/flux-results.png}
-%DIFDELCMD < 
-
-%DIFDELCMD < }
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{figures/flux-results.png}}
+\includegraphics{figures/flux-results.png}
 
 }
-\DIFaddendFL 
 
 \caption{\label{fig-flux-results}Timeseries of \DIFdelbeginFL \DIFdelFL{both measured }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{soil surface flux
 (}\DIFaddendFL \(F_{S}\)\DIFaddbeginFL \DIFaddFL{) from field-measured }\DIFaddendFL (yellow \DIFdelbeginFL \DIFdelFL{circles}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{lines}\DIFaddendFL ) and modeled soil fluxes
@@ -1307,20 +1182,11 @@ temperature.}\DIFaddendFL }
 
 \begin{figure}
 
-\DIFdelbeginFL %DIFDELCMD < \centering{
-%DIFDELCMD < 
+\centering{
 
-%DIFDELCMD < \includegraphics{figures/flux-results-year.png}
-%DIFDELCMD < 
-
-%DIFDELCMD < }
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{figures/flux-results-year.png}}
+\includegraphics{figures/flux-results-year.png}
 
 }
-\DIFaddendFL 
 
 \caption{\label{fig-flux-results-year}Timeseries of both daily-averaged
 field \(F_{S}\) (yellow circles) and daily ensemble averaged soil fluxes
@@ -1429,7 +1295,7 @@ decreases.
 %DIFDELCMD < %%%
 \DIFdelendFL \DIFaddbeginFL \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{figures/r2-plot.png}}
+\includegraphics{figures/r2-plot.png}
 
 }
 \DIFaddendFL 
@@ -1476,20 +1342,11 @@ was either lower or higher than both of the other methods
 
 \begin{figure}
 
-\DIFdelbeginFL %DIFDELCMD < \centering{
-%DIFDELCMD < 
+\centering{
 
-%DIFDELCMD < \includegraphics{figures/diffusivity-plot.png}
-%DIFDELCMD < 
-
-%DIFDELCMD < }
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{figures/diffusivity-plot.png}}
+\includegraphics{figures/diffusivity-plot.png}
 
 }
-\DIFaddendFL 
 
 \caption{\label{fig-diffusivity-plot}Distribution of diffusivity
 (\(D_{a}\)) at each study site. Values of \(D_{a}\) were provided by the
@@ -1871,14 +1728,19 @@ conditions. \emph{Soil Biology and Biochemistry}, \emph{58}, 115--126.
 \url{https://doi.org/10.1016/j.soilbio.2012.11.012}
 
 \DIFdelbegin \bibitem[\citeproctext]{ref-hirano_long-term_2003}
-\DIFdelend \DIFaddbegin \bibitem[\citeproctext]{ref-hiranoLongtermHalfhourlyMeasurement2003}
-\DIFaddend Hirano, T., Kim, H., \& Tanaka, Y. (2003). Long-term half-hourly
-measurement of soil {CO2} concentration and soil respiration in a
-temperate deciduous forest. \emph{Journal of Geophysical Research:
-Atmospheres}, \emph{108}(D20).
-\url{https://doi.org/10.1029/2003JD003766}
+\DIFdel{Hirano, T., Kim, H., \& Tanaka, Y. (2003). Long-term half-hourly
+measurement of soil }%DIFDELCMD < {%%%
+\DIFdel{CO2}%DIFDELCMD < } %%%
+\DIFdel{concentration and soil respiration in a
+temperate deciduous forest. }\emph{\DIFdel{Journal of Geophysical Research:
+Atmospheres}}%DIFAUXCMD
+\DIFdel{, }\emph{\DIFdel{108}}%DIFAUXCMD
+\DIFdel{(D20).
+}%DIFDELCMD < \url{https://doi.org/10.1029/2003JD003766}
+%DIFDELCMD < 
 
-\bibitem[\citeproctext]{ref-jacksonEcologySoilCarbon2017}
+%DIFDELCMD < %%%
+\DIFdelend \bibitem[\citeproctext]{ref-jacksonEcologySoilCarbon2017}
 Jackson, R. B., Lajtha, K., Crow, S. E., Hugelius, G., Kramer, M. G., \&
 Piñeiro, G. (2017). The {Ecology} of {Soil Carbon}: {Pools},
 {Vulnerabilities}, and {Biotic} and {Abiotic Controls}. \emph{Annual
@@ -2091,7 +1953,6 @@ Carbon Fluxes}} \DIFadd{for the }{\DIFadd{National Ecological Observatory Networ
 \DIFaddend 
 
 \end{CSLReferences}
-
 
 
 

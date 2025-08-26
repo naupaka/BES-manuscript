@@ -88,7 +88,7 @@ Conceptualization: JZ, NZ; Methodology: EA, JZ, NZ; Software: JZ, NZ, ZW, E A, D
 
 # Data Availability {.unnumbered}
 
-Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. All will be made publicly available on Zenodo with a DOI upon publication.
+Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. An anonymous link for peer-review is here: [https://doi.org/10.5281/zenodo.16951117](https://doi.org/10.5281/zenodo.16951117). This will be made publicly available upon publication.
 
 \newpage
 
@@ -102,7 +102,7 @@ Soil carbon, carbon dioxide, flux gradient, carbon cycle, field validation, soil
 
 # Data for peer review
 
-Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. All will be made publicly available on Zenodo with a DOI upon publication.
+Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. An anonymous link for peer-review is here: [https://doi.org/10.5281/zenodo.16951117](https://doi.org/10.5281/zenodo.16951117). This will be made publicly available upon publication.
 
 # Introduction
 
@@ -246,12 +246,11 @@ We applied Fick's law (Equation \ref{eq:ficks}) to compute the soil flux $F_{ij}
 where $D_{a}$ is the diffusivity (m$^{2}$ s$^{-1}$) and $\frac{dC}{dz}$ is the gradient of CO$_{2}$ molar concentration ($\mu$mol m$^{-3}$, so the gradient has units of $\mu$mol m$^{-3}$ m$^{-1}$). The soil surface flux is theoretically defined by applying Equation \ref{eq:ficks} to measurements collected at the soil surface and directly below the surface. Measurements of soil temperature, soil water content, and soil CO$_{2}$ molar concentration across the soil profile allow for application of Equation \ref{eq:ficks} across different soil depths. Each site had three measurement layers, so we denote the flux as a three-digit subscript $F_{ijk}$ with indicator variables $i$, $j$, and $k$ indicate if a given layer was used (written in order of increasing depth), according to the following:
 
 -   $F_{000}$ is a surface flux estimate using the intercept of the linear regression of $D_{a}$ with depth and the slope from the linear regression of CO$_{2}$ with depth (which represents $\displaystyle \frac{dC}{dz}$ in Fick's Law). @tangAssessingSoilCO22003 used this approach to compute fluxes in an oak-grass savannah.
--   $F_{110}$ is a flux estimate across the two shallowest measurement layers. 
+-   $F_{110}$ is a flux estimate across the two shallowest measurement layers.
 -   $F_{011}$ is a flux estimate across the two deepest measurement layers.
 -   $F_{101}$ is a flux estimate across the shallowest and deepest measurement layers.
 
-For $F_{110}$, $F_{011}$, and $F_{101}$, the diffusivity used in Fick's Law is always at the deeper measurement layer. When used as a surface flux estimate we assume CO$_{2}$ remains constant above this flux depth. Uncertainty in all $F_{ijk}$ values was quantified using quadrature [@taylorIntroductionErrorAnalysis2022]. These computed fluxes could provide the basis for additional soil flux estimates. For example, @tangContinuousMeasurementsSoil2005 estimated surface flux by linearly extrapolating $F_{110}$ and $F_{011}$ to the soil surface. 
-
+For $F_{110}$, $F_{011}$, and $F_{101}$, the diffusivity used in Fick's Law is always at the deeper measurement layer. When used as a surface flux estimate we assume CO$_{2}$ remains constant above this flux depth. Uncertainty in all $F_{ijk}$ values was quantified using quadrature [@taylorIntroductionErrorAnalysis2022]. These computed fluxes could provide the basis for additional soil flux estimates. For example, @tangContinuousMeasurementsSoil2005 estimated surface flux by linearly extrapolating $F_{110}$ and $F_{011}$ to the soil surface.
 
 ## Post processing evaluation {#sec-post-process}
 
