@@ -151,7 +151,7 @@ Spatial layout of field sampling using a closed-dynamic chamber setup at a repre
 
 | Site | Location | Ecosystem | MAT | $\overline{T_{S}}$ | MAP | $\overline{SWC}$ | Dates | Plot |
 |--------|--------|--------|--------|--------|--------|--------|--------|--------|
-| SRER | 31.91068, -110.83549 | Shrubland | 19.3 $^{\circ}$C | 47.6 $^{\circ}$C | 346 mm | 4.0% |  May 29-- June 1 2022 | 004 |
+| SRER | 31.91068, -110.83549 | Shrubland | 19.3 $^{\circ}$C | 47.6 $^{\circ}$C | 346 mm | 4.0% | May 29-- June 1 2022 | 004 |
 | SJER | 37.10878, -119.73228 | Oak woodland | 16.4 $^{\circ}$C | 41.7 $^{\circ}$C | 540 mm | 1.2% | June 1--4 2022 | 005 |
 | WREF | 45.82049, -121.95191 | Evergreen forest | 9.2 $^{\circ}$C | 15.3 $^{\circ}$C | 2225 mm | 27.2% | June 7--9 2022 | 001 |
 | WOOD | 47.1282, -99.241334 | Restored prairie | 4.9 $^{\circ}$C | 14.9 $^{\circ}$C | 495 mm | 14.9% | June 3--9 2024 | 001 |
@@ -160,7 +160,7 @@ Spatial layout of field sampling using a closed-dynamic chamber setup at a repre
 
 \normalsize
 
-Listing of NEON sites studied for field work and analysis. Site refers to NEON site codes: Santa Rita Experimental Range (SRER), San Joaquin Experimental Range (SJER), Wind River Experimental Forest (WREF), Chase Lake National Wildlife Refuge (WOOD), Konza Prairie Biological Station (KONZ), and the University of Notre Dame Environmental Research Center (UNDE). Location is reported in decimal degrees of latitude and longitude. Other abbreviations include Mean Annual Temperature (MAT);  $\overline{T_{S}}$: average soil temperature during field measurements; $\overline{SWC}$: average soil water content during field measurements. Dates refer to field measurement dates for each site. Plot refers to the particular location in the soil sensor array (denoted as HOR by NEON) where field measurements were made.
+Listing of NEON sites studied for field work and analysis. Site refers to NEON site codes: Santa Rita Experimental Range (SRER), San Joaquin Experimental Range (SJER), Wind River Experimental Forest (WREF), Chase Lake National Wildlife Refuge (WOOD), Konza Prairie Biological Station (KONZ), and the University of Notre Dame Environmental Research Center (UNDE). Location is reported in decimal degrees of latitude and longitude. Other abbreviations include Mean Annual Temperature (MAT); $\overline{T_{S}}$: average soil temperature during field measurements; $\overline{SWC}$: average soil water content during field measurements. Dates refer to field measurement dates for each site. Plot refers to the particular location in the soil sensor array (denoted as HOR by NEON) where field measurements were made.
 :::
 
 ### Post-collection processing of field data
@@ -364,6 +364,6 @@ These challenges notwithstanding, the method used here and made available in the
 
 # Conclusions
 
-We used the R package `neonSoilFlux` to estimate soil CO$_2$ fluxes with the flux-gradient method using data from  buried soil sensors at NEON terrestrial sites. We compared the predicted fluxes to those measured directly using a field-based closed chamber approach. Soil fluxes from `neonSoilFlux` were broadly effective at producing estimates of flux comparable to those measured in the field using a chamber-based technique. However `neonSoilFlux` outputs are quite sensitive to a number of issues, including: missing data (and thus gap-filling of input measurement datasets), the selection of soil depths used to best calculate the gradient (which may vary between sites), and finally the choice of method used for estimating soil diffusivity. The flexibility of the `neonSoilFlux` package allows the user to evaluate each of these issues with site-specific knowledge and contexts. Future refinements and subsequent validation of `neonSoilFlux` outputs will feed forward into evaluating soil carbon fluxes broader spatial scales to enhance understanding of the ways in which soils across diverse ecosystems are responding to a changing climate.
+We used the R package `neonSoilFlux` to estimate soil CO$_2$ fluxes with the flux-gradient method using data from buried soil sensors at NEON terrestrial sites. We compared the predicted fluxes to those measured directly using a field-based closed chamber approach. Soil fluxes from `neonSoilFlux` were broadly effective at producing estimates of flux comparable to those measured in the field using a chamber-based technique. However `neonSoilFlux` outputs are quite sensitive to a number of issues, including: missing data (and thus gap-filling of input measurement datasets), the selection of soil depths used to best calculate the gradient (which may vary between sites), and finally the choice of method used for estimating soil diffusivity. The flexibility of the `neonSoilFlux` package allows the user to evaluate each of these issues with site-specific knowledge and contexts. Future refinements and subsequent validation of `neonSoilFlux` outputs will feed forward into evaluating soil carbon fluxes broader spatial scales to enhance understanding of the ways in which soils across diverse ecosystems are responding to a changing climate.
 
 # Sources Cited
