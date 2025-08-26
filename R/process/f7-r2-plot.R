@@ -1,4 +1,4 @@
-### Table 3: Derive RMSE and R2 values for the different model results compared to measured values
+### Figure 7: Derive RMSE and R2 values for the different model results compared to measured values, compare against the daily values.
 
 # NOTE: because gt and gtable are used in processing, the output is a png file that is displayed in the text.
 
@@ -6,11 +6,20 @@
 library(tidyverse)
 library(lubridate)
 library(broom)
-library(gtable)
-library(gt)
 
 # (1) Load up data and measured fluxes for each site
 load('data/derived/combined-field-data.Rda')
+
+# Compute some summary stats, used primarily for plot presentation
+summary_env_data <- field_data_joined |>
+  select(site,field_env) |>
+  unnest(cols=c(field_env)) |>
+  group_by(site) |>
+  summarise(
+    vswc_data = mean(VSWC),
+    temp_data = mean(soilTemp),
+    .groups="drop"
+  )
 
 
 # (2) Co-locate field obs and neonSoilFlux obs in same half-hourly window
@@ -72,7 +81,7 @@ standardize_timestamps <- function(input_model_data,input_field_data,lag_time = 
 extract_stats <- function(harmonized_data) {
 
   harmonized_data |>
-    group_by(method) |>
+    group_by(method,name) |>
     nest() |>
     mutate( nrmse = map_dbl(.x=data, .f = ~sqrt(sum((.x$flux-.x$flux_field)^2)/nrow(.x))/mean(.x$flux_field) ),  # computed nrmse - we divide by mean of field obs for standardization
             lm = map(.x=data,.f=~lm(flux~flux_field,data=.x)),
@@ -92,81 +101,82 @@ extract_stats <- function(harmonized_data) {
 
 field_stats_data_0 <- field_data_joined |>
   pivot_longer(cols=c("model_data_mq","model_data_marshall")) |>
-  mutate(harmonized_data = map2(.x=value,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 0)) ,
-         comparison_stats = map(harmonized_data,extract_stats)) |>
-  select(site,name,comparison_stats) |>
-  unnest(cols=c(comparison_stats)) |>
-  mutate(lag = "0")
-
-# Plot
-# Combine everything together.
-all_stats <- field_stats_data_0
-
-# Compute some summary stats.  Organize by
-summary_env_data <- field_data_joined |>
-  select(site,field_env) |>
-  unnest(cols=c(field_env)) |>
-  group_by(site) |>
-  summarise(
-    vswc_data = mean(VSWC),
-    temp_data = mean(soilTemp),
-    .groups="drop"
-  )
-
-# Now plot the stats.  Do some relabeling and factor ordering for the plot.
-## Add in the F111 and F000 separately, or just plot it at the end.  A second factor plot?
+  mutate(harmonized_data = map2(.x=value,.y=field_flux,.f=~standardize_timestamps(.x,.y,lag_time = 0))) |>
+  mutate(new_data = map(.x=harmonized_data,.f=~(.x |>
+                                                  filter(instrument == "6800") |>
+                                                  mutate(day = day(startDateTime)) |>
+                                                  group_by(day,method) |>
+                                                  mutate(flux = if_else(flux <0, NA, flux),
+                                                         flux_field = if_else(flux_field<0, NA,flux_field) ) |>
+                                                  summarize(flux = mean(flux,na.rm=TRUE),
+                                                            flux_field = mean(flux_field,na.rm=TRUE))))) |> select(site,name,new_data) |>
+  unnest(cols=c(new_data)) |>
+  ungroup() |>
+  mutate(name = if_else(name == "model_data_mq","Millington-Quirk","Marshall")) |>
+  inner_join(summary_env_data,by="site") |>
+  mutate(site = fct_reorder(site, temp_data))
 
 
-gt_tbl <- all_stats |>
-  mutate(across(.cols=c("nrmse","r.squared","slope","p.value"),.fns=~round(.x,2))) |>
-  mutate(sig = if_else((p.value < 0.01),"**",""),
-         sig = if_else(between(p.value,0.01,0.05),"*",sig)
-  ) |>
-  select(-lag,-p.value) |> #,-sig,-slope) |>
-  group_by(method,name) |>
-  nest() |>
-  pivot_wider(values_from = "data") |>
-  unnest(cols=c("model_data_mq","model_data_marshall"),names_repair ="unique") |>
-  mutate(slope...5 = paste0(slope...5,sig...6),
-         slope...10 = paste0(slope...10,sig...11)) |>
-  select(-sig...6,-sig...11) |>
-  select(-site...2) |>
-  group_by(site...7) |>
-  mutate(method = factor(method,
-                       levels = c("000",
-                                  "101",
-                                  "110",
-                                  "011"
-                       ),
-                       labels = c(html("<em>F<sub>000</sub></em>"),
-                                  html("<em>F<sub>101</sub></em>"),
-                                  html("<em>F<sub>110</sub></em>"),
-                                  html("<em>F<sub>011</sub></em>")  ) ) ) |>
-  gt(rowname_col = "method")  |>
-  fmt(
-    columns = method,
-    rows = everything(),
-    fns = function(x) {
-      map(.x=x,.f=~html(paste0(.x)) )
-    }
-  ) |>
-  tab_spanner(
-    label = "Millington-Quirk",
-    columns = c(slope...5,nrmse...3, r.squared...4)
-  ) |>
-  tab_spanner(
-    label = "Marshall",
-    columns = c(slope...10,nrmse...8, r.squared...9)
-  ) |>
-  cols_label(
-    slope...10 = html("<em>m</em>"),
-    slope...5 = html("<em>m</em>"),
-    nrmse...8 = "NRMSE",
-    r.squared...9 = html("<em>R</em><sup>2</sup>"),
-    nrmse...3 = "NRMSE",
-    r.squared...4 = html("<em>R</em><sup>2</sup>")
-  )
+# Now fix the labels
+field_stats_data_0$method <- as.character(field_stats_data_0$method)
+field_stats_data_0$method <- gsub("([0-9]+)", "F[\\\"\\1\\\"]", field_stats_data_0$method)
+
+
+# Compute the summary stats:
+regression_stats <- extract_stats(field_stats_data_0) |>
+  mutate(stars = case_when(
+    p.value < 0.01 ~ "**",
+    p.value < 0.05 ~ "*",
+    TRUE ~ ""
+  ),
+  label = paste0("R² = ", round(r.squared, 2),stars),
+  x = 12,  # position on x-axis
+  y = 5)
+
+
+
+# CVD friend palletee:
+okabe_ito <- c(
+  "#E69F00", # orange
+  "#56B4E9", # sky blue
+  "#009E73", # bluish green
+  "#F0E442", # yellow
+  "#0072B2", # blue
+  "#D55E00"  # vermillion
+)
+
+
+
+# Now let's get plotting!
+r2_plot <- field_stats_data_0  |>
+  ggplot(aes(x=flux_field,y=flux)) +
+  geom_abline(slope=1,intercept=0,linetype = 'dashed') +
+  geom_point(aes(color=site,shape=site,fill=site),size=6) +
+  ylim(c(0,15)) + xlim(c(0,15)) +
+  theme_bw() +
+  theme(
+    legend.title = element_text(size = 18),
+    legend.position = "bottom",
+    legend.text = element_text(size = 16),
+    axis.title.x = element_text(size = 18),
+    axis.text = element_text(size = 16),
+    axis.title.y = element_text(size = 18),
+    strip.text = element_text(size = 18)
+  ) +
+  geom_text(data = regression_stats, aes(x = x, y = y, label = label),
+            inherit.aes = FALSE,size=8) +
+  facet_grid(method~name,labeller = label_parsed) +
+  scale_shape_manual(values = c(21, 22, 23, 24, 25, 8)) +
+  scale_fill_manual(values = okabe_ito) +
+  scale_color_manual(values = okabe_ito) +
+  labs(x =bquote(~LICOR~F[S]~'('~mu*mol~m^-2~s^-1*~')'),
+       y =bquote(~neonSoilFlux~F[S]~'('~mu*mol~m^-2~s^-1*~')'),
+       color = "Site:",
+       shape = "Site:",
+       fill = "Site:")
+
 
 # Save the table to a file for use in the manuscript
-gtsave(gt_tbl,filename='figures/r2-plot.png',vwidth = 3000)
+ggsave('figures/r2-plot.png',plot = r2_plot,width=10,height=14)
+
 
