@@ -1,7 +1,7 @@
 % Options for packages loaded elsewhere
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL BES-manuscript-oldtmp-31555.tex   Mon Aug 25 11:44:26 2025
-%DIF ADD BES-manuscript.tex                Mon Aug 25 11:42:21 2025
+%DIF DEL BES-manuscript-oldtmp-3563.tex   Tue Aug 26 00:56:11 2025
+%DIF ADD BES-manuscript.tex               Tue Aug 26 00:51:45 2025
 %DIF 2a2
 % Options for packages loaded elsewhere %DIF > 
 %DIF -------
@@ -475,20 +475,21 @@ computed fluxes, we visited six focal NEON sites and measured soil
 carbon fluxes using a closed-dynamic chamber approach. \DIFdelbegin \DIFdel{The validation confirmed that a
 primary challenge in reducing soil carbon flux uncertainty is correctly
 characterizing diffusivity and soil water contentacross the soil
-profile.
-}\DIFdelend Outputs from the
-\texttt{neonSoilFlux} \DIFdelbegin \DIFdel{package }\DIFdelend \DIFaddbegin \DIFadd{showed order-of-magnitude agreement to measured
-fluxes (\(R^{2}\) between measured and }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{outputs
-ranging from 0.00 to 0.78); measured outputs fell within the range of
-calculated uncertainties from the gradient method. Calculated fluxes
-from }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{aggregated to the daily scale exhibited
-expected site-specific seasonal patterns. While the flux gradient method
-is broadly effective, its accuracy is highly sensitive to site-specific
-inputs, particularly estimates of soil diffusivity and moisture content.
-Future refinement and validation of }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{outputs can
-}\DIFaddend contribute to existing databases of soil carbon flux measurements,
-providing near real-time estimates of a critical component of the
-terrestrial carbon cycle.
+profile. }\DIFdelend Outputs from the
+\texttt{neonSoilFlux} \DIFdelbegin \DIFdel{package }\DIFdelend \DIFaddbegin \DIFadd{showed agreement with measured fluxes (\(R^{2}\)
+between measured and }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{outputs ranging from 0.04 to
+0.81 depending on calculation method used); measured outputs generally
+fell within the range of calculated uncertainties from the gradient
+method. Calculated fluxes from }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{aggregated to the
+daily scale exhibited expected site-specific seasonal patterns. While
+the flux gradient method is broadly effective, its accuracy is highly
+sensitive to site-specific inputs, including the extent to which
+gap-filing techniques are used to interpolate missing sensor data and to
+estimates of soil diffusivity and moisture content. Future refinement
+and validation of }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{outputs can }\DIFaddend contribute to
+existing databases of soil carbon flux measurements, providing near
+real-time estimates of a critical component of the terrestrial carbon
+cycle.
 
 \subsection{Keywords}\label{keywords}
 
@@ -497,11 +498,11 @@ validation, soil respiration, ecosystem variability, diffusion
 
 \section{Data for peer review}\label{data-for-peer-review}
 
-Anonymous \DIFdelbegin \DIFdel{data and }\DIFdelend \DIFaddbegin \DIFadd{field-collected data, neonSoilFlux calculated outputs, and
-manuscript-generating }\DIFaddend code for peer review \DIFdelbegin \DIFdel{is available here: LINK
-}\DIFdelend \DIFaddbegin \DIFadd{are provided as supplemental
-files. All will be made publicly available on Zenodo with a DOI upon
-publication.
+Anonymous \DIFdelbegin \DIFdel{data and }\DIFdelend \DIFaddbegin \DIFadd{field-collected data, }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{calculated
+outputs, and manuscript-generating }\DIFaddend code for peer review \DIFdelbegin \DIFdel{is available here: LINK
+}\DIFdelend \DIFaddbegin \DIFadd{are provided as
+supplemental files. All will be made publicly available on Zenodo with a
+DOI upon publication.
 }\DIFaddend 
 
 \section{Introduction}\label{introduction}
@@ -803,8 +804,9 @@ collection and to inform sampling parameters. We checked appropriateness
 of dead band and measurement durations using built-in evaluation tools.
 Based on this, the deadband period was set for 30-40 seconds, depending
 on the site, and the measurement duration was 180 seconds with a 30
-second pre-purge and a 30 second post-purge at most sites, and a 90 sec
-pre- and post-purge at sites with higher humidity due to recent
+second pre-purge and a 30 second post-purge at most sites, and a 90
+\DIFdelbegin \DIFdel{sec
+}\DIFdelend \DIFaddbegin \DIFadd{second }\DIFaddend pre- and post-purge at sites with higher humidity due to recent
 precipitation events. We also assessed the \(R^{2}\) of linear and
 exponential model fits to measured CO\(_{2}\) to verify measurement
 quality.
@@ -815,19 +817,14 @@ package}{neonSoilFlux R package}}\DIFdelbegin %DIFDELCMD < \label{neonsoilflux-r
 \DIFdelend \DIFaddbegin \label{sec-nsf-desc}
 \DIFaddend 
 
-We developed an R package
-(\DIFdelbegin \texttt{\DIFdel{neonSoilFlux}}%DIFAUXCMD
-\DIFdel{;
-LINK TO BE ADDED AFTER
-PEER REVIEW)}\DIFdelend \DIFaddbegin \href{https://CRAN.R-project.org/package=neonSoilFlux}{\texttt{\DIFadd{neonSoilFlux}}}\DIFadd{;
-Zobitz et al. (2024)) }\DIFaddend to compute half-hourly soil carbon fluxes and
-uncertainties from NEON data. The objective of the \texttt{neonSoilFlux}
-package is a unified workflow (Figure~\ref{fig-package-diagram}) for
-soil data acquisition and analysis that supplements the existing data
-acquisition R package
-\DIFdelbegin \texttt{\DIFdel{neonUtilities}} %DIFAUXCMD
-\DIFdel{(LINK TO BE ADDED AFTER PEER REVIEW)}\DIFdelend \DIFaddbegin \DIFadd{(}\url{https://CRAN.R-project.org/package=neonUtilities}\DIFadd{; Lunch et al.
-(2025))}\DIFaddend .
+We developed an R package \DIFdelbegin \DIFdel{(}\DIFdelend \DIFaddbegin \DIFadd{called }\DIFaddend \texttt{neonSoilFlux} \DIFdelbegin \DIFdel{; LINK TO BE ADDED AFTER
+PEER REVIEW}\DIFdelend \DIFaddbegin \DIFadd{(Zobitz et al.,
+2024}\DIFaddend ) to compute half-hourly soil carbon fluxes and uncertainties from
+NEON data. The objective of the \texttt{neonSoilFlux} package is a
+unified workflow (Figure~\ref{fig-package-diagram}) for soil data
+acquisition and analysis that supplements the existing
+\DIFaddbegin \texttt{\DIFadd{neonUtilities}} \DIFaddend data acquisition R package \DIFdelbegin \texttt{\DIFdel{neonUtilities}} %DIFAUXCMD
+\DIFdel{(LINK TO BE ADDED AFTER PEER REVIEW}\DIFdelend \DIFaddbegin \DIFadd{(Lunch et al., 2025}\DIFaddend ).
 
 \begin{figure}
 
@@ -850,26 +847,30 @@ acquisition R package
 package. For a given month, year, and NEON site (orange parallelogram),
 the package acquires all relevant data to compute \(F_{S}\) using the
 \texttt{neonUtilities} R package (green rectangle). Data are gap-filled
-according to reported QA flags and interpolated to the same measurement
-depth before computing the soil flux, uncertainties, and final QA flags
-(blue rectangles). The package reports the associated soil flux,
-uncertainties, and quality assurance (QA) flags for the user (purple
-parallelogram).}
+according to reported QA flags and \DIFaddbeginFL \DIFaddFL{adjusted for changes in soil water
+content (SWC) calibration coefficients, then }\DIFaddendFL interpolated to the same
+measurement depth before computing the soil flux, uncertainties, and
+final QA flags (blue rectangles). The package reports the associated
+soil flux, uncertainties, and quality assurance (QA) flags for the user
+(purple parallelogram).}
 
 \end{figure}%
 
 At a given NEON \DIFdelbegin \DIFdel{observation }\DIFdelend \DIFaddbegin \DIFadd{site }\DIFaddend there are five replicate soil plots, each with
 measurements of soil CO\(_{2}\) concentration, soil temperature, and
 soil moisture at different depths (Figure~\ref{fig-model-diagram}). The
-\texttt{neonSoilFlux} package acquires measured soil water content
-(National Ecological Observatory Network (NEON), 2024e), soil CO\(_{2}\)
-concentration (National Ecological Observatory Network (NEON), 2024b),
-barometric pressure from the nearby tower (National Ecological
-Observatory Network (NEON), 2024a), soil temperature (National
-Ecological Observatory Network (NEON), 2024d), and soil properties
+\texttt{neonSoilFlux} package acquires measured soil \DIFdelbegin \DIFdel{water content
+}\DIFdelend \DIFaddbegin \DIFadd{CO\(_{2}\)
+concentration }\DIFaddend (National Ecological Observatory Network (NEON), \DIFdelbegin \DIFdel{2024e}\DIFdelend \DIFaddbegin \DIFadd{2024b}\DIFaddend ),
+soil \DIFdelbegin \DIFdel{CO\(_{2}\)
+concentration }\DIFdelend \DIFaddbegin \DIFadd{temperature }\DIFaddend (National Ecological Observatory Network (NEON),
+\DIFdelbegin \DIFdel{2024b), barometric pressure from the nearby tower }\DIFdelend \DIFaddbegin \DIFadd{2024d), soil water content }\DIFaddend (National Ecological Observatory Network
+(NEON), \DIFdelbegin \DIFdel{2024a), soil temperature }\DIFdelend \DIFaddbegin \DIFadd{2024e), barometric pressure from the nearby tower }\DIFaddend (National
+Ecological Observatory Network (NEON), \DIFdelbegin \DIFdel{2024d}\DIFdelend \DIFaddbegin \DIFadd{2024a}\DIFaddend ), and soil properties
 (e.g.~bulk density) (National Ecological Observatory Network (NEON),
-2024c). The static soil properties were collected from a nearby soil pit
-during site characterization and are assumed to be constant at each
+2024c) \DIFaddbegin \DIFadd{from a range of different NEON data products}\DIFaddend . The static soil
+properties were collected \DIFaddbegin \DIFadd{by NEON staff }\DIFaddend from a nearby soil pit during
+\DIFaddbegin \DIFadd{initial }\DIFaddend site characterization and are assumed to be constant at each
 site. \DIFaddbegin \DIFadd{A soil flux calculation is computed at each replicate soil plot.
 }\DIFaddend 
 
@@ -890,19 +891,20 @@ site. \DIFaddbegin \DIFadd{A soil flux calculation is computed at each replicate
 }
 \DIFaddendFL 
 
-\caption{\label{fig-model-diagram}Model diagram for data workflow for
-the \texttt{neonSoilFlux} R package. a) Acquire: Data are obtained from
-given NEON location and horizontal sensor location, which includes soil
+\caption{\label{fig-model-diagram}Model diagram \DIFdelbeginFL \DIFdelFL{for }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{of the }\DIFaddendFL data workflow for
+the \texttt{neonSoilFlux} R package. a) Acquire: Data are obtained \DIFdelbeginFL \DIFdelFL{from
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{for a
+}\DIFaddendFL given NEON location and horizontal sensor location, which includes soil
 water content, soil temperature, CO\(_{2}\) concentration, and
 atmospheric pressure. All data are screened for quality assurance; if
-gap-filling of missing data occurs, it is flagged for the user. b) Any
-belowground data are then harmonized to the same depth as CO\(_{2}\)
-concentrations using linear regression. c) The flux across a given depth
-is computed via Fick's law, denoted with \(F_{ijk}\), where \(i\),
-\(j\), or \(k\) are either 0 or 1 denoting the layers the flux is
-computed across (\(i\) = closest to surface, \(k\) = deepest).
-\(F_{000}\) represents a flux estimate where the gradient \(dC/dz\) is
-the slope of a linear regression of CO\(_{2}\) with depth.}
+gap-filling of missing data occurs, it is flagged for the user. b)
+\DIFaddbeginFL \DIFaddFL{Harmonize: }\DIFaddendFL Any belowground data are then harmonized to the same depth as
+CO\(_{2}\) concentrations using linear regression. c) \DIFaddbeginFL \DIFaddFL{Compute: }\DIFaddendFL The flux
+across a given depth is computed via Fick's law, denoted with
+\(F_{ijk}\), where \(i\), \(j\), or \(k\) are either 0 or 1 denoting the
+layers the flux is computed across (\(i\) = closest to surface, \(k\) =
+deepest). \(F_{000}\) represents a flux estimate where the gradient
+\(dC/dz\) is the slope of a linear regression of CO\(_{2}\) with depth.}
 
 \end{figure}%
 
@@ -943,7 +945,9 @@ gap-filled measurements were used in the computation of a soil flux.
 Within the soil flux-gradient method, several different approaches can
 be used to derive a surface flux (Maier \& Schack-Kirchner, 2014); the
 \texttt{neonSoilFlux} package reports four different possible values for
-soil surface flux (Section~\ref{sec-compute-soil-flux}).
+soil surface flux (Section~\ref{sec-compute-soil-flux}) \DIFaddbegin \DIFadd{for each of two
+different methods of diffusivity estimation, for a total of eight
+estimates of flux}\DIFaddend .
 
 \subsubsection{Gap-filling routine}\label{sec-gapfilling}
 
@@ -1136,11 +1140,15 @@ variables \(i\), \(j\), and \(k\) indicate if a given layer was used
   flux estimate we assume CO\(_{2}\) remains constant above this flux
   depth.
 \item
-  \(F_{101}\) is a surface flux estimate using linear extrapolation
-  using concentration measurements between the shallowest and deepest
-  measurement layer. Hirano et al. (2003) and Tang et al. (2005) used an
-  approach similar to \(F_{101}\) in a temperate deciduous broadleaf
-  forest and ponderosa pine forest respectively.
+  \(F_{101}\) is a surface flux estimate using \DIFdelbegin \DIFdel{linear extrapolation
+  using concentration measurements between }\DIFdelend \DIFaddbegin \DIFadd{fluxes estimated at }\DIFaddend the
+  shallowest and deepest measurement \DIFdelbegin \DIFdel{layer.
+  }\DIFdelend \DIFaddbegin \DIFadd{layers (\(F_{110}\), \(F_{011}\)).
+  These computed fluxes then form the basis of additional linear
+  extrapolation to the surface. For example, }\DIFaddend Hirano et al. (2003) and
+  Tang et al. (2005) used an approach similar to \(F_{101}\) in a
+  temperate deciduous broadleaf forest and ponderosa pine forest
+  respectively.
 \end{itemize}
 
 Uncertainty in all \(F_{ijk}\) is computed through quadrature (Taylor,
@@ -1152,16 +1160,16 @@ Following collection of field measurements and calculation of the soil
 fluxes from \texttt{neonSoilFlux} package, we compared measured
 \(F_{S}\) based on closed-dynamic chamber measurements with the LI-COR
 instruments to a given soil flux calculation from \texttt{neonSoilFlux}
-for each site and flux computation method. Statistics included the \DIFdelbegin \DIFdel{associated R\(^{2}\) value,
-}\DIFdelend \DIFaddbegin \DIFadd{,
-slope from a linear regression (\(m\)), normalized }\DIFaddend root mean squared
-error (\DIFdelbegin \DIFdel{RMSE}\DIFdelend \DIFaddbegin \DIFadd{NRMSE}\DIFaddend ), and \DIFdelbegin \DIFdel{signal
+for each site and flux computation method \DIFdelbegin \DIFdel{. Statistics included the
+associated }\DIFdelend \DIFaddbegin \DIFadd{and quantified the
+relationship statistically (}\DIFaddend R\(^{2}\)\DIFdelbegin \DIFdel{value, root mean squared error (RMSE), and signal
 to noise ratio (SNR), defined as the ratio of a modeled soil flux
 (\(F_{ijk}\)) from }\texttt{\DIFdel{neonSoilFlux}} %DIFAUXCMD
 \DIFdel{to its quadrature uncertainty
-(\(\sigma_{ijk}\))}\DIFdelend \DIFaddbegin \DIFadd{associated R\(^{2}\) value}\DIFaddend .
+(\(\sigma_{ijk}\)). }%DIFDELCMD < 
 
-\DIFdelbegin \DIFdel{We observed that the range of values (e.g.~\(F_{ijk} \pm \sigma_{ijk}\)
+%DIFDELCMD < %%%
+\DIFdel{We observed that the range of values (e.g.~\(F_{ijk} \pm \sigma_{ijk}\)
 was much larger than the measured field flux. We evaluated
 \(| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}\), where \(F_{S}\) is
 a measured field soil flux from the LI-COR 6800 (as the LI-COR 870/8250
@@ -1169,14 +1177,13 @@ was used at only three sites in 2024 but the 6800 was used at all sites
 in both years). The parameter \(\epsilon\) was an uncertainty reduction
 factor to evaluate how much the quadrature uncertainty could be reduced
 while maintaining precision between modeled \(F_{ijk}\) and measured
-\(F_{S}\).
-}%DIFDELCMD < 
+\(F_{S}\)}\DIFdelend \DIFaddbegin \DIFadd{)}\DIFaddend . \DIFdelbegin %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdelend Finally, for a half-hourly interval we also computed a \emph{post hoc}
-\(D_{a}\) using the LI-COR flux along with the CO\(_{2}\) surface
-gradient reported by NEON using the measurement levels closest to the
-surface.
+\DIFdelend Finally, for a half-hourly
+interval we also computed a \emph{post hoc} \DIFaddbegin \DIFadd{diffusivity (}\DIFaddend \(D_{a}\)\DIFaddbegin \DIFadd{)
+}\DIFaddend using the LI-COR flux along with the CO\(_{2}\) surface gradient
+reported by NEON using the measurement levels closest to the surface.
 
 \section{Results}\label{results}
 
@@ -1283,7 +1290,7 @@ best approximated field measurements varied by site.
 \DIFaddendFL 
 
 \caption{\label{fig-flux-results}Timeseries of \DIFdelbeginFL \DIFdelFL{both measured }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{soil surface flux
-(}\DIFaddendFL \(F_{S}\)\DIFaddbeginFL \DIFaddFL{) from LICOR measured }\DIFaddendFL (yellow \DIFdelbeginFL \DIFdelFL{circles}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{lines}\DIFaddendFL ) and modeled soil fluxes
+(}\DIFaddendFL \(F_{S}\)\DIFaddbeginFL \DIFaddFL{) from field-measured }\DIFaddendFL (yellow \DIFdelbeginFL \DIFdelFL{circles}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{lines}\DIFaddendFL ) and modeled soil fluxes
 (green or purple lines) by the \texttt{neonSoilFlux} R package. Fluxes
 from the \texttt{neonSoilFlux} R package are separated by the
 diffusivity model used (Millington-Quirk or Marshall,
@@ -1291,7 +1298,10 @@ Section~\ref{sec-compute-diffusivity}). \DIFdelbeginFL \DIFdelFL{Vertical }\DIFd
 in the first column represent the measurement levels where the
 flux-gradient approach is applied (Section~\ref{sec-compute-soil-flux}).
 Ribbons for modeled soil fluxes represent \(\pm\) 1 standard deviation.
-Results are reported in local time.}
+Results are reported in local time. \DIFaddbeginFL \DIFaddFL{WREF, SJER, and SRER were sampled in
+2022, and UNDE, WOOD, and KONZ were sampled in 2024. Sites (columns) are
+arranged from left to right in terms of increasing mean annual
+temperature.}\DIFaddendFL }
 
 \end{figure}%
 
@@ -1327,51 +1337,38 @@ Millington-Quirk or Marshall, Section~\ref{sec-compute-diffusivity}).}
 %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{For a given half-hourly time period, the }\DIFdelend \DIFaddbegin \DIFadd{We calculated the statistical 1-1 comparison between the various
-estimates of soil flux computed by }\DIFaddend \texttt{neonSoilFlux} \DIFdelbegin \DIFdel{packages
+\DIFdel{For a given half-hourly time period, the }\texttt{\DIFdel{neonSoilFlux}} %DIFAUXCMD
+\DIFdel{packages
 assigns a QA flag for a measurement if more one values across all
 measurement depths uses gap-filled data (Section~\ref{sec-gapfilling}).
-Panel a of Figure~\ref{fig-gap-filled-stats} reports the proportion of gap-filled data for all input environmental measurements at each site
+Panel a of Figure~\ref{fig-gap-filled-stats} reports the proportion of
+gap-filled data for all input environmental measurements at each site
 during the period when field measurements were made. Soil fluxes are
 computed from 4 different types of input measurements (\(T_{S}\),
 \(SWC\), \(P\), and CO\(_{2}\)), any of which could have a QA flag in a
-}\DIFdelend \DIFaddbegin \DIFadd{with the
-field-measured fluxes within }\DIFaddend half-hourly \DIFdelbegin \DIFdel{interval. Panel b of Figure~\ref{fig-gap-filled-stats}
+half-hourly interval. Panel b of Figure~\ref{fig-gap-filled-stats}
 displays at each site the distribution of the number of different
 gap-filled measurements used to compute a half-hourly flux. The largest
 cause of measurements needing to be gap-filled was missing or flagged
 soil moisture data. Calculating fluxes for WOOD and SJER required using
 the largest proportion of gap-filled measurements, due to substantially
 large fractions of flagged or missing \(SWC\) and \(T_{S}\) data.
-}\DIFdelend \DIFaddbegin \DIFadd{periods. Statistics for these
-comparisons are reported in Table~\ref{tbl-flux-11-compare}.
-}\DIFaddend 
+}%DIFDELCMD < 
 
-\DIFdelbegin %DIFDELCMD < \begin{figure}
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \begin{table}
-\DIFaddendFL 
+%DIFDELCMD < \begin{figure}
+%DIFDELCMD < 
 
-\DIFdelbeginFL %DIFDELCMD < \centering{
+%DIFDELCMD < \centering{
 %DIFDELCMD < 
 
 %DIFDELCMD < \includegraphics{figures/gap-filled-stats.png}
 %DIFDELCMD < 
 
 %DIFDELCMD < }
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \caption{\label{tbl-flux-11-compare}\DIFaddFL{Statistical comparison between
-measured fluxes at each site with fluxes reported by
-}\texttt{\DIFaddFL{neonSoilFlux}} \DIFaddFL{with the different diffusivity calculations
-applied. }\emph{\DIFaddFL{m}} \DIFaddFL{refers to the slope of a linear regression between the
-LICOR measured fluxes at each site and the outputs from
-}\texttt{\DIFaddFL{neonSoilFlux}}\DIFaddFL{. * = significance at the 5\% level, ** =
-significance at the 1\% level. NRMSE is the normalized root mean square
-error between measured and }\texttt{\DIFaddFL{neonSoilFlux}} \DIFaddFL{outputs, normalized by
-the sample mean of the LICOR measured fluxes.}}
-\DIFaddendFL 
+%DIFDELCMD < 
 
-\DIFdelbeginFL %DIFDELCMD < \caption{%
+%DIFDELCMD < %%%
+%DIFDELCMD < \caption{%
 {%DIFAUXCMD
 %DIFDELCMD < \label{fig-gap-filled-stats}%%%
 \DIFdelFL{Panel a) Proportion of input
@@ -1380,17 +1377,14 @@ the }\texttt{\DIFdelFL{neonSoilFlux}} %DIFAUXCMD
 \DIFdelFL{package, by study site. Panel b) distribution
 of the usage of gap-filled measurements at each site.}}
 %DIFAUXCMD
-\DIFdelendFL \DIFaddbeginFL \centering{
+%DIFDELCMD < 
 
-\pandocbounded{\includegraphics[keepaspectratio]{figures/r2-plot.png}}
+%DIFDELCMD < \end{figure}%%%
+%DIF < 
+%DIFDELCMD < 
 
-}
-\DIFaddendFL 
-
-\DIFdelbeginFL %DIFDELCMD < \end{figure}%%%
-\DIFdelend \DIFaddbegin \end{table}\DIFaddend %
-
-\DIFdelbegin \subsection{\DIFdel{Assessing the signal to noise ratio (SNR) and evaluating
+%DIFDELCMD < %%%
+\subsection{\DIFdel{Assessing the signal to noise ratio (SNR) and evaluating
 estimated
 uncertainties}}%DIFAUXCMD
 \addtocounter{subsection}{-1}%DIFAUXCMD
@@ -1398,18 +1392,21 @@ uncertainties}}%DIFAUXCMD
 %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{The computed signal to noise ratio (SNR) and the
-proportion of measured
+\DIFdel{The computed signal to noise ratio (SNR) and the proportion of measured
 field fluxes within the modeled uncertainty for a given flux computation
 method \(F_{ijk}\) suggest that there was substantial variability in the
 agreement between the gradient method and field-measured observations
-(Figure~\ref{fig-uncertainty-stats}, Section~\ref{sec-post-process}). Here, values of SNR greater than unity indicate lower reported uncertainty, as propagated by quadrature due to a relatively higher
+(Figure~\ref{fig-uncertainty-stats}, Section~\ref{sec-post-process}).
+Here, values of SNR greater than unity indicate lower reported
+uncertainty, as propagated by quadrature due to a relatively higher
 precision of measured input variables (CO\(_{2}\), \(T_{S}\), \(SWC\),
-or \(P\)).
-}%DIFDELCMD < 
+or \(P\))}\DIFdelend \DIFaddbegin \DIFadd{We calculated a statistical relationship between the various estimates
+of soil flux computed by }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{and the field-measured
+fluxes within daily interval periods. Statistics for these comparisons
+are reported in Figure~\ref{fig-r2-plot}, which also shows how these
+fall relative to a 1:1 line}\DIFaddend .
 
-%DIFDELCMD < %%%
-\DIFdel{The sensitivity to an uncertainty reduction factor (\(\epsilon\), bottom
+\DIFdelbegin \DIFdel{The sensitivity to an uncertainty reduction factor (\(\epsilon\), bottom
 panels in Figure~\ref{fig-uncertainty-stats}) demonstrates how
 concordance between measured and modeled fluxes would be affected if
 environmental measurement uncertainty \(\sigma_{ijk}\) were to decrease.
@@ -1419,40 +1416,47 @@ proportion of measured fluxes that fall within that range also
 decreases.
 }%DIFDELCMD < 
 
-%DIFDELCMD < \begin{figure}
-%DIFDELCMD < 
+%DIFDELCMD < %%%
+\DIFdelend \begin{figure}
 
-%DIFDELCMD < \centering{
+\DIFdelbeginFL %DIFDELCMD < \centering{
 %DIFDELCMD < 
 
 %DIFDELCMD < \includegraphics{figures/uncertainty-stats.png}
 %DIFDELCMD < 
 
 %DIFDELCMD < }
-%DIFDELCMD < 
-
 %DIFDELCMD < %%%
-%DIFDELCMD < \caption{%
-{%DIFAUXCMD
-%DIFDELCMD < \label{fig-uncertainty-stats}%%%
+\DIFdelendFL \DIFaddbeginFL \centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{figures/r2-plot.png}}
+
+}
+\DIFaddendFL 
+
+\caption{\DIFdelbeginFL %DIFDELCMD < \label{fig-uncertainty-stats}%%%
 \DIFdelFL{Top panels: distribution of SNR
-values across each of the different sites for modeled effluxes from the
-}\texttt{\DIFdelFL{neonSoilFlux}} %DIFAUXCMD
-\DIFdelFL{package, depending on the diffusivity calculation
-used (Millington-Quirk or Marshall,
-Section~\ref{sec-compute-diffusivity}). Bottom panels: Proportion of
-measured \(F_{S}\) within the modeled range of a flux computation method
-\(F_{ijk}\) given an uncertainty reduction factor \(\epsilon\), or
-\(| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}\).}}
-%DIFAUXCMD
-%DIFDELCMD < 
+values across }\DIFdelendFL \DIFaddbeginFL \label{fig-r2-plot}\DIFaddFL{Statistical comparison between measured
+fluxes at }\DIFaddendFL each \DIFdelbeginFL \DIFdelFL{of }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{NEON site with fluxes reported by }\texttt{\DIFaddFL{neonSoilFlux}}
+\DIFaddFL{with }\DIFaddendFL the different \DIFdelbeginFL \DIFdelFL{sites for modeled effluxes }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{flux calculation approaches and diffusivity
+calculations applied. Points are daily averages and LICOR \(F_{S}\)
+values are }\DIFaddendFL from the \DIFdelbeginFL \texttt{\DIFdelFL{neonSoilFlux}} %DIFAUXCMD
+\DIFdelFL{package}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{6800 instrument only}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{depending on }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{for consistency. The dotted
+line represents a 1:1 relationship, and }\DIFaddendFL the \DIFdelbeginFL \DIFdelFL{diffusivity calculation
+used (Millington-Quirk or Marshall}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{reported
+R\textsuperscript{2} quantifies the relationship between field-measured
+and }\texttt{\DIFaddFL{neonSoilFlux}} \DIFaddFL{estimated fluxes. * = significance at the 5\%
+level}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{Section~\ref{sec-compute-diffusivity})}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{** = significance at the 1\% level}\DIFaddendFL . \DIFdelbeginFL \DIFdelFL{Bottom panels: Proportion }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{The low-value outlier from
+KONZ in the \(F_{110}\) Marshall plot is an example }\DIFaddendFL of \DIFdelbeginFL \DIFdelFL{measured \(F_{S}\) within }\DIFdelendFL the \DIFdelbeginFL \DIFdelFL{modeled range }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{effect }\DIFaddendFL of
+\DIFdelbeginFL \DIFdelFL{a flux computation method
+\(F_{ijk}\) given }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{inverted CO\textsubscript{2} gradients causing }\DIFaddendFL an \DIFdelbeginFL \DIFdelFL{uncertainty reduction factor \(\epsilon\)}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{estimated flux to be
+negative}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{or
+\(| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}\)}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{bringing down the daily mean, which later resolved as the
+soils dried back out}\DIFaddendFL .}
 
-%DIFDELCMD < \end{figure}%%%
-%DIF < 
-%DIFDELCMD < 
+\end{figure}%
 
-%DIFDELCMD < %%%
-\DIFdelend \subsection{Effects of method choice on diffusivity
+\subsection{Effects of method choice on diffusivity
 estimates}\label{effects-of-method-choice-on-diffusivity-estimates}
 
 \DIFdelbegin \DIFdel{We assessed the distribution of \(D_{a}\) (from both the Marshall and
@@ -1545,7 +1549,7 @@ collected from the site megapit at a subset of soil horizons, with an
 estimated uncertainty of \(\pm5\%\) (National Ecological Observatory
 Network (NEON), 2024c). Coarse fragment estimates also have very large
 uncertainties, but because the volume fraction tends to be low in
-surface soils it probably wouldn't contribute much additional flux
+surface soils it \DIFdelbegin \DIFdel{probably wouldn't }\DIFdelend \DIFaddbegin \DIFadd{is unlikely to }\DIFaddend contribute much additional flux
 uncertainty.
 
 Our results suggest that the most important way to improve reliability
@@ -1556,13 +1560,16 @@ estimate to be responsive to \DIFdelbegin \DIFdel{short turn }\DIFdelend \DIFadd
 weather shifts. Four sites (KONZ, SRER, WREF, and UNDE) had more than
 75\% of half-hourly periods with no-gap filled measurements \DIFaddbegin \DIFadd{(Figure S1,
 Supplementary Information)}\DIFaddend . Two sites (SJER and WOOD) had more than 75\%
-of half-hourly intervals with just one gap-filled measurement. While we
-did not need to use gap-filled measurements to compute the flux at WREF,
-field data collection occurred following a severe rainstorm, with soils
-at the beginning of the sampling week near their water holding capacity.
-We recommend that whenever possible, knowledge of local field conditions
-should influence analysis decisions in addition to any QA filtering
-protocols in the \texttt{neonSoilFlux} package.
+of half-hourly intervals with just one gap-filled measurement. \DIFaddbegin \DIFadd{The large
+uncertainty evident in Figure~\ref{fig-flux-results} for estimates from
+WOOD and SJER are thus due in part to the gap-filling used in these
+sites (Figure S1). }\DIFaddend While we did not need to use gap-filled measurements
+to compute the flux at WREF, field data collection occurred following a
+severe rainstorm, with soils at the beginning of the sampling week near
+their water holding capacity. \DIFdelbegin \DIFdel{We }\DIFdelend \DIFaddbegin \DIFadd{In general, we }\DIFaddend recommend that whenever
+possible, knowledge of local field conditions should influence analysis
+decisions in addition to any QA filtering protocols in the
+\texttt{neonSoilFlux} package.
 
 We recognize that this gap-filling approach may lead to gap-filled
 values that are quite different from the actual values, such as an
@@ -1570,9 +1577,15 @@ underestimate of soil moisture following rain events. Further extensions
 of the gap filling method could use more sophisticated gap-filling
 routines, similar to what is used for net ecosystem carbon exchange
 (Falge et al., 2001; Liu et al., 2023; Mariethoz et al., 2015; Moffat et
-al., 2007; Zhang et al., 2023). The current gap-filling routine provides
-a consistent approach that can be applied to each data stream, but
-further work may explore alternative gap-filling approaches.
+al., 2007; Zhang et al., 2023). \DIFaddbegin \DIFadd{Additionally, since the deepest
+temperature and soil moisture sensors are located below the deepest
+CO\textsubscript{2} sensors at NEON sites, it is possible that excluding
+these deeper layers from consideration prior to analysis would lead to a
+reduced need for gap filling. Future iterations of the
+}\texttt{\DIFadd{neonSoilFlux}} \DIFadd{package may incorporate this as an option. }\DIFaddend The
+current gap-filling routine provides a consistent approach that can be
+applied to each data stream, but further work may explore alternative
+gap-filling approaches.
 
 \subsection{Evaluation of flux-gradient approach at each
 site}\label{evaluation-of-flux-gradient-approach-at-each-site}
@@ -1581,9 +1594,8 @@ Derived results from the \texttt{neonSoilFlux} package have patterns
 that are broadly consistent with those directly measured in the field
 (Figure~\ref{fig-flux-results} and Figure~\ref{fig-flux-results-year})\DIFaddbegin \DIFadd{,
 even though statistical comparisons between the field-measured and
-}\texttt{\DIFadd{neonSoilFlux}} \DIFadd{values were quite variable and poor
-(e.g.~\(R^{2}\) ranging from 0.00 to 0.78;
-Table~\ref{tbl-flux-11-compare})}\DIFaddend . One advantage of the
+}\texttt{\DIFadd{neonSoilFlux}} \DIFadd{values were quite variable (e.g.~\(R^{2}\) ranging
+from 0.04 to 0.81; Figure~\ref{fig-r2-plot})}\DIFaddend . One advantage of the
 \texttt{neonSoilFlux} package is its ability to calculate fluxes across
 different soil depths (Figure~\ref{fig-model-diagram}), which allows for
 additional site-specific customization. We believe the package can
@@ -1611,20 +1623,20 @@ experienced a significant rain event that led to wet soils that
 gradually dried out over the course of our time there. This pulse of
 precipitation increased the soil CO\(_{2}\) concentration at the top
 layer above the concentrations in lower layers, leading to negative
-estimated flux values at the start of the experiment. In this case it
-was only when the soil began to return to a baseline level that the
-assumptions of the flux-gradient method were again met.
+estimated flux values at the start of the \DIFdelbegin \DIFdel{experiment}\DIFdelend \DIFaddbegin \DIFadd{field sampling period}\DIFaddend . In this
+case it was only when the soil began to return to a baseline level that
+the assumptions of the flux-gradient method were again met.
 
-\DIFdelbegin \DIFdel{Thus, when }\DIFdelend \DIFaddbegin \DIFadd{Both of the previous cases also provide context for the poor statistical
-comparisons between field-measured soil fluxes and }\texttt{\DIFadd{neonSoilFlux}}
-\DIFadd{outputs Table~\ref{tbl-flux-11-compare}. When }\DIFaddend considering systematic
-deployment of this method across a measurement network, there are a
-number of independent challenges that require careful consideration.
-There are clear tradeoffs between (1) accuracy of modeled fluxes
-(defined here as closeness to field-measured \(F_{S}\) and the
-uncertainty reduction factor \(\epsilon\)), (2) precision (\DIFaddbegin \DIFadd{which could
-be }\DIFaddend defined by the \DIFdelbegin \DIFdel{SNR}\DIFdelend \DIFaddbegin \DIFadd{signal to noise ratio}\DIFaddend ), and (3) the choice of the
-diffusivity model (Section~\ref{sec-compute-diffusivity}) or flux
+\DIFdelbegin \DIFdel{Thus, when }\DIFdelend \DIFaddbegin \DIFadd{Both of the previous cases also provide context for the variable
+statistical comparisons between field-measured soil fluxes and
+}\texttt{\DIFadd{neonSoilFlux}} \DIFadd{outputs (Figure~\ref{fig-r2-plot}). When
+}\DIFaddend considering systematic deployment of this method across a measurement
+network, there are a number of independent challenges that require
+careful consideration. There are clear tradeoffs between (1) accuracy of
+modeled fluxes (defined here as closeness to field-measured \(F_{S}\)
+and the uncertainty reduction factor \(\epsilon\)), (2) precision (\DIFaddbegin \DIFadd{which
+could be }\DIFaddend defined by the \DIFdelbegin \DIFdel{SNR}\DIFdelend \DIFaddbegin \DIFadd{signal to noise ratio}\DIFaddend ), and (3) the choice of
+the diffusivity model (Section~\ref{sec-compute-diffusivity}) or flux
 computation method (Section~\ref{sec-compute-soil-flux})\DIFdelbegin \DIFdel{used
 (Figure ~\ref{fig-uncertainty-stats}). There was no predictable pattern
 in SNR for either the flux computation method or diffusivity
@@ -1634,16 +1646,15 @@ uncertainty was dominated by }\DIFaddend measurement uncertainty (\(T_{S}\), \(P
 \(SWC\), or CO\(_{2}\)) \DIFdelbegin \DIFdel{. Across the different fluxcomputation methods, the proportion of measured fluxes where
 \(| F_{S} - F_{ijk} | < (1-\epsilon) \sigma_{ijk}\) decreased as
 \(\epsilon\) increased, except where field \(F_{S}\) was already outside
-of the modeled range (i.e.~UNDE and WREF). The method }\DIFdelend \DIFaddbegin \DIFadd{rather than the diffusivity method to compute
-soil flux. Notably, the }\DIFaddend \(F_{110}\) \DIFdelbegin \DIFdel{(where
-soil flux was computed from the top two soil layers) was the least sensitive to
-the uncertainty reduction factor (\(\epsilon\)). This lack
-of sensitivity could represent that a surface chamber-based measurement method (e.g.~with a LI-COR instrument) measures the flux up out of the
-surface
-layer and thus is most closely related to assumptionsand
-measurements inherent in the \(F_{110}\) method}\DIFdelend \DIFaddbegin \DIFadd{method was least sensitivty to
-measurement uncertainty likely because it best aligns with surface
-chamber measurement assumptions}\DIFaddend .
+of the modeled range (i.e.~UNDE and WREF). The method }\DIFdelend \DIFaddbegin \DIFadd{rather than by the diffusivity method used to
+compute soil flux. Notably, the }\DIFaddend \(F_{110}\) \DIFdelbegin \DIFdel{(where
+soil flux was computed from the top two soil layers) was the }\DIFdelend \DIFaddbegin \DIFadd{method was }\DIFaddend least sensitive
+to \DIFdelbegin \DIFdel{the uncertainty reduction factor (\(\epsilon\)). This lack
+of sensitivity could represent that a surface chamber-based measurement method (e.g.~with a LI-COR instrument) measures the
+flux up out of the
+surface layer and thus is most closely related to assumptionsand
+measurements inherent in the \(F_{110}\) method}\DIFdelend \DIFaddbegin \DIFadd{measurement uncertainty likely because it best aligns with the
+surface chamber measurement assumptions}\DIFaddend .
 
 Finally, comparing the effects of different diffusivity estimation
 methods on the match between modeled and measured fluxes
@@ -1652,8 +1663,8 @@ methods on the match between modeled and measured fluxes
 compared to field estimated diffusivity
 (Figure~\ref{fig-diffusivity-plot}) demonstrates that site parameters
 can dictate which measure of diffusivity is most likely to be accurate
-in a given environmental context. Site-specific differences a largely a
-reflection of differences in soil moisture across the sites
+in a given environmental context. Site-specific differences \DIFdelbegin \DIFdel{a }\DIFdelend \DIFaddbegin \DIFadd{are }\DIFaddend largely
+a reflection of differences in soil moisture across the sites
 (Table~\ref{tbl-neon-sites}), as not all diffusivity estimation methods
 incorporate soil moisture equivalently. While we here have compares two
 approaches to calculate diffusivity (the Millington-Quirk and Marshall
@@ -1676,7 +1687,7 @@ calculated values. Ensemble averaging approaches (Elshall et al., 2018;
 Raftery et al., 2005) may be one way to address this problem if the goal
 is to calculate fluxes using the same method at a diverse range of
 different sites. Two other ideas would be to apply machine learning
-algorithms (e.g.~random \DIFdelbegin \DIFdel{trees}\DIFdelend \DIFaddbegin \DIFadd{forests}\DIFaddend ) to generate a single flux estimate
+algorithms (e.g.~random \DIFdelbegin \DIFdel{trees}\DIFdelend \DIFaddbegin \DIFadd{forest}\DIFaddend ) to generate a single flux estimate
 across diverse sites, or using co-located estimates of net ecosystem
 carbon exchange from eddy-flux towers to further constrain results or to
 assess soil flux results for plausibility \DIFdelbegin \DIFdel{.
@@ -1695,31 +1706,30 @@ these sites using the co-located eddy flux towers.
 \section{Conclusions}\label{conclusions}
 
 We \DIFdelbegin \DIFdel{have here presented an }\DIFdelend \DIFaddbegin \DIFadd{used the }\DIFaddend R package \texttt{neonSoilFlux} \DIFdelbegin \DIFdel{for the
-estimation of soil CO\(_{2}\) fluxes }\DIFdelend \DIFaddbegin \DIFadd{to test its broader
-application in estimating soil CO\(_2\) fluxes with the flux-gradient
-method, using data }\DIFaddend from continuous buried soil \DIFdelbegin \DIFdel{sensor
+estimation of soil CO\(_{2}\) fluxes from continuous buried soil sensor
 measurements across terrestrial National Ecological Observatory Network
-}\DIFdelend \DIFaddbegin \DIFadd{sensors at NEON
-terrestrial }\DIFaddend sites. We compared the predicted fluxes to those measured
-directly using a field-based closed chamber approach. \DIFdelbegin \DIFdel{We find that the flux gradient
-method, while }\DIFdelend \DIFaddbegin \DIFadd{Soil fluxes from
-}\texttt{\DIFadd{neonSoilFlux}} \DIFadd{were }\DIFaddend broadly effective at producing estimates of
-flux comparable to those measured in the field using a chamber-based
-technique\DIFdelbegin \DIFdel{, is }\DIFdelend \DIFaddbegin \DIFadd{. However }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{outputs are }\DIFaddend quite sensitive to
-a number of issues, including\DIFdelbegin \DIFdel{most
-prominently}\DIFdelend : missing data (and thus gap-filling of
-input measurement datasets)\DIFaddbegin \DIFadd{, }\DIFaddend the selection of soil depths used to best
-calculate the gradient (which may vary between sites), and finally the
-choice of method used for estimating soil diffusivity. \DIFdelbegin \DIFdel{Despite these challenges,
+}\DIFdelend \DIFaddbegin \DIFadd{to estimate soil CO\(_2\)
+fluxes with the flux-gradient method using data from buried soil sensors
+at NEON terrestrial }\DIFaddend sites. We compared the predicted fluxes to those
+measured directly using a field-based closed chamber approach. \DIFdelbegin \DIFdel{We find that the flux gradient
+method, while }\DIFdelend \DIFaddbegin \DIFadd{Soil
+fluxes from }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{were }\DIFaddend broadly effective at producing
+estimates of flux comparable to those measured in the field using a
+chamber-based technique\DIFdelbegin \DIFdel{, is }\DIFdelend \DIFaddbegin \DIFadd{. However }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{outputs are }\DIFaddend quite
+sensitive to a number of issues, including\DIFdelbegin \DIFdel{most
+prominently}\DIFdelend : missing data (and thus
+gap-filling of input measurement datasets)\DIFaddbegin \DIFadd{, }\DIFaddend the selection of soil depths
+used to best calculate the gradient (which may vary between sites), and
+finally the choice of method used for estimating soil diffusivity. \DIFdelbegin \DIFdel{Despite these challenges,
 the broad geographic scale and high temporal resolution of the NEON data
 make a compelling case for continued efforts to refine this approach to
-help us understand how }\DIFdelend \DIFaddbegin \DIFadd{The flexibility
-of the }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{package allows the user to evaluate each of
-these issues with site-specific knowledge and contexts. Future
-refinements and subsequent validation of }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{outputs
-will feed forward into evaluating soil carbon fluxes broader spatial
-scales to enhance understanding of the ways in which }\DIFaddend soils across
-diverse ecosystems are responding to a changing climate.
+help us understand how }\DIFdelend \DIFaddbegin \DIFadd{The
+flexibility of the }\texttt{\DIFadd{neonSoilFlux}} \DIFadd{package allows the user to
+evaluate each of these issues with site-specific knowledge and contexts.
+Future refinements and subsequent validation of }\texttt{\DIFadd{neonSoilFlux}}
+\DIFadd{outputs will feed forward into evaluating soil carbon fluxes broader
+spatial scales to enhance understanding of the ways in which }\DIFaddend soils
+across diverse ecosystems are responding to a changing climate.
 
 \section*{Sources Cited}\label{sources-cited}
 \addcontentsline{toc}{section}{Sources Cited}
