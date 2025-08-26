@@ -1,4 +1,5 @@
-### Compare LICOR fluxes to model fluxes
+### Purpose: Compare LICOR fluxes to model fluxes and synthesize into a single data table
+
 library(tidyverse)
 library(lubridate)
 
@@ -133,7 +134,6 @@ field_data_joined <- model_sites_mq |>
   ungroup()
 
 
-### Ready to plot fluxes!
-
+# Save the combined dataset
 save(field_data_joined,file = 'data/derived/combined-field-data.Rda')
 

@@ -1,10 +1,13 @@
-# Make a plot of gap-filled measurements by site
+### Supplemental figure 1: Make a plot of gap-filled measurements by site
 
-load('data/derived/combined-field-data.Rda')  # field_data_joined
 
+# Load up the associated libraries
 library(tidyverse)
 library(grid)
 library(gridExtra)
+
+# Load up the data we need
+load('data/derived/combined-field-data.Rda')  # field_data_joined
 
 # Compute some summary stats.  Organize by the temperature - this is how we make sure each site is ordered in our plots.
 summary_env_data <- field_data_joined |>
@@ -38,7 +41,6 @@ env_values <- vector(mode = "list", length = length(env_files))
 
 
 ### Do the same for the env values
-### More graveyard for env data
 for(i in seq_along(env_values)) {
 
   load(env_files[[i]])
@@ -100,14 +102,6 @@ compute_bad_vals <- function(input_site_data) {
     select(startDateTime,bad_vals,tot_vals,prop)
 
 }
-
-
-
-
-
-
-
-
 
 
 # Next: what is the distribution of the 4 measurements that are available at each site?
@@ -192,6 +186,7 @@ g <- cbind(g1,g2, size = "first")
 #g$heights <- unit.pmax(g1$heights, g2$heights)
 
 
+# Save the figure
 png("figures/gap-filled-stats.png",width = 18, height = 7, units = 'in',res = 300); plot(g); dev.off()
 
 

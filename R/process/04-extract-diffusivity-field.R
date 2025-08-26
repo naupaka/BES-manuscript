@@ -1,12 +1,13 @@
-### Author: JMZ
-### Purpose: Use the NEON Env data to compute the diffusivity, co2 gradient, bulk density, and rock volume from the soil megapit measurements, narrowing it down to when Naupaka made field measurements.
+### Purpose: Use the NEON Env data to compute the diffusivity, co2 gradient, bulk density, and rock volume from the soil megapit measurements, narrowing it down to when field measurements were collected - this allows us to back-calculate the diffusivity from the field data.
 
+# Load up the associated libraries
 library(tidyverse)
 
-# Helper Function that extracts out the diffusivity (closest to the surface) at a given NEON site, gradient, rock volume, and bulk density information.
-
+# Load up information about the sites
+load('data/derived/field-data-info.Rda')
 load('data/derived/combined-field-data.Rda')
 
+# Helper Function that extracts out the diffusivity (closest to the surface) at a given NEON site, gradient, rock volume, and bulk density information.
 extract_gradient_diffusivity<- function(env_file_name) {
 
   load(env_file_name)
@@ -109,10 +110,8 @@ out_sites <- tibble(site = site_names,
 
 
 
-### Load up when we were actually there:
-# Load up information about the sites
-load('data/derived/field-data-info.Rda')
 
+# Now compute the diffusivity from the flux gradient
 flux_gradient_diffusivity <- out_sites |>
 inner_join(measurement_times,by="site") |>
   mutate(model_data = pmap(.l=list(data,start_time,end_time,sampling_location),
@@ -120,6 +119,6 @@ inner_join(measurement_times,by="site") |>
                                       horizontalPosition == ..4))) |>
   select(site,model_data,curr_tz)
 
-# Now save everythin
+# Now save everything
 save(flux_gradient_diffusivity,file = 'data/derived/diffusivity-gradient.Rda')
 
