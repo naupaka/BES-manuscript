@@ -1,61 +1,5 @@
 ---
 title: "Supplemental information for `neonSoilFlux`: An R Package for Continuous Sensor-Based Estimation of Soil CO~2~ Fluxes"
-author: 
-  - name: John Zobitz
-    orcid: 0000-0002-1830-143X
-    email: zobitz@augsburg.edu
-    affiliations:
-      - ref: augsburg 
-  - name: Ed Ayres
-    orcid: 0000-0001-5190-258X
-    affiliations:
-      - ref: neon 
-  - name: Zoey Werbin
-    orcid: 0000-0003-2927-2838
-    affiliations:
-      - ref: bu
-  - name: Ridwan Abdi
-    affiliations:
-      - ref: augsburg 
-  - name: Natalie Ashburner-Wright
-    affiliations:
-      - ref: usfca
-  - name: Lillian Brown
-    affiliations:
-      - ref: usfca 
-  - name: Ryan Frink-Sobierajski
-    affiliations:
-      - ref: usfca
-  - name: Lajntxiag Lee
-    affiliations:
-      - ref: augsburg 
-  - name: Dijonë Mehmeti
-    affiliations:
-      - ref: augsburg 
-  - name: Christina Tran
-    affiliations:
-      - ref: usfca 
-  - name: Ly Xiong
-    affiliations:
-      - ref: augsburg 
-  - name: Naupaka Zimmerman
-    orcid: 0000-0003-2168-6390
-    email: nzimmerman@usfca.edu
-    affiliations:
-      - ref: usfca
-      - ref: ku 
-
-affiliations:
-  - id: augsburg
-    name: Augsburg University, 2211 Riverside Avenue, Minneapolis, MN 55454
-  - id: neon
-    name: National Ecological Observatory Network, Battelle, 1685 38th Street, Suite 100, Boulder, CO 80301
-  - id: bu
-    name: Boston University, 5 Cummington Street, Boston, MA 02215
-  - id: usfca
-    name: University of San Francisco, 2130 Fulton Street, San Francisco, CA 94117
-  - id: ku
-    name: University of Kansas, 1251 Wescoe Dr. Lawrence, KS 66045
     
 format:
   pdf:
@@ -68,9 +12,6 @@ format:
     header-includes:
       - \renewcommand{\figurename}{Figure}
       - \renewcommand{\thefigure}{S\arabic{figure}}
-
-filters:
-  - authors-block
 
 number-sections: true
 bibliography: bes-bibliography.bib
