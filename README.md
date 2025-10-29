@@ -29,7 +29,51 @@
 -   `neonSoilFlux`
 -   `neonUtilities`
 
-To reproduce manuscript figures and tables, source the following file: `source('00-start-here.R')`
+## Building the Manuscript
+
+### Using the Makefile (Recommended)
+
+A `Makefile` is provided to automate the entire workflow from data processing to PDF generation. This is the recommended approach for building the manuscript.
+
+**Prerequisites:**
+- R with required packages (see list below)
+- Quarto for PDF rendering
+- LaTeX for PDF generation
+
+**Quick Start:**
+```bash
+# Build both main manuscript and supplemental PDFs
+make all
+
+# Build only the main manuscript
+make main
+
+# Build only the supplemental material
+make supp
+
+# Clean all generated files
+make clean
+
+# Get help on all available targets
+make help
+```
+
+**Available Makefile Targets:**
+- `all` - Build both main manuscript and supplemental PDFs (default)
+- `main` - Build main manuscript PDF only
+- `supp` - Build supplemental PDF only
+- `data` - Run R scripts to generate derived data files
+- `figures` - Run R scripts to generate figure files
+- `clean` - Remove all generated files
+- `clean-figures` - Remove generated figure files
+- `clean-data` - Remove generated data files
+- `clean-pdf` - Remove generated PDF files
+- `force-all` - Clean and rebuild everything
+- `help` - Show help message
+
+### Manual Approach
+
+To reproduce manuscript figures and tables manually, source the following file: `source('00-start-here.R')`
 
 **NOTE:** Due to size limitations in the manuscript submission portal, we could not include all of the individually downloaded files from `neonSoilFlux` that would be found in `data/raw/flux-data`. We include the aggregated `.Rda` file (`data/derived/all-year-flux-results.Rda`).
 
