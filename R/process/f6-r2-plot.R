@@ -88,9 +88,10 @@ extract_stats <- function(harmonized_data) {
             coeff = map(lm,broom::tidy),
             vals = map(lm,broom::glance),
             r.squared = map_dbl(.x=vals,.f=~pull(.x,r.squared)),
+            intercept = map_dbl(.x=coeff,.f=~pull(.x,estimate)[[1]]),
             slope = map_dbl(.x=coeff,.f=~pull(.x,estimate)[[2]]),
             p.value = map_dbl(.x=coeff,.f=~pull(.x,p.value)[[2]]),) |>
-    select(method,nrmse,r.squared,slope,p.value) |>
+    select(method,nrmse,r.squared,intercept,slope,p.value) |>
     ungroup()
 
 
@@ -129,9 +130,13 @@ regression_stats <- extract_stats(field_stats_data_0) |>
     p.value < 0.05 ~ "*",
     TRUE ~ ""
   ),
-  label = paste0("R² = ", round(r.squared, 2),stars),
-  x = 12,  # position on x-axis
-  y = 5)
+  label = paste0("R²=", round(r.squared, 2),stars,'\n','m=',round(slope,2),'\n','b=',round(intercept,2)),
+  x = 9,  # position on x-axis
+  y = 1.5,
+  eq = paste0("y = ", round(intercept,2), " + ", round(slope,2),"x" ),
+  xeq = 4.5,
+  yeq = 13
+  )
 
 
 
@@ -164,7 +169,9 @@ r2_plot <- field_stats_data_0  |>
     strip.text = element_text(size = 18)
   ) +
   geom_text(data = regression_stats, aes(x = x, y = y, label = label),
-            inherit.aes = FALSE,size=8) +
+            inherit.aes = FALSE,size=8,hjust = 0, vjust = 0) +
+ # geom_text(data = regression_stats, aes(x = xeq, y = yeq, label = eq),
+#            inherit.aes = FALSE,size=8) +
   facet_grid(method~name,labeller = label_parsed) +
   scale_shape_manual(values = c(21, 22, 23, 24, 25, 8)) +
   scale_fill_manual(values = okabe_ito) +
@@ -174,7 +181,6 @@ r2_plot <- field_stats_data_0  |>
        color = "Site:",
        shape = "Site:",
        fill = "Site:")
-
 
 # Save the table to a file for use in the manuscript
 ggsave('figures/r2-plot.png',plot = r2_plot,width=10,height=14)
