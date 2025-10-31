@@ -1,5 +1,6 @@
 ---
 title: "`neonSoilFlux`: An R Package for Continuous Sensor-Based Estimation of Soil CO~2~ Fluxes"
+editor: source
 author: 
   - name: John Zobitz
     orcid: 0000-0002-1830-143X
@@ -88,7 +89,7 @@ Conceptualization: JZ, NZ; Methodology: EA, JZ, NZ; Software: JZ, NZ, ZW, E A, D
 
 # Data Availability {.unnumbered}
 
-Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. An anonymous link for peer-review is here: [https://doi.org/10.5281/zenodo.16951117](https://doi.org/10.5281/zenodo.16951117). This will be made publicly available upon publication.
+Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. An anonymous link for peer-review is here: <https://doi.org/10.5281/zenodo.16951117>. This will be made publicly available upon publication.
 
 \newpage
 
@@ -102,7 +103,7 @@ Soil carbon, carbon dioxide, flux gradient, carbon cycle, field validation, soil
 
 # Data for peer review
 
-Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. An anonymous link for peer-review is here: [https://doi.org/10.5281/zenodo.16951117](https://doi.org/10.5281/zenodo.16951117). This will be made publicly available upon publication.
+Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. An anonymous link for peer-review is here: <https://doi.org/10.5281/zenodo.16951117>. This will be made publicly available upon publication.
 
 # Introduction
 
