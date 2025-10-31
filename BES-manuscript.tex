@@ -218,18 +218,18 @@ Lawrence, KS 66045
 \section*{Acknowledgments}\label{acknowledgments}
 \addcontentsline{toc}{section}{Acknowledgments}
 
-JZ acknowledges Kathleen O'Rourke for code development. NZ thanks
-technical staff at USF for support with field gear assembly and
-shipping. We thank the NEON field staff and assignable assets teams for
-facilitating each of the six NEON site visits. We are grateful to LI-COR
-technical staff for helpful discussions about optimal soil chamber
-sampling methods. This work was supported by NSF DEB grant \#2017829
-awarded to JZ, and NSF DEB grant \#2017860 awarded to NZ. This material
-is based in part upon work supported by the National Ecological
-Observatory Network (NEON), a program sponsored by the U.S. National
-Science Foundation (NSF) and operated under cooperative agreement by
-Battelle. We also thank the reviewers and subject editor for their
-constructive feedback.
+John Zobitz acknowledges Kathleen O'Rourke for code development. Naupaka
+Zimmerman thanks technical staff at USF for support with field gear
+assembly and shipping. We thank the NEON field staff and assignable
+assets teams for facilitating each of the six NEON site visits. We are
+grateful to LI-COR technical staff for helpful discussions about optimal
+soil chamber sampling methods. This work was supported by NSF DEB grant
+\#2017829 awarded to John Zobitz, and NSF DEB grant \#2017860 awarded to
+Naupaka Zimmerman. This material is based in part upon work supported by
+the National Ecological Observatory Network (NEON), a program sponsored
+by the U.S. National Science Foundation (NSF) and operated under
+cooperative agreement by Battelle. We also thank the reviewers and
+subject editor for their constructive feedback.
 
 \section*{Conflict of Interest
 Statements}\label{conflict-of-interest-statements}
@@ -241,13 +241,21 @@ of interest related to this work.
 \section*{Author Contributions}\label{author-contributions}
 \addcontentsline{toc}{section}{Author Contributions}
 
-Conceptualization: JZ, NZ; Methodology: EA, JZ, NZ; Software: JZ, NZ,
-ZW, E A, DM, RA, LX, LL; Validation: JZ, NZ; Formal Analysis: JZ, NZ,
-DM, RA, LX, LL; Investigation: JZ, NZ, RF-S, CT, NA-W, LB; Resources:
-JZ, NZ; Data curation: JZ, NZ, DM, LX; Writing -- original draft: JZ,
-NZ; Writing -- review and editing: JZ, NZ, ZW, EA, CT, DM, LX,;
-Visualization: JZ, NZ, DM, RA, LX; Supervision: JZ; NZ; Project
-Administration: JZ; NZ; Funding Acquisition: JZ; NZ
+Conceptualization: John Zobitz, Naupaka Zimmerman; Methodology: Edward
+Ayres, John Zobitz, Naupaka Zimmerman; Software: John Zobitz, Naupaka
+Zimmerman, Zoey Werbin, Edward Ayres, Dijonë Mehmeti, Ridwan Abdi, Ly
+Xiong, Lajntxiag Lee; Validation: John Zobitz, Naupaka Zimmerman; Formal
+Analysis: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi,
+Ly Xiong, Lajntxiag Lee; Investigation: John Zobitz, Naupaka Zimmerman,
+Ryan Frink-Sobierajski, Christina Tran, Natalie Ashburner-Wright,
+Lillian Brown; Resources: John Zobitz, Naupaka Zimmerman; Data curation:
+John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ly Xiong; Writing --
+original draft: John Zobitz, Naupaka Zimmerman; Writing -- review and
+editing: John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres,
+Christina Tran, Dijonë Mehmeti, Ly Xiong; Visualization: John Zobitz,
+Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong; Supervision:
+John Zobitz; Naupaka Zimmerman; Project Administration: John Zobitz;
+Naupaka Zimmerman; Funding Acquisition: John Zobitz; Naupaka Zimmerman
 
 \section*{Data Availability}\label{data-availability}
 \addcontentsline{toc}{section}{Data Availability}
@@ -262,34 +270,43 @@ publicly available upon publication.
 
 \section{Abstract}\label{abstract}
 
-Accurate quantification of soil carbon fluxes is essential to reduce
-uncertainty in estimates of the terrestrial carbon sink. However, these
-fluxes vary over time and across ecosystem types and so it can be
-difficult to estimate them accurately across large scales. The flux
-gradient method estimates soil carbon fluxes using co-located
-measurements of soil CO\(_{2}\) concentration, soil temperature, soil
-moisture, and other soil properties. The National Ecological Observatory
-Network (NEON) provides such data across 20 ecoclimatic domains spanning
-the continental U.S., Puerto Rico, Alaska, and Hawai`i. We present an R
-software package (\texttt{neonSoilFlux}) that acquires soil
-environmental data to compute half-hourly soil carbon fluxes for each
-soil replicate plot at a given terrestrial NEON site. To assess the
-computed fluxes, we visited six focal NEON sites and measured soil
-carbon fluxes using a closed-dynamic chamber approach. Outputs from the
-\texttt{neonSoilFlux} showed agreement with measured fluxes (\(R^{2}\)
-between measured and \texttt{neonSoilFlux} outputs ranging from 0.04 to
-0.81 depending on calculation method used); measured outputs generally
-fell within the range of calculated uncertainties from the gradient
-method. Calculated fluxes from \texttt{neonSoilFlux} aggregated to the
-daily scale exhibited expected site-specific seasonal patterns. While
-the flux gradient method is broadly effective, its accuracy is highly
-sensitive to site-specific inputs, including the extent to which
-gap-filing techniques are used to interpolate missing sensor data and to
-estimates of soil diffusivity and moisture content. Future refinement
-and validation of \texttt{neonSoilFlux} outputs can contribute to
-existing databases of soil carbon flux measurements, providing near
-real-time estimates of a critical component of the terrestrial carbon
-cycle.
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Accurate quantification of soil carbon fluxes is essential to reduce
+  uncertainty in estimates of the terrestrial carbon sink. However,
+  these fluxes vary over time and across ecosystem types and so it can
+  be difficult to estimate them accurately across large scales. The flux
+  gradient method estimates soil carbon fluxes using co-located
+  measurements of soil CO\(_{2}\) concentration, soil temperature, soil
+  moisture, and other soil properties. The National Ecological
+  Observatory Network (NEON) provides such data across 20 ecoclimatic
+  domains spanning the continental U.S., Puerto Rico, Alaska, and
+  Hawai`i.
+\item
+  We present an R software package (\texttt{neonSoilFlux}) that acquires
+  soil environmental data to compute half-hourly soil carbon fluxes for
+  each soil replicate plot at a given terrestrial NEON site. To assess
+  the computed fluxes, we visited six focal NEON sites and measured soil
+  carbon fluxes using a closed-dynamic chamber approach.
+\item
+  Outputs from the \texttt{neonSoilFlux} showed agreement with measured
+  fluxes (\(R^{2}\) between measured and \texttt{neonSoilFlux} outputs
+  ranging from 0.04 to 0.81 depending on calculation method used);
+  measured outputs generally fell within the range of calculated
+  uncertainties from the gradient method. Calculated fluxes from
+  \texttt{neonSoilFlux} aggregated to the daily scale exhibited expected
+  site-specific seasonal patterns.
+\item
+  While the flux gradient method is broadly effective, its accuracy is
+  highly sensitive to site-specific inputs, including the extent to
+  which gap-filing techniques are used to interpolate missing sensor
+  data and to estimates of soil diffusivity and moisture content. Future
+  refinement and validation of \texttt{neonSoilFlux} outputs can
+  contribute to existing databases of soil carbon flux measurements,
+  providing near real-time estimates of a critical component of the
+  terrestrial carbon cycle.
+\end{enumerate}
 
 \subsection{Keywords}\label{keywords}
 
@@ -383,15 +400,19 @@ method described above). Currently, NEON provides all measurements to
 calculate \(F_{S}\) from Fick's law, but soil flux as a derived data
 product was descoped from the initial network launch due to budget
 constraints (Berenbaum et al., 2015). Deriving estimates of \(F_{S}\)
-using continuous sensor data across NEON sites thus remains a high
-priority.
+using continuous sensor data across NEON sites using NEON data thus
+remains a high priority.
 
 This study describes an R software package, \texttt{neonSoilFlux}, that
 computes a standardized estimate of \(F_{S}\) at all terrestrial NEON
 sites using the flux-gradient method. Using direct chamber-based field
 observations of soil carbon dioxide flux from a subset of terrestrial
 NEON sites spanning six states, we provide a direct validation of
-\(F_{S}\) from \texttt{neonSoilFlux}.
+\(F_{S}\) from \texttt{neonSoilFlux}. While open source R software tools
+currently exist for processing chamber-based flux measurements
+(Jurasinski et al., 2022; Pedersen, 2024; Rheault et al., 2024; Wilson
+et al., 2024; Zhao, 2019), to our knowledge this is the first package
+that incorporates NEON data directly.
 
 Key objectives of this study are to:
 
@@ -642,8 +663,8 @@ analysis. Quality assurance (QA) flags are reported as an indicator
 variable. Since the calibration coefficients on the soil water content
 sensors have changed over time (NEON, 2024e), raw sensor measurements
 were back-calculated and soil-specific calibrations were applied
-following (\textbf{ayresValidationRemotelySensed2024?}) to generate a
-consistent time series at each measurement location.
+following Ayres et al. (2024) to generate a consistent time series at
+each measurement location.
 
 The second step is harmonizing the data to compute soil fluxes across
 soil layers. This step consists of three different actions (blue
@@ -949,11 +970,13 @@ values are from the 6800 instrument only, for consistency. The dotted
 line represents a 1:1 relationship, and the reported
 R\textsuperscript{2} quantifies the relationship between field-measured
 and \texttt{neonSoilFlux} estimated fluxes. * = significance at the 5\%
-level, ** = significance at the 1\% level. The low-value outlier from
-KONZ in the \(F_{110}\) Marshall plot is an example of the effect of
-inverted CO\textsubscript{2} gradients causing an estimated flux to be
-negative, bringing down the daily mean, which later resolved as the
-soils dried back out.}
+level, ** = significance at the 1\% level. The slope (\(m\)) and
+intercept (\(b\)) of the linear regression between measured and modeled
+fluxes are also reported. The low-value outlier from KONZ in the
+\(F_{110}\) Marshall plot is an example of the effect of inverted
+CO\textsubscript{2} gradients causing an estimated flux to be negative,
+bringing down the daily mean, which later resolved as the soils dried
+back out.}
 
 \end{figure}%
 
@@ -1195,6 +1218,13 @@ across diverse ecosystems are responding to a changing climate.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-ayresValidationRemotelySensed2024}
+Ayres, E., Reichle, R. H., Colliander, A., Cosh, M. H., \& Smith, L.
+(2024). Validation of {Remotely Sensed} and {Modeled Soil Moisture} at
+{Forested} and {Unforested NEON Sites}. \emph{IEEE Journal of Selected
+Topics in Applied Earth Observations and Remote Sensing}, \emph{17},
+14248--14264. \url{https://doi.org/10.1109/JSTARS.2024.3430928}
+
 \bibitem[\citeproctext]{ref-baldocchiMeasuringFluxesTrace2014}
 Baldocchi, D. (2014). Measuring fluxes of trace gases and energy between
 ecosystems and the atmosphere - the state and future of the eddy
@@ -1349,6 +1379,11 @@ Jobbágy, E. G., \& Jackson, R. B. (2000). The {Vertical Distribution} of
 \emph{Ecological Applications}, \emph{10}(2), 423--436.
 \url{https://doi.org/10.1890/1051-0761(2000)010\%5B0423:TVDOSO\%5D2.0.CO;2}
 
+\bibitem[\citeproctext]{ref-jurasinskiFluxFluxRate2022}
+Jurasinski, G., Koebsch, F., Guenther, A., \& Beetz, S. (2022).
+\emph{Flux: {Flux Rate Calculation} from {Dynamic Closed Chamber
+Measurements}}.
+
 \bibitem[\citeproctext]{ref-liuRobustGapfillingApproach2023}
 Liu, K., Li, X., Wang, S., \& Zhang, H. (2023). A robust gap-filling
 approach for {European Space Agency Climate Change Initiative} ({ESA
@@ -1436,6 +1471,10 @@ of six methods for measuring soil-surface carbon dioxide fluxes.
 \emph{Journal of Geophysical Research: Atmospheres}, \emph{102}(D24),
 28771--28777. \url{https://doi.org/10.1029/97JD01440}
 
+\bibitem[\citeproctext]{ref-pedersenHMRFluxEstimation2024}
+Pedersen, A. R. (2024). \emph{{HMR}: {Flux Estimation} with {Static
+Chamber Data}}.
+
 \bibitem[\citeproctext]{ref-phillipsValueSoilRespiration2017}
 Phillips, C. L., Bond-Lamberty, B., Desai, A. R., Lavoie, M., Risk, D.,
 Tang, J., Todd-Brown, K., \& Vargas, R. (2017). The value of soil
@@ -1447,6 +1486,12 @@ carbon cycling. \emph{Plant and Soil}, \emph{413}(1), 1--25.
 Raftery, A. E., Gneiting, T., Balabdaoui, F., \& Polakowski, M. (2005).
 \emph{Using {Bayesian Model Averaging} to {Calibrate Forecast
 Ensembles}}. \url{https://doi.org/10.1175/MWR2906.1}
+
+\bibitem[\citeproctext]{ref-rheaultGoFluxUserfriendlyWay2024}
+Rheault, K., Christiansen, J. R., \& Larsen, K. S. (2024). {goFlux}: {A}
+user-friendly way to calculate {GHG} fluxes yourself, regardless of user
+experience. \emph{Journal of Open Source Software}, \emph{9}(96), 6393.
+\url{https://doi.org/10.21105/joss.06393}
 
 \bibitem[\citeproctext]{ref-sallamMeasurementGasDiffusion1984}
 Sallam, A., Jury, W. A., \& Letey, J. (1984). Measurement of {Gas
@@ -1494,6 +1539,14 @@ Taylor, J. R. (2022). \emph{An {Introduction} to {Error Analysis}: {The
 Study} of {Uncertainties} in {Physical Measurements}, {Third Edition}}
 (3rd ed.). University Science Press.
 
+\bibitem[\citeproctext]{ref-wilsonFluxfinderPackageReproducible2024}
+Wilson, S. J., Bond-Lamberty, B., Noyce, G., Bittencourt Peixoto, R., \&
+Megonigal, J. P. (2024). Fluxfinder: {An R Package} for {Reproducible
+Calculation} and {Initial Processing} of {Greenhouse Gas Fluxes From
+Static Chamber Measurements}. \emph{Journal of Geophysical Research:
+Biogeosciences}, \emph{129}(11), e2024JG008208.
+\url{https://doi.org/10.1029/2024JG008208}
+
 \bibitem[\citeproctext]{ref-yanMoistureFunctionSoil2018}
 Yan, Z., Bond-Lamberty, B., Todd-Brown, K. E., Bailey, V. L., Li, S.,
 Liu, C., \& Liu, C. (2018). A moisture function of soil heterotrophic
@@ -1514,6 +1567,13 @@ Zhang, R., Kim, S., Kim, H., Fang, B., Sharma, A., \& Lakshmi, V.
 the {CONUS Using Water Balance Budgeting}. \emph{Water Resources
 Research}, \emph{59}(12), e2023WR034457.
 \url{https://doi.org/10.1029/2023WR034457}
+
+\bibitem[\citeproctext]{ref-zhaoFluxCalRPackageCalculating2019}
+Zhao, J. (2019). {FluxCalR}: A {R} package for calculating
+{CO}{\textasciitilde{}}2{\textasciitilde{}} and
+{CH}{\textasciitilde{}}4{\textasciitilde{}} fluxes from static chambers.
+\emph{Journal of Open Source Software}, \emph{4}(43), 1751.
+\url{https://doi.org/10.21105/joss.01751}
 
 \bibitem[\citeproctext]{ref-zobitzNeonSoilFluxComputeSoil2024}
 Zobitz, J., Ayres, E., O'Rourke, K., Werbin, Z., Lee, L., Abdi, R.,
