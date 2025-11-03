@@ -599,16 +599,13 @@ At a given NEON site there are five replicate soil plots, each with
 measurements of soil CO\(_{2}\) concentration, soil temperature, and
 soil moisture at different depths (Figure~\ref{fig-model-diagram}). The
 \texttt{neonSoilFlux} package acquires measured soil CO\(_{2}\)
-concentration (National Ecological Observatory Network (NEON), 2024b),
-soil temperature (National Ecological Observatory Network (NEON),
-2024d), soil water content (National Ecological Observatory Network
-(NEON), 2024e), barometric pressure from the nearby tower (National
-Ecological Observatory Network (NEON), 2024a), and soil properties
-(e.g.~bulk density) (National Ecological Observatory Network (NEON),
-2024c) from a range of different NEON data products. The static soil
-properties were collected by NEON staff from a nearby soil pit during
-initial site characterization and are assumed to be constant at each
-site. A soil flux calculation is computed at each replicate soil plot.
+concentration (NEON, 2024b), soil temperature (NEON, 2024d), soil water
+content (NEON, 2024e), barometric pressure from the nearby tower (NEON,
+2024a), and soil properties (e.g.~bulk density) (NEON, 2024c) from a
+range of different NEON data products. The static soil properties were
+collected by NEON staff from a nearby soil pit during initial site
+characterization and are assumed to be constant at each site. A soil
+flux calculation is computed at each replicate soil plot.
 
 \begin{figure}
 
@@ -643,10 +640,10 @@ and Panel a in Figure~\ref{fig-model-diagram}). Acquired environmental
 data can be exported to a comma separated value file for additional
 analysis. Quality assurance (QA) flags are reported as an indicator
 variable. Since the calibration coefficients on the soil water content
-sensors have changed over time (National Ecological Observatory Network
-(NEON), 2024e), raw sensor measurements were back-calculated and
-soil-specific calibrations were applied following Ayres et al. (2024) to
-generate a consistent time series at each measurement location.
+sensors have changed over time (NEON, 2024e), raw sensor measurements
+were back-calculated and soil-specific calibrations were applied
+following (\textbf{ayresValidationRemotelySensed2024?}) to generate a
+consistent time series at each measurement location.
 
 The second step is harmonizing the data to compute soil fluxes across
 soil layers. This step consists of three different actions (blue
@@ -723,10 +720,8 @@ We compute \(D_{a,0}\) with Equation \ref{eq:da0}:
   \label{eq:da0}
 \end{equation}
 
-where \(T_{i}\) is soil temperature (\(^\circ\)C) at depth \(i\)
-(National Ecological Observatory Network (NEON), 2024d) and \(P\)
-surface barometric pressure (kPa) (National Ecological Observatory
-Network (NEON), 2024a).
+where \(T_{i}\) is soil temperature (\(^\circ\)C) at depth \(i\) (NEON,
+2024d) and \(P\) surface barometric pressure (kPa) (NEON, 2024a).
 
 Previous studies by Sallam et al. (1984) and Tang et al. (2003)
 demonstrated the sensitivity of modeled \(F_{S}\) depending on the
@@ -747,9 +742,8 @@ content:
 \end{equation}
 
 In Equation \ref{eq:tortuosity-mq}, \(SWC\) is the soil water content at
-depth \(i\) (National Ecological Observatory Network (NEON), 2024e) and
-\(\phi\) is the porosity, which in turn is a function of soil physical
-properties (National Ecological Observatory Network (NEON), 2024c):
+depth \(i\) (NEON, 2024e) and \(\phi\) is the porosity, which in turn is
+a function of soil physical properties (NEON, 2024c):
 
 \begin{equation}
   \phi = \left(1- \frac{\rho_{s}}{\rho_{m}} \right) \left(1-f_{V}\right)
@@ -758,13 +752,12 @@ properties (National Ecological Observatory Network (NEON), 2024c):
 
 In Equation \ref{eq:porosity}, \(\rho_{m}\) is the particle density of
 mineral soil (2.65 g cm\(^{-3}\)), \(\rho_{s}\) the soil bulk density (g
-cm\(^{-3}\)) excluding coarse fragments greater than 2 mm (National
-Ecological Observatory Network (NEON), 2024c), and \(f_{V}\) is a
-site-specific value that accounts for the proportion of soil fragments
-between 2-20 mm. Soil fragments greater than 20 mm were not estimated
-due to limitations in the amount of soil that can be analyzed (National
-Ecological Observatory Network (NEON), 2024c). We assume that rock
-fragments contain no internal pores.
+cm\(^{-3}\)) excluding coarse fragments greater than 2 mm (NEON, 2024c),
+and \(f_{V}\) is a site-specific value that accounts for the proportion
+of soil fragments between 2-20 mm. Soil fragments greater than 20 mm
+were not estimated due to limitations in the amount of soil that can be
+analyzed (NEON, 2024c). We assume that rock fragments contain no
+internal pores.
 
 The Millington-Quirk model assumes \(\xi\) is modulated by the amount of
 fluid saturation in soil pores (Millington \& Shearer, 1971). In
@@ -1034,11 +1027,10 @@ that also considers soil type is used (Bouma \& Bryla, 2000; Yan et al.,
 connected to the measurement of bulk density, which was characterized at
 each NEON site. This bulk density estimate is based on replicate samples
 collected from the site megapit at a subset of soil horizons, with an
-estimated uncertainty of \(\pm5\%\) (National Ecological Observatory
-Network (NEON), 2024c). Coarse fragment estimates also have very large
-uncertainties, but because the volume fraction tends to be low in
-surface soils it is unlikely to contribute much additional flux
-uncertainty.
+estimated uncertainty of \(\pm5\%\) (NEON, 2024c). Coarse fragment
+estimates also have very large uncertainties, but because the volume
+fraction tends to be low in surface soils it is unlikely to contribute
+much additional flux uncertainty.
 
 Our results suggest that the most important way to improve reliability
 of the flux estimate is to reduce the usage of gap-filled data. The
@@ -1203,13 +1195,6 @@ across diverse ecosystems are responding to a changing climate.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
-\bibitem[\citeproctext]{ref-ayresValidationRemotelySensed2024}
-Ayres, E., Reichle, R. H., Colliander, A., Cosh, M. H., \& Smith, L.
-(2024). Validation of {Remotely Sensed} and {Modeled Soil Moisture} at
-{Forested} and {Unforested NEON Sites}. \emph{IEEE Journal of Selected
-Topics in Applied Earth Observations and Remote Sensing}, \emph{17},
-14248--14264. \url{https://doi.org/10.1109/JSTARS.2024.3430928}
-
 \bibitem[\citeproctext]{ref-baldocchiMeasuringFluxesTrace2014}
 Baldocchi, D. (2014). Measuring fluxes of trace gases and energy between
 ecosystems and the atmosphere - the state and future of the eddy
@@ -1373,10 +1358,9 @@ Earth System Sciences}, \emph{27}(2), 577--598.
 \url{https://doi.org/10.5194/hess-27-577-2023}
 
 \bibitem[\citeproctext]{ref-lunchNeonUtilitiesUtilitiesWorking2025}
-Lunch, C., Laney, C., Mietkiewicz, N., Sokol, E., Cawley, K., \& NEON
-(National Ecological Observatory Network). (2025). \emph{neonUtilities:
-Utilities for working with NEON data}.
-\url{https://doi.org/10.32614/CRAN.package.neonUtilities}
+Lunch, C., Laney, C., Mietkiewicz, N., Sokol, E., Cawley, K., \&
+Network), N. (National. E. O. (2025). \emph{{neonUtilities}: {Utilities}
+for {Working} with {NEON Data}}.
 
 \bibitem[\citeproctext]{ref-luoEcologicalForecastingData2011}
 Luo, Y., Ogle, K., Tucker, C., Fei, S., Gao, C., LaDeau, S., Clark, J.
@@ -1421,30 +1405,29 @@ Buckingham-Burdine-Campbell} equation for gas diffusivity in undisturbed
 soil. \emph{Soil Science}, \emph{164}(2), 75.
 
 \bibitem[\citeproctext]{ref-neonBarometricPressure}
-National Ecological Observatory Network (NEON). (2024a).
-\emph{Barometric pressure ({DP1}.00004.001)}. National Ecological
-Observatory Network (NEON). \url{https://doi.org/10.48443/RT4V-KZ04}
+NEON. (2024a). \emph{Barometric pressure ({DP1}.00004.001)}. National
+Ecological Observatory Network (NEON).
+\url{https://doi.org/10.48443/RT4V-KZ04}
 
 \bibitem[\citeproctext]{ref-neonSoilCO2}
-National Ecological Observatory Network (NEON). (2024b). \emph{Soil
-{CO2} concentration ({DP1}.00095.001)}. National Ecological Observatory
-Network (NEON). \url{https://doi.org/10.48443/E7GR-6G94}
+NEON. (2024b). \emph{Soil {CO2} concentration ({DP1}.00095.001)}.
+National Ecological Observatory Network (NEON).
+\url{https://doi.org/10.48443/E7GR-6G94}
 
 \bibitem[\citeproctext]{ref-neonSoilProperties}
-National Ecological Observatory Network (NEON). (2024c). \emph{Soil
-physical and chemical properties, {Megapit} ({DP1}.00096.001)}. National
-Ecological Observatory Network (NEON).
+NEON. (2024c). \emph{Soil physical and chemical properties, {Megapit}
+({DP1}.00096.001)}. National Ecological Observatory Network (NEON).
 \url{https://doi.org/10.48443/S6ND-Q840}
 
 \bibitem[\citeproctext]{ref-neonSoilTemp}
-National Ecological Observatory Network (NEON). (2024d). \emph{Soil
-temperature ({DP1}.00041.001)}. National Ecological Observatory Network
-(NEON). \url{https://doi.org/10.48443/Q24X-PW21}
+NEON. (2024d). \emph{Soil temperature ({DP1}.00041.001)}. National
+Ecological Observatory Network (NEON).
+\url{https://doi.org/10.48443/Q24X-PW21}
 
 \bibitem[\citeproctext]{ref-neonSoilWater}
-National Ecological Observatory Network (NEON). (2024e). \emph{Soil
-water content and water salinity ({DP1}.00094.001)}. National Ecological
-Observatory Network (NEON). \url{https://doi.org/10.48443/A8VY-Y813}
+NEON. (2024e). \emph{Soil water content and water salinity
+({DP1}.00094.001)}. National Ecological Observatory Network (NEON).
+\url{https://doi.org/10.48443/A8VY-Y813}
 
 \bibitem[\citeproctext]{ref-normanComparisonSixMethods1997}
 Norman, J. M., Kucharik, C. J., Gower, S. T., Baldocchi, D. D., Crill,
@@ -1536,7 +1519,6 @@ Research}, \emph{59}(12), e2023WR034457.
 Zobitz, J., Ayres, E., O'Rourke, K., Werbin, Z., Lee, L., Abdi, R.,
 Mehmeti, D., \& Xiong, L. (2024). \emph{{neonSoilFlux}: {Compute Soil
 Carbon Fluxes} for the {National Ecological Observatory Network Sites}}.
-\url{https://doi.org/10.32614/CRAN.package.neonSoilFlux}
 
 \end{CSLReferences}
 
