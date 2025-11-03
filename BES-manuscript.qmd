@@ -43,8 +43,8 @@ author:
     orcid: 0000-0003-2168-6390
     email: nbzimmerman@ku.edu
     affiliations:
-      - ref: usfca
-      - ref: ku 
+      - ref: ku
+      - ref: usfca 
 
 affiliations:
   - id: augsburg
@@ -88,8 +88,7 @@ None of the authors have a financial, personal, or professional conflict of inte
 Conceptualization: John Zobitz, Naupaka Zimmerman; Methodology: Edward Ayres, John Zobitz, Naupaka Zimmerman; Software: John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong, Lajntxiag Lee; Validation: John Zobitz, Naupaka Zimmerman; Formal Analysis: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong, Lajntxiag Lee; Investigation: John Zobitz, Naupaka Zimmerman, Ryan Frink-Sobierajski, Christina Tran, Natalie Ashburner-Wright, Lillian Brown; Resources: John Zobitz, Naupaka Zimmerman; Data curation: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ly Xiong; Writing – original draft: John Zobitz, Naupaka Zimmerman; Writing – review and editing: John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres, Christina Tran, Dijonë Mehmeti, Ly Xiong; Visualization: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong; Supervision: John Zobitz, Naupaka Zimmerman; Project Administration: John Zobitz, Naupaka Zimmerman; Funding Acquisition: John Zobitz, Naupaka Zimmerman.
 
 # Data Availability {.unnumbered}
-
-Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. An anonymous link for peer-review is here: <https://doi.org/10.5281/zenodo.16951117>. This will be made publicly available upon publication.
+Data available via [https://doi.org/10.5281/zenodo.17516319](https://doi.org/10.5281/zenodo.17516319) [@zobitzSupportingCodeData2025]. Field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code are provided within this repository.
 
 \newpage
 
