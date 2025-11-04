@@ -50,6 +50,8 @@ tot_places <- rbind(places_2022, places_2024)
 
 # Now we go through and do the dirty work of saving and computing fluxes. Yay .... :)
 for (i in 1:nrow(tot_places)) {
+
+  browser()
   # Name current month (you will need to adjust this on your computer)
   curr_month <- tot_places$dates[[i]]
   curr_site_name <- tot_places$site_name[[i]]
@@ -67,7 +69,7 @@ for (i in 1:nrow(tot_places)) {
     {
       out_env_data <- acquire_neon_data(
         site_name = curr_site_name,
-        download_date = curr_download_date,
+        download_date = curr_month,
         provisional = TRUE
       )
 
