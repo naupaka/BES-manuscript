@@ -1,4 +1,5 @@
-# Figure 5: Make a plot of the direct comparison between field measured data and neonSoilFlux outputs at each validation site
+# Figure 4: Make a plot of the direct comparison between field measured data
+# and neonSoilFlux outputs at each validation site
 
 # Load in the associated libraries
 library(tidyverse)
@@ -297,9 +298,23 @@ base_plot <- base_plot_level("UNDE",
 )
 shared_legend <- lemon::g_legend(base_plot)
 
+# double check min and max flux values to enable limit setting
+# set to TRUE to run this
+if (FALSE) {
+  field_data_joined_test |>
+    unnest(cols = c("value")) |>
+    group_by(site) |>
+    summarise(
+      min_flux = min(flux, na.rm = TRUE),
+      max_flux = max(flux, na.rm = TRUE),
+      .groups = "drop")
+}
+
 y_limits <- tibble(
-  site = c("KONZ", "UNDE", "WOOD", "SRER", "SJER", "WREF"),
-  limits = list(c(-10, 22), c(-0.5, 4.5), c(-3.5, 11), c(0, 2), c(0, 2), c(-0.5, 6.5))
+  site = c("KONZ", "UNDE", "WOOD",
+           "SRER", "SJER", "WREF"),
+  limits = list(c(-10, 22), c(-0.5, 4.5), c(-3.5, 11),
+                c(0, 2), c(0, 2), c(-0.5, 6.5))
 )
 
 grid_plots <- summary_env_data |>

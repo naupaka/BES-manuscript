@@ -1,4 +1,5 @@
-# Figure 5: Make a plot of the different methods and the fluxes across a whole year.
+# Figure 5: Make a plot of the different methods
+# and the fluxes across a whole year.
 
 # Load up associated libraries
 library(tidyverse)
@@ -113,7 +114,8 @@ out_plots <- tibble(
   x_axis = c(FALSE, FALSE, TRUE, FALSE, FALSE, TRUE),
   y_axis = c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
 ) |>
-  mutate(plot = pmap(.l = list(site, x_axis, y_axis), .f = ~ plot_daily_flux(..1, FALSE, ..2, ..3)))
+  mutate(plot = pmap(.l = list(site, x_axis, y_axis),
+                     .f = ~ plot_daily_flux(..1, FALSE, ..2, ..3)))
 
 # Now we need to arrange a select number of these
 
