@@ -53,10 +53,11 @@ affiliations:
     name: National Ecological Observatory Network, Battelle, 1685 38th Street, Suite 100, Boulder, CO 80301
   - id: bu
     name: Boston University, 5 Cummington Street, Boston, MA 02215
-  - id: usfca
-    name: University of San Francisco, 2130 Fulton Street, San Francisco, CA 94117
   - id: ku
     name: University of Kansas, 1450 Jayhawk Boulevard, Lawrence, KS 66045
+  - id: usfca
+    name: University of San Francisco, 2130 Fulton Street, San Francisco, CA 94117
+
     
 format:
   pdf:
