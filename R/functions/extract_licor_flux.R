@@ -6,14 +6,11 @@
 #' @return a data frame of licor fluxes
 #' @export
 #'
-extract_licor_flux <- function(file_name,site_name,tz_ids) {
+extract_licor_flux <- function(file_name, site_name, tz_ids) {
   # https://www.licor.com/env/support/LI-6800/topics/symbols.html#meas --> info about data
 
-####
-
+  ####
   in_data <- jsonlite::fromJSON(file_name)
-
-
 
   time_vals <- in_data$obslist$data$TIME # the last entry in each list component is what we need
 
@@ -23,18 +20,14 @@ extract_licor_flux <- function(file_name,site_name,tz_ids) {
 
   # Take the last value from the sample - that is what gets measured
   rep_times <- purrr::map_dbl(time_vals, last) |>
-    as.POSIXct(origin = "1970-01-01",tz = curr_tz) |>
-   lubridate::with_tz(tzone = "UTC")
-
-
+    as.POSIXct(origin = "1970-01-01", tz = curr_tz) |>
+    lubridate::with_tz(tzone = "UTC")
 
   # compute the system dates for each sampling measurement
   test_times <- tibble::tibble(
     site = site_name,
     date = rep_times
   )
-
-
 
   # Wrangle the fluxes
   Vtotal <- in_data$obslist$const$TotalVolume
@@ -53,8 +46,6 @@ extract_licor_flux <- function(file_name,site_name,tz_ids) {
     cbind(Vtotal, Area) |>
     dplyr::mutate(flux_mult = 10 * Vtotal * Pressure * (1 - H2O / 1000) / (R * Area * (Tchamber + 273.15)))
 
-
-
   # derivative is (C0 - Cx)*exp(-a*(t-t0))*-a
   # at t = t0, then we have (C0-Cx)*-a
 
@@ -72,7 +63,6 @@ extract_licor_flux <- function(file_name,site_name,tz_ids) {
       flux_exp = flux_mult * F_CO2_exp
     ) |>
     dplyr::select(RepNum, staPres, VSWC, soilTemp, flux_lin, flux_exp)
-
 
   out_flux <- cbind(test_times, meas_flux)
 

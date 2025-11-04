@@ -1,6 +1,5 @@
 # Figure 5: Make a plot of the direct comparison between field measured data and neonSoilFlux outputs at each validation site
 
-
 # Load in the associated libraries
 library(tidyverse)
 library(lubridate)
@@ -8,22 +7,20 @@ library(broom)
 library(grid)
 library(gridExtra)
 
-
 # (1) Load up flux data (field and neonSoilFlux outputs)
-load('data/derived/combined-field-data.Rda')
-load('data/derived/field-data-info.Rda')
+load("data/derived/combined-field-data.Rda")
+load("data/derived/field-data-info.Rda")
 
 # Compute some summary stats, used primarily for plot presentation
 summary_env_data <- field_data_joined |>
-  select(site,field_env) |>
-  unnest(cols=c(field_env)) |>
+  select(site, field_env) |>
+  unnest(cols = c(field_env)) |>
   group_by(site) |>
   summarise(
     vswc_data = mean(VSWC),
     temp_data = mean(soilTemp),
-    .groups="drop"
+    .groups = "drop"
   )
-
 
 # Join the field data neonSoilFlux data to match when field sites were visited.
 field_data_joined_test <- field_data_joined |>
@@ -32,26 +29,26 @@ field_data_joined_test <- field_data_joined |>
     model_data_mq = map2(
       .x = model_data_mq,
       .y = curr_tz,
-      .f =  ~ (.x |>
-                 mutate(
-                   startDateTime = lubridate::with_tz(startDateTime, tzone = .y)
-                 ))
+      .f = ~ (.x |>
+        mutate(
+          startDateTime = lubridate::with_tz(startDateTime, tzone = .y)
+        ))
     ),
     model_data_marshall = map2(
       .x = model_data_marshall,
       .y = curr_tz,
-      .f =  ~ (.x |>
-                 mutate(
-                   startDateTime = lubridate::with_tz(startDateTime, tzone = .y)
-                 ))
+      .f = ~ (.x |>
+        mutate(
+          startDateTime = lubridate::with_tz(startDateTime, tzone = .y)
+        ))
     ),
     field_flux = map2(
       .x = field_flux,
       .y = curr_tz,
-      .f =  ~ (.x |>
-                 mutate(
-                   startDateTime = lubridate::with_tz(startDateTime, tzone = .y)
-                 ))
+      .f = ~ (.x |>
+        mutate(
+          startDateTime = lubridate::with_tz(startDateTime, tzone = .y)
+        ))
     )
   ) |>
   rename(millington_quirk = model_data_mq, marshall = model_data_marshall) |>
@@ -61,20 +58,21 @@ field_data_joined_test <- field_data_joined |>
   mutate(value = map2(
     .x = value,
     .y = tortuosity,
-    .f =  ~ (
-      .x |> select(startDateTime, flux_compute) |> mutate(tort = .y) |> unnest(cols =
-                                                                                 c(flux_compute))
+    .f = ~ (
+      .x |> select(startDateTime, flux_compute) |> mutate(tort = .y) |> unnest(
+        cols =
+          c(flux_compute)
+      )
     )
   )) |>
   select(-tortuosity)
 
 ## All of this is run from field_data_joined_test
-
 days_at_site <- field_data_joined_test |>
   mutate(days = map_dbl(
     .x = field_flux,
-    .f =  ~ (.x$startDateTime |>
-               as_date() |> unique() |> length())
+    .f = ~ (.x$startDateTime |>
+      as_date() |> unique() |> length())
   )) |>
   select(site, days) |>
   distinct(site, .keep_all = TRUE)
@@ -87,23 +85,31 @@ base_plot_level <- function(input_site,
                             y_axis = TRUE) {
   model_results <- field_data_joined_test |>
     filter(site == input_site) |>
-    select(value) |> unnest(cols = c("value")) |> ungroup() |>
-    filter(method  == input_method) |>
-    mutate(flux_min = flux - flux_err,
-           flux_max = flux + flux_err)
+    select(value) |>
+    unnest(cols = c("value")) |>
+    ungroup() |>
+    filter(method == input_method) |>
+    mutate(
+      flux_min = flux - flux_err,
+      flux_max = flux + flux_err
+    )
 
   field_results <- field_data_joined_test |>
     filter(site == input_site) |>
-    select(field_flux) |> unnest(cols = c("field_flux")) |> ungroup() |>
+    select(field_flux) |>
+    unnest(cols = c("field_flux")) |>
+    ungroup() |>
     mutate(horizontalPosition = fct_relevel(horizontalPosition, "LICOR"))
 
   start_date <- field_results |>
     pull(startDateTime) |>
-    min() |> floor_date(unit = "day")
+    min() |>
+    floor_date(unit = "day")
 
   end_date <- field_results |>
     pull(startDateTime) |>
-    max() |> floor_date(unit = "day")
+    max() |>
+    floor_date(unit = "day")
 
   # subtract a day
   start_date <- start_date - as.difftime(1, units = "days")
@@ -111,7 +117,8 @@ base_plot_level <- function(input_site,
 
   out_plot <- model_results |> # Make sure errors aren't negative
     mutate(tort = if_else(tort == "millington_quirk", "Millington-Quirk", "Marshall")) |>
-    ggplot(aes(x = startDateTime, y = flux)) + geom_line(aes(color = tort), linewidth = 1.5) +
+    ggplot(aes(x = startDateTime, y = flux)) +
+    geom_line(aes(color = tort), linewidth = 1.5) +
     #    geom_ribbon(aes(ymin=flux_min,ymax=flux_max,fill=tort),alpha=0.25) +
     geom_point(
       data = field_results,
@@ -122,7 +129,7 @@ base_plot_level <- function(input_site,
     ) +
     theme(axis.text.x = element_text(angle = -90)) +
     scale_x_datetime(
-      'Date',
+      "Date",
       breaks = scales::date_breaks("1 day"),
       minor_breaks = scales::date_breaks("6 hours"),
       date_labels = "%m-%d",
@@ -138,8 +145,9 @@ base_plot_level <- function(input_site,
       axis.text.y = element_text(size = 12),
       axis.title.y = element_text(size = 12),
       strip.text = element_text(size = 14)
-    ) + labs(y = bquote( ~ F[.(input_method)] ~ '(' ~ mu * mol ~ m ^ -2 ~
-                           s ^ -1 *  ~ ')')) +
+    ) +
+    labs(y = bquote(~ F[.(input_method)] ~ "(" ~ mu * mol ~ m^-2 ~
+      s^-1 * ~")")) +
     scale_color_manual(values = c(
       "LICOR" = "#E69F00",
       # Orange for Field Data
@@ -148,8 +156,7 @@ base_plot_level <- function(input_site,
       "Millington-Quirk" = "#CC79A7"
     )) +
     coord_cartesian(ylim = y_limits) +
-    labs(color = "Flux: ")# Points are kept, just cropped from view
-
+    labs(color = "Flux: ") # Points are kept, just cropped from view
 
 
   if (plot_title) {
@@ -158,8 +165,10 @@ base_plot_level <- function(input_site,
 
 
   if (!x_axis) {
-    out_plot <- out_plot + theme(axis.title.x = element_blank(), axis.text.x =
-                                   element_blank())
+    out_plot <- out_plot + theme(
+      axis.title.x = element_blank(), axis.text.x =
+        element_blank()
+    )
   }
 
   if (!y_axis) {
@@ -167,7 +176,6 @@ base_plot_level <- function(input_site,
   }
 
   return(out_plot)
-
 }
 
 
@@ -179,23 +187,31 @@ plot_level <- function(input_site,
                        y_axis = TRUE) {
   model_results <- field_data_joined_test |>
     filter(site == input_site) |>
-    select(value) |> unnest(cols = c("value")) |> ungroup() |>
-    filter(method  == input_method) |>
-    mutate(flux_min = flux - flux_err,
-           flux_max = flux + flux_err)
+    select(value) |>
+    unnest(cols = c("value")) |>
+    ungroup() |>
+    filter(method == input_method) |>
+    mutate(
+      flux_min = flux - flux_err,
+      flux_max = flux + flux_err
+    )
 
   field_results <- field_data_joined_test |>
     filter(site == input_site) |>
-    select(field_flux) |> unnest(cols = c("field_flux")) |> ungroup() |>
+    select(field_flux) |>
+    unnest(cols = c("field_flux")) |>
+    ungroup() |>
     mutate(horizontalPosition = fct_relevel(horizontalPosition, "LICOR"))
 
   start_date <- field_results |>
     pull(startDateTime) |>
-    min() |> floor_date(unit = "day")
+    min() |>
+    floor_date(unit = "day")
 
   end_date <- field_results |>
     pull(startDateTime) |>
-    max() |> floor_date(unit = "day")
+    max() |>
+    floor_date(unit = "day")
 
   # subtract a day
   start_date <- start_date - as.difftime(0.5, units = "days")
@@ -203,7 +219,8 @@ plot_level <- function(input_site,
 
   out_plot <- model_results |> # Make sure errors aren't negative
     mutate(tort = if_else(tort == "millington_quirk", "Millington-Quirk", "Marshall")) |>
-    ggplot(aes(x = startDateTime, y = flux)) + geom_line(aes(color = tort), linewidth = 1.5) +
+    ggplot(aes(x = startDateTime, y = flux)) +
+    geom_line(aes(color = tort), linewidth = 1.5) +
     geom_ribbon(aes(
       ymin = flux_min,
       ymax = flux_max,
@@ -218,7 +235,7 @@ plot_level <- function(input_site,
     ) +
     theme(axis.text.x = element_text(angle = -90)) +
     scale_x_datetime(
-      'Date',
+      "Date",
       breaks = scales::date_breaks("1 day"),
       minor_breaks = scales::date_breaks("6 hours"),
       date_labels = "%m-%d",
@@ -234,8 +251,9 @@ plot_level <- function(input_site,
       axis.text.y = element_text(size = 12),
       axis.title.y = element_text(size = 12),
       strip.text = element_text(size = 14)
-    ) + labs(y = bquote( ~ F[.(input_method)] ~ '(' ~ mu * mol ~ m ^ -2 ~
-                           s ^ -1 *  ~ ')')) +
+    ) +
+    labs(y = bquote(~ F[.(input_method)] ~ "(" ~ mu * mol ~ m^-2 ~
+      s^-1 * ~")")) +
     scale_color_manual(values = c(
       "LICOR" = "#E69F00",
       # Orange for Field Data
@@ -250,15 +268,17 @@ plot_level <- function(input_site,
       # Teal for Method 1
       "Millington-Quirk" = "#CC79A7"
     )) +
-    coord_cartesian(ylim = y_limits)  # Points are kept, just cropped from view
+    coord_cartesian(ylim = y_limits) # Points are kept, just cropped from view
 
   if (plot_title) {
     out_plot <- out_plot + ggtitle(input_site)
   }
 
   if (!x_axis) {
-    out_plot <- out_plot + theme(axis.title.x = element_blank(), axis.text.x =
-                                   element_blank())
+    out_plot <- out_plot + theme(
+      axis.title.x = element_blank(), axis.text.x =
+        element_blank()
+    )
   }
 
   if (!y_axis) {
@@ -270,10 +290,11 @@ plot_level <- function(input_site,
 
 # Define a base plot for the legend
 base_plot <- base_plot_level("UNDE",
-                             "000",
-                             TRUE,
-                             y_limits = c(0, 6),
-                             x_axis = FALSE)
+  "000",
+  TRUE,
+  y_limits = c(0, 6),
+  x_axis = FALSE
+)
 shared_legend <- lemon::g_legend(base_plot)
 
 y_limits <- tibble(
@@ -289,19 +310,19 @@ grid_plots <- summary_env_data |>
     y_axis = c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE),
     first_row = pmap(
       .l = list(site, y_axis, limits),
-      .f =  ~ plot_level(..1, "000", TRUE, ..3, FALSE, ..2) |> ggplotGrob()
+      .f = ~ plot_level(..1, "000", TRUE, ..3, FALSE, ..2) |> ggplotGrob()
     ),
     second_row = pmap(
       .l = list(site, y_axis, limits),
-      .f =  ~ plot_level(..1, "101", FALSE, ..3, FALSE, ..2) |> ggplotGrob()
+      .f = ~ plot_level(..1, "101", FALSE, ..3, FALSE, ..2) |> ggplotGrob()
     ),
     third_row = pmap(
       .l = list(site, y_axis, limits),
-      .f =  ~ plot_level(..1, "110", FALSE, ..3, FALSE, ..2) |> ggplotGrob()
+      .f = ~ plot_level(..1, "110", FALSE, ..3, FALSE, ..2) |> ggplotGrob()
     ),
     fourth_row = pmap(
       .l = list(site, y_axis, limits),
-      .f =  ~ plot_level(..1, "011", FALSE, ..3, TRUE, ..2) |> ggplotGrob()
+      .f = ~ plot_level(..1, "011", FALSE, ..3, TRUE, ..2) |> ggplotGrob()
     ),
   )
 
@@ -383,7 +404,7 @@ out_big <- grid.arrange(
 )
 
 ggsave(
-  'figures/flux-results.png',
+  "figures/flux-results.png",
   plot = out_big,
   width = 14,
   height = 8
