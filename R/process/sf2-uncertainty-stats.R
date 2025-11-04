@@ -25,7 +25,7 @@ summary_env_data <- field_data_joined |>
   )
 
 ### First plot: histogram of signal to noise ratios
-# Compute the signal to noise ratio for the different comnputed fluxes
+# Compute the signal to noise ratio for the different computed fluxes
 snr_data <- field_data_joined |>
   select(site, model_data_mq, model_data_marshall) |>
   pivot_longer(cols = c("model_data_mq", "model_data_marshall")) |>
@@ -95,7 +95,7 @@ snr_plot_marshall <- snr_data |>
 
 # Helper Function to standardize timestamps with a lag
 standardize_timestamps <- function(input_model_data, input_field_data, lag_time = 0) {
-  # lag_time is the number of minutes we subtract from field data to comapre with NEON
+  # lag_time is the number of minutes we subtract from field data to compare with NEON
   # Create a tibble of intervals for NEON
   start_times <- input_model_data$startDateTime
   end_times <- input_model_data$startDateTime + 30 * 60 # Add 30 minutes
@@ -141,8 +141,13 @@ standardize_timestamps <- function(input_model_data, input_field_data, lag_time 
 
 # Collect all of the field and computed flux data within the same time interval
 field_stats_data <- field_data_joined |>
-  pivot_longer(cols = c("model_data_mq", "model_data_marshall")) |>
-  mutate(harmonized_data = map2(.x = value, .y = field_flux, .f = ~ standardize_timestamps(.x, .y, lag_time = 0)))
+  pivot_longer(cols = c("model_data_mq",
+                        "model_data_marshall")) |>
+  mutate(harmonized_data = map2(.x = value,
+                                .y = field_flux,
+                                .f = ~ standardize_timestamps(.x,
+                                                              .y,
+                                                              lag_time = 0)))
 
 # Determine if the bounds are within a window of data
 within_bounds <- function(data) {
@@ -151,13 +156,14 @@ within_bounds <- function(data) {
   tibble(
     reduction = reduce_factor,
     values = map(.x = reduction, .f = ~ (data |>
-      mutate(in_bounds = between(flux_field, flux - .x * flux_err, flux + .x * flux_err)) |>
+      mutate(in_bounds = between(flux_field,
+                                 flux - .x * flux_err,
+                                 flux + .x * flux_err)) |>
       group_by(method) |>
       summarize(tot_prop = sum(in_bounds) / n()) |>
       ungroup()))
   ) |>
     unnest(cols = c(values))
-
 }
 
 # Now start to combine the different sites together
@@ -170,12 +176,13 @@ bounds_plot_mq <- bounds_data |>
   filter(name == "model_data_mq") |>
   inner_join(summary_env_data, by = "site") |>
   mutate(site = fct_reorder(site, temp_data)) |>
-  # filter(method %in% c("111","000")) |>
   ggplot(aes(x = 1 - reduction, y = tot_prop, color = method)) +
   geom_point() +
   geom_line() +
   facet_grid(. ~ site) +
-  labs(x = bquote(epsilon), y = "Proportion within range", color = "Flux method:") +
+  labs(x = bquote(epsilon),
+       y = "Proportion within range",
+       color = "Flux method:") +
   theme_bw() +
   theme(
     legend.position = "bottom",
@@ -199,13 +206,12 @@ bounds_plot_mq <- bounds_data |>
   scale_x_continuous(
     breaks = seq(0, 1, by = 0.2),
     minor_breaks = seq(0.1, 0.9, by = 0.2)
-  ) # + ggtitle(bquote(~D[a]~'calculation: Millington-Quirk'))
+  )
 
 bounds_plot_marshall <- bounds_data |>
   filter(name == "model_data_marshall") |>
   inner_join(summary_env_data, by = "site") |>
   mutate(site = fct_reorder(site, temp_data)) |>
-  # filter(method %in% c("111","000")) |>
   ggplot(aes(x = 1 - reduction, y = tot_prop, color = method)) +
   geom_point() +
   geom_line() +
@@ -234,11 +240,10 @@ bounds_plot_marshall <- bounds_data |>
   scale_x_continuous(
     breaks = seq(0, 1, by = 0.2),
     minor_breaks = seq(0.1, 0.9, by = 0.2)
-  ) #+
-# guides(color = "none") #+
-# ggtitle(bquote(~D[a]~'calculation: Marshall'))
+  )
 
-# Now put the two plots together, lining them up correctly - this will be a two by two plot
+# Now put the two plots together, lining them up correctly
+# this will be a two by two plot
 g1a <- ggplotGrob(snr_plot_mq + guides(fill = "none"))
 g2a <- ggplotGrob(snr_plot_marshall + guides(fill = "none"))
 
