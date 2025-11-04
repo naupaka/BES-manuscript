@@ -1,15 +1,20 @@
-### Figure 6: Use the measured LICOR data and flux gradient data to back-compute diffusivity, ultimately comparing the two approaches to each other
+### Figure 7: Use the measured LICOR data and flux gradient data to back-compute
+# diffusivity, ultimately comparing the two approaches to each other
 
 # Load up the associated libraries:
 library(tidyverse)
 library(lubridate)
 
 # All the env data are contained in the combined data frame
-load("data/derived/combined-field-data.Rda") # field_data_joined
-load("data/derived/diffusivity-gradient.Rda") # co2 gradient from neonSoilFlux (computed in 03-diffusivity-prepare.R)
+# field_data_joined
+load("data/derived/combined-field-data.Rda")
+
+# co2 gradient from neonSoilFlux (computed in 03-diffusivity-prepare.R)
+load("data/derived/diffusivity-gradient.Rda")
 ## Note: when gradient is positive, then the co2 at the deeper depth is smaller.
 
-# Compute some summary stats.  Organize by the temperature - this is how we make sure each site is ordered in our plots.
+# Compute some summary stats.  Organize by the temperature
+# this is how we make sure each site is ordered in our plots.
 summary_env_data <- field_data_joined |>
   select(site, field_env) |>
   unnest(cols = c(field_env)) |>
@@ -102,7 +107,7 @@ diffusivity_plot <- field_stats_data |>
   ggplot(aes(x = method, y = diffusivity / 1e-6)) +
   geom_boxplot() +
   facet_grid(. ~ site, scales = "free") +
-  ylim(c(0, 10)) +
+  #ylim(c(0, 10)) +
   labs( # y = "Diffusivity (*1e6)",
     y = bquote(~ D[a] ~ "(" ~ 10^6 ~ m^-2 ~ s^-1 * ~")"),
     x = bquote(~ D[a] ~ "calculation method")

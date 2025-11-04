@@ -1,6 +1,5 @@
-### Figure 7: Derive RMSE and R2 values for the different model results compared to measured values, compare against the daily values.
-
-# NOTE: because gt and gtable are used in processing, the output is a png file that is displayed in the text.
+### Figure 6: Derive fit values for the different model
+# results compared to measured values, compare against daily averaged values.
 
 ### Load up the associated libraries
 library(tidyverse)
@@ -77,7 +76,7 @@ standardize_timestamps <- function(input_model_data,
   return(out_data)
 }
 
-# (3) Compute R2 and RMSE and other regression stats.  For RMSE we also normalize it by dividing by the mean of field obs
+# (3) Compute R2 and other regression stats.
 extract_stats <- function(harmonized_data) {
   harmonized_data |>
     group_by(method, name) |>
@@ -179,14 +178,14 @@ regression_stats <- extract_stats(field_stats_data_0) |>
       "m =", slope_str, "\n",
       "b =", intercept_str
     ),
-    x = 10.2, # position on x-axis, manually tweaked ot match plot size below
+    x = 12, # position on x-axis, manually tweaked ot match plot size below
     y = 1.5,
     eq = paste0("y = ", round(intercept, 2), " + ", round(slope, 2), "x"),
     xeq = 4.5,
     yeq = 13
   )
 
-# CVD friend palletee:
+# CVD friend palette:
 okabe_ito <- c(
   "#E69F00", # orange
   "#56B4E9", # sky blue
@@ -201,8 +200,8 @@ r2_plot <- field_stats_data_0 |>
   ggplot(aes(x = flux_field, y = flux)) +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
   geom_point(aes(color = site, shape = site, fill = site), size = 6) +
-  ylim(c(0, 15)) +
-  xlim(c(0, 15)) +
+  ylim(c(0, 18)) +
+  xlim(c(0, 18)) +
   theme_bw() +
   theme(
     legend.title = element_text(size = 18),

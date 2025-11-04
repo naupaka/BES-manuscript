@@ -34,7 +34,8 @@ field_times <- field_data_joined |>
   ungroup()
 
 # Pull in the env files
-env_files <- list.files(path = "data/raw/flux-data", pattern = "env-meas-", full.names = TRUE) |>
+env_files <- list.files(path = "data/raw/flux-data",
+                        pattern = "env-meas-", full.names = TRUE) |>
   str_subset(pattern = "05|06")
 
 env_values <- vector(mode = "list", length = length(env_files))
@@ -112,7 +113,8 @@ meas_dist <- prop_bad |>
   group_by(site) |>
   count(tot) |>
   ungroup() |>
-  right_join(expand_grid(site = unique(prop_bad$site), tot = 0:4), by = c("site", "tot"), ) |>
+  right_join(expand_grid(site = unique(prop_bad$site), tot = 0:4),
+             by = c("site", "tot"), ) |>
   mutate(n = if_else(is.na(n), 0, n))
 
 # Make the plots
@@ -182,6 +184,7 @@ g <- cbind(g1, g2, size = "first")
 # g$heights <- unit.pmax(g1$heights, g2$heights)
 
 # Save the figure
-png("figures/gap-filled-stats.png", width = 18, height = 7, units = "in", res = 300)
+png("figures/gap-filled-stats.png",
+    width = 18, height = 7, units = "in", res = 300)
 grid::grid.draw(g)
 dev.off()
