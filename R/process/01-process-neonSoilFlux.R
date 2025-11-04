@@ -5,7 +5,7 @@
 # neonSoilFlux.  We include the aggregated .Rda file.
 
 # Load libraries
-library(NEONSoils)
+library(neonSoilFlux)
 library(tidyverse)
 library(neonUtilities)
 
