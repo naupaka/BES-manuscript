@@ -2,32 +2,48 @@
 # This Makefile handles the complete workflow from data processing to PDF generation
 
 # Variables
-R_SCRIPT := 00-start-here.R
 MAIN_QMD := BES-manuscript.qmd
 SUPP_QMD := BES-manuscript-supp.qmd
 MAIN_PDF := BES-manuscript.pdf
 SUPP_PDF := BES-manuscript-supp.pdf
+MAIN_TEX := BES-manuscript.tex
+SUPP_TEX := BES-manuscript-supp.tex
 FIGURES_DIR := figures
 DATA_DIR := data/derived
+FUNCTIONS_DIR := R/functions
 
-# R processing files (in order of execution)
-R_PROCESS_FILES := R/process/01-process-neonSoilFlux.R \
-                   R/process/02-process-field-licor.R \
-                   R/process/03-field-neonSoilFlux-combine.R \
-                   R/process/04-extract-diffusivity-field.R \
-                   R/process/f4-flux-results.R \
-                   R/process/f5-flux-results-year.R \
-                   R/process/f6-r2-plot.R \
-                   R/process/f7-diffusivity-plot.R \
-                   R/process/sf1-gap-filled-stats.R \
-                   R/process/sf2-uncertainty-stats.R
+# Default commit for latexdiff (can be overridden)
+DIFF_COMMIT ?= HEAD~1
+
+# R function files
+R_FUNCTIONS := $(wildcard $(FUNCTIONS_DIR)/*.R)
+
+# R processing scripts
+R_PROCESS_01 := R/process/01-process-neonSoilFlux.R
+R_PROCESS_02 := R/process/02-process-field-licor.R
+R_PROCESS_03 := R/process/03-field-neonSoilFlux-combine.R
+R_PROCESS_04 := R/process/04-extract-diffusivity-field.R
+R_PROCESS_F4 := R/process/f4-flux-results.R
+R_PROCESS_F5 := R/process/f5-flux-results-year.R
+R_PROCESS_F6 := R/process/f6-r2-plot.R
+R_PROCESS_F7 := R/process/f7-diffusivity-plot.R
+R_PROCESS_SF1 := R/process/sf1-gap-filled-stats.R
+R_PROCESS_SF2 := R/process/sf2-uncertainty-stats.R
 
 # Generated data files
-DERIVED_DATA := $(DATA_DIR)/all-year-flux-results.Rda \
-                $(DATA_DIR)/combined-field-data.Rda \
-                $(DATA_DIR)/diffusivity-gradient.Rda \
-                $(DATA_DIR)/field-data-info.Rda \
-                $(DATA_DIR)/licor-all-data.Rda
+# Note: all-year-flux-results.Rda can be added to dependencies to test full rebuilds
+DATA_ALL_YEAR := $(DATA_DIR)/all-year-flux-results.Rda
+DATA_LICOR := $(DATA_DIR)/licor-all-data.Rda
+DATA_FIELD_INFO := $(DATA_DIR)/field-data-info.Rda
+DATA_COMBINED := $(DATA_DIR)/combined-field-data.Rda
+DATA_DIFFUSIVITY := $(DATA_DIR)/diffusivity-gradient.Rda
+
+# All derived data files (for convenience)
+DERIVED_DATA := $(DATA_ALL_YEAR) \
+                $(DATA_LICOR) \
+                $(DATA_FIELD_INFO) \
+                $(DATA_COMBINED) \
+                $(DATA_DIFFUSIVITY)
 
 # Generated figure files
 FIGURES := $(FIGURES_DIR)/diffusivity-plot.png \
@@ -42,23 +58,67 @@ FIGURES := $(FIGURES_DIR)/diffusivity-plot.png \
 all: $(MAIN_PDF) $(SUPP_PDF)
 
 # Main manuscript PDF
-$(MAIN_PDF): $(MAIN_QMD) $(FIGURES) $(DERIVED_DATA)
+$(MAIN_PDF): $(MAIN_QMD) figures/collar-images.jpeg figures/model-diagram.pdf figures/neonSoilFluxOutline.png $(FIGURES_DIR)/diffusivity-plot.png $(FIGURES_DIR)/flux-results-year.png $(FIGURES_DIR)/flux-results.png $(FIGURES_DIR)/r2-plot.png $(DATA_LICOR) bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering main manuscript..."
 	quarto render $(MAIN_QMD)
 
+# Generate .tex file if it doesn't exist
+$(MAIN_TEX): $(MAIN_QMD)
+	@echo "Rendering manuscript to generate .tex file..."
+	quarto render $(MAIN_QMD)
+
+# Generate .tex file if it doesn't exist
+$(SUPP_TEX): $(SUPP_QMD)
+	@echo "Rendering supplemental material to generate .tex file..."
+	quarto render $(SUPP_QMD)
+
 # Supplemental PDF
-$(SUPP_PDF): $(SUPP_QMD) $(FIGURES) $(DERIVED_DATA)
+$(SUPP_PDF): $(SUPP_QMD) $(FIGURES_DIR)/uncertainty-stats.png $(FIGURES_DIR)/gap-filled-stats.png bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering supplemental material..."
 	quarto render $(SUPP_QMD)
 
-# Create a single target that generates all R outputs
-.PHONY: r-outputs
-r-outputs: $(R_SCRIPT) $(R_PROCESS_FILES)
-	@echo "Running R processing scripts..."
-	@Rscript $(R_SCRIPT)
+# Generated data files with their source scripts
+$(DATA_ALL_YEAR): $(R_PROCESS_01)
+	@echo "Processing all-year NEON flux results..."
+	Rscript $(R_PROCESS_01)
 
-# Make all derived data and figures depend on the R outputs target
-$(DERIVED_DATA) $(FIGURES): r-outputs
+$(DATA_FIELD_INFO) $(DATA_LICOR): $(DATA_ALL_YEAR) $(R_PROCESS_02) $(R_FUNCTIONS)
+	@echo "Processing LICOR data and generating field data info..."
+	Rscript $(R_PROCESS_02)
+
+$(DATA_COMBINED): $(DATA_ALL_YEAR) $(DATA_FIELD_INFO) $(DATA_LICOR) $(R_PROCESS_03)
+	@echo "Combining field and NEON data..."
+	Rscript $(R_PROCESS_03)
+
+$(DATA_DIFFUSIVITY): $(DATA_FIELD_INFO) $(DATA_COMBINED) $(R_PROCESS_04)
+	@echo "Extracting diffusivity gradient data..."
+	Rscript $(R_PROCESS_04)
+
+# Generated figure files with their source scripts
+$(FIGURES_DIR)/flux-results.png: $(DATA_COMBINED) $(DATA_FIELD_INFO) $(R_PROCESS_F4)
+	@echo "Generating flux results plot..."
+	Rscript $(R_PROCESS_F4)
+
+$(FIGURES_DIR)/flux-results-year.png: $(DATA_COMBINED) $(DATA_FIELD_INFO) $(R_PROCESS_F5)
+	@echo "Generating annual flux results plot..."
+	Rscript $(R_PROCESS_F5)
+
+$(FIGURES_DIR)/r2-plot.png: $(DATA_COMBINED) $(DATA_FIELD_INFO) $(R_PROCESS_F6)
+	@echo "Generating R2 plot..."
+	Rscript $(R_PROCESS_F6)
+
+$(FIGURES_DIR)/diffusivity-plot.png: $(DATA_DIFFUSIVITY) $(R_PROCESS_F7)
+	@echo "Generating diffusivity plot..."
+	Rscript $(R_PROCESS_F7)
+
+$(FIGURES_DIR)/gap-filled-stats.png: $(DATA_COMBINED) $(DATA_FIELD_INFO) $(R_PROCESS_SF1)
+	@echo "Generating gap-filled stats plot..."
+	Rscript $(R_PROCESS_SF1)
+
+$(FIGURES_DIR)/uncertainty-stats.png: $(DATA_COMBINED) $(DATA_FIELD_INFO) $(R_PROCESS_SF2)
+	@echo "Generating uncertainty stats plot..."
+	Rscript $(R_PROCESS_SF2)
+
 
 # Individual targets for specific outputs
 .PHONY: data
@@ -72,6 +132,12 @@ main: $(MAIN_PDF)
 
 .PHONY: supp
 supp: $(SUPP_PDF)
+
+# LaTeX diff target
+.PHONY: diff
+diff: $(MAIN_TEX)
+	@echo "Creating diff PDF against commit $(DIFF_COMMIT)..."
+	latexdiff-vc --git -r $(DIFF_COMMIT) --pdf $(MAIN_TEX)
 
 # Clean targets
 .PHONY: clean
@@ -115,9 +181,9 @@ help:
 	@echo "  all          - Build both main manuscript and supplemental PDFs (default)"
 	@echo "  main         - Build main manuscript PDF only"
 	@echo "  supp         - Build supplemental PDF only"
-	@echo "  data         - Run R scripts to generate derived data files"
-	@echo "  figures      - Run R scripts to generate figure files"
-	@echo "  r-outputs    - Run all R processing scripts"
+	@echo "  data         - Generate all derived data files"
+	@echo "  figures      - Generate all figure files"
+	@echo "  diff         - Create latexdiff PDF (default: against HEAD~1)"
 	@echo "  clean        - Remove all generated files"
 	@echo "  clean-figures - Remove generated figure files"
 	@echo "  clean-data   - Remove generated data files"
@@ -130,6 +196,26 @@ help:
 	@echo "  dev-setup    - Check dependencies and install R packages"
 	@echo "  watch        - Watch for changes and rebuild (requires entr)"
 	@echo "  help         - Show this help message"
+	@echo ""
+	@echo "Individual data files:"
+	@echo "  $(DATA_ALL_YEAR)"
+	@echo "  $(DATA_LICOR)"
+	@echo "  $(DATA_FIELD_INFO)"
+	@echo "  $(DATA_COMBINED)"
+	@echo "  $(DATA_DIFFUSIVITY)"
+	@echo ""
+	@echo "Individual figure files:"
+	@echo "  $(FIGURES_DIR)/diffusivity-plot.png"
+	@echo "  $(FIGURES_DIR)/flux-results-year.png"
+	@echo "  $(FIGURES_DIR)/flux-results.png"
+	@echo "  $(FIGURES_DIR)/gap-filled-stats.png"
+	@echo "  $(FIGURES_DIR)/r2-plot.png"
+	@echo "  $(FIGURES_DIR)/uncertainty-stats.png"
+	@echo ""
+	@echo "Usage examples:"
+	@echo "  make diff                    # Diff against previous commit"
+	@echo "  make diff DIFF_COMMIT=4308241b8  # Diff against specific commit"
+	@echo "  make diff DIFF_COMMIT=HEAD~5     # Diff against 5 commits ago"
 	@echo ""
 	@echo "Dependencies:"
 	@echo "  - R with required packages (tidyverse, lubridate, broom, etc.)"

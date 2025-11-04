@@ -4,6 +4,7 @@
 library(tidyverse)
 library(lubridate)
 library(broom)
+library(gridExtra)
 
 # Load up the data used for plot generation
 load('data/derived/all-year-flux-results.Rda')

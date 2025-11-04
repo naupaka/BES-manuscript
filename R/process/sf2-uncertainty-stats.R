@@ -4,6 +4,7 @@
 library(tidyverse)
 library(lubridate)
 library(broom)
+library(gridExtra)
 
 ### Script objectives:
 # (1) Load up data and measured fluxes for each site
