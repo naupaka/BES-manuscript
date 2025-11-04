@@ -13,6 +13,9 @@ load("data/derived/combined-field-data.Rda")
 load("data/derived/diffusivity-gradient.Rda")
 ## Note: when gradient is positive, then the co2 at the deeper depth is smaller.
 
+# Prevent plotting to pdf if not in interactive mode
+if (!interactive()) grDevices::pdf(NULL)
+
 # Compute some summary stats.  Organize by the temperature
 # this is how we make sure each site is ordered in our plots.
 summary_env_data <- field_data_joined |>

@@ -8,6 +8,9 @@ library(gridExtra)
 # Load up the data we need
 load("data/derived/combined-field-data.Rda") # field_data_joined
 
+# Prevent plotting to pdf if not in interactive mode
+if (!interactive()) grDevices::pdf(NULL)
+
 # Compute some summary stats.  Organize by the temperature - this is how we make sure each site is ordered in our plots.
 summary_env_data <- field_data_joined |>
   select(site, field_env) |>

@@ -11,6 +11,9 @@ library(gridExtra)
 load("data/derived/all-year-flux-results.Rda")
 load("data/derived/combined-field-data.Rda")
 
+# Prevent plotting to pdf if not in interactive mode
+if (!interactive()) grDevices::pdf(NULL)
+
 # For each site, only filter on the position where we computed
 marshall_fluxes_small <- model_fluxes_marshall |>
   semi_join(field_data_joined,
@@ -130,7 +133,7 @@ g6 <- ggplotGrob(out_plots$plot[[6]])
 
 shared_legend <- lemon::g_legend(plot_daily_flux("KONZ", TRUE, FALSE, FALSE))
 
-out_big <- grid.arrange(g1, g2, g3, g4, g5, g6,
+out_big <- arrangeGrob(g1, g2, g3, g4, g5, g6,
   layout_matrix = rbind(c(1, 4), c(2, 5), c(3, 6)),
   bottom = shared_legend$grobs[[1]]
 )

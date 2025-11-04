@@ -12,6 +12,9 @@ library(gridExtra)
 load("data/derived/combined-field-data.Rda")
 load("data/derived/field-data-info.Rda")
 
+# Prevent plotting to pdf if not in interactive mode
+if (!interactive()) grDevices::pdf(NULL)
+
 # Compute some summary stats, used primarily for plot presentation
 summary_env_data <- field_data_joined |>
   select(site, field_env) |>
@@ -353,7 +356,7 @@ g1 <- rbind(
   grid_plots_rev$fourth_row[[1]],
   size = "first"
 ) |>
-  grid.arrange(widths = unit(grid_plots_rev$days[[1]], "cm"))
+  arrangeGrob(widths = unit(grid_plots_rev$days[[1]], "cm"))
 
 g2 <- rbind(
   grid_plots_rev$first_row[[2]],
@@ -362,7 +365,7 @@ g2 <- rbind(
   grid_plots_rev$fourth_row[[2]],
   size = "first"
 ) |>
-  grid.arrange(widths = unit(grid_plots_rev$days[[2]], "cm"))
+  arrangeGrob(widths = unit(grid_plots_rev$days[[2]], "cm"))
 
 # WREF
 g3 <- rbind(
@@ -372,7 +375,7 @@ g3 <- rbind(
   grid_plots_rev$fourth_row[[3]],
   size = "first"
 ) |>
-  grid.arrange(widths = unit(grid_plots_rev$days[[3]], "cm"))
+  arrangeGrob(widths = unit(grid_plots_rev$days[[3]], "cm"))
 
 g4 <- rbind(
   grid_plots_rev$first_row[[4]],
@@ -381,7 +384,7 @@ g4 <- rbind(
   grid_plots_rev$fourth_row[[4]],
   size = "first"
 ) |>
-  grid.arrange(widths = unit(grid_plots_rev$days[[4]], "cm"))
+  arrangeGrob(widths = unit(grid_plots_rev$days[[4]], "cm"))
 
 g5 <- rbind(
   grid_plots_rev$first_row[[5]],
@@ -390,7 +393,7 @@ g5 <- rbind(
   grid_plots_rev$fourth_row[[5]],
   size = "first"
 ) |>
-  grid.arrange(widths = unit(grid_plots_rev$days[[5]], "cm"))
+  arrangeGrob(widths = unit(grid_plots_rev$days[[5]], "cm"))
 
 g6 <- rbind(
   grid_plots_rev$first_row[[6]],
@@ -399,9 +402,9 @@ g6 <- rbind(
   grid_plots_rev$fourth_row[[6]],
   size = "first"
 ) |>
-  grid.arrange(widths = unit(grid_plots_rev$days[[6]], "cm"))
+  arrangeGrob(widths = unit(grid_plots_rev$days[[6]], "cm"))
 
-out_big <- grid.arrange(
+out_big <- arrangeGrob(
   g1,
   g2,
   g3,

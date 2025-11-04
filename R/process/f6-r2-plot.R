@@ -9,6 +9,9 @@ library(broom)
 # (1) Load up data and measured fluxes for each site
 load("data/derived/combined-field-data.Rda")
 
+# Prevent plotting to pdf if not in interactive mode
+if (!interactive()) grDevices::pdf(NULL)
+
 # Compute some summary stats, used primarily for plot presentation
 summary_env_data <- field_data_joined |>
   select(site, field_env) |>

@@ -13,6 +13,9 @@ library(gridExtra)
 # (1) Load up flux data
 load("data/derived/combined-field-data.Rda")
 
+# Prevent plotting to pdf if not in interactive mode
+if (!interactive()) grDevices::pdf(NULL)
+
 # Compute some summary stats.  Organized by the mean temperature and mean SWC
 summary_env_data <- field_data_joined |>
   select(site, field_env) |>
@@ -248,7 +251,7 @@ g1a <- ggplotGrob(snr_plot_mq + guides(fill = "none"))
 g2a <- ggplotGrob(snr_plot_marshall + guides(fill = "none"))
 
 shared_legend_snr <- lemon::g_legend(snr_plot_mq)
-g_snr <- grid.arrange(g1a, g2a,
+g_snr <- arrangeGrob(g1a, g2a,
                       nrow = 1,
                       bottom = shared_legend_snr$grobs[[1]])
 
@@ -256,11 +259,11 @@ g1b <- ggplotGrob(bounds_plot_mq + guides(color = "none"))
 g2b <- ggplotGrob(bounds_plot_marshall + guides(color = "none"))
 
 shared_legend_bounds <- lemon::g_legend(bounds_plot_mq)
-g_bounds <- grid.arrange(g1b, g2b,
+g_bounds <- arrangeGrob(g1b, g2b,
                          nrow = 1,
                          bottom = shared_legend_bounds$grobs[[1]])
 
-g_all <- grid.arrange(g_snr, g_bounds, ncol = 1)
+g_all <- arrangeGrob(g_snr, g_bounds, ncol = 1)
 
 png("figures/uncertainty-stats.png",
     width = 18,
