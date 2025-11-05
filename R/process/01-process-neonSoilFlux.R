@@ -51,7 +51,6 @@ tot_places <- rbind(places_2022, places_2024)
 # Now we go through and do the dirty work of saving and computing fluxes. Yay .... :)
 for (i in 1:nrow(tot_places)) {
 
-  browser()
   # Name current month (you will need to adjust this on your computer)
   curr_month <- tot_places$dates[[i]]
   curr_site_name <- tot_places$site_name[[i]]
@@ -63,10 +62,16 @@ for (i in 1:nrow(tot_places)) {
   print(env_name)
   print(flux_name)
 
+  if (all(file.exists(c(env_name, flux_name)))) {
+    print("Files exist: already downloaded and processed")
+    next
+  }
+
   # Process
   try( # Put this as a try loop to do error handling
-    # NOTE: you will need to say y/n at several points here
+    # NOTE: you may need to say y/n at several points here
     {
+      print(paste("Aquiring NEON data for", curr_site_name, curr_month))
       out_env_data <- acquire_neon_data(
         site_name = curr_site_name,
         download_date = curr_month,
@@ -76,22 +81,36 @@ for (i in 1:nrow(tot_places)) {
       site_data <- out_env_data$site_data
       site_megapit <- out_env_data$site_megapit
 
+      print(paste("Saving", env_name))
       save(site_data, site_megapit, file = env_name)
 
+      print(paste("Calculating fluxes for", curr_site_name, curr_month))
       out_fluxes <- compute_neon_flux(
         input_site_env = out_env_data$site_data,
         input_site_megapit = out_env_data$site_megapit
       )
 
+      print(paste("Saving", flux_name))
       save(out_fluxes, file = flux_name)
     }
   )
 }
 
+env_names <- paste0("data/raw/flux-data/env-meas-",
+                   tot_places$site_name, "-", tot_places$dates, ".Rda")
+flux_names <- paste0("data/raw/flux-data/out-flux-",
+                    tot_places$site_name, "-", tot_places$dates, ".Rda")
+
+# Stop if we weren't able to download all the required data files from NEON
+# and/or process them to estimate fluxes
+stopifnot(all(file.exists(c(env_names, flux_names))))
+
 # Combine all the downloaded files into a single one:
 # Load up the flux and env files
-flux_files <- list.files(path = "data/raw/flux-data", pattern = "out-flux-", full.names = TRUE)
-env_files <- list.files(path = "data/raw/flux-data", pattern = "env-meas-", full.names = TRUE)
+flux_files <- list.files(path = "data/raw/flux-data",
+                         pattern = "out-flux-", full.names = TRUE)
+env_files <- list.files(path = "data/raw/flux-data",
+                        pattern = "env-meas-", full.names = TRUE)
 
 model_fluxes_mq <- vector(mode = "list", length = length(flux_files))
 model_fluxes_marshall <- vector(mode = "list", length = length(flux_files))
