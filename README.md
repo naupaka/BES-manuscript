@@ -1,35 +1,64 @@
-# Repository for submitted manuscript
+# Repository for manuscript
 
 ## "`neonSoilFlux`: An R Package for Continuous Sensor-Based Estimation of Soil CO~2~ Fluxes"
 
 ## Directory structure:
 
--   `data/raw`: collected field data and `neonSoilFlux` generated data files
--   `data/derived`: derived data files (`.Rda`) from running all the scripts `01` - `04` in `R/process`
--   `figures`: output figures generated (along with other associated figure files for the manuscript).
--   `R/functions`: common functions used across all processing files
--   `R/process`: structured processing files to generate manuscript output. This directory has the convention that the structure for `.R` files:
-    -   `00`-`04` files are processing files that generate derived data files for `data/derived`
-    -   `f` denotes figure, `t` denotes table, `sf` supplementary figure
-    -   the number corresponds to the figure or table number in the manuscript
-    -   the text following corresponds to the name of the figure or table generated in `figures`
+- `data/raw`: collected field data and `neonSoilFlux` generated data files
+- `data/derived`: derived data files (`.Rda`) from running all the scripts `01` - `04` in `R/process`
+- `figures`: output figures generated (along with other associated figure files for the manuscript).
+- `R/functions`: common functions used across all processing files
+- `R/process`: structured processing files to generate manuscript output. This directory has the convention that the structure for `.R` files:
+  - `01`-`04` files are processing files that generate derived data files for `data/derived`
+  - `f` denotes figure, `t` denotes table, `sf` supplementary figure
+  - the number corresponds to the figure or table number in the manuscript
+  - the text following corresponds to the name of the figure or table generated in `figures`
 
 ## Required R libraries (all on CRAN):
 
--   `tidyverse`
--   `lubridate` (if not included in `tidyverse` installation)
--   `broom`
--   `grid`
--   `gridExtra`
--   `gtable`
--   `gt`
--   `sf`
--   `jsonlite`
--   `lutz`
--   `neonSoilFlux`
--   `neonUtilities`
+- `tidyverse`
+- `lubridate` (if not included in `tidyverse` installation)
+- `broom`
+- `grid`
+- `gridExtra`
+- `gtable`
+- `gt`
+- `sf`
+- `jsonlite`
+- `lutz`
+- `neonSoilFlux`
+- `neonUtilities`
 
-To reproduce manuscript figures and tables, source the following file: `source('00-start-here.R')`
+## Building the Manuscript
+
+### Using the Makefile (Recommended)
+
+A `Makefile` is provided to automate the entire workflow from data processing to PDF generation. This is the recommended approach for building the manuscript.
+
+**Prerequisites:**
+
+- R with required packages (see list below)
+- Quarto for PDF rendering
+- LaTeX for PDF generation
+
+**Quick Start:**
+
+```bash
+# Build both main manuscript and supplemental PDFs
+make all
+
+# Build only the main manuscript
+make main
+
+# Build only the supplemental material
+make supp
+
+# Clean all generated files
+make clean
+
+# Get help on all available targets
+make help
+```
 
 **NOTE:** Due to size limitations in the manuscript submission portal, we could not include all of the individually downloaded files from `neonSoilFlux` that would be found in `data/raw/flux-data`. We include the aggregated `.Rda` file (`data/derived/all-year-flux-results.Rda`).
 
