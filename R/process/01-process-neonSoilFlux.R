@@ -131,8 +131,39 @@ for (i in seq_along(flux_files)) {
   site_name <- str_extract(flux_files[[i]],
     pattern = "(?<=out-flux-)[:alpha:]{4}"
   )
-  model_fluxes_mq[[i]] <- out_fluxes$millington_quirk |> mutate(site = site_name)
-  model_fluxes_marshall[[i]] <- out_fluxes$marshall |> mutate(site = site_name)
+
+  # We need to do some extraction / data wrangling to get the MQ and Marshall fluxes as separate lists.  This is some crazy tidyverse wrangling.
+
+  nested_flux_diffus <- out_fluxes |>
+    mutate(joined_data = map2(.x=flux_compute,.y=surface_diffusivity,.f=~left_join(.x,.y,by="diffus_method"))) |>
+    select(-surface_diffusivity,-flux_compute) |>
+    unnest(cols=c(joined_data)) |>
+    group_by(diffus_method) |>
+    nest() |>
+    mutate(data = map(data,.f=~(.x |>
+                                  select(-gradient,-gradient_err) |>
+                                  group_by(startDateTime,horizontalPosition,soilCO2concentrationMeanQF,VSWCMeanQF,soilTempMeanQF,staPresMeanQF,diffusivity,diffusExpUncert,zOffset) |>
+                                  nest() |>
+                                  rename(flux_compute = data) |>
+                                  ungroup() |>
+                                  group_by(startDateTime,horizontalPosition,flux_compute,soilCO2concentrationMeanQF,VSWCMeanQF,soilTempMeanQF,staPresMeanQF) |>
+                                  nest() |>
+                                  rename(diffusivity = data) |>
+                                  ungroup() |>
+                                  relocate(startDateTime,horizontalPosition,flux_compute,diffusivity,soilCO2concentrationMeanQF,VSWCMeanQF,soilTempMeanQF,staPresMeanQF)
+
+    )))
+
+  # Assign each of the fluxes to a different data frame
+  model_fluxes_mq[[i]] <- nested_flux_diffus |>
+    filter(diffus_method=="Millington-Quirk") |>
+    pull(data) |>
+    mutate(site = site_name)
+
+  model_fluxes_marshall[[i]] <- nested_flux_diffus |>
+    filter(diffus_method=="Marshall") |>
+    pull(data) |>
+    mutate(site = site_name)
 }
 
 ### Do the same for the env values
