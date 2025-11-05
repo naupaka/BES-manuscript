@@ -194,7 +194,6 @@ help:
 	@echo "  check-deps   - Check if required dependencies are installed"
 	@echo "  install-r-packages - Install required R packages"
 	@echo "  dev-setup    - Check dependencies and install R packages"
-	@echo "  watch        - Watch for changes and rebuild (requires entr)"
 	@echo "  help         - Show this help message"
 	@echo ""
 	@echo "Individual data files:"
@@ -240,10 +239,3 @@ install-r-packages:
 .PHONY: dev-setup
 dev-setup: check-deps install-r-packages
 	@echo "Development environment setup complete"
-
-# Watch for changes and rebuild (requires entr or similar)
-.PHONY: watch
-watch:
-	@echo "Watching for changes... (requires 'entr' to be installed)"
-	@echo "Press Ctrl+C to stop"
-	find . -name "*.R" -o -name "*.qmd" -o -name "*.yml" | entr -c make all
