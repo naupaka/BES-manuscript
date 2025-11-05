@@ -54,50 +54,60 @@ for (i in 1:nrow(tot_places)) {
   # Name current month (you will need to adjust this on your computer)
   curr_month <- tot_places$dates[[i]]
   curr_site_name <- tot_places$site_name[[i]]
-  env_name <- paste0("data/raw/flux-data/env-meas-", curr_site_name, "-", curr_month, ".Rda")
-  flux_name <- paste0("data/raw/flux-data/out-flux-", curr_site_name, "-", curr_month, ".Rda")
+  env_name <- paste0("data/raw/flux-data/env-meas-",
+                     curr_site_name, "-", curr_month, ".Rda")
+  flux_name <- paste0("data/raw/flux-data/out-flux-",
+                      curr_site_name, "-", curr_month, ".Rda")
 
   # Record where the index is so we don't need to guess
-  print(paste("Current vector index:", i))
-  print(env_name)
-  print(flux_name)
+  cat("Current vector index:", i, "\n")
+  cat("Looking for exisiting files. Otherwise, will download and calculate.\n")
 
   if (all(file.exists(c(env_name, flux_name)))) {
-    print("Files exist: already downloaded and processed")
+    cat("Found", env_name, "\n")
+    cat("Found", flux_name, "\n")
+    cat("NEON data and calculated flux files exist: already done!\n")
     next
   }
 
   # Process
-  try( # Put this as a try loop to do error handling
-    # NOTE: you may need to say y/n at several points here
-    {
-      print(paste("Aquiring NEON data for", curr_site_name, curr_month))
+  # Put this as a try loop to do error handling
+  # NOTE: you may need to say y/n at several points here
+
+  if (!file.exists(env_name)) {
+    cat("Attempting to acquire NEON data for", curr_site_name, curr_month, "\n")
+    tryCatch({
       out_env_data <- acquire_neon_data(
         site_name = curr_site_name,
         download_date = curr_month,
-        provisional = TRUE
-      )
+        provisional = TRUE)
 
       site_data <- out_env_data$site_data
       site_megapit <- out_env_data$site_megapit
 
-      print(paste("Saving", env_name))
+      cat("Saving", env_name, "\n")
       save(site_data, site_megapit, file = env_name)
+    },
+    error = function(e) {
+      message("Error downloading", env_name, ":", e$message)
+    })
+  } else {
+    cat("Found", env_name, "\n")
+    load(env_name)
+  }
 
-      print(paste("Calculating fluxes for", curr_site_name, curr_month))
-      out_fluxes <- compute_neon_flux(
-        input_site_env = out_env_data$site_data,
-        input_site_megapit = out_env_data$site_megapit
-      )
-
-      print(paste("Saving", flux_name))
-      save(out_fluxes, file = flux_name)
-    }
+  cat("Calculating fluxes for", curr_site_name, curr_month, "\n")
+  out_fluxes <- compute_neon_flux(
+    input_site_env = site_data,
+    input_site_megapit = site_megapit
   )
+
+  cat("Saving", flux_name, "\n")
+  save(out_fluxes, file = flux_name)
 }
 
 env_names <- paste0("data/raw/flux-data/env-meas-",
-                   tot_places$site_name, "-", tot_places$dates, ".Rda")
+                    tot_places$site_name, "-", tot_places$dates, ".Rda")
 flux_names <- paste0("data/raw/flux-data/out-flux-",
                     tot_places$site_name, "-", tot_places$dates, ".Rda")
 
