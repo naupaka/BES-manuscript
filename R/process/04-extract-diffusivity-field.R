@@ -30,7 +30,9 @@ extract_gradient_diffusivity <- function(env_file_name) {
     select(startDateTime, horizontalPosition, diffusMeanQF)
 
   flux_out <- all_measures |> # first filter out any bad measurements
-    dplyr::mutate(flux_intro = purrr::map2(.x = .data[["env_data"]], .y = .data[["press_data"]], .f = function(.x, .y) {
+    dplyr::mutate(flux_intro = purrr::map2(.x = .data[["env_data"]],
+                                           .y = .data[["press_data"]],
+                                           .f = function(.x, .y) {
       c <- neonSoilFlux::co2_to_umol(
         .x$soilTempMean,
         .y$staPresMean,
@@ -75,7 +77,10 @@ extract_gradient_diffusivity <- function(env_file_name) {
 }
 
 # Only take out files that happen while we are there
-env_files <- list.files(path = "data/raw/flux-data", pattern = "env-meas-", full.names = TRUE) |> str_subset(pattern = "2022-05|2022-06|2024-05|2024-06")
+env_files <- list.files(path = "data/raw/flux-data",
+                        pattern = "env-meas-",
+                        full.names = TRUE) |>
+  str_subset(pattern = "2022-05|2022-06|2024-05|2024-06")
 
 # Where we store the env values, bulk density, and the rock volume values
 env_values <- vector(mode = "list", length = length(env_files))
