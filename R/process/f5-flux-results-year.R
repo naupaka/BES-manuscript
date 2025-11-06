@@ -139,4 +139,4 @@ out_big <- arrangeGrob(g1, g2, g3, g4, g5, g6,
 )
 
 ### Now let's get these all plotted!
-ggsave("figures/flux-results-year.png", plot = out_big, width = 7, height = 6)
+ggsave("figures/flux-results-year-test.png", plot = out_big, width = 7, height = 6)

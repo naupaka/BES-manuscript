@@ -265,7 +265,7 @@ g_bounds <- arrangeGrob(g1b, g2b,
 
 g_all <- arrangeGrob(g_snr, g_bounds, ncol = 1)
 
-png("figures/uncertainty-stats.png",
+png("figures/uncertainty-stats-test.png",
     width = 18,
     height = 6,
     units = "in",

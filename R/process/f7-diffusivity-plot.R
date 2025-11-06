@@ -51,11 +51,23 @@ standardize_timestamps <- function(input_model_data, input_field_data) {
   dates <- tibble(start_times, intervals)
 
   # Create a vector of LICOR reported times - we shift it by a the lag to see
-  measurement_times <- input_field_data$startDateTime
+  measurement_times <- tibble(
+    measured_times = input_field_data$startDateTime
+  )
+
+  # Filter on intervals where there is a measurement
+  find_times <- measurement_times  |>
+    mutate(in_interval = map(measured_times, ~(.x %within% intervals)),
+           n_obs = map_int(in_interval,sum) ) |>
+    filter(n_obs > 0) |>
+    select(-n_obs)
 
   # Figure out which NEON intervals the LICOR measured, adding it to the field data
   my_intervals <- input_field_data |>
-    mutate(ival = intervals[map_int(measurement_times, ~ which(.x %within% intervals))])
+    inner_join(find_times,by=c("startDateTime"="measured_times")) |>
+    mutate(ival_idx = map_int(.x=in_interval,.f=~which(.x) ),
+           ival = intervals[ival_idx]) |>
+    select(-in_interval,ival_idx)
 
   # Join the intervals to the NEON dates so we have a NEON timestamp for each LICOR
   NEON_field_timestamp <- my_intervals |>
@@ -88,16 +100,31 @@ standardize_timestamps <- function(input_model_data, input_field_data) {
 # Collect all of the field and computed flux data within the same time interval
 field_stats_data <- combined_data |>
   mutate(
-    diffusivity_mq = map(.x = model_data_mq, .f = ~ (.x |> select(startDateTime, diffusivity) |> unnest(cols = c("diffusivity")) |> ungroup() |>
-      mutate(method = "Millington-\nQuirk") |> select(diffusivity, method))),
-    diffusivity_marshall = map(.x = model_data_marshall, .f = ~ (.x |> select(startDateTime, diffusivity) |> unnest(cols = c("diffusivity")) |> ungroup() |>
-      mutate(method = "Marshall") |> select(diffusivity, method))),
-    diffusivity_field = map2(.x = neon_diffusivity_gradient, .y = combined_field, .f = ~ standardize_timestamps(.x, .y) |>
-      filter(diffusivity_field > 0) |>
-      mutate(method = "Field\nestimated") |>
-      select(diffusivity_field, method) |>
-      rename(diffusivity = diffusivity_field))
-  ) |>
+    diffusivity_mq = map(.x = model_data_mq, .f = ~ (
+      .x |>
+        select(startDateTime, diffusivity) |>
+        unnest(cols = c("diffusivity")) |>
+        ungroup() |>
+      mutate(method = "Millington-\nQuirk") |>
+        select(diffusivity, method)
+      )),
+    diffusivity_marshall = map(.x = model_data_marshall, .f = ~ (
+      .x |>
+        select(startDateTime, diffusivity) |>
+        unnest(cols = c("diffusivity")) |>
+        ungroup() |>
+      mutate(method = "Marshall") |>
+        select(diffusivity, method))),
+    diffusivity_field = map2(.x = neon_diffusivity_gradient,
+                             .y = combined_field,
+                             .f = ~(
+                               standardize_timestamps(.x, .y) |>
+                                 filter(diffusivity_field > 0) |>
+                                 mutate(method = "Field\nestimated") |>
+                                 select(diffusivity_field, method) |>
+                                 rename(diffusivity = diffusivity_field)
+                               )
+  ) ) |>
   select(site, sampling_location, diffusivity_mq, diffusivity_marshall, diffusivity_field)
 
 # Now we can be ready to generate the boxplot!
@@ -127,5 +154,5 @@ diffusivity_plot <- field_stats_data |>
   )
 
 # Save the diffusivity plot to the associated file
-ggsave(filename = "figures/diffusivity-plot.png",
+ggsave(filename = "figures/diffusivity-plot-test.png",
        plot = diffusivity_plot, width = 16, height = 4)
