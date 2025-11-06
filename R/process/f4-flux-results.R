@@ -422,7 +422,7 @@ out_big <- arrangeGrob(
 )
 
 ggsave(
-  "figures/flux-results.png",
+  "figures/flux-results-test.png",
   plot = out_big,
   width = 14,
   height = 8
