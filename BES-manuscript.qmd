@@ -136,7 +136,7 @@ Key objectives of this study are to:
 
 ### Focal NEON Sites
 
-In order to acquire field data to validate model predictions of flux, we selected six terrestrial NEON sites for analysis. We conducted roughly week-long field measurement campaigns at these sites, which span a range of environmental gradients and terrestrial domains (@tbl-neon-sites). SJER, SRER, and WREF were visited during May and June of 2022, and WOOD, KONZ, and UNDE during May and June of 2024.
+In order to acquire field data to validate model predictions of flux, we selected six terrestrial NEON sites for analysis. We conducted roughly week-long field measurement campaigns at these sites, which span a range of environmental gradients and terrestrial domains (@tbl-neon-sites). SJER, SRER, and WREF were visited during May and June of 2022, and WOOD, KONZ, and UNDE during May and June of 2024. Permits or waivers were sought and approved prior to field work at all six sites. In 2022, research activities were conducted whole or in part on the Wind River Experimental Forest within the Gifford Pinchot National Forest. No permit was required for this work. Approval for research at San Joaquin Experimental Range was granted by Dr. Angela White in May 2022 and for research at Santa Rita Experimental Range by Dr. Mitch McClaran in May 2022. In 2024, permits were received for work at WOOD (Chase Lake WMD; permit number 62515-24-020), KONZ (Konza Prairie Biological Station; permit number 766), and UNDE (University of Notre Dame Environmental Research Center; permit number UNDERC-2024-5).
 
 ### Soil collar placement
 

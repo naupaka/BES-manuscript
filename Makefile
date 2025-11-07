@@ -9,8 +9,11 @@ SUPP_PDF := BES-manuscript-supp.pdf
 MAIN_TEX := BES-manuscript.tex
 SUPP_TEX := BES-manuscript-supp.tex
 FIGURES_DIR := figures
-DATA_DIR := data/derived
 FUNCTIONS_DIR := R/functions
+DATA_DIR := data/derived
+
+# Environmental and flux data files
+ENV_FLUX_DATA := $(wildcard data/raw/flux-data/*.Rda)
 
 # Default commit for latexdiff (can be overridden)
 DIFF_COMMIT ?= HEAD~1
@@ -124,6 +127,9 @@ $(FIGURES_DIR)/uncertainty-stats.png: $(DATA_COMBINED) $(DATA_FIELD_INFO) $(R_PR
 .PHONY: data
 data: $(DERIVED_DATA)
 
+.PHONY: env-and-flux-data
+env-and-flux-data: $(ENV_FLUX_DATA)
+
 .PHONY: figures
 figures: $(FIGURES)
 
@@ -164,6 +170,15 @@ clean-pdf:
 	rm -f $(MAIN_PDF) $(SUPP_PDF)
 	rm -f $(MAIN_QMD:.qmd=.tex) $(SUPP_QMD:.qmd=.tex)
 
+.PHONY: deep-clean
+deep-clean:
+	@echo "Performing deep clean of all generated files including NEON downloads and calculated fluxes..."
+	rm -f $(MAIN_PDF) $(SUPP_PDF)
+	rm -f $(MAIN_QMD:.qmd=.tex) $(SUPP_QMD:.qmd=.tex)
+	rm -f $(FIGURES)
+	rm -f $(DERIVED_DATA)
+	rm -f $(ENV_FLUX_DATA)
+
 # Force rebuild targets
 .PHONY: force-all
 force-all: clean all
@@ -178,23 +193,24 @@ force-supp: clean-pdf supp
 .PHONY: help
 help:
 	@echo "Available targets:"
-	@echo "  all          - Build both main manuscript and supplemental PDFs (default)"
-	@echo "  main         - Build main manuscript PDF only"
-	@echo "  supp         - Build supplemental PDF only"
-	@echo "  data         - Generate all derived data files"
-	@echo "  figures      - Generate all figure files"
-	@echo "  diff         - Create latexdiff PDF (default: against HEAD~1)"
-	@echo "  clean        - Remove all generated files"
+	@echo "  all           - Build both main manuscript and supplemental PDFs (default)"
+	@echo "  main          - Build main manuscript PDF only"
+	@echo "  supp          - Build supplemental PDF only"
+	@echo "  data          - Generate all derived data files"
+	@echo "  figures       - Generate all figure files"
+	@echo "  diff          - Create latexdiff PDF (default: against HEAD~1)"
+	@echo "  clean         - Remove all generated files"
 	@echo "  clean-figures - Remove generated figure files"
-	@echo "  clean-data   - Remove generated data files"
-	@echo "  clean-pdf    - Remove generated PDF files"
-	@echo "  force-all    - Clean and rebuild everything"
-	@echo "  force-main   - Clean and rebuild main manuscript"
-	@echo "  force-supp   - Clean and rebuild supplemental material"
-	@echo "  check-deps   - Check if required dependencies are installed"
+	@echo "  clean-data    - Remove generated data files"
+	@echo "  clean-pdf     - Remove generated PDF files"
+	@echo "  deep-clean    - Remove all generated files including downloaded NEON data and calculated fluxes"
+	@echo "  force-all     - Clean and rebuild everything"
+	@echo "  force-main    - Clean and rebuild main manuscript"
+	@echo "  force-supp    - Clean and rebuild supplemental material"
+	@echo "  check-deps    - Check if required dependencies are installed"
 	@echo "  install-r-packages - Install required R packages"
-	@echo "  dev-setup    - Check dependencies and install R packages"
-	@echo "  help         - Show this help message"
+	@echo "  dev-setup     - Check dependencies and install R packages"
+	@echo "  help          - Show this help message"
 	@echo ""
 	@echo "Individual data files:"
 	@echo "  $(DATA_ALL_YEAR)"
