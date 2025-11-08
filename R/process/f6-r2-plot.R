@@ -240,5 +240,5 @@ r2_plot <- field_stats_data_0 |>
   )
 
 # Save the table to a file for use in the manuscript
-ggsave("figures/r2-plot-test.png",
+ggsave("figures/r2-plot.png",
        plot = r2_plot, width = 10, height = 14)

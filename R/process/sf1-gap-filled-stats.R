@@ -187,7 +187,7 @@ g <- cbind(g1, g2, size = "first")
 # g$heights <- unit.pmax(g1$heights, g2$heights)
 
 # Save the figure
-png("figures/gap-filled-stats-test.png",
+png("figures/gap-filled-stats.png",
     width = 18, height = 7, units = "in", res = 300)
 grid::grid.draw(g)
 dev.off()

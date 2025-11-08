@@ -154,5 +154,5 @@ diffusivity_plot <- field_stats_data |>
   )
 
 # Save the diffusivity plot to the associated file
-ggsave(filename = "figures/diffusivity-plot-test.png",
+ggsave(filename = "figures/diffusivity-plot.png",
        plot = diffusivity_plot, width = 16, height = 4)

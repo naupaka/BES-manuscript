@@ -1,8 +1,5 @@
 ### Purpose: script file to acquire NEON data and compute soil fluxes using neonSoilFlux.
 ### NOTE: this code may take a while to run.
-# Due to size limitations in the manuscript submission portal,
-# we could not include all of the individually downloaded files from
-# neonSoilFlux.  We include the aggregated .Rda file.
 
 # Load libraries
 library(neonSoilFlux)
@@ -32,7 +29,7 @@ site_name_2024 <- c("UNDE", "WOOD", "KONZ")
 dates_2024 <- c(
   "2023-09", "2023-10", "2023-11",
   "2023-12", "2024-01", "2024-02",
-  "2024-03", "2024-04", "2024-05",
+  "2024-03", "2024-04","2024-05",
   "2024-06", "2024-07", "2024-08")
 
 # Expand the dates vector
