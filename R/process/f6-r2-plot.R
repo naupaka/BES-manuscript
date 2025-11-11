@@ -203,8 +203,8 @@ r2_plot <- field_stats_data_0 |>
   ggplot(aes(x = flux_field, y = flux)) +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
   geom_point(aes(color = site, shape = site, fill = site), size = 6) +
-  ylim(c(0, 18)) +
-  xlim(c(0, 18)) +
+#  ylim(c(0, 18)) +
+#  xlim(c(0, 18)) +
   theme_bw() +
   theme(
     legend.title = element_text(size = 18),
