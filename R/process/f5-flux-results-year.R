@@ -75,7 +75,6 @@ plot_daily_flux <- function(site_name, plot_legend, x_axis, y_axis) {
       strip.text = element_text(size = 14)
     ) +
     ggtitle(site_name) +
-    ylim(c(0, 20)) +
     scale_color_manual(values = c(
       "LICOR" = "#E69F00", # Orange for Field Data
       "Marshall" = "#009E73", # Teal for Method 1
