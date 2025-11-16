@@ -6,6 +6,7 @@ library(tidyverse)
 library(lubridate)
 library(broom)
 library(gridExtra)
+library(scales)
 
 # Load up the data used for plot generation
 load("data/derived/all-year-flux-results.Rda")
@@ -81,6 +82,12 @@ plot_daily_flux <- function(site_name, plot_legend, x_axis, y_axis) {
       "Millington-Quirk" = "#CC79A7"
     )) +
     guides(linetype = "none")
+
+  # Apply special y-axis limits for UNDE site only
+  if (site_name == "UNDE") {
+    base_plot <- base_plot +
+      scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2))
+  }
 
   if (plot_legend) {
     base_plot <- base_plot +

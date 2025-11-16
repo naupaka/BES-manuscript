@@ -11,7 +11,8 @@ load("data/derived/combined-field-data.Rda") # field_data_joined
 # Prevent plotting to pdf if not in interactive mode
 if (!interactive()) grDevices::pdf(NULL)
 
-# Compute some summary stats.  Organize by the temperature - this is how we make sure each site is ordered in our plots.
+# Compute some summary stats.  Organize by the temperature
+# this is how we make sure each site is ordered in our plots.
 summary_env_data <- field_data_joined |>
   select(site, field_env) |>
   unnest(cols = c(field_env)) |>
@@ -25,12 +26,13 @@ summary_env_data <- field_data_joined |>
 # Determine when we were at the sites
 field_times <- field_data_joined |>
   mutate(
-    start_date = map(.x = field_env, .f = ~ (.x |> pull(startDateTime) |>
-      min() |>
-      floor_date(unit = "30 minutes"))),
+    start_date = map(.x = field_env,
+                     .f = ~ (.x |> pull(startDateTime) |>
+                               min() |>
+                               floor_date(unit = "30 minutes"))),
     end_date = map(.x = field_env, .f = ~ (.x |> pull(startDateTime) |>
-      max() |>
-      ceiling_date(unit = "30 minutes")))
+                                             max() |>
+                                             ceiling_date(unit = "30 minutes")))
   ) |>
   select(site, sampling_location, start_date, end_date) |>
   unnest(cols = c("start_date", "end_date")) |>
@@ -47,7 +49,7 @@ env_values <- vector(mode = "list", length = length(env_files))
 for (i in seq_along(env_values)) {
   load(env_files[[i]])
   site_name <- str_extract(env_files[[i]],
-    pattern = "(?<=env-meas-)[:alpha:]{4}"
+                           pattern = "(?<=env-meas-)[:alpha:]{4}"
   )
 
   env_values[[i]] <- site_data |> mutate(site = site_name)
@@ -88,15 +90,16 @@ compute_bad_vals <- function(input_site_data) {
   input_site_data |>
     group_by(horizontalPosition, startDateTime) |>
     nest() |>
-    mutate(check = map(.x = data, .f = ~ (.x |> select(ends_with("FinalQF")) |>
-      rename(vals = 1) |>
-      summarize(
-        bad_vals = sum(vals != 0),
-        good_vals = sum(vals == 0),
-        tot_vals = n(),
-        prop_bad = bad_vals / tot_vals,
-        prop_good = good_vals / tot_vals
-      )))) |>
+    mutate(check = map(.x = data,
+                       .f = ~ (.x |> select(ends_with("FinalQF")) |>
+                                 rename(vals = 1) |>
+                                 summarize(
+                                   bad_vals = sum(vals != 0),
+                                   good_vals = sum(vals == 0),
+                                   tot_vals = n(),
+                                   prop_bad = bad_vals / tot_vals,
+                                   prop_good = good_vals / tot_vals
+                                 )))) |>
     unnest(cols = c("check")) |>
     ungroup() |>
     select(startDateTime, good_vals, bad_vals, tot_vals, prop_bad,prop_good)
@@ -109,16 +112,16 @@ prop_bad <- gap_fill_numbers |>
   unnest(cols = c(prop)) |>
   ungroup()
 
-
-# This function counts the proportion of a measurement that has 2 or more good values.  If it the measurement is pressure, it has to be more than 1 (there is only 1 pressure measurement)
-
-count_bad_prop <- function(measurement,good_vals) {
+# This function counts the proportion of a measurement that has 2 or
+# more good values.  If it the measurement is pressure, it has to be more
+# than 1 (there is only 1 pressure measurement)
+count_bad_prop <- function(measurement, good_vals) {
 
   n_tot <- length(good_vals)
   if(measurement == "staPres") {
-    bad_prop = 1-sum(good_vals >= 1) / n_tot
+    bad_prop = 1 - sum(good_vals >= 1) / n_tot
   } else {
-    bad_prop = 1-sum(good_vals >= 2) / n_tot
+    bad_prop = 1 - sum(good_vals >= 2) / n_tot
   }
 
   return(bad_prop)
@@ -128,13 +131,11 @@ count_bad_prop <- function(measurement,good_vals) {
 how_many_bad <- function(input_data) {
 
   # We need to exclude staPres because there is only 1 measurement anyways
-
   input_data |>
-  mutate(bad_measure = if_else(measurement == "staPres",good_vals < 1,good_vals < 2 )) |>
+    mutate(bad_measure = if_else(measurement == "staPres",good_vals < 1,good_vals < 2 )) |>
     pull(bad_measure) |> sum()
 
 }
-
 
 meas_dist <- prop_bad |>
   group_by(site, startDateTime) |>
@@ -148,9 +149,6 @@ meas_dist <- prop_bad |>
   right_join(expand_grid(site = unique(prop_bad$site), tot = 0:4),
              by = c("site", "tot"), ) |>
   mutate(n = if_else(is.na(n), 0, n))
-
-
-
 
 # Make the plots
 p1 <- prop_bad |>
@@ -186,7 +184,8 @@ p1 <- prop_bad |>
       "soilTemp" = bquote(~ T[S] ~ "("^o * C * ")"),
       "staPres" = "P (kPa)"
     )
-  )
+  ) +
+  scale_y_continuous(limits = c(0, 1), n.breaks = 5)
 
 p2 <- meas_dist |>
   ungroup() |>
