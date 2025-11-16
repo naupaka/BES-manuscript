@@ -1,0 +1,292 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\usepackage{lineno,setspace}
+\linenumbers
+\doublespacing
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={neonSoilFlux: An R Package for Continuous Sensor-Based Estimation of Soil CO2 Fluxes},
+  pdfauthor={, , , , , , , , , , , and },
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{\texttt{neonSoilFlux}: An R Package for Continuous Sensor-Based
+Estimation of Soil CO\textsubscript{2} Fluxes}
+\author{John Zobitz\textsuperscript{1} \and Edward
+Ayres\textsuperscript{2} \and Zoey Werbin\textsuperscript{3} \and Ridwan
+Abdi\textsuperscript{1} \and Natalie
+Ashburner-Wright\textsuperscript{5} \and Lillian
+Brown\textsuperscript{5} \and Ryan
+Frink-Sobierajski\textsuperscript{5} \and Lajntxiag
+Lee\textsuperscript{1} \and Dijonë
+Mehmeti\textsuperscript{1} \and Christina
+Tran\textsuperscript{5} \and Ly Xiong\textsuperscript{1} \and Naupaka
+Zimmerman\textsuperscript{4,5}}
+\date{}
+\begin{document}
+\maketitle
+
+
+\textsuperscript{1} Augsburg University, 2211 Riverside Avenue,
+Minneapolis, MN 55454\\
+\textsuperscript{2} National Ecological Observatory Network, Battelle,
+1685 38th Street, Suite 100, Boulder, CO 80301\\
+\textsuperscript{3} Boston University, 5 Cummington Street, Boston, MA
+02215\\
+\textsuperscript{4} University of Kansas, 1450 Jayhawk Boulevard,
+Lawrence, KS 66045\\
+\textsuperscript{5} University of San Francisco, 2130 Fulton Street, San
+Francisco, CA 94117
+
+\section*{Acknowledgments}\label{acknowledgments}
+\addcontentsline{toc}{section}{Acknowledgments}
+
+John Zobitz acknowledges Kathleen O'Rourke for code development. Naupaka
+Zimmerman thanks technical staff at USF for support with field gear
+assembly and shipping. We thank the NEON field staff and assignable
+assets teams for facilitating each of the six NEON site visits. We are
+grateful to LI-COR technical staff for helpful discussions about optimal
+soil chamber sampling methods. This work was supported by NSF DEB grant
+\#2017829 awarded to John Zobitz, and NSF DEB grant \#2017860 awarded to
+Naupaka Zimmerman. This material is based in part upon work supported by
+the National Ecological Observatory Network (NEON), a program sponsored
+by the U.S. National Science Foundation (NSF) and operated under
+cooperative agreement by Battelle. We also thank the reviewers and
+subject editor for their constructive feedback.
+
+\section*{Conflict of Interest
+Statements}\label{conflict-of-interest-statements}
+\addcontentsline{toc}{section}{Conflict of Interest Statements}
+
+None of the authors have a financial, personal, or professional conflict
+of interest related to this work.
+
+\section*{Author Contributions}\label{author-contributions}
+\addcontentsline{toc}{section}{Author Contributions}
+
+Conceptualization: John Zobitz, Naupaka Zimmerman; Methodology: Edward
+Ayres, John Zobitz, Naupaka Zimmerman; Software: John Zobitz, Naupaka
+Zimmerman, Zoey Werbin, Edward Ayres, Dijonë Mehmeti, Ridwan Abdi, Ly
+Xiong, Lajntxiag Lee; Validation: John Zobitz, Naupaka Zimmerman; Formal
+Analysis: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi,
+Ly Xiong, Lajntxiag Lee; Investigation: John Zobitz, Naupaka Zimmerman,
+Ryan Frink-Sobierajski, Christina Tran, Natalie Ashburner-Wright,
+Lillian Brown; Resources: John Zobitz, Naupaka Zimmerman; Data curation:
+John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ly Xiong; Writing --
+original draft: John Zobitz, Naupaka Zimmerman; Writing -- review and
+editing: John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres,
+Christina Tran, Dijonë Mehmeti, Ly Xiong; Visualization: John Zobitz,
+Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong; Supervision:
+John Zobitz, Naupaka Zimmerman; Project Administration: John Zobitz,
+Naupaka Zimmerman; Funding Acquisition: John Zobitz, Naupaka Zimmerman.
+
+\section*{Data Availability}\label{data-availability}
+\addcontentsline{toc}{section}{Data Availability}
+
+Data available via \url{https://doi.org/10.5281/zenodo.17516319} (Zobitz
+\& Zimmerman, 2025). Field-collected data, \texttt{neonSoilFlux}
+calculated outputs, and manuscript-generating code are provided within
+this repository.
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-zobitzSupportingCodeData2025}
+Zobitz, J., \& Zimmerman, N. (2025). \emph{Supporting {Code} and {Data}
+for {neonSoilFlux}: {An R Package} for {Continuous Sensor-Based
+Estimation} of {Soil CO2 Fluxes}}. Zenodo.
+\url{https://doi.org/10.5281/zenodo.17516320}
+
+\end{CSLReferences}
+
+
+
+
+\end{document}

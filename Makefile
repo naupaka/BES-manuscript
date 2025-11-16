@@ -4,10 +4,13 @@
 # Variables
 MAIN_QMD := BES-manuscript.qmd
 SUPP_QMD := BES-manuscript-supp.qmd
+TITLE_QMD := BES-manuscript-title-page.qmd
 MAIN_PDF := BES-manuscript.pdf
 SUPP_PDF := BES-manuscript-supp.pdf
+TITLE_PDF := BES-manuscript-title-page.pdf
 MAIN_TEX := BES-manuscript.tex
 SUPP_TEX := BES-manuscript-supp.tex
+TITLE_TEX := BES-manuscript-title-page.tex
 FIGURES_DIR := figures
 FUNCTIONS_DIR := R/functions
 DATA_DIR := data/derived
@@ -58,19 +61,29 @@ FIGURES := $(FIGURES_DIR)/diffusivity-plot.png \
 
 # Default target
 .PHONY: all
-all: $(MAIN_PDF) $(SUPP_PDF)
+all: $(MAIN_PDF) $(SUPP_PDF) $(TITLE_PDF)
+
+# Title page PDF
+$(TITLE_PDF): $(TITLE_QMD)
+	@echo "Rendering title page..."
+	quarto render $(TITLE_QMD)
 
 # Main manuscript PDF
 $(MAIN_PDF): $(MAIN_QMD) figures/collar-images.jpeg figures/model-diagram.pdf figures/neonSoilFluxOutline.png $(FIGURES_DIR)/diffusivity-plot.png $(FIGURES_DIR)/flux-results-year.png $(FIGURES_DIR)/flux-results.png $(FIGURES_DIR)/r2-plot.png $(DATA_LICOR) bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering main manuscript..."
 	quarto render $(MAIN_QMD)
 
-# Generate .tex file if it doesn't exist
+# Generate title .tex file if it doesn't exist
+$(TITLE_TEX): $(TITLE_QMD)
+	@echo "Rendering title page to generate .tex file..."
+	quarto render $(TITLE_QMD)
+
+# Generate manuscript .tex file if it doesn't exist
 $(MAIN_TEX): $(MAIN_QMD)
 	@echo "Rendering manuscript to generate .tex file..."
 	quarto render $(MAIN_QMD)
 
-# Generate .tex file if it doesn't exist
+# Generate supplement .tex file if it doesn't exist
 $(SUPP_TEX): $(SUPP_QMD)
 	@echo "Rendering supplemental material to generate .tex file..."
 	quarto render $(SUPP_QMD)

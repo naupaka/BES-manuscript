@@ -1,0 +1,92 @@
+---
+title: "`neonSoilFlux`: An R Package for Continuous Sensor-Based Estimation of Soil CO~2~ Fluxes"
+editor: source
+author: 
+  - name: John Zobitz
+    orcid: 0000-0002-1830-143X
+    email: zobitz@augsburg.edu
+    affiliations:
+      - ref: augsburg 
+  - name: Edward Ayres
+    orcid: 0000-0001-5190-258X
+    affiliations:
+      - ref: neon 
+  - name: Zoey Werbin
+    orcid: 0000-0003-2927-2838
+    affiliations:
+      - ref: bu
+  - name: Ridwan Abdi
+    affiliations:
+      - ref: augsburg 
+  - name: Natalie Ashburner-Wright
+    affiliations:
+      - ref: usfca
+  - name: Lillian Brown
+    affiliations:
+      - ref: usfca 
+  - name: Ryan Frink-Sobierajski
+    affiliations:
+      - ref: usfca
+  - name: Lajntxiag Lee
+    affiliations:
+      - ref: augsburg 
+  - name: Dijonë Mehmeti
+    affiliations:
+      - ref: augsburg 
+  - name: Christina Tran
+    affiliations:
+      - ref: usfca 
+  - name: Ly Xiong
+    affiliations:
+      - ref: augsburg 
+  - name: Naupaka Zimmerman
+    orcid: 0000-0003-2168-6390
+    email: nbzimmerman@ku.edu
+    affiliations:
+      - ref: ku
+      - ref: usfca 
+
+affiliations:
+  - id: augsburg
+    name: Augsburg University, 2211 Riverside Avenue, Minneapolis, MN 55454
+  - id: neon
+    name: National Ecological Observatory Network, Battelle, 1685 38th Street, Suite 100, Boulder, CO 80301
+  - id: bu
+    name: Boston University, 5 Cummington Street, Boston, MA 02215
+  - id: ku
+    name: University of Kansas, 1450 Jayhawk Boulevard, Lawrence, KS 66045
+  - id: usfca
+    name: University of San Francisco, 2130 Fulton Street, San Francisco, CA 94117
+
+    
+format:
+  pdf:
+    include-in-header:
+      text: |
+        \usepackage{lineno,setspace}
+        \linenumbers
+        \doublespacing
+    keep-tex: true
+
+filters:
+  - authors-block
+
+number-sections: true
+bibliography: bes-bibliography.bib
+csl: methods-in-ecology-and-evolution.csl
+---
+
+# Acknowledgments {.unnumbered}
+
+John Zobitz acknowledges Kathleen O'Rourke for code development. Naupaka Zimmerman thanks technical staff at USF for support with field gear assembly and shipping. We thank the NEON field staff and assignable assets teams for facilitating each of the six NEON site visits. We are grateful to LI-COR technical staff for helpful discussions about optimal soil chamber sampling methods. This work was supported by NSF DEB grant #2017829 awarded to John Zobitz, and NSF DEB grant #2017860 awarded to Naupaka Zimmerman. This material is based in part upon work supported by the National Ecological Observatory Network (NEON), a program sponsored by the U.S. National Science Foundation (NSF) and operated under cooperative agreement by Battelle. We also thank the reviewers and subject editor for their constructive feedback.
+
+# Conflict of Interest Statements {.unnumbered}
+
+None of the authors have a financial, personal, or professional conflict of interest related to this work.
+
+# Author Contributions {.unnumbered}
+
+Conceptualization: John Zobitz, Naupaka Zimmerman; Methodology: Edward Ayres, John Zobitz, Naupaka Zimmerman; Software: John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong, Lajntxiag Lee; Validation: John Zobitz, Naupaka Zimmerman; Formal Analysis: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong, Lajntxiag Lee; Investigation: John Zobitz, Naupaka Zimmerman, Ryan Frink-Sobierajski, Christina Tran, Natalie Ashburner-Wright, Lillian Brown; Resources: John Zobitz, Naupaka Zimmerman; Data curation: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ly Xiong; Writing – original draft: John Zobitz, Naupaka Zimmerman; Writing – review and editing: John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres, Christina Tran, Dijonë Mehmeti, Ly Xiong; Visualization: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong; Supervision: John Zobitz, Naupaka Zimmerman; Project Administration: John Zobitz, Naupaka Zimmerman; Funding Acquisition: John Zobitz, Naupaka Zimmerman.
+
+# Data Availability {.unnumbered}
+Data available via [https://doi.org/10.5281/zenodo.17516319](https://doi.org/10.5281/zenodo.17516319) [@zobitzSupportingCodeData2025]. Field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code are provided within this repository.
