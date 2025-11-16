@@ -269,8 +269,9 @@ check-deps:
 # Install R packages (optional target)
 .PHONY: install-r-packages
 install-r-packages:
-	@echo "Installing required R packages..."
-	Rscript -e "install.packages(c('tidyverse', 'lubridate', 'broom', 'grid', 'gridExtra', 'gtable', 'gt', 'sf', 'jsonlite', 'lutz', 'neonSoilFlux', 'neonUtilities', 'doParallel', 'foreach'), repos='https://cran.r-project.org')"
+	@echo "Installing required R packages using renv..."
+	Rscript -e "install.packages(c('renv'), repos='https://cran.r-project.org')"
+	Rscript -e "renv::restore()"
 
 # Development targets
 .PHONY: dev-setup

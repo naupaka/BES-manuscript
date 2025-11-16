@@ -2733,7 +2733,7 @@
     "neonSoilFlux": {
       "Package": "neonSoilFlux",
       "Version": "1.0.0",
-      "Source": "Repository",
+      "Source": "GitHub",
       "Type": "Package",
       "Title": "Compute Soil Carbon Fluxes for the National Ecological Observatory Network Sites",
       "Authors@R": "c( person(\"John\", \"Zobitz\", email = \"zobitz@augsburg.edu\", role = c(\"aut\",\"cre\"),comment = c(ORCID = \"0000-0002-1830-143X\") ), person(\"Edward\", \"Ayres\", email = \"eayres@battelleecology.org\", role = c(\"aut\"),comment = c(ORCID = \"0000-0003-1846-1473\") ), person(\"Katie\", \"O'Rourke\", role = c(\"ctb\"),comment = \"LinkedIn, <https://www.linkedin.com/in/katie-o-rourke-5a898b194/>\"), person(\"Zoey\", \"Werbin\", email = \"zrwerbin@bu.edu\", role = c(\"ctb\")), person(\"Lajntxiag\", \"Lee\", role = c(\"ctb\"),email = \"lajntxiag@alumni.augsburg.edu\"), person(\"Ridwan\", \"Abdi\", role = c(\"ctb\"),comment = \"LinkedIn, <https://www.linkedin.com/in/ridwaan-cabdi/>\"), person(\"Dijonë\", \"Mehmeti\", role = c(\"ctb\"), comment = \"LinkedIn, <https://www.linkedin.com/in/dijon%C3%AB-mehmeti/>\"), person(\"Ly\", \"Xiong\", role = c(\"ctb\"), comment = \"LinkedIn, <https://www.linkedin.com/in/ly-xiong-bb83ba1b2/>\") )",
@@ -2764,10 +2764,15 @@
         "rmarkdown"
       ],
       "VignetteBuilder": "knitr",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "neonSoilFlux",
+      "RemoteUsername": "jmzobitz",
+      "RemoteRef": "v2.9.0",
+      "RemoteSha": "35584a20b0d1f72b11872db91c6479126907a676",
       "NeedsCompilation": "no",
       "Author": "John Zobitz [aut, cre] (ORCID: <https://orcid.org/0000-0002-1830-143X>), Edward Ayres [aut] (ORCID: <https://orcid.org/0000-0003-1846-1473>), Katie O'Rourke [ctb] (LinkedIn, <https://www.linkedin.com/in/katie-o-rourke-5a898b194/>), Zoey Werbin [ctb], Lajntxiag Lee [ctb], Ridwan Abdi [ctb] (LinkedIn, <https://www.linkedin.com/in/ridwaan-cabdi/>), Dijonë Mehmeti [ctb] (LinkedIn, <https://www.linkedin.com/in/dijon%C3%AB-mehmeti/>), Ly Xiong [ctb] (LinkedIn, <https://www.linkedin.com/in/ly-xiong-bb83ba1b2/>)",
-      "Maintainer": "John Zobitz <zobitz@augsburg.edu>",
-      "Repository": "CRAN"
+      "Maintainer": "John Zobitz <zobitz@augsburg.edu>"
     },
     "neonUtilities": {
       "Package": "neonUtilities",
