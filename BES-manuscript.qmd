@@ -106,9 +106,6 @@ Data available via [https://doi.org/10.5281/zenodo.17516319](https://doi.org/10.
 
 Soil carbon, carbon dioxide, flux gradient, carbon cycle, field validation, soil respiration, ecosystem variability, diffusion
 
-# Data for peer review
-
-Anonymous field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code for peer review are provided as supplemental files. An anonymous link for peer-review is here: <https://doi.org/10.5281/zenodo.16951117>. This will be made publicly available upon publication.
 
 # Introduction
 

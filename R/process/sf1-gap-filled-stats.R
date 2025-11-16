@@ -92,12 +92,14 @@ compute_bad_vals <- function(input_site_data) {
       rename(vals = 1) |>
       summarize(
         bad_vals = sum(vals != 0),
+        good_vals = sum(vals == 0),
         tot_vals = n(),
-        prop = bad_vals / tot_vals
+        prop_bad = bad_vals / tot_vals,
+        prop_good = good_vals / tot_vals
       )))) |>
     unnest(cols = c("check")) |>
     ungroup() |>
-    select(startDateTime, bad_vals, tot_vals, prop)
+    select(startDateTime, good_vals, bad_vals, tot_vals, prop_bad,prop_good)
 }
 
 # Next: what is the distribution of the 4 measurements that are available at each site?
@@ -107,10 +109,37 @@ prop_bad <- gap_fill_numbers |>
   unnest(cols = c(prop)) |>
   ungroup()
 
+
+# This function counts the proportion of a measurement that has 2 or more good values.  If it the measurement is pressure, it has to be more than 1 (there is only 1 pressure measurement)
+
+count_bad_prop <- function(measurement,good_vals) {
+
+  n_tot <- length(good_vals)
+  if(measurement == "staPres") {
+    bad_prop = 1-sum(good_vals >= 1) / n_tot
+  } else {
+    bad_prop = 1-sum(good_vals >= 2) / n_tot
+  }
+
+  return(bad_prop)
+}
+
+# Determine how many measurements at a time point are bad.
+how_many_bad <- function(input_data) {
+
+  # We need to exclude staPres because there is only 1 measurement anyways
+
+  input_data |>
+  mutate(bad_measure = if_else(measurement == "staPres",good_vals < 1,good_vals < 2 )) |>
+    pull(bad_measure) |> sum()
+
+}
+
+
 meas_dist <- prop_bad |>
   group_by(site, startDateTime) |>
   nest() |>
-  mutate(tot = map_int(.x = data, .f = ~ (sum(.x$prop >= 0.3)))) |>
+  mutate(tot = map_int(.x = data, .f = how_many_bad) ) |>
   select(site, tot) |>
   ungroup() |>
   group_by(site) |>
@@ -120,14 +149,19 @@ meas_dist <- prop_bad |>
              by = c("site", "tot"), ) |>
   mutate(n = if_else(is.na(n), 0, n))
 
+
+
+
 # Make the plots
 p1 <- prop_bad |>
   group_by(site, measurement) |>
-  summarize(tot_bad = sum(prop >= 0.3) / n()) |>
+  nest() |>
+  mutate(tot_bad_prop = map2_dbl(.x=measurement,.y=data,.f=~count_bad_prop(.x,.y$good_vals))) |>
+  select(-data) |>
   ungroup() |>
   inner_join(summary_env_data, by = "site") |>
   mutate(site = fct_reorder(site, temp_data)) |>
-  ggplot(aes(x = site, y = tot_bad, fill = measurement, group = measurement)) +
+  ggplot(aes(x = site, y = tot_bad_prop, fill = measurement, group = measurement)) +
   geom_col(position = "dodge") +
   labs(
     y = "Proportion of gap-filled measurements",
