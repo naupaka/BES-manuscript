@@ -64,7 +64,7 @@ FIGURES := $(FIGURES_DIR)/diffusivity-plot.png \
 all: $(MAIN_PDF) $(SUPP_PDF) $(TITLE_PDF)
 
 # Title page PDF
-$(TITLE_PDF): $(TITLE_QMD)
+$(TITLE_PDF): $(TITLE_QMD) bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering title page..."
 	quarto render $(TITLE_QMD)
 
@@ -74,17 +74,17 @@ $(MAIN_PDF): $(MAIN_QMD) figures/collar-images.jpeg figures/model-diagram.pdf fi
 	quarto render $(MAIN_QMD)
 
 # Generate title .tex file if it doesn't exist
-$(TITLE_TEX): $(TITLE_QMD)
+$(TITLE_TEX): $(TITLE_QMD) bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering title page to generate .tex file..."
 	quarto render $(TITLE_QMD)
 
 # Generate manuscript .tex file if it doesn't exist
-$(MAIN_TEX): $(MAIN_QMD)
+$(MAIN_TEX): $(MAIN_QMD) bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering manuscript to generate .tex file..."
 	quarto render $(MAIN_QMD)
 
 # Generate supplement .tex file if it doesn't exist
-$(SUPP_TEX): $(SUPP_QMD)
+$(SUPP_TEX): $(SUPP_QMD) bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering supplemental material to generate .tex file..."
 	quarto render $(SUPP_QMD)
 
