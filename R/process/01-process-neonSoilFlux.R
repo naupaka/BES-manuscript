@@ -18,11 +18,10 @@ site_name_2022 <- c("SRER", "SJER", "WREF")
 
 # --> Create the dates vector
 dates_2022 <- c(
-  # "2021-09", "2021-10", "2021-11",
-  # "2021-12", "2022-01", "2022-02",
-  # "2022-03", "2022-04",
-  "2022-05",
-  "2022-06")#, "2022-07", "2022-08")
+  "2021-09", "2021-10", "2021-11",
+  "2021-12", "2022-01", "2022-02",
+  "2022-03", "2022-04", "2022-05",
+  "2022-06", "2022-07", "2022-08")
 
 places_2022 <- expand_grid(site_name_2022, dates_2022) |>
   rename(
@@ -34,11 +33,10 @@ site_name_2024 <- c("UNDE", "WOOD", "KONZ")
 
 # --> Create the dates vector
 dates_2024 <- c(
-  # "2023-09", "2023-10", "2023-11",
-  # "2023-12", "2024-01", "2024-02",
-  # "2024-03", "2024-04",
-  "2024-05",
-  "2024-06")#, "2024-07", "2024-08")
+  "2023-09", "2023-10", "2023-11",
+  "2023-12", "2024-01", "2024-02",
+  "2024-03", "2024-04", "2024-05",
+  "2024-06", "2024-07", "2024-08")
 
 # Expand the dates vector
 places_2024 <- expand_grid(site_name_2024, dates_2024) |>
@@ -51,6 +49,9 @@ tot_places <- rbind(places_2022, places_2024)
 
 # Now we go through and do the dirty work of saving and computing fluxes. Yay .... :)
 # # Loop along here using a parallel foreach approach
+# note that lots of troubleshooting output is not displayed to user when
+# running in parallel mode. Can switch %dopar% to %do% to run in serial
+# which will provide more output for troubleshooting
 cat("Acquiring NEON data and computing fluxes. This may take a while...\n")
 cat("You can monitor progress by looking at the files in data/raw/flux-data/\n")
 results <- foreach(i = 1:nrow(tot_places),
