@@ -316,7 +316,7 @@ this repository.
 \item
   Outputs from the \texttt{neonSoilFlux} showed agreement with measured
   fluxes (\(R^{2}\) between measured and \texttt{neonSoilFlux} outputs
-  ranging from 0.04 to 0.81 depending on calculation method used);
+  ranging from 0.12 to 0.77 depending on calculation method used);
   measured outputs generally fell within the range of calculated
   uncertainties from the gradient method. Calculated fluxes from
   \texttt{neonSoilFlux} aggregated to the daily scale exhibited expected
@@ -1008,12 +1008,13 @@ back out.}
 \subsection{Effects of method choice on diffusivity
 estimates}\label{effects-of-method-choice-on-diffusivity-estimates}
 
-In four of six field sites, the \emph{post hoc} \(D_{a}\) estimate fell
-roughly between the two diffusion estimation methods; however this was
-less the case in the two driest sites, SJER and SRER
-(Table~\ref{tbl-neon-sites}), where the field estimate of diffusivity
-was either lower or higher than both of the other methods
-(Figure~\ref{fig-diffusivity-plot}).
+In one of the six field sites, the \emph{post hoc} \(D_{a}\) estimate
+fell roughly between the two diffusion estimation methods. At UNDE,
+WOOD, WREF, and SJER, the median field estimate of diffusivity was lower
+than both of the other methods. At the driest sites, SRER
+(Table~\ref{tbl-neon-sites}), the median field estimate of diffusivity
+was higher than both of the other methods and values showed a large
+amount of variation (Figure~\ref{fig-diffusivity-plot}).
 
 \begin{figure}
 
@@ -1088,19 +1089,16 @@ of the flux estimate is to reduce the usage of gap-filled data. The
 current approach to gap filling in \texttt{neonSoilFlux} uses monthly
 mean data to gap fill---this approach decreases the ability of the
 estimate to be responsive to short-term pulses that occur with rapid
-weather shifts. Four sites (KONZ, SRER, WREF, and UNDE) had more than
-75\% of half-hourly periods with no-gap filled measurements (Figure S1,
-Supplementary Information). Two sites (SJER and WOOD) had more than 75\%
-of half-hourly intervals with just one gap-filled measurement. The large
-uncertainty evident in Figure~\ref{fig-flux-results} for estimates from
-WOOD and SJER are thus due in part to the gap-filling used in these
-sites (Figure S1). While we did not need to use gap-filled measurements
-to compute the flux at WREF, field data collection occurred following a
-severe rainstorm, with soils at the beginning of the sampling week near
-their water holding capacity. In general, we recommend that whenever
-possible, knowledge of local field conditions should influence analysis
-decisions in addition to any QA filtering protocols in the
-\texttt{neonSoilFlux} package.
+weather shifts. All sites had more than 75\% of half-hourly periods with
+no-gap filled measurements (Figure S1, Supplementary Information). At
+five out of six sites (all except SRER), we used at least some
+gap-filled measurements of Soil Water Content (SWC). At WREF, field data
+collection occurred following a severe rainstorm, with soils at the
+beginning of the sampling week near their water holding capacity, which
+can influence the soil moisture sensor accuracy. In general, we
+recommend that whenever possible, knowledge of local field conditions
+should influence analysis decisions in addition to any QA filtering
+protocols in the \texttt{neonSoilFlux} package.
 
 We recognize that this gap-filling approach may lead to gap-filled
 values that are quite different from the actual values, such as an
@@ -1126,7 +1124,7 @@ that are broadly consistent with those directly measured in the field
 (Figure~\ref{fig-flux-results} and Figure~\ref{fig-flux-results-year}),
 even though statistical comparisons between the field-measured and
 \texttt{neonSoilFlux} values were quite variable (e.g.~\(R^{2}\) ranging
-from 0.04 to 0.81; Figure~\ref{fig-r2-plot}). One advantage of the
+from 0.12 to 0.77; Figure~\ref{fig-r2-plot}). One advantage of the
 \texttt{neonSoilFlux} package is its ability to calculate fluxes across
 different soil depths (Figure~\ref{fig-model-diagram}), which allows for
 additional site-specific customization. We believe the package can
@@ -1168,13 +1166,9 @@ modeled fluxes (defined here as closeness to field-measured \(F_{S}\)
 and the uncertainty reduction factor \(\epsilon\)), (2) precision (which
 could be defined by the signal to noise ratio), and (3) the choice of
 the diffusivity model (Section~\ref{sec-compute-diffusivity}) or flux
-computation method (Section~\ref{sec-compute-soil-flux}). A sensitivity
-analysis (Figure S2, Supplemental Information) found that flux output
-uncertainty was dominated by measurement uncertainty (\(T_{S}\), \(P\),
-\(SWC\), or CO\(_{2}\)) rather than by the diffusivity method used to
-compute soil flux. Notably, the \(F_{110}\) method was least sensitive
-to measurement uncertainty likely because it best aligns with the
-surface chamber measurement assumptions.
+computation method (Section~\ref{sec-compute-soil-flux}). We performed a
+sensitivity analysis to compare the impact of these factors (Figure S2,
+Supplemental Information).
 
 Finally, comparing the effects of different diffusivity estimation
 methods on the match between modeled and measured fluxes
@@ -1207,10 +1201,11 @@ calculated values. Ensemble averaging approaches (Elshall et al., 2018;
 Raftery et al., 2005) may be one way to address this problem if the goal
 is to calculate fluxes using the same method at a diverse range of
 different sites. Two other ideas would be to apply machine learning
-algorithms (e.g.~random forest) to generate a single flux estimate
-across diverse sites, or using co-located estimates of net ecosystem
-carbon exchange from eddy-flux towers to further constrain results or to
-assess soil flux results for plausibility (Phillips et al., 2017).
+algorithms (\emph{e.g.} random forest) to generate a single flux
+estimate across diverse sites, or using co-located estimates of net
+ecosystem carbon exchange from eddy-flux towers to further constrain
+results or to assess soil flux results for plausibility (Phillips et
+al., 2017).
 
 These challenges notwithstanding, the method used here and made
 available in the \texttt{neonSoilFlux} R package has the potential to

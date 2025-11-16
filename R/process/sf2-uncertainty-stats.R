@@ -44,6 +44,7 @@ snr_plot_mq <- snr_data |>
   filter(name == "model_data_mq") |>
   mutate(site = fct_reorder(site, temp_data)) |>
   ggplot(aes(x = snr, fill = method)) +
+  geom_vline(xintercept = 1, linetype = "dashed") +
   geom_histogram(alpha = 0.6, binwidth = 0.2, position = "identity") +
   facet_grid(. ~ site) + # xlim(c(0,10)) +
   labs(x = "SNR", y = "Count", fill = "Flux method:") +
@@ -70,6 +71,7 @@ snr_plot_marshall <- snr_data |>
   filter(name == "model_data_marshall") |>
   mutate(site = fct_reorder(site, temp_data)) |>
   ggplot(aes(x = snr, fill = method)) +
+  geom_vline(xintercept = 1, linetype = "dashed") +
   geom_histogram(alpha = 0.6, binwidth = 0.2, position = "identity") +
   facet_grid(. ~ site) + # xlim(c(0,10)) +
   labs(x = "SNR", y = NULL, fill = "Flux method:") +
