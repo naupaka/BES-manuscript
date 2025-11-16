@@ -141,9 +141,10 @@ supp: $(SUPP_PDF)
 
 # LaTeX diff target
 .PHONY: diff
-diff: $(MAIN_TEX)
+diff: $(MAIN_TEX) $(SUPP_TEX)
 	@echo "Creating diff PDF against commit $(DIFF_COMMIT)..."
 	latexdiff-vc --git -r $(DIFF_COMMIT) --pdf $(MAIN_TEX)
+	latexdiff-vc --git -r $(DIFF_COMMIT) --pdf $(SUPP_TEX)
 
 # Clean targets
 .PHONY: clean
