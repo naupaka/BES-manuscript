@@ -2,6 +2,13 @@
 
 # Load up the associated libraries
 library(tidyverse)
+library(doParallel)
+library(foreach)
+library(neonSoilFlux)
+
+# set up parallel backend
+cl <- makeCluster(detectCores() - 1)
+registerDoParallel(cl)
 
 # Load up information about the sites
 load("data/derived/field-data-info.Rda")
@@ -22,12 +29,12 @@ extract_gradient_diffusivity <- function(env_file_name) {
 
   # Determine if any flags for VSWC, soilTemp, staPres where used
   diffus_qf <- qf_flags |>
-    select(-soilCO2concentrationMeanQF) |>
-    mutate(
-      diffusMeanQF = if_any(ends_with("MeanQF"), ~ .x != 0),
+    dplyr::select(-soilCO2concentrationMeanQF) |>
+    dplyr::mutate(
+      diffusMeanQF = dplyr::if_any(tidyselect::ends_with("MeanQF"), ~ .x != 0),
       diffusMeanQF = as.numeric(diffusMeanQF)
     ) |>
-    select(startDateTime, horizontalPosition, diffusMeanQF)
+    dplyr::select(startDateTime, horizontalPosition, diffusMeanQF)
 
   flux_out <- all_measures |> # first filter out any bad measurements
     dplyr::mutate(flux_intro = purrr::map2(.x = .data[["env_data"]],
@@ -49,28 +56,28 @@ extract_gradient_diffusivity <- function(env_file_name) {
   # Now compute the gradient and the uncertainty at the levels closest to the surface
   # x2 - x1, so pd_x1 = -1, pd_x2 = 1, and the uncertainty
   flux_gradient <- flux_out |>
-    mutate(co2gradientMeanQF = map_int(.x = env_data, .f = function(x) {
+    dplyr::mutate(co2gradientMeanQF = purrr::map_int(.x = env_data, .f = function(x) {
       test_values <- x |>
-        slice_max(zOffset, n = 2) |>
-        select(contains("MeanQF")) |>
-        pull()
+        dplyr::slice_max(zOffset, n = 2) |>
+        dplyr::select(contains("MeanQF")) |>
+        dplyr::pull()
 
       # Now see if it is flagged
       flagged <- 1 %in% test_values
 
-      out_val <- if_else(flagged, 1, 0)
+      out_val <- dplyr::if_else(flagged, 1, 0)
       return(out_val)
     })) |>
-    inner_join(diffus_qf, by = c("horizontalPosition", "startDateTime")) |>
-    mutate(co2gradient = map(.x = flux_intro, .f = ~ (.x |>
-      slice_max(zOffset, n = 2) |>
-      summarize(
+    dplyr::inner_join(diffus_qf, by = c("horizontalPosition", "startDateTime")) |>
+    dplyr::mutate(co2gradient = purrr::map(.x = flux_intro, .f = ~ (.x |>
+      dplyr::slice_max(zOffset, n = 2) |>
+      dplyr::summarize(
         gradient = diff(co2_umol) / diff(zOffset),
         gradientExpUncert = neonSoilFlux::quadrature_error(c(-1, 1), co2ExpUncert)
       )) |>
-      mutate(zOffset = max(.x$zOffset)) |>
-      relocate(zOffset))) |>
-    select(horizontalPosition, startDateTime, co2gradient, co2gradientMeanQF)
+      dplyr::mutate(zOffset = max(.x$zOffset)) |>
+      dplyr::relocate(zOffset))) |>
+    dplyr::select(horizontalPosition, startDateTime, co2gradient, co2gradientMeanQF)
 
   ## Note: when gradient is positive, then the co2 at the deeper depth is smaller.
   return(flux_gradient)
@@ -89,12 +96,14 @@ site_names <- map_chr(.x = env_files, .f = ~ str_extract(.x,
   pattern = "(?<=env-meas-)[:alpha:]{4}"
 ))
 
-# Loop along here
-for (i in seq_along(env_values)) {
-  print(i)
-
-  env_values[[i]] <- extract_gradient_diffusivity(env_files[[i]])
+# # Loop along here using a parallel foreach approach
+print("Extracting diffusivity gradient information. May take a few minutes...")
+env_values <- foreach(i = seq_along(env_files),
+                      .packages = c("tidyverse", "neonSoilFlux")) %dopar% { # make sure workers have packages
+  extract_gradient_diffusivity(env_files[[i]])
 }
+
+stopCluster(cl)
 
 ### Add this all up, but first we need to join the different months together to a site.
 out_sites <- tibble(
