@@ -28,6 +28,8 @@
 - `lutz`
 - `neonSoilFlux`
 - `neonUtilities`
+- `doParallel`
+- `foreach`
 
 ## Building the Manuscript
 

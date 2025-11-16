@@ -249,7 +249,7 @@ check-deps:
 .PHONY: install-r-packages
 install-r-packages:
 	@echo "Installing required R packages..."
-	Rscript -e "install.packages(c('tidyverse', 'lubridate', 'broom', 'grid', 'gridExtra', 'gtable', 'gt', 'sf', 'jsonlite', 'lutz', 'neonSoilFlux', 'neonUtilities'), repos='https://cran.r-project.org')"
+	Rscript -e "install.packages(c('tidyverse', 'lubridate', 'broom', 'grid', 'gridExtra', 'gtable', 'gt', 'sf', 'jsonlite', 'lutz', 'neonSoilFlux', 'neonUtilities', 'doParallel', 'foreach'), repos='https://cran.r-project.org')"
 
 # Development targets
 .PHONY: dev-setup
