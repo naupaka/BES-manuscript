@@ -124,11 +124,11 @@ field_stats_data_0 <- field_data_joined |>
       mutate(day = day(startDateTime)) |>
       group_by(day, method) |>
       mutate(
-        flux = if_else(flux < 0,
+        flux = if_else(flux < -1000,
           NA,
           flux
         ),
-        flux_field = if_else(flux_field < 0,
+        flux_field = if_else(flux_field < -1000,
           NA,
           flux_field
         )
