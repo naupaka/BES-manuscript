@@ -270,7 +270,7 @@ check-deps:
 .PHONY: install-r-packages
 install-r-packages:
 	@echo "Installing required R packages using renv..."
-	Rscript -e "install.packages(c('renv'), repos='https://cran.r-project.org')"
+	Rscript -e "install.packages(c('renv', 'devtools'), repos='https://cran.r-project.org')"
 	Rscript -e "renv::restore()"
 
 # Development targets
