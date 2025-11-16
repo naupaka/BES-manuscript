@@ -53,6 +53,7 @@ tot_places <- rbind(places_2022, places_2024)
 # running in parallel mode. Can switch %dopar% to %do% to run in serial
 # which will provide more output for troubleshooting
 cat("Acquiring NEON data and computing fluxes. This may take a while...\n")
+cat("Downloading and calculating fluxes for", nrow(tot_places), "site-months\n")
 cat("You can monitor progress by looking at the files in data/raw/flux-data/\n")
 results <- foreach(i = 1:nrow(tot_places),
                    .packages = c("tidyverse", "neonSoilFlux")) %dopar% {
