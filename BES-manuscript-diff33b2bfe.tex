@@ -1,7 +1,7 @@
 % Options for packages loaded elsewhere
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL BES-manuscript-oldtmp-84385.tex   Sun Nov 16 10:27:12 2025
-%DIF ADD BES-manuscript.tex                Sun Nov 16 10:17:41 2025
+%DIF DEL BES-manuscript-oldtmp-94961.tex   Sun Nov 16 13:56:12 2025
+%DIF ADD BES-manuscript.tex                Sun Nov 16 13:52:02 2025
 %DIF 2a2
 % Options for packages loaded elsewhere %DIF > 
 %DIF -------
@@ -268,31 +268,48 @@
 \urlstyle{same} %DIF > 
 %DIF -------
 \hypersetup{
-  pdftitle={neonSoilFlux: An R Package for Continuous Sensor-Based Estimation of Soil CO2 Fluxes},
-  pdfauthor={, , , , , , , , , , , and },
+%DIF 181-182d205
+%DIF <   pdftitle={neonSoilFlux: An R Package for Continuous Sensor-Based Estimation of Soil CO2 Fluxes},
+%DIF <   pdfauthor={, , , , , , , , , , , and },
+%DIF -------
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
   citecolor={Blue},
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
-%DIF 189a213
+
+%DIF 190-191c212
+%DIF < \title{\texttt{neonSoilFlux}: An R Package for Continuous Sensor-Based
+%DIF < Estimation of Soil CO\textsubscript{2} Fluxes}
+%DIF -------
  %DIF > 
 %DIF -------
-
-\title{\texttt{neonSoilFlux}: An R Package for Continuous Sensor-Based
-Estimation of Soil CO\textsubscript{2} Fluxes}
-\author{John Zobitz\textsuperscript{1} \and Edward
-Ayres\textsuperscript{2} \and Zoey Werbin\textsuperscript{3} \and Ridwan
-Abdi\textsuperscript{1} \and Natalie
-Ashburner-Wright\textsuperscript{\DIFdelbegin \DIFdel{4}\DIFdelend \DIFaddbegin \DIFadd{5}\DIFaddend } \and Lillian
-Brown\textsuperscript{\DIFdelbegin \DIFdel{4}\DIFdelend \DIFaddbegin \DIFadd{5}\DIFaddend } \and Ryan
-Frink-Sobierajski\textsuperscript{\DIFdelbegin \DIFdel{4}\DIFdelend \DIFaddbegin \DIFadd{5}\DIFaddend } \and Lajntxiag
-Lee\textsuperscript{1} \and Dijonë
-Mehmeti\textsuperscript{1} \and Christina
-Tran\textsuperscript{\DIFdelbegin \DIFdel{4}\DIFdelend \DIFaddbegin \DIFadd{5}\DIFaddend } \and Ly Xiong\textsuperscript{1} \and Naupaka
-Zimmerman\textsuperscript{4,5}}
+\author{\DIFdelbegin \DIFdel{John Zobitz\textsuperscript{1} }%DIFDELCMD < \and %%%
+\DIFdel{Edward
+Ayres\textsuperscript{2} }%DIFDELCMD < \and %%%
+\DIFdel{Zoey Werbin\textsuperscript{3} }%DIFDELCMD < \and %%%
+\DIFdel{Ridwan
+Abdi\textsuperscript{1} }%DIFDELCMD < \and %%%
+\DIFdel{Natalie
+Ashburner-Wright\textsuperscript{4} }%DIFDELCMD < \and %%%
+\DIFdel{Lillian
+Brown\textsuperscript{4} }%DIFDELCMD < \and %%%
+\DIFdel{Ryan
+Frink-Sobierajski\textsuperscript{4} }%DIFDELCMD < \and %%%
+\DIFdel{Lajntxiag
+Lee\textsuperscript{1} }%DIFDELCMD < \and %%%
+\DIFdel{Dijonë
+Mehmeti\textsuperscript{1} }%DIFDELCMD < \and %%%
+\DIFdel{Christina
+Tran\textsuperscript{4} }%DIFDELCMD < \and %%%
+\DIFdel{Ly Xiong\textsuperscript{1} }%DIFDELCMD < \and %%%
+\DIFdel{Naupaka
+Zimmerman\textsuperscript{4,5}}\DIFdelend }
 \date{}
+%DIF DELETED TITLE COMMANDS FOR MARKUP
+\title{\DIFdelbegin \DIFdel{\texttt{neonSoilFlux}: An R Package for Continuous Sensor-Based
+Estimation of Soil CO\textsubscript{2} Fluxes}\DIFdelend }%DIFAUXCMD
 %DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
 %DIF UNDERLINE PREAMBLE %DIF PREAMBLE
 \RequirePackage[normalem]{ulem} %DIF PREAMBLE
@@ -380,92 +397,105 @@ Zimmerman\textsuperscript{4,5}}
 %DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
 
 \begin{document}
-\maketitle
+\DIFdelbegin %DIFDELCMD < \maketitle
+%DIFDELCMD < %%%
+\DIFdelend 
 
 
-\textsuperscript{1} Augsburg University, 2211 Riverside Avenue,
-Minneapolis, MN 55454\\
-\textsuperscript{2} National Ecological Observatory Network, Battelle,
-1685 38th Street, Suite 100, Boulder, CO 80301\\
-\textsuperscript{3} Boston University, 5 Cummington Street, Boston, MA
-02215\\
-\textsuperscript{4} University of \DIFaddbegin \DIFadd{Kansas, 1450 Jayhawk Boulevard,
-Lawrence, KS 66045}\\
-\DIFadd{\textsuperscript{5} University of }\DIFaddend San Francisco, 2130 Fulton Street, San
-Francisco, CA 94117
-\DIFdelbegin %DIFDELCMD < \\
+\DIFdelbegin \DIFdel{\textsuperscript{1} Augsburg University, 2211 Riverside Avenue,
+Minneapolis, MN 55454}%DIFDELCMD < \\
+%DIFDELCMD < %%%
+\DIFdel{\textsuperscript{2} National Ecological Observatory Network, Battelle,
+1685 38th Street, Suite 100, Boulder, CO 80301}%DIFDELCMD < \\
+%DIFDELCMD < %%%
+\DIFdel{\textsuperscript{3} Boston University, 5 Cummington Street, Boston, MA
+02215}%DIFDELCMD < \\
+%DIFDELCMD < %%%
+\DIFdel{\textsuperscript{4} University of San Francisco, 2130 Fulton Street, San
+Francisco, CA 94117}%DIFDELCMD < \\
 %DIFDELCMD < %%%
 \DIFdel{\textsuperscript{5} University of Kansas, 1450 Jayhawk Boulevard,
 Lawrence, KS 66045
-}\DIFdelend 
+}%DIFDELCMD < 
 
-\section*{Acknowledgments}\label{acknowledgments}
-\addcontentsline{toc}{section}{Acknowledgments}
+%DIFDELCMD < %%%
+\section*{\DIFdel{Acknowledgments}}%DIFAUXCMD
+%DIFDELCMD < \label{acknowledgments}
+%DIFDELCMD < %%%
+\addcontentsline{toc}{section}{\DIFdel{Acknowledgments}}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-\DIFdelbegin \DIFdel{JZ }\DIFdelend \DIFaddbegin \DIFadd{John Zobitz }\DIFaddend acknowledges Kathleen O'Rourke for code development. \DIFdelbegin \DIFdel{NZ }\DIFdelend \DIFaddbegin \DIFadd{Naupaka
-Zimmerman }\DIFaddend thanks technical staff at USF for support with field gear
-assembly and shipping. We thank the NEON field staff and assignable
-assets teams for facilitating each of the six NEON site visits. We are
-grateful to LI-COR technical staff for helpful discussions about optimal
-soil chamber sampling methods. This work was supported by NSF DEB grant
-\#2017829 awarded to \DIFdelbegin \DIFdel{JZ}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz}\DIFaddend , and NSF DEB grant \#2017860 awarded to
-\DIFdelbegin \DIFdel{NZ}\DIFdelend \DIFaddbegin \DIFadd{Naupaka Zimmerman}\DIFaddend . This material is based in part upon work supported by
-the National Ecological Observatory Network (NEON), a program sponsored
-by the U.S. National Science Foundation (NSF) and operated under
-cooperative agreement by Battelle. We also thank the reviewers and
-subject editor for their constructive feedback.
+%DIFDELCMD < %%%
+\DIFdel{JZ acknowledges Kathleen O'Rourke for code development. NZ thanks
+technical staff at USF for support with field gear assembly and
+shipping. We thank the NEON field staff and assignable assets teams for
+facilitating each of the six NEON site visits. We are grateful to LI-COR
+technical staff for helpful discussions about optimal soil chamber
+sampling methods. This work was supported by NSF DEB grant \#2017829
+awarded to JZ, and NSF DEB grant \#2017860 awarded to NZ. This material
+is based in part upon work supported by the National Ecological
+Observatory Network (NEON), a program sponsored by the U.S. National
+Science Foundation (NSF) and operated under cooperative agreement by
+Battelle. We also thank the reviewers and subject editor for their
+constructive feedback.
+}%DIFDELCMD < 
 
-\section*{Conflict of Interest
-Statements}\label{conflict-of-interest-statements}
-\addcontentsline{toc}{section}{Conflict of Interest Statements}
+%DIFDELCMD < %%%
+\section*{\DIFdel{Conflict of Interest
+Statements}}%DIFAUXCMD
+%DIFDELCMD < \label{conflict-of-interest-statements}
+%DIFDELCMD < %%%
+\addcontentsline{toc}{section}{\DIFdel{Conflict of Interest Statements}}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-None of the authors have a financial, personal, or professional conflict
+%DIFDELCMD < %%%
+\DIFdel{None of the authors have a financial, personal, or professional conflict
 of interest related to this work.
+}%DIFDELCMD < 
 
-\section*{Author Contributions}\label{author-contributions}
-\addcontentsline{toc}{section}{Author Contributions}
+%DIFDELCMD < %%%
+\section*{\DIFdel{Author Contributions}}%DIFAUXCMD
+%DIFDELCMD < \label{author-contributions}
+%DIFDELCMD < %%%
+\addcontentsline{toc}{section}{\DIFdel{Author Contributions}}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-Conceptualization: \DIFdelbegin \DIFdel{JZ, NZ}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman}\DIFaddend ; Methodology: \DIFdelbegin \DIFdel{EA, JZ, NZ}\DIFdelend \DIFaddbegin \DIFadd{Edward
-Ayres, John Zobitz, Naupaka Zimmerman}\DIFaddend ; Software: \DIFdelbegin \DIFdel{JZ, NZ, ZW, E A, DM, RA, LX, LL}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka
-Zimmerman, Zoey Werbin, Edward Ayres, Dijonë Mehmeti, Ridwan Abdi, Ly
-Xiong, Lajntxiag Lee}\DIFaddend ; Validation: \DIFdelbegin \DIFdel{JZ, NZ}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman}\DIFaddend ; Formal
-Analysis: \DIFdelbegin \DIFdel{JZ, NZ, DM, RA,
-LX, LL}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi,
-Ly Xiong, Lajntxiag Lee}\DIFaddend ; Investigation: \DIFdelbegin \DIFdel{JZ, NZ,
-RF-S, CT, NA-W,
-LB}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman,
-Ryan Frink-Sobierajski, Christina Tran, Natalie Ashburner-Wright,
-Lillian Brown}\DIFaddend ; Resources: \DIFdelbegin \DIFdel{JZ, NZ}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman}\DIFaddend ; Data curation:
-\DIFdelbegin \DIFdel{JZ, NZ, DM, LX}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ly Xiong}\DIFaddend ; Writing --
-original draft: \DIFdelbegin \DIFdel{JZ, NZ}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman}\DIFaddend ; Writing -- review and
-editing: \DIFdelbegin \DIFdel{JZ, NZ, ZW, EA,
-CT, DM, LX,}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres,
-Christina Tran, Dijonë Mehmeti, Ly Xiong}\DIFaddend ; Visualization: \DIFdelbegin \DIFdel{JZ,
-NZ, DM, RA, LX}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz,
-Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong}\DIFaddend ; Supervision:
-\DIFdelbegin \DIFdel{JZ; NZ; }\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman; }\DIFaddend Project Administration: \DIFdelbegin \DIFdel{JZ; NZ; }\DIFdelend \DIFaddbegin \DIFadd{John Zobitz,
-Naupaka Zimmerman; }\DIFaddend Funding Acquisition: \DIFdelbegin \DIFdel{JZ; NZ
-}\DIFdelend \DIFaddbegin \DIFadd{John Zobitz, Naupaka Zimmerman.
-}\DIFaddend 
+%DIFDELCMD < %%%
+\DIFdel{Conceptualization: JZ, NZ; Methodology: EA, JZ, NZ; Software: JZ, NZ,
+ZW, E A, DM, RA, LX, LL; Validation: JZ, NZ; Formal Analysis: JZ, NZ,
+DM, RA, LX, LL; Investigation: JZ, NZ, RF-S, CT, NA-W, LB; Resources:
+JZ, NZ; Data curation: JZ, NZ, DM, LX; Writing -- original draft: JZ,
+NZ; Writing -- review and editing: JZ, NZ, ZW, EA, CT, DM, LX,;
+Visualization: JZ, NZ, DM, RA, LX; Supervision: JZ; NZ; Project
+Administration: JZ; NZ; Funding Acquisition: JZ; NZ
+}%DIFDELCMD < 
 
-\section*{Data Availability}\label{data-availability}
-\addcontentsline{toc}{section}{Data Availability}
+%DIFDELCMD < %%%
+\section*{\DIFdel{Data Availability}}%DIFAUXCMD
+%DIFDELCMD < \label{data-availability}
+%DIFDELCMD < %%%
+\addcontentsline{toc}{section}{\DIFdel{Data Availability}}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-\DIFdelbegin \DIFdel{Anonymous field-collected }\DIFdelend \DIFaddbegin \DIFadd{Data available via }\url{https://doi.org/10.5281/zenodo.17516319} \DIFadd{(Zobitz
-\& Zimmerman, 2025). Field-collected }\DIFaddend data, \texttt{neonSoilFlux}
-calculated outputs, and manuscript-generating code \DIFdelbegin \DIFdel{for peer review are provided as
-supplemental files.
-An anonymous link for peer-review is here:
+%DIFDELCMD < %%%
+\DIFdel{Anonymous field-collected data, }\texttt{\DIFdel{neonSoilFlux}} %DIFAUXCMD
+\DIFdel{calculated
+outputs, and manuscript-generating code for peer review are provided as
+supplemental files. An anonymous link for peer-review is here:
 }%DIFDELCMD < \url{https://doi.org/10.5281/zenodo.16951117}%%%
 \DIFdel{. This will be made
 publicly available upon publication.
-}\DIFdelend \DIFaddbegin \DIFadd{are provided within
-this repository.
-}\DIFaddend 
+}%DIFDELCMD < 
 
-\newpage
+%DIFDELCMD < \newpage
+%DIFDELCMD < 
 
-\section{Abstract}\label{abstract}
+%DIFDELCMD < %%%
+\DIFdelend \section{Abstract}\label{abstract}
 
 \DIFaddbegin \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -1246,7 +1276,7 @@ fall relative to a 1:1 line.
 %DIFDELCMD < %%%
 \DIFdelendFL \DIFaddbeginFL \centering{
 
-\includegraphics[width=0.6\linewidth,height=\textheight,keepaspectratio]{figures/r2-plot.png}
+\includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{figures/r2-plot.png}
 
 }
 \DIFaddendFL 
@@ -1273,9 +1303,9 @@ back out.}
 estimates}\label{effects-of-method-choice-on-diffusivity-estimates}
 
 In \DIFdelbegin \DIFdel{four of }\DIFdelend \DIFaddbegin \DIFadd{one of the }\DIFaddend six field sites, the \emph{post hoc} \(D_{a}\) estimate
-fell roughly between the two diffusion estimation methods\DIFdelbegin \DIFdel{; however this was less the case in the two }\DIFdelend \DIFaddbegin \DIFadd{. At UNDE,
+fell roughly between the two diffusion estimation methods\DIFdelbegin \DIFdel{; however this was less the case in the two driest sites, SJER and }\DIFdelend \DIFaddbegin \DIFadd{. At UNDE,
 WOOD, WREF, and SJER, the median field estimate of diffusivity was lower
-than both of the other methods. At the }\DIFaddend driest sites, \DIFdelbegin \DIFdel{SJER and }\DIFdelend SRER
+than both of the other methods. At the driest site, }\DIFaddend SRER
 (Table~\ref{tbl-neon-sites}), \DIFdelbegin \DIFdel{where the }\DIFdelend \DIFaddbegin \DIFadd{the median }\DIFaddend field estimate of diffusivity
 was \DIFdelbegin \DIFdel{either lower or }\DIFdelend higher than both of the other methods \DIFaddbegin \DIFadd{and values showed a large
 amount of variation }\DIFaddend (Figure~\ref{fig-diffusivity-plot}).
@@ -1894,14 +1924,7 @@ Mehmeti, D., \& Xiong, L. (2024). \emph{{neonSoilFlux}: {Compute Soil
 Carbon Fluxes} for the {National Ecological Observatory Network Sites}}.
 \DIFdelbegin %DIFDELCMD < \url{https://doi.org/10.32614/CRAN.package.neonSoilFlux}
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin 
-
-\bibitem[\citeproctext]{ref-zobitzSupportingCodeData2025}
-\DIFadd{Zobitz, J., \& Zimmerman, N. (2025). }\emph{\DIFadd{Supporting }{\DIFadd{Code}} \DIFadd{and }{\DIFadd{Data}}
-\DIFadd{for }{\DIFadd{neonSoilFlux}}\DIFadd{: }{\DIFadd{An R Package}} \DIFadd{for }{\DIFadd{Continuous Sensor-Based
-Estimation}} \DIFadd{of }{\DIFadd{Soil CO2 Fluxes}}}\DIFadd{. Zenodo.
-}\url{https://doi.org/10.5281/zenodo.17516320}
-\DIFaddend 
+\DIFdelend 
 
 \end{CSLReferences}
 

@@ -167,6 +167,7 @@ clean:
 	rm -f $(MAIN_QMD:.qmd=.tex) $(SUPP_QMD:.qmd=.tex)
 	rm -f $(FIGURES)
 	rm -f $(DERIVED_DATA)
+	echo rm -f *-diff*
 
 .PHONY: clean-figures
 clean-figures:
@@ -181,8 +182,13 @@ clean-data:
 .PHONY: clean-pdf
 clean-pdf:
 	@echo "Cleaning PDF files..."
-	rm -f $(MAIN_PDF) $(SUPP_PDF)
-	rm -f $(MAIN_QMD:.qmd=.tex) $(SUPP_QMD:.qmd=.tex)
+	rm -f $(MAIN_PDF) $(SUPP_PDF) ${TITLE_PDF}
+	rm -f $(MAIN_QMD:.qmd=.tex) $(SUPP_QMD:.qmd=.tex) $(TITLE_QMD:.qmd=.tex)
+
+.PHONY: clean-diff
+clean-diff:
+	@echo "Cleaning diff TeX and PDFs..."
+	rm -f *-diff*
 
 .PHONY: deep-clean
 deep-clean:
@@ -192,6 +198,7 @@ deep-clean:
 	rm -f $(FIGURES)
 	rm -f $(DERIVED_DATA)
 	rm -f $(ENV_FLUX_DATA)
+	rm -f *-diff*
 
 # Force rebuild targets
 .PHONY: force-all

@@ -245,7 +245,7 @@ Statistical comparison between measured fluxes at each NEON site with fluxes rep
 
 ## Effects of method choice on diffusivity estimates
 
-In one of the six field sites, the *post hoc* $D_{a}$ estimate fell roughly between the two diffusion estimation methods. At UNDE, WOOD, WREF, and SJER, the median field estimate of diffusivity was lower than both of the other methods. At the driest sites, SRER (@tbl-neon-sites), the median field estimate of diffusivity was higher than both of the other methods and values showed a large amount of variation (@fig-diffusivity-plot).
+In one of the six field sites, the *post hoc* $D_{a}$ estimate fell roughly between the two diffusion estimation methods. At UNDE, WOOD, WREF, and SJER, the median field estimate of diffusivity was lower than both of the other methods. At the driest site, SRER (@tbl-neon-sites), the median field estimate of diffusivity was higher than both of the other methods and values showed a large amount of variation (@fig-diffusivity-plot).
 
 ::: {#fig-diffusivity-plot}
 ![](figures/diffusivity-plot.png)
