@@ -137,7 +137,7 @@ diffusivity_plot <- field_stats_data |>
   ggplot(aes(x = method, y = diffusivity / 1e-6)) +
   geom_boxplot() +
   facet_grid(. ~ site, scales = "free") +
-  coord_cartesian(ylim = c(0, 15)) +
+  coord_cartesian(ylim = c(0, 25)) +
   labs( # y = "Diffusivity (*1e6)",
     y = bquote(~ D[a] ~ "(" ~ 10^6 ~ m^-2 ~ s^-1 * ~")"),
     x = bquote(~ D[a] ~ "calculation method")

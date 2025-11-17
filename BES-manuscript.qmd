@@ -1,64 +1,4 @@
 ---
-title: "`neonSoilFlux`: An R Package for Continuous Sensor-Based Estimation of Soil CO~2~ Fluxes"
-editor: source
-author: 
-  - name: John Zobitz
-    orcid: 0000-0002-1830-143X
-    email: zobitz@augsburg.edu
-    affiliations:
-      - ref: augsburg 
-  - name: Edward Ayres
-    orcid: 0000-0001-5190-258X
-    affiliations:
-      - ref: neon 
-  - name: Zoey Werbin
-    orcid: 0000-0003-2927-2838
-    affiliations:
-      - ref: bu
-  - name: Ridwan Abdi
-    affiliations:
-      - ref: augsburg 
-  - name: Natalie Ashburner-Wright
-    affiliations:
-      - ref: usfca
-  - name: Lillian Brown
-    affiliations:
-      - ref: usfca 
-  - name: Ryan Frink-Sobierajski
-    affiliations:
-      - ref: usfca
-  - name: Lajntxiag Lee
-    affiliations:
-      - ref: augsburg 
-  - name: Dijonë Mehmeti
-    affiliations:
-      - ref: augsburg 
-  - name: Christina Tran
-    affiliations:
-      - ref: usfca 
-  - name: Ly Xiong
-    affiliations:
-      - ref: augsburg 
-  - name: Naupaka Zimmerman
-    orcid: 0000-0003-2168-6390
-    email: nbzimmerman@ku.edu
-    affiliations:
-      - ref: ku
-      - ref: usfca 
-
-affiliations:
-  - id: augsburg
-    name: Augsburg University, 2211 Riverside Avenue, Minneapolis, MN 55454
-  - id: neon
-    name: National Ecological Observatory Network, Battelle, 1685 38th Street, Suite 100, Boulder, CO 80301
-  - id: bu
-    name: Boston University, 5 Cummington Street, Boston, MA 02215
-  - id: ku
-    name: University of Kansas, 1450 Jayhawk Boulevard, Lawrence, KS 66045
-  - id: usfca
-    name: University of San Francisco, 2130 Fulton Street, San Francisco, CA 94117
-
-    
 format:
   pdf:
     include-in-header:
@@ -68,44 +8,23 @@ format:
         \doublespacing
     keep-tex: true
 
-filters:
-  - authors-block
-
 number-sections: true
 bibliography: bes-bibliography.bib
 csl: methods-in-ecology-and-evolution.csl
 ---
-
-# Acknowledgments {.unnumbered}
-
-John Zobitz acknowledges Kathleen O'Rourke for code development. Naupaka Zimmerman thanks technical staff at USF for support with field gear assembly and shipping. We thank the NEON field staff and assignable assets teams for facilitating each of the six NEON site visits. We are grateful to LI-COR technical staff for helpful discussions about optimal soil chamber sampling methods. This work was supported by NSF DEB grant #2017829 awarded to John Zobitz, and NSF DEB grant #2017860 awarded to Naupaka Zimmerman. This material is based in part upon work supported by the National Ecological Observatory Network (NEON), a program sponsored by the U.S. National Science Foundation (NSF) and operated under cooperative agreement by Battelle. We also thank the reviewers and subject editor for their constructive feedback.
-
-# Conflict of Interest Statements {.unnumbered}
-
-None of the authors have a financial, personal, or professional conflict of interest related to this work.
-
-# Author Contributions {.unnumbered}
-
-Conceptualization: John Zobitz, Naupaka Zimmerman; Methodology: Edward Ayres, John Zobitz, Naupaka Zimmerman; Software: John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong, Lajntxiag Lee; Validation: John Zobitz, Naupaka Zimmerman; Formal Analysis: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong, Lajntxiag Lee; Investigation: John Zobitz, Naupaka Zimmerman, Ryan Frink-Sobierajski, Christina Tran, Natalie Ashburner-Wright, Lillian Brown; Resources: John Zobitz, Naupaka Zimmerman; Data curation: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ly Xiong; Writing – original draft: John Zobitz, Naupaka Zimmerman; Writing – review and editing: John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres, Christina Tran, Dijonë Mehmeti, Ly Xiong; Visualization: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong; Supervision: John Zobitz, Naupaka Zimmerman; Project Administration: John Zobitz, Naupaka Zimmerman; Funding Acquisition: John Zobitz, Naupaka Zimmerman.
-
-# Data Availability {.unnumbered}
-Data available via [https://doi.org/10.5281/zenodo.17516319](https://doi.org/10.5281/zenodo.17516319) [@zobitzSupportingCodeData2025]. Field-collected data, `neonSoilFlux` calculated outputs, and manuscript-generating code are provided within this repository.
-
-\newpage
 
 # Abstract
 1. Accurate quantification of soil carbon fluxes is essential to reduce uncertainty in estimates of the terrestrial carbon sink. However, these fluxes vary over time and across ecosystem types and so it can be difficult to estimate them accurately across large scales. The flux gradient method estimates soil carbon fluxes using co-located measurements of soil CO$_{2}$ concentration, soil temperature, soil moisture, and other soil properties. The National Ecological Observatory Network (NEON) provides such data across 20 ecoclimatic domains spanning the continental U.S., Puerto Rico, Alaska, and Hawai‘i.
 
 2. We present an R software package (`neonSoilFlux`) that acquires soil environmental data to compute half-hourly soil carbon fluxes for each soil replicate plot at a given terrestrial NEON site. To assess the computed fluxes, we visited six focal NEON sites and measured soil carbon fluxes using a closed-dynamic chamber approach.
 
-3. Outputs from the `neonSoilFlux` showed agreement with measured fluxes ($R^{2}$ between measured and `neonSoilFlux` outputs ranging from 0.04 to 0.81 depending on calculation method used); measured outputs generally fell within the range of calculated uncertainties from the gradient method. Calculated fluxes from `neonSoilFlux` aggregated to the daily scale exhibited expected site-specific seasonal patterns.
+3. Outputs from the `neonSoilFlux` showed agreement with measured fluxes ($R^{2}$ between measured and `neonSoilFlux` outputs ranging from 0.12 to 0.77 depending on calculation method used); measured outputs generally fell within the range of calculated uncertainties from the gradient method. Calculated fluxes from `neonSoilFlux` aggregated to the daily scale exhibited expected site-specific seasonal patterns.
 
 4. While the flux gradient method is broadly effective, its accuracy is highly sensitive to site-specific inputs, including the extent to which gap-filing techniques are used to interpolate missing sensor data and to estimates of soil diffusivity and moisture content. Future refinement and validation of `neonSoilFlux` outputs can contribute to existing databases of soil carbon flux measurements, providing near real-time estimates of a critical component of the terrestrial carbon cycle.
 
 ## Keywords
 
 Soil carbon, carbon dioxide, flux gradient, carbon cycle, field validation, soil respiration, ecosystem variability, diffusion
-
 
 # Introduction
 
@@ -307,7 +226,7 @@ The timeseries of the measured fluxes from the LI-COR 6800 and 870/8250 were com
 ::: {#fig-flux-results}
 ![](figures/flux-results.png)
 
-Timeseries of soil surface flux ($F_{S}$) from field-measured (yellow lines) and modeled soil fluxes (green or purple lines) by the `neonSoilFlux` R package. Fluxes from the `neonSoilFlux` R package are separated by the diffusivity model used (Millington-Quirk or Marshall, @sec-compute-diffusivity). Individual vertical axis labels in the first column represent the measurement levels where the flux-gradient approach is applied (@sec-compute-soil-flux). Ribbons for modeled soil fluxes represent $\pm$ 1 standard deviation. Results are reported in local time. WREF, SJER, and SRER were sampled in 2022, and UNDE, WOOD, and KONZ were sampled in 2024. Sites (columns) are arranged from left to right in terms of increasing mean annual temperature.
+Timeseries of soil surface flux ($F_{S}$) from field-measured (yellow lines) and modeled soil fluxes (green or purple lines) by the `neonSoilFlux` R package. Fluxes from the `neonSoilFlux` R package are separated by the diffusivity model used (Millington-Quirk or Marshall, @sec-compute-diffusivity). Individual vertical axis labels in the first column represent the measurement levels where the flux-gradient approach is applied (@sec-compute-soil-flux). Ribbons for modeled soil fluxes represent approximately $\pm$ 1 standard deviation. Results are reported in local time. WREF, SJER, and SRER were sampled in 2022, and UNDE, WOOD, and KONZ were sampled in 2024. Sites (columns) are arranged from left to right in terms of increasing mean annual temperature.
 :::
 
 ::: {#fig-flux-results-year}
@@ -319,19 +238,19 @@ Timeseries of both daily-averaged field $F_{S}$ (yellow circles) and daily ensem
 We calculated a statistical relationship between the various estimates of soil flux computed by `neonSoilFlux` and the field-measured fluxes within daily interval periods. Statistics for these comparisons are reported in @fig-r2-plot, which also shows how these fall relative to a 1:1 line.
 
 ::: {#fig-r2-plot}
-![](figures/r2-plot.png){width=60%}
+![](figures/r2-plot.png){width=70%}
 
-Statistical comparison between measured fluxes at each NEON site with fluxes reported by `neonSoilFlux` with the different flux calculation approaches and diffusivity calculations applied. Points are daily averages and LICOR $F_{S}$ values are from the 6800 instrument only, for consistency. The dotted line represents a 1:1 relationship, and the reported R^2^ quantifies the relationship between field-measured and `neonSoilFlux` estimated fluxes.  \* = significance at the 5% level, \*\* = significance at the 1% level. The slope ($m$) and intercept ($b$) of the linear regression between measured and modeled fluxes are also reported. The low-value outlier from KONZ in the $F_{110}$ Marshall plot is an example of the effect of inverted CO~2~ gradients causing an estimated flux to be negative, bringing down the daily mean, which later resolved as the soils dried back out. Intervals where calculated fluxes were < 0 (n = 12) were excluded from the plot; 3 each from WREF and WOOD when using ($F_{011}$ approach).
+Statistical comparison between measured fluxes at each NEON site with fluxes reported by `neonSoilFlux` with the different flux calculation approaches and diffusivity calculations applied. Points are daily averages and LICOR $F_{S}$ values are from the 6800 instrument only, for consistency. The dotted line represents a 1:1 relationship, and the reported R^2^ quantifies the relationship between field-measured and `neonSoilFlux` estimated fluxes.  \* = significance at the 5% level, \*\* = significance at the 1% level. The slope ($m$) and intercept ($b$) of the linear regression between measured and modeled fluxes are also reported. The low-value outlier from KONZ in the $F_{110}$ Marshall plot is an example of the effect of inverted CO~2~ gradients causing an estimated flux to be negative, bringing down the daily mean, which later resolved as the soils dried back out.
 :::
 
 ## Effects of method choice on diffusivity estimates
 
-In four of six field sites, the *post hoc* $D_{a}$ estimate fell roughly between the two diffusion estimation methods; however this was less the case in the two driest sites, SJER and SRER (@tbl-neon-sites), where the field estimate of diffusivity was either lower or higher than both of the other methods (@fig-diffusivity-plot).
+In one of the six field sites, the *post hoc* $D_{a}$ estimate fell roughly between the two diffusion estimation methods. At UNDE, WOOD, WREF, and SJER, the median field estimate of diffusivity was lower than both of the other methods. At the driest site, SRER (@tbl-neon-sites), the median field estimate of diffusivity was higher than both of the other methods and values showed a large amount of variation (@fig-diffusivity-plot).
 
 ::: {#fig-diffusivity-plot}
 ![](figures/diffusivity-plot.png)
 
-Distribution of diffusivity ($D_{a}$) at each study site. Values of $D_{a}$ were provided by the `neonSoilFlux` package, computed from the Millington-Quirk or Marshall models (@sec-compute-diffusivity). A post-hoc estimate of diffusivity (labeled as "Field estimated") was computed through the field measured flux (@fig-flux-results), divided by the CO$_{2}$ gradient from the measurement levels closest to the soil surface, as reported by NEON. We only used $F_{S}$ measured by the LICOR 6800 at all sites to standardize comparisons. Some outliers (n = 2 from the field estimated values at KONZ and n = 9 from field estimated values at SRER) are excluded from the plot to allow better comparative visualization across sites. 
+Distribution of diffusivity ($D_{a}$) at each study site. Values of $D_{a}$ were provided by the `neonSoilFlux` package, computed from the Millington-Quirk or Marshall models (@sec-compute-diffusivity). A post-hoc estimate of diffusivity (labeled as "Field estimated") was computed through the field measured flux (@fig-flux-results), divided by the CO$_{2}$ gradient from the measurement levels closest to the soil surface, as reported by NEON. We only used $F_{S}$ measured by the LICOR 6800 at all sites to standardize comparisons. Some outliers (n = 1 from the field estimated values at KONZ and n = 6 from field estimated values at SRER) are excluded from the plot to allow better comparative visualization across sites. 
 :::
 
 # Discussion {#sec-discussion}
@@ -344,25 +263,25 @@ Key assumptions of the flux-gradient approach are that CO$_{2}$ concentrations i
 
 When modeling soil respiration, typically a non-linear response function that also considers soil type is used [@boumaAssessmentRootSoil2000; @yanPorescaleInvestigationResponse2016; @yanMoistureFunctionSoil2018]. For the `neonSoilFlux` package, soil type is connected to the measurement of bulk density, which was characterized at each NEON site. This bulk density estimate is based on replicate samples collected from the site megapit at a subset of soil horizons, with an estimated uncertainty of $\pm5\%$ [@neonSoilProperties]. Coarse fragment estimates also have very large uncertainties, but because the volume fraction tends to be low in surface soils it is unlikely to contribute much additional flux uncertainty.
 
-Our results suggest that the most important way to improve reliability of the flux estimate is to reduce the usage of gap-filled data. The current approach to gap filling in `neonSoilFlux` uses monthly mean data to gap fill---this approach decreases the ability of the estimate to be responsive to short-term pulses that occur with rapid weather shifts. Four sites (KONZ, SRER, WREF, and UNDE) had more than 75% of half-hourly periods with no-gap filled measurements (Figure S1, Supplementary Information). Two sites (SJER and WOOD) had more than 75% of half-hourly intervals with just one gap-filled measurement. The large uncertainty evident in @fig-flux-results for estimates from WOOD and SJER are thus due in part to the gap-filling used in these sites (Figure S1). While we did not need to use gap-filled measurements to compute the flux at WREF, field data collection occurred following a severe rainstorm, with soils at the beginning of the sampling week near their water holding capacity. In general, we recommend that whenever possible, knowledge of local field conditions should influence analysis decisions in addition to any QA filtering protocols in the `neonSoilFlux` package.
+Our results suggest that the most important way to improve reliability of the flux estimate is to reduce the usage of gap-filled data. The current approach to gap filling in `neonSoilFlux` uses monthly mean data to gap fill---this approach decreases the ability of the estimate to be responsive to short-term pulses that occur with rapid weather shifts. All sites had more than 75% of half-hourly periods with no-gap filled measurements (Figure S1, Supplementary Information). At five out of six sites (all except SRER), we used at least some gap-filled measurements of Soil Water Content (SWC). At WREF, field data collection occurred following a severe rainstorm, with soils at the beginning of the sampling week near their water holding capacity, which can influence the soil moisture sensor accuracy. In general, we recommend that whenever possible, knowledge of local field conditions should influence analysis decisions in addition to any QA filtering protocols in the `neonSoilFlux` package.
 
 We recognize that this gap-filling approach may lead to gap-filled values that are quite different from the actual values, such as an underestimate of soil moisture following rain events. Further extensions of the gap filling method could use more sophisticated gap-filling routines, similar to what is used for net ecosystem carbon exchange [@falgeGapFillingStrategies2001; @moffatComprehensiveComparisonGapfilling2007; @mariethozFeaturepreservingInterpolationFiltering2015; @liuRobustGapfillingApproach2023; @zhangTemporalGapFilling12Hourly2023]. Additionally, since the deepest temperature and soil moisture sensors are located below the deepest CO~2~ sensors at NEON sites, it is possible that excluding these deeper layers from consideration prior to analysis would lead to a reduced need for gap filling. Future iterations of the `neonSoilFlux` package may incorporate this as an option. The current gap-filling routine provides a consistent approach that can be applied to each data stream, but further work may explore alternative gap-filling approaches.
 
 ## Evaluation of flux-gradient approach at each site
 
-Derived results from the `neonSoilFlux` package have patterns that are broadly consistent with those directly measured in the field (@fig-flux-results and @fig-flux-results-year), even though statistical comparisons between the field-measured and `neonSoilFlux` values were quite variable (e.g. $R^{2}$ ranging from 0.04 to 0.81; @fig-r2-plot). One advantage of the `neonSoilFlux` package is its ability to calculate fluxes across different soil depths (@fig-model-diagram), which allows for additional site-specific customization. We believe the package can provide a useful baseline estimate of soil fluxes that can always be complemented through additional field measurements.
+Derived results from the `neonSoilFlux` package have patterns that are broadly consistent with those directly measured in the field (@fig-flux-results and @fig-flux-results-year), even though statistical comparisons between the field-measured and `neonSoilFlux` values were quite variable (e.g. $R^{2}$ ranging from 0.12 to 0.77; @fig-r2-plot). One advantage of the `neonSoilFlux` package is its ability to calculate fluxes across different soil depths (@fig-model-diagram), which allows for additional site-specific customization. We believe the package can provide a useful baseline estimate of soil fluxes that can always be complemented through additional field measurements.
 
 The six locations studied provide a range of case studies that suggest different considerations may apply to different sites when applying the flux-gradient method. For example, the Santa Rita Experimental Range (SRER) is a desert site characterized by sandy soil, which also was the location of the highest field soil temperatures that we observed (@tbl-licor-results). At SRER the flux across the top two layers ($F_{110}$) produced a pattern of soil flux most consistent with the observed field data. The remaining methods $F_{101}$, $F_{011}$, or $F_{000}$ are derived from information taken from the deepest layer, which seems to have been decoupled from the surface layers both in terms of temperature and CO$_{2}$ concentration. This may be a general circumstance where there are large diurnal temperature extremes that rapidly change during the course of a day and overnight, leading to lags in the timing of when temperature increases propagate down to deeper soil layers.
 
 Immediately prior to our visit to Konza Prarie (KONZ), that site that experienced a significant rain event that led to wet soils that gradually dried out over the course of our time there. This pulse of precipitation increased the soil CO$_{2}$ concentration at the top layer above the concentrations in lower layers, leading to negative estimated flux values at the start of the field sampling period. In this case it was only when the soil began to return to a baseline level that the assumptions of the flux-gradient method were again met.
 
-Both of the previous cases also provide context for the variable statistical comparisons between field-measured soil fluxes and `neonSoilFlux` outputs (@fig-r2-plot). When considering systematic deployment of this method across a measurement network, there are a number of independent challenges that require careful consideration. There are clear tradeoffs between (1) accuracy of modeled fluxes (defined here as closeness to field-measured $F_{S}$ and the uncertainty reduction factor $\epsilon$), (2) precision (which could be defined by the signal to noise ratio), and (3) the choice of the diffusivity model (@sec-compute-diffusivity) or flux computation method (@sec-compute-soil-flux). A sensitivity analysis (Figure S2, Supplemental Information) found that flux output uncertainty was dominated by measurement uncertainty ($T_{S}$, $P$, $SWC$, or CO$_{2}$) rather than by the diffusivity method used to compute soil flux. Notably, the $F_{110}$ method was least sensitive to measurement uncertainty likely because it best aligns with the surface chamber measurement assumptions.
+Both of the previous cases also provide context for the variable statistical comparisons between field-measured soil fluxes and `neonSoilFlux` outputs (@fig-r2-plot). When considering systematic deployment of this method across a measurement network, there are a number of independent challenges that require careful consideration. There are clear tradeoffs between (1) accuracy of modeled fluxes (defined here as closeness to field-measured $F_{S}$ and the uncertainty reduction factor $\epsilon$), (2) precision (which could be defined by the signal to noise ratio), and (3) the choice of the diffusivity model (@sec-compute-diffusivity) or flux computation method (@sec-compute-soil-flux). We performed a sensitivity analysis to compare the impact of these factors (Figure S2, Supplemental Information).
 
 Finally, comparing the effects of different diffusivity estimation methods on the match between modeled and measured fluxes (@fig-flux-results-year) highlights the sensitivity of $F_{ijk}$ to diffusivity. The comparison between diffusivity estimates compared to field estimated diffusivity (@fig-diffusivity-plot) demonstrates that site parameters can dictate which measure of diffusivity is most likely to be accurate in a given environmental context. Site-specific differences are largely a reflection of differences in soil moisture across the sites (@tbl-neon-sites), as not all diffusivity estimation methods incorporate soil moisture equivalently. While we here have compares two approaches to calculate diffusivity (the Millington-Quirk and Marshall models), it may be valuable to evaluate other diffusivity models (e.g. the Moldrup model; @moldrupModelingDiffusionReaction1999) as well. Ultimately the choice of a particular diffusivity model could be determined based on knowledge of site-specific evaluations or a set of these models could be used to generate a model ensemble average as a means to trade precision for a more general approach.
 
 ## Recommendations for future method development
 
-The `neonSoilFlux` package provides several approaches to estimate soil flux using the gradient method. We believe these approaches enable the software to be used across a range of site-specific assumptions [@maierUsingGradientMethod2014]. We note, however, that this choice can have a determinative approach on the calculated values. Ensemble averaging approaches [@rafteryUsingBayesianModel2005; @elshallRelativeModelScore2018] may be one way to address this problem if the goal is to calculate fluxes using the same method at a diverse range of different sites. Two other ideas would be to apply machine learning algorithms (e.g. random forest) to generate a single flux estimate across diverse sites, or using co-located estimates of net ecosystem carbon exchange from eddy-flux towers to further constrain results or to assess soil flux results for plausibility [@phillipsValueSoilRespiration2017].
+The `neonSoilFlux` package provides several approaches to estimate soil flux using the gradient method. We believe these approaches enable the software to be used across a range of site-specific assumptions [@maierUsingGradientMethod2014]. We note, however, that this choice can have a determinative approach on the calculated values. Ensemble averaging approaches [@rafteryUsingBayesianModel2005; @elshallRelativeModelScore2018] may be one way to address this problem if the goal is to calculate fluxes using the same method at a diverse range of different sites. Two other ideas would be to apply machine learning algorithms (*e.g.* random forest) to generate a single flux estimate across diverse sites, or using co-located estimates of net ecosystem carbon exchange from eddy-flux towers to further constrain results or to assess soil flux results for plausibility [@phillipsValueSoilRespiration2017].
 
 These challenges notwithstanding, the method used here and made available in the `neonSoilFlux` R package has the potential to produce nearly continuous estimates of flux across all terrestrial NEON sites. These estimates are a significant improvement on available approaches to constrain the portion of ecosystem respiration attributable to the soil. This, in turn, also aids in our ability to understand the soil contribution to the net ecosystem flux measured at these sites using the co-located eddy flux towers.
 

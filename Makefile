@@ -4,10 +4,13 @@
 # Variables
 MAIN_QMD := BES-manuscript.qmd
 SUPP_QMD := BES-manuscript-supp.qmd
+TITLE_QMD := BES-manuscript-title-page.qmd
 MAIN_PDF := BES-manuscript.pdf
 SUPP_PDF := BES-manuscript-supp.pdf
+TITLE_PDF := BES-manuscript-title-page.pdf
 MAIN_TEX := BES-manuscript.tex
 SUPP_TEX := BES-manuscript-supp.tex
+TITLE_TEX := BES-manuscript-title-page.tex
 FIGURES_DIR := figures
 FUNCTIONS_DIR := R/functions
 DATA_DIR := data/derived
@@ -58,20 +61,30 @@ FIGURES := $(FIGURES_DIR)/diffusivity-plot.png \
 
 # Default target
 .PHONY: all
-all: $(MAIN_PDF) $(SUPP_PDF)
+all: $(MAIN_PDF) $(SUPP_PDF) $(TITLE_PDF)
+
+# Title page PDF
+$(TITLE_PDF): $(TITLE_QMD) bes-bibliography.bib methods-in-ecology-and-evolution.csl
+	@echo "Rendering title page..."
+	quarto render $(TITLE_QMD)
 
 # Main manuscript PDF
 $(MAIN_PDF): $(MAIN_QMD) figures/collar-images.jpeg figures/model-diagram.pdf figures/neonSoilFluxOutline.png $(FIGURES_DIR)/diffusivity-plot.png $(FIGURES_DIR)/flux-results-year.png $(FIGURES_DIR)/flux-results.png $(FIGURES_DIR)/r2-plot.png $(DATA_LICOR) bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering main manuscript..."
 	quarto render $(MAIN_QMD)
 
-# Generate .tex file if it doesn't exist
-$(MAIN_TEX): $(MAIN_QMD)
+# Generate title .tex file if it doesn't exist
+$(TITLE_TEX): $(TITLE_QMD) bes-bibliography.bib methods-in-ecology-and-evolution.csl
+	@echo "Rendering title page to generate .tex file..."
+	quarto render $(TITLE_QMD)
+
+# Generate manuscript .tex file if it doesn't exist
+$(MAIN_TEX): $(MAIN_QMD) bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering manuscript to generate .tex file..."
 	quarto render $(MAIN_QMD)
 
-# Generate .tex file if it doesn't exist
-$(SUPP_TEX): $(SUPP_QMD)
+# Generate supplement .tex file if it doesn't exist
+$(SUPP_TEX): $(SUPP_QMD) bes-bibliography.bib methods-in-ecology-and-evolution.csl
 	@echo "Rendering supplemental material to generate .tex file..."
 	quarto render $(SUPP_QMD)
 
@@ -141,9 +154,10 @@ supp: $(SUPP_PDF)
 
 # LaTeX diff target
 .PHONY: diff
-diff: $(MAIN_TEX)
+diff: $(MAIN_TEX) $(SUPP_TEX)
 	@echo "Creating diff PDF against commit $(DIFF_COMMIT)..."
 	latexdiff-vc --git -r $(DIFF_COMMIT) --pdf $(MAIN_TEX)
+	latexdiff-vc --git -r $(DIFF_COMMIT) --pdf $(SUPP_TEX)
 
 # Clean targets
 .PHONY: clean
@@ -153,6 +167,7 @@ clean:
 	rm -f $(MAIN_QMD:.qmd=.tex) $(SUPP_QMD:.qmd=.tex)
 	rm -f $(FIGURES)
 	rm -f $(DERIVED_DATA)
+	echo rm -f *-diff*
 
 .PHONY: clean-figures
 clean-figures:
@@ -167,8 +182,13 @@ clean-data:
 .PHONY: clean-pdf
 clean-pdf:
 	@echo "Cleaning PDF files..."
-	rm -f $(MAIN_PDF) $(SUPP_PDF)
-	rm -f $(MAIN_QMD:.qmd=.tex) $(SUPP_QMD:.qmd=.tex)
+	rm -f $(MAIN_PDF) $(SUPP_PDF) ${TITLE_PDF}
+	rm -f $(MAIN_QMD:.qmd=.tex) $(SUPP_QMD:.qmd=.tex) $(TITLE_QMD:.qmd=.tex)
+
+.PHONY: clean-diff
+clean-diff:
+	@echo "Cleaning diff TeX and PDFs..."
+	rm -f *-diff*
 
 .PHONY: deep-clean
 deep-clean:
@@ -178,6 +198,7 @@ deep-clean:
 	rm -f $(FIGURES)
 	rm -f $(DERIVED_DATA)
 	rm -f $(ENV_FLUX_DATA)
+	rm -f *-diff*
 
 # Force rebuild targets
 .PHONY: force-all
@@ -248,8 +269,9 @@ check-deps:
 # Install R packages (optional target)
 .PHONY: install-r-packages
 install-r-packages:
-	@echo "Installing required R packages..."
-	Rscript -e "install.packages(c('tidyverse', 'lubridate', 'broom', 'grid', 'gridExtra', 'gtable', 'gt', 'sf', 'jsonlite', 'lutz', 'neonSoilFlux', 'neonUtilities'), repos='https://cran.r-project.org')"
+	@echo "Installing required R packages using renv..."
+	Rscript -e "install.packages(c('renv', 'devtools'), repos='https://cran.r-project.org')"
+	Rscript -e "renv::restore()"
 
 # Development targets
 .PHONY: dev-setup

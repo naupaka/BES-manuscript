@@ -124,11 +124,11 @@ field_stats_data_0 <- field_data_joined |>
       mutate(day = day(startDateTime)) |>
       group_by(day, method) |>
       mutate(
-        flux = if_else(flux < 0,
+        flux = if_else(flux < -1000,
           NA,
           flux
         ),
-        flux_field = if_else(flux_field < 0,
+        flux_field = if_else(flux_field < -1000,
           NA,
           flux_field
         )
@@ -181,7 +181,7 @@ regression_stats <- extract_stats(field_stats_data_0) |>
       "m =", slope_str, "\n",
       "b =", intercept_str
     ),
-    x = 12, # position on x-axis, manually tweaked ot match plot size below
+    x = 25, # position on x-axis, manually tweaked to match plot size below
     y = 1.5,
     eq = paste0("y = ", round(intercept, 2), " + ", round(slope, 2), "x"),
     xeq = 4.5,
@@ -203,8 +203,8 @@ r2_plot <- field_stats_data_0 |>
   ggplot(aes(x = flux_field, y = flux)) +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
   geom_point(aes(color = site, shape = site, fill = site), size = 6) +
-#  ylim(c(0, 18)) +
-#  xlim(c(0, 18)) +
+  ylim(c(-5, 40)) +
+  xlim(c(-5, 40)) +
   theme_bw() +
   theme(
     legend.title = element_text(size = 18),

@@ -245,7 +245,6 @@ plot_level <- function(input_site,
       date_labels = "%m-%d",
       limits = c(start_date, end_date)
     ) +
-    # scale_y_continuous(limits=input_limits) +
     theme_bw() +
     theme(
       legend.position = "none",
@@ -316,8 +315,8 @@ if (FALSE) {
 y_limits <- tibble(
   site = c("KONZ", "UNDE", "WOOD",
            "SRER", "SJER", "WREF"),
-  limits = list(c(-10, 22), c(-0.5, 4.5), c(-3.5, 11),
-                c(0, 2), c(0, 2), c(-0.5, 6.5))
+  limits = list(c(-10, 50), c(-2, 10), c(-5, 12),
+                c(-0.25, 1.1), c(-0.5, 3), c(-1, 12))
 )
 
 grid_plots <- summary_env_data |>

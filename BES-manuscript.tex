@@ -202,8 +202,6 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={neonSoilFlux: An R Package for Continuous Sensor-Based Estimation of Soil CO2 Fluxes},
-  pdfauthor={, , , , , , , , , , , and },
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -212,85 +210,10 @@
   pdfcreator={LaTeX via pandoc}}
 
 
-\title{\texttt{neonSoilFlux}: An R Package for Continuous Sensor-Based
-Estimation of Soil CO\textsubscript{2} Fluxes}
-\author{John Zobitz\textsuperscript{1} \and Edward
-Ayres\textsuperscript{2} \and Zoey Werbin\textsuperscript{3} \and Ridwan
-Abdi\textsuperscript{1} \and Natalie
-Ashburner-Wright\textsuperscript{5} \and Lillian
-Brown\textsuperscript{5} \and Ryan
-Frink-Sobierajski\textsuperscript{5} \and Lajntxiag
-Lee\textsuperscript{1} \and Dijonë
-Mehmeti\textsuperscript{1} \and Christina
-Tran\textsuperscript{5} \and Ly Xiong\textsuperscript{1} \and Naupaka
-Zimmerman\textsuperscript{4,5}}
+\author{}
 \date{}
 \begin{document}
-\maketitle
 
-
-\textsuperscript{1} Augsburg University, 2211 Riverside Avenue,
-Minneapolis, MN 55454\\
-\textsuperscript{2} National Ecological Observatory Network, Battelle,
-1685 38th Street, Suite 100, Boulder, CO 80301\\
-\textsuperscript{3} Boston University, 5 Cummington Street, Boston, MA
-02215\\
-\textsuperscript{4} University of Kansas, 1450 Jayhawk Boulevard,
-Lawrence, KS 66045\\
-\textsuperscript{5} University of San Francisco, 2130 Fulton Street, San
-Francisco, CA 94117
-
-\section*{Acknowledgments}\label{acknowledgments}
-\addcontentsline{toc}{section}{Acknowledgments}
-
-John Zobitz acknowledges Kathleen O'Rourke for code development. Naupaka
-Zimmerman thanks technical staff at USF for support with field gear
-assembly and shipping. We thank the NEON field staff and assignable
-assets teams for facilitating each of the six NEON site visits. We are
-grateful to LI-COR technical staff for helpful discussions about optimal
-soil chamber sampling methods. This work was supported by NSF DEB grant
-\#2017829 awarded to John Zobitz, and NSF DEB grant \#2017860 awarded to
-Naupaka Zimmerman. This material is based in part upon work supported by
-the National Ecological Observatory Network (NEON), a program sponsored
-by the U.S. National Science Foundation (NSF) and operated under
-cooperative agreement by Battelle. We also thank the reviewers and
-subject editor for their constructive feedback.
-
-\section*{Conflict of Interest
-Statements}\label{conflict-of-interest-statements}
-\addcontentsline{toc}{section}{Conflict of Interest Statements}
-
-None of the authors have a financial, personal, or professional conflict
-of interest related to this work.
-
-\section*{Author Contributions}\label{author-contributions}
-\addcontentsline{toc}{section}{Author Contributions}
-
-Conceptualization: John Zobitz, Naupaka Zimmerman; Methodology: Edward
-Ayres, John Zobitz, Naupaka Zimmerman; Software: John Zobitz, Naupaka
-Zimmerman, Zoey Werbin, Edward Ayres, Dijonë Mehmeti, Ridwan Abdi, Ly
-Xiong, Lajntxiag Lee; Validation: John Zobitz, Naupaka Zimmerman; Formal
-Analysis: John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi,
-Ly Xiong, Lajntxiag Lee; Investigation: John Zobitz, Naupaka Zimmerman,
-Ryan Frink-Sobierajski, Christina Tran, Natalie Ashburner-Wright,
-Lillian Brown; Resources: John Zobitz, Naupaka Zimmerman; Data curation:
-John Zobitz, Naupaka Zimmerman, Dijonë Mehmeti, Ly Xiong; Writing --
-original draft: John Zobitz, Naupaka Zimmerman; Writing -- review and
-editing: John Zobitz, Naupaka Zimmerman, Zoey Werbin, Edward Ayres,
-Christina Tran, Dijonë Mehmeti, Ly Xiong; Visualization: John Zobitz,
-Naupaka Zimmerman, Dijonë Mehmeti, Ridwan Abdi, Ly Xiong; Supervision:
-John Zobitz, Naupaka Zimmerman; Project Administration: John Zobitz,
-Naupaka Zimmerman; Funding Acquisition: John Zobitz, Naupaka Zimmerman.
-
-\section*{Data Availability}\label{data-availability}
-\addcontentsline{toc}{section}{Data Availability}
-
-Data available via \url{https://doi.org/10.5281/zenodo.17516319} (Zobitz
-\& Zimmerman, 2025). Field-collected data, \texttt{neonSoilFlux}
-calculated outputs, and manuscript-generating code are provided within
-this repository.
-
-\newpage
 
 \section{Abstract}\label{abstract}
 
@@ -316,7 +239,7 @@ this repository.
 \item
   Outputs from the \texttt{neonSoilFlux} showed agreement with measured
   fluxes (\(R^{2}\) between measured and \texttt{neonSoilFlux} outputs
-  ranging from 0.04 to 0.81 depending on calculation method used);
+  ranging from 0.12 to 0.77 depending on calculation method used);
   measured outputs generally fell within the range of calculated
   uncertainties from the gradient method. Calculated fluxes from
   \texttt{neonSoilFlux} aggregated to the daily scale exhibited expected
@@ -948,11 +871,11 @@ diffusivity model used (Millington-Quirk or Marshall,
 Section~\ref{sec-compute-diffusivity}). Individual vertical axis labels
 in the first column represent the measurement levels where the
 flux-gradient approach is applied (Section~\ref{sec-compute-soil-flux}).
-Ribbons for modeled soil fluxes represent \(\pm\) 1 standard deviation.
-Results are reported in local time. WREF, SJER, and SRER were sampled in
-2022, and UNDE, WOOD, and KONZ were sampled in 2024. Sites (columns) are
-arranged from left to right in terms of increasing mean annual
-temperature.}
+Ribbons for modeled soil fluxes represent approximately \(\pm\) 1
+standard deviation. Results are reported in local time. WREF, SJER, and
+SRER were sampled in 2022, and UNDE, WOOD, and KONZ were sampled in
+2024. Sites (columns) are arranged from left to right in terms of
+increasing mean annual temperature.}
 
 \end{figure}%
 
@@ -983,7 +906,7 @@ fall relative to a 1:1 line.
 
 \centering{
 
-\includegraphics[width=0.6\linewidth,height=\textheight,keepaspectratio]{figures/r2-plot.png}
+\includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{figures/r2-plot.png}
 
 }
 
@@ -1001,21 +924,20 @@ fluxes are also reported. The low-value outlier from KONZ in the
 \(F_{110}\) Marshall plot is an example of the effect of inverted
 CO\textsubscript{2} gradients causing an estimated flux to be negative,
 bringing down the daily mean, which later resolved as the soils dried
-back out. Intervals where calculated fluxes were \textless{} 0 (n = 12)
-were excluded from the plot; 3 each from WREF and WOOD when using
-(\(F_{011}\) approach).}
+back out.}
 
 \end{figure}%
 
 \subsection{Effects of method choice on diffusivity
 estimates}\label{effects-of-method-choice-on-diffusivity-estimates}
 
-In four of six field sites, the \emph{post hoc} \(D_{a}\) estimate fell
-roughly between the two diffusion estimation methods; however this was
-less the case in the two driest sites, SJER and SRER
-(Table~\ref{tbl-neon-sites}), where the field estimate of diffusivity
-was either lower or higher than both of the other methods
-(Figure~\ref{fig-diffusivity-plot}).
+In one of the six field sites, the \emph{post hoc} \(D_{a}\) estimate
+fell roughly between the two diffusion estimation methods. At UNDE,
+WOOD, WREF, and SJER, the median field estimate of diffusivity was lower
+than both of the other methods. At the driest site, SRER
+(Table~\ref{tbl-neon-sites}), the median field estimate of diffusivity
+was higher than both of the other methods and values showed a large
+amount of variation (Figure~\ref{fig-diffusivity-plot}).
 
 \begin{figure}
 
@@ -1034,7 +956,7 @@ through the field measured flux (Figure~\ref{fig-flux-results}), divided
 by the CO\(_{2}\) gradient from the measurement levels closest to the
 soil surface, as reported by NEON. We only used \(F_{S}\) measured by
 the LICOR 6800 at all sites to standardize comparisons. Some outliers (n
-= 2 from the field estimated values at KONZ and n = 9 from field
+= 1 from the field estimated values at KONZ and n = 6 from field
 estimated values at SRER) are excluded from the plot to allow better
 comparative visualization across sites.}
 
@@ -1090,19 +1012,16 @@ of the flux estimate is to reduce the usage of gap-filled data. The
 current approach to gap filling in \texttt{neonSoilFlux} uses monthly
 mean data to gap fill---this approach decreases the ability of the
 estimate to be responsive to short-term pulses that occur with rapid
-weather shifts. Four sites (KONZ, SRER, WREF, and UNDE) had more than
-75\% of half-hourly periods with no-gap filled measurements (Figure S1,
-Supplementary Information). Two sites (SJER and WOOD) had more than 75\%
-of half-hourly intervals with just one gap-filled measurement. The large
-uncertainty evident in Figure~\ref{fig-flux-results} for estimates from
-WOOD and SJER are thus due in part to the gap-filling used in these
-sites (Figure S1). While we did not need to use gap-filled measurements
-to compute the flux at WREF, field data collection occurred following a
-severe rainstorm, with soils at the beginning of the sampling week near
-their water holding capacity. In general, we recommend that whenever
-possible, knowledge of local field conditions should influence analysis
-decisions in addition to any QA filtering protocols in the
-\texttt{neonSoilFlux} package.
+weather shifts. All sites had more than 75\% of half-hourly periods with
+no-gap filled measurements (Figure S1, Supplementary Information). At
+five out of six sites (all except SRER), we used at least some
+gap-filled measurements of Soil Water Content (SWC). At WREF, field data
+collection occurred following a severe rainstorm, with soils at the
+beginning of the sampling week near their water holding capacity, which
+can influence the soil moisture sensor accuracy. In general, we
+recommend that whenever possible, knowledge of local field conditions
+should influence analysis decisions in addition to any QA filtering
+protocols in the \texttt{neonSoilFlux} package.
 
 We recognize that this gap-filling approach may lead to gap-filled
 values that are quite different from the actual values, such as an
@@ -1128,7 +1047,7 @@ that are broadly consistent with those directly measured in the field
 (Figure~\ref{fig-flux-results} and Figure~\ref{fig-flux-results-year}),
 even though statistical comparisons between the field-measured and
 \texttt{neonSoilFlux} values were quite variable (e.g.~\(R^{2}\) ranging
-from 0.04 to 0.81; Figure~\ref{fig-r2-plot}). One advantage of the
+from 0.12 to 0.77; Figure~\ref{fig-r2-plot}). One advantage of the
 \texttt{neonSoilFlux} package is its ability to calculate fluxes across
 different soil depths (Figure~\ref{fig-model-diagram}), which allows for
 additional site-specific customization. We believe the package can
@@ -1170,13 +1089,9 @@ modeled fluxes (defined here as closeness to field-measured \(F_{S}\)
 and the uncertainty reduction factor \(\epsilon\)), (2) precision (which
 could be defined by the signal to noise ratio), and (3) the choice of
 the diffusivity model (Section~\ref{sec-compute-diffusivity}) or flux
-computation method (Section~\ref{sec-compute-soil-flux}). A sensitivity
-analysis (Figure S2, Supplemental Information) found that flux output
-uncertainty was dominated by measurement uncertainty (\(T_{S}\), \(P\),
-\(SWC\), or CO\(_{2}\)) rather than by the diffusivity method used to
-compute soil flux. Notably, the \(F_{110}\) method was least sensitive
-to measurement uncertainty likely because it best aligns with the
-surface chamber measurement assumptions.
+computation method (Section~\ref{sec-compute-soil-flux}). We performed a
+sensitivity analysis to compare the impact of these factors (Figure S2,
+Supplemental Information).
 
 Finally, comparing the effects of different diffusivity estimation
 methods on the match between modeled and measured fluxes
@@ -1209,10 +1124,11 @@ calculated values. Ensemble averaging approaches (Elshall et al., 2018;
 Raftery et al., 2005) may be one way to address this problem if the goal
 is to calculate fluxes using the same method at a diverse range of
 different sites. Two other ideas would be to apply machine learning
-algorithms (e.g.~random forest) to generate a single flux estimate
-across diverse sites, or using co-located estimates of net ecosystem
-carbon exchange from eddy-flux towers to further constrain results or to
-assess soil flux results for plausibility (Phillips et al., 2017).
+algorithms (\emph{e.g.} random forest) to generate a single flux
+estimate across diverse sites, or using co-located estimates of net
+ecosystem carbon exchange from eddy-flux towers to further constrain
+results or to assess soil flux results for plausibility (Phillips et
+al., 2017).
 
 These challenges notwithstanding, the method used here and made
 available in the \texttt{neonSoilFlux} R package has the potential to
@@ -1607,12 +1523,6 @@ Software}, \emph{4}(43), 1751. \url{https://doi.org/10.21105/joss.01751}
 Zobitz, J., Ayres, E., O'Rourke, K., Werbin, Z., Lee, L., Abdi, R.,
 Mehmeti, D., \& Xiong, L. (2024). \emph{{neonSoilFlux}: {Compute Soil
 Carbon Fluxes} for the {National Ecological Observatory Network Sites}}.
-
-\bibitem[\citeproctext]{ref-zobitzSupportingCodeData2025}
-Zobitz, J., \& Zimmerman, N. (2025). \emph{Supporting {Code} and {Data}
-for {neonSoilFlux}: {An R Package} for {Continuous Sensor-Based
-Estimation} of {Soil CO2 Fluxes}}. Zenodo.
-\url{https://doi.org/10.5281/zenodo.17516320}
 
 \end{CSLReferences}
 
