@@ -31,7 +31,7 @@ A `Makefile` is provided to automate the entire workflow from data processing to
 
 **Prerequisites:**
 
-- R with required packages (see list below)
+- R with required packages (see note about `renv` above)
 - Quarto for PDF rendering
 - LaTeX for PDF generation
 
